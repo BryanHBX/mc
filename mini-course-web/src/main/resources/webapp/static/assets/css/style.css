@@ -1,0 +1,34 @@
+#header .logo {
+    background: url("../images/logo.png") no-repeat;
+}
+
+/* Navigation */
+.icon-humans,
+.tree div.icon-humans,
+.accordion .accordionHeader h2 span.icon-humans {
+	background: url("../images/icons/icon-humans.png") no-repeat left center;
+}
+
+.icon-admin,
+.tree div.icon-admin,
+.accordion .accordionHeader h2 span.icon-admin {
+    background: url("../images/icons/icon-admin.png") no-repeat left center;
+}
+
+.icon-finance,
+.tree div.icon-finance,
+.accordion .accordionHeader h2 span.icon-finance {
+    background: url("../images/icons/icon-finance.png") no-repeat left center;
+}
+
+.icon-school,
+.tree div.icon-school,
+.accordion .accordionHeader h2 span.icon-school {
+    background: url("../images/icons/icon-school.png") no-repeat left center;
+}
+
+.icon-settings,
+.tree div.icon-settings,
+.accordion .accordionHeader h2 span.icon-settings {
+    background: url("../images/icons/icon-settings.png") no-repeat left center;
+}

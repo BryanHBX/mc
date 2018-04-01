@@ -1,0 +1,19 @@
+<div xmlns:th="http://www.thymeleaf.org" class="row n-banner-2nd" th:fragment="nav">
+    <div id="sidebar_s">
+        <div class="collapse">
+            <div class="toggleCollapse"><div></div></div>
+        </div>
+    </div>
+
+    <div id="sidebar">
+        <div class="toggleCollapse"><h2 class="icon-navigation">主菜单</h2><div>收缩</div></div>
+        <div class="accordion" fillSpace="sidebar">
+
+            <div th:include="~{decorator/fragments/menus/menu-contract}" />
+            <div th:include="~{decorator/fragments/menus/menu-teacher}" />
+            <div th:include="~{decorator/fragments/menus/menu-finance}" />
+            <div th:include="~{decorator/fragments/menus/menu-school}" />
+
+        </div>
+    </div>
+</div>
