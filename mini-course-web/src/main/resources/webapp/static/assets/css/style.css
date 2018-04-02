@@ -41,7 +41,6 @@
     padding: 0 0 0 20px;
 }
 
-
 .icon-contractList,
 .tree div.icon-contractList,
 .tabsPage .tabsPageHeader li span.icon-contractList,
@@ -50,8 +49,46 @@
     padding: 0 0 0 20px;
 }
 
+.icon-financeContract,
+.tree div.icon-financeContract,
+.tabsPage .tabsPageHeader li span.icon-financeContract,
+.accordion .accordionHeader h2 span.icon-financeContract {
+    background: url("../images/icons/menu/finance/icon-contract.png") no-repeat left center;
+    padding: 0 0 0 20px;
+}
+
+
+.icon-financeInvoice,
+.tree div.icon-financeInvoice,
+.tabsPage .tabsPageHeader li span.icon-financeInvoice,
+.accordion .accordionHeader h2 span.icon-financeInvoice {
+    background: url("../images/icons/menu/finance/icon-invoice.png") no-repeat left center;
+    padding: 0 0 0 20px;
+}
+
+
+.icon-financeAttendance,
+.tree div.icon-financeAttendance,
+.tabsPage .tabsPageHeader li span.icon-financeAttendance,
+.accordion .accordionHeader h2 span.icon-financeAttendance {
+    background: url("../images/icons/menu/finance/icon-attendance.png") no-repeat left center;
+    padding: 0 0 0 20px;
+}
+
+
+.icon-financeConsumption,
+.tree div.icon-financeConsumption,
+.tabsPage .tabsPageHeader li span.icon-financeConsumption,
+.accordion .accordionHeader h2 span.icon-financeConsumption {
+    background: url("../images/icons/menu/finance/icon-consumption.png") no-repeat left center;
+    padding: 0 0 0 20px;
+}
+
+
+/* Styles overwritten */
 h2.contentTitle { margin-bottom: 0px; }
 fieldset { margin-bottom: 10px; }
 .searchBar ul.searchContent li { width: 200px;}
 .searchBar label {width: 60px;}
 .grid .gridHeader th { text-align: center; }
+.date {width: 80px;}

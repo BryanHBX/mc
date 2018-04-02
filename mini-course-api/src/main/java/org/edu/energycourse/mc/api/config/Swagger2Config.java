@@ -22,7 +22,7 @@ public class Swagger2Config
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("org.edu.energycourse.mc.api.service"))
+                .apis(RequestHandlerSelectors.basePackage("org.education.energycourse.mc.api.service"))
                 .paths(PathSelectors.any())
                 .build();
     }
