@@ -32,3 +32,20 @@
 .accordion .accordionHeader h2 span.icon-settings {
     background: url("../images/icons/icon-settings.png") no-repeat left center;
 }
+
+.icon-contractForm,
+.tree div.icon-contractForm,
+.tabsPage .tabsPageHeader li span.icon-contractForm,
+.accordion .accordionHeader h2 span.icon-contractForm {
+    background: url("../images/icons/menu/humans/icon-contract.png") no-repeat left center;
+    padding: 0 0 0 20px;
+}
+
+
+.icon-contractList,
+.tree div.icon-contractList,
+.tabsPage .tabsPageHeader li span.icon-contractList,
+.accordion .accordionHeader h2 span.icon-contractList {
+    background: url("../images/icons/menu/humans/icon-list.jpg") no-repeat left center;
+    padding: 0 0 0 20px;
+}

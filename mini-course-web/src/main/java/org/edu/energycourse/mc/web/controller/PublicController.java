@@ -1,13 +1,7 @@
 package org.edu.energycourse.mc.web.controller;
 
-import org.edu.energycourse.mc.common.constants.Constants;
-import org.edu.energycourse.mc.common.controller.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class AppController extends BaseController implements ErrorController
+public class PublicController extends AbstractController
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AppController.class);
-
-    private static final String ERROR_PATH = "/error";
+    private static final Logger LOGGER = LoggerFactory.getLogger(PublicController.class);
 
     @RequestMapping("/")
     public String home()
@@ -39,10 +31,5 @@ public class AppController extends BaseController implements ErrorController
     protected String getModulePath()
     {
         return "modules";
-    }
-
-    public String getErrorPath()
-    {
-        return ERROR_PATH;
     }
 }

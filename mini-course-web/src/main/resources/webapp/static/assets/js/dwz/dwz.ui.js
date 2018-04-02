@@ -198,12 +198,18 @@ function initUI($p){
 			var fresh = eval($this.attr("fresh") || "true");
 			var external = eval($this.attr("external") || "false");
 			var url = unescape($this.attr("href")).replaceTmById($(event.target).parents(".unitBox:first"));
-			DWZ.debug(url);
+
+            // added by Jeccy.Zhao on 2012-05-24
+            var show_icon = $this.attr("data-icon") ? ($(this).attr("data-icon") + " icon") :
+                ($this.parent().parent().attr("data-icon") ? $this.parent().parent().attr("data-icon") + " icon" : "");
+
+            DWZ.debug(url);
+            DWZ.debug(show_icon);
 			if (!url.isFinishedTm()) {
 				alertMsg.error($this.attr("warn") || DWZ.msg("alertSelectMsg"));
 				return false;
 			}
-			navTab.openTab(tabid, url,{title:title, fresh:fresh, external:external});
+			navTab.openTab(tabid, url,{title:title, fresh:fresh, external:external, icon:show_icon});
 
 			event.preventDefault();
 		});

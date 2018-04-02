@@ -356,7 +356,8 @@ var navTab = {
 		if (iOpenIndex >= 0){
 			var $tab = this._getTabs().eq(iOpenIndex);
 			var span$ = $tab.attr("tabid") == this._op.mainTabId ? "> span > span" : "> span";
-			$tab.find(">a").attr("title", op.title).find(span$).html(op.title);
+			//$tab.find(">a").attr("title", op.title).find(span$).html(op.title);
+            $tab.find(">a").attr("title", op.title).find(span$).html("<span class='" + (options.icon != "" ? options.icon : "icon-default icon") + "'>"+ op.title + "</span>");
 			var $panel = this._getPanels().eq(iOpenIndex);
 			if(url && (op.fresh || $tab.attr("url") != url)) {
 				$tab.attr("url", url);
@@ -374,8 +375,9 @@ var navTab = {
 			}
 			this._currentIndex = iOpenIndex;
 		} else {
-			var tabFrag = '<li tabid="#tabid#"><a href="javascript:" title="#title#" class="#tabid#"><span>#title#</span></a><a href="javascript:;" class="close">close</a></li>';
-			this._tabBox.append(tabFrag.replaceAll("#tabid#", tabid).replaceAll("#title#", op.title));
+			//var tabFrag = '<li tabid="#tabid#"><a href="javascript:" title="#title#" class="#tabid#"><span>#title#</span></a><a href="javascript:;" class="close">close</a></li>';
+            var tabFrag = '<li tabid="#tabid#"><a href="javascript:" title="#title#" class="#tabid#"><span><span class="' + (options.icon != "" ? options.icon : "icon-default icon") + '">#title#</span></span></a><a href="javascript:;" class="close">close</a></li>';
+            this._tabBox.append(tabFrag.replaceAll("#tabid#", tabid).replaceAll("#title#", op.title));
 			this._panelBox.append('<div class="page unitBox"></div>');
 			this._moreBox.append('<li><a href="javascript:" title="#title#">#title#</a></li>'.replaceAll("#title#", op.title));
 			

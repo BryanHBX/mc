@@ -119,7 +119,9 @@
 				}
 				if (tree.size()>0) {
 					node.children(":first").wrap("<div></div>");
-					$(">div", node).prepend("<div class='" + (op.showSub ? op.coll : op.exp) + "'></div>"+(op.ckbox ?"<div class='ckbox " + checked + "'></div>":"")+(op.icon?"<div class='"+ (op.showSub ? op.options.folderColl : op.options.folderExp) +"'></div>":""));
+                    var node_class = node.attr("treeicon") ? node.attr("treeicon") : op.options.folderExp;
+                    op.showSub = node.hasClass("expand") || op.showSub;
+					$(">div", node).prepend("<div class='" + (op.showSub ? op.coll : op.exp) + "'></div>"+(op.ckbox ?"<div class='ckbox " + checked + "'></div>":"")+(op.icon?"<div class='"+ (op.showSub ? node_class : node_class) +"'></div>":""));
 					op.showSub ? tree.show() : tree.hide();
 					$(">div>div:first,>div>a", node).click(function(){
 						var $fnode = $(">li:first",tree);
