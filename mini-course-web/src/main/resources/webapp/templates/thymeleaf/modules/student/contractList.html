@@ -1,0 +1,133 @@
+<form id="pagerForm" method="post" action="w_removeSelected.html">
+    <input type="hidden" name="pageNum" value="1">
+    <input type="hidden" name="numPerPage" value="${model.numPerPage}">
+    <input type="hidden" name="orderField" value="${param.orderField}">
+    <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+    <input type="hidden" name="keywords" value=""><input type="hidden" name="province" value="">
+</form>
+<div class="pageHeader">
+    <form id="mySearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="w_removeSelected.html" method="post">
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label>学生姓名：</label>
+                    <input type="text" name="keywords" value="" style="width: 100px;" class="textInput">
+                </li>
+                <li>
+                    <label>咨询师：</label>
+                    <input type="text" name="keywords" value="" style="width: 100px;" class="textInput">
+                </li>
+                <li>
+                    <label>合同状态：</label>
+                    <select class="combox" name="province" style="display: none;">
+                        <option value="">所有</option>
+                        <option value="北京">执行中</option>
+                        <option value="上海">已结束</option>
+                    </select>
+                </li>
+                <li>
+                    <label>缴费状态：</label>
+                    <select class="combox" name="province" style="display: none;">
+                        <option value="">所有</option>
+                        <option value="广东">有欠费</option>
+                    </select>
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="pageContent j-resizeGrid">
+    <!--<div class="panelBar">
+        <ul class="toolBar">
+            <li class=""><a class="add" href="demo_page4.html" target="navTab"><span>添加</span></a></li>
+            <li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" href="demo/common/ajaxDone.html" class="delete"><span>批量删除默认方式</span></a></li>
+            <li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" posttype="string" href="demo/common/ajaxDone.html" class="delete"><span>批量删除逗号分隔</span></a></li>
+            <li class=""><a class="edit" href="demo_page4.html?uid={sid_user}" target="navTab" warn="请选择一个用户"><span>修改</span></a></li>
+            <li class="line">line</li>
+            <li><a class="icon" href="demo/common/dwz-team.xls" target="dwzExport" targettype="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span></a></li>
+            <li class=""><a class="icon" href="javascript:myExport('demo/common/dwz-team.xls')"><span>自定义导出</span></a></li>
+            <li><a title="选中id跳出DWZ页面打印?" target="selectedBlank" rel="ids" posttype="string" href="demo/common/ajaxDone.html" class="icon"><span>选中跳出DWZ</span></a></li>
+            <li><a target="selectedLoad" rel="ids" postType="string" href="demo_page1.html" class="icon"><span>批量Dialog Load逗号分隔</span></a></li>
+        </ul>
+    </div>-->
+    <div class="grid"><input id="sid_user" type="hidden" value="1">
+        <div class="gridHeader">
+            <div class="gridThead" style="position: relative; left: 0px;">
+                <table style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th orderfield="accountNo" style="cursor: pointer;"><div class="gridCol" title="客户号">报名类型</div></th>
+                            <th orderfield="accountName" class="" style="cursor: pointer;"><div class="gridCol" title="客户名称">签约日期</div></th>
+                            <th orderfield="accountType" style="cursor: pointer;"><div class="gridCol" title="客户类型">合同编号</div></th>
+                            <th orderfield="accountCert" style="cursor: pointer;"><div class="gridCol" title="证件号码">姓名</div></th>
+                            <th orderfield="accountLevel" class="center" style="cursor: pointer;"><div class="gridCol" title="信用等级">年级</div></th>
+                            <th class="" style="cursor: default;"><div class="gridCol" title="所属行业">报名课程</div></th>
+                            <th style=""><div class="gridCol" title="建档日期">报名课时</div></th>
+                            <th style=""><div class="gridCol" title="操作">赠送课时</div></th>
+                            <th style=""><div class="gridCol" title="操作">签约总价</div></th>
+                            <th style=""><div class="gridCol" title="操作">实收金额</div></th>
+                            <th style=""><div class="gridCol" title="操作">实际单价</div></th>
+                            <th style=""><div class="gridCol" title="操作">已缴费</div></th>
+                            <th style=""><div class="gridCol" title="操作">欠费</div></th>
+                            <th style=""><div class="gridCol" title="操作">转退课时</div></th>
+                            <th style=""><div class="gridCol" title="操作">剩余课时</div></th>
+                            <th style=""><div class="gridCol" title="操作">课时记录</div></th>
+                            <th style=""><div class="gridCol" title="操作">补缴</div></th>
+                            <th style=""><div class="gridCol" title="操作">咨询师</div></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="gridScroller" layouth="138" style="width: 1211px; height: 98px; overflow: auto;">
+            <div class="gridTbody">
+                <table style="width:1180px;">
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="resizeMarker" style="height:300px; left:57px;display:none;"></div><div class="resizeProxy" style="height:300px; left:377px;display:none;"></div></div>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <div class="combox"><div id="combox_9181136" class="select"><a href="javascript:" name="numPerPage" value="20" default-value="20">20</a><select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})" style="display: none;">
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+            </select></div></div>
+            <span>条，共${totalCount}条</span>
+        </div>
+
+        <div class="pagination" targettype="navTab" totalcount="200" numperpage="20" pagenumshown="10" currentpage="1">
+            <ul>
+                <li class="j-first disabled">
+                    <a class="first" href="javascript:;" style="display: none;"><span>首页</span></a>
+                    <span class="first"><span>首页</span></span>
+                </li>
+                <li class="j-prev disabled">
+                    <a class="previous" href="javascript:;" style="display: none;"><span>上一页</span></a>
+                    <span class="previous"><span>上一页</span></span>
+                </li>
+                <li class="selected j-num"><a href="javascript:;">1</a></li><li class="j-num"><a href="javascript:;">2</a></li><li class="j-num"><a href="javascript:;">3</a></li><li class="j-num"><a href="javascript:;">4</a></li><li class="j-num"><a href="javascript:;">5</a></li><li class="j-num"><a href="javascript:;">6</a></li><li class="j-num"><a href="javascript:;">7</a></li><li class="j-num"><a href="javascript:;">8</a></li><li class="j-num"><a href="javascript:;">9</a></li><li class="j-num"><a href="javascript:;">10</a></li>
+                <li class="j-next">
+                    <a class="next" href="javascript:;"><span>下一页</span></a>
+                    <span class="next" style="display: none;"><span>下一页</span></span>
+                </li>
+                <li class="j-last">
+                    <a class="last" href="javascript:;"><span>末页</span></a>
+                    <span class="last" style="display: none;"><span>末页</span></span>
+                </li>
+                <li class="jumpto"><input class="textInput" type="text" size="4" value="1"><input class="goto" type="button" value="确定"></li>
+            </ul>
+        </div>
+
+    </div>
+</div>

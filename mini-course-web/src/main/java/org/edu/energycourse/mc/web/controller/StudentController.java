@@ -11,10 +11,16 @@ public class StudentController extends AbstractController
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentController.class);
 
-    @RequestMapping("/contract")
+    @RequestMapping("/contractForm")
     public String showContractForm ()
     {
-        return getModulePage("form");
+        return getModulePage("contractForm");
+    }
+
+    @RequestMapping("/contractList")
+    public String showContractList ()
+    {
+        return getModulePage("contractList");
     }
 
     protected String getModulePath()
