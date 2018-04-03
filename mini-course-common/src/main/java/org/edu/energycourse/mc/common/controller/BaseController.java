@@ -1,6 +1,6 @@
 package org.edu.energycourse.mc.common.controller;
 
-import org.edu.energycourse.mc.common.entity.ApiResult;
+import org.edu.energycourse.mc.common.entity.ResponseData;
 import org.edu.energycourse.mc.common.utils.StringUtil;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -18,9 +18,9 @@ public abstract class BaseController
      * @param <T>
      * @return
      */
-    protected <T> ApiResult<T> createEmptyQueryResult()
+    protected <T> ResponseData<T> createEmptyQueryResult()
     {
-        return new ApiResult<T>(false, null);
+        return new ResponseData<T>(false, null);
     }
 
     /**
@@ -30,9 +30,9 @@ public abstract class BaseController
      * @param <T>
      * @return
      */
-    protected <T> ApiResult<T> createErrorQueryResult (Exception ex)
+    protected <T> ResponseData<T> createErrorQueryResult (Exception ex)
     {
-        return new ApiResult<T>(false, null, ex.getMessage());
+        return new ResponseData<T>(false, null, ex.getMessage());
     }
 
     /**

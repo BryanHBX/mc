@@ -6,34 +6,34 @@ import lombok.Data;
  * Created by Marco on 2018/3/31.
  */
 @Data
-public class ApiResult<T>
+public class ResponseData<T>
 {
     private boolean success;
     private T data;
     private String error;
 
-    public ApiResult(T data)
+    public ResponseData (T data)
     {
         this(true, data);
     }
 
-    public ApiResult(String error)
+    public ResponseData (String error)
     {
         this.error = error;
         this.success = false;
     }
 
-    public ApiResult(boolean success)
+    public ResponseData (boolean success)
     {
         this(success, null);
     }
 
-    public ApiResult(boolean success, T data)
+    public ResponseData (boolean success, T data)
     {
         this(success, data, null);
     }
 
-    public ApiResult(boolean success, T data, String error)
+    public ResponseData (boolean success, T data, String error)
     {
         this.success = success;
         this.error = error;

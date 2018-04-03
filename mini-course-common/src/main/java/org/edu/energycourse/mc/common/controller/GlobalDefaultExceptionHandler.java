@@ -1,7 +1,7 @@
 package org.edu.energycourse.mc.common.controller;
 
 import org.edu.energycourse.mc.common.constants.Constants;
-import org.edu.energycourse.mc.common.entity.ApiResult;
+import org.edu.energycourse.mc.common.entity.ResponseData;
 import org.edu.energycourse.mc.common.exception.NoPermissionAccessPageException;
 import org.edu.energycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -24,18 +23,18 @@ public class GlobalDefaultExceptionHandler extends BaseController
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
 
     @ExceptionHandler(ServiceException.class)
-    @ResponseBody
+    @org.springframework.web.bind.annotation.ResponseBody
     @ResponseStatus( HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiResult<Map<String, Object>> handleServiceException(Exception ex)
+    public ResponseData<Map<String, Object>> handleServiceException(Exception ex)
     {
         LOGGER.error("Internal server error caught: " + ex);
         return createErrorQueryResult(ex);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    @ResponseBody
+    @org.springframework.web.bind.annotation.ResponseBody
     @ResponseStatus( HttpStatus.UNAUTHORIZED)
-    public ApiResult<Map<String, Object>> handleUnauthorizedException(HttpServletRequest req, Exception ex)
+    public ResponseData<Map<String, Object>> handleUnauthorizedException(HttpServletRequest req, Exception ex)
     {
         LOGGER.error("Access defined when requesting API - " + req.getRequestURI());
         return createErrorQueryResult(ex);
@@ -49,9 +48,9 @@ public class GlobalDefaultExceptionHandler extends BaseController
     }
 
     @ExceptionHandler(Exception.class)
-    @ResponseBody
+    @org.springframework.web.bind.annotation.ResponseBody
     @ResponseStatus( HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiResult<Map<String, Object>> handleUnexpectedException(Exception ex)
+    public ResponseData<Map<String, Object>> handleUnexpectedException(Exception ex)
     {
         LOGGER.error("Unexpected exception caught: " + ex);
         return createErrorQueryResult(ex);

@@ -16,10 +16,9 @@ import java.util.List;
 @JsonIgnoreProperties(value = { "id", "userPassword", "role", "roles"})
 public class User extends BaseEntity
 {
-    private String userName;
-    private String userDisplayName;
-    private String userIdNumber;
-    private String userMail;
+    private String userId;
+    //private String userDisplayName;
+    //private String userMail;
     //private String userPassword;
     private Date lastLoginTime;
 
@@ -37,7 +36,7 @@ public class User extends BaseEntity
 
     public User(User user, UserRole role)
     {
-        this.userName = user.getUserName();
+        this.userId = user.getUserId();
 
         if (role != null)
         {

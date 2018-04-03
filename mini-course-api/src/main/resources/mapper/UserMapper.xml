@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.edu.energycourse.mc.biz.repository.UserRepository">
+
+    <cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
+
+    <resultMap type="org.edu.energycourse.mc.biz.entity.User" id="result_user">
+        <id property="id" column="id"/>  
+        <result property="userId" column="u_shortname"/>
+        <result property="lastLoginTime" column="u_lastLoginTime"/>
+    </resultMap>
+    
+    <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `t_user` (u_shortname, u_displayname, u_id, u_mail, u_lastLoginTime)
+            VALUES(#{userName}, #{userDisplayName}, #{userIdNumber}, #{userMail}, #{lastLoginTime})
+    </insert>
+
+    <update id="updateUser" parameterType="User">
+        UPDATE `t_user` SET
+            u_lastLoginTime = #{lastLoginTime},
+            u_shortname = #{userName},
+            u_displayname = #{userDisplayName},
+            u_id = #{userIdNumber},
+            u_mail = #{userMail}
+        WHERE id = #{id};
+    </update>
+    
+    <select id="getByUserId" parameterType="java.lang.String" resultMap="result_user">
+        SELECT * FROM `t_user` where `u_shortname` = #{userName}
+    </select>
+
+    <update id="deleteByUserId" parameterType="java.lang.Integer">
+        DELETE FROM `t_user` WHERE `id` = #{id};
+    </update>
+
+    <select id="getAllUsers" resultMap="result_user">
+        SELECT * FROM `t_user` order by `u_lastLoginTime` DESC
+    </select>
+    
+</mapper>

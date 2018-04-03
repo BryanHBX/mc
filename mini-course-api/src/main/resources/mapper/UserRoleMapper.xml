@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.edu.energycourse.mc.biz.repository.UserRoleRepository">
+    
+	<cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
+	
+    <resultMap type="org.edu.energycourse.mc.biz.entity.UserRole" id="result_userRole">
+        <id property="id" column="id"/>  
+        <result property="userId" column="u_id"/>
+        <result property="role" column="role"/>
+    </resultMap>
+    
+    <insert id="insertUserRole" parameterType="UserRole" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `t_user_role` (u_id, role) VALUES(#{userId}, #{role})
+    </insert>
+	
+    <update id="updateUserRole" parameterType="UserRole">
+        UPDATE `t_user_role` SET u_id = #{userId}, role = #{role} WHERE id = #{id};
+    </update>
+    
+    <select id="getByUserId" parameterType="java.lang.Integer" resultMap="result_userRole">
+		SELECT * FROM `t_user_role` WHERE u_id = #{userId}
+	</select>
+	
+    <select id="getById" parameterType="java.lang.Integer" resultMap="result_userRole">
+        SELECT * FROM `t_user_role` WHERE id = #{id}
+	</select>
+    
+    <update id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM `t_user_role` WHERE id = #{id};
+    </update>
+    
+    <update id="deleteByUserId" parameterType="java.lang.String">
+        DELETE FROM `t_user_role` WHERE u_id = #{userId};
+    </update>
+    
+</mapper>

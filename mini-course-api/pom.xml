@@ -41,8 +41,25 @@
             <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.edu.energycourse</groupId>
+            <artifactId>mini-course-biz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.edu.energycourse</groupId>
+            <artifactId>mini-course-common</artifactId>
         </dependency>
     </dependencies>
 

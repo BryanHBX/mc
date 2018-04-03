@@ -1,15 +1,22 @@
 package org.edu.energycourse.mc.api;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.edu.energycourse.mc.biz.BizConfig;
+import org.edu.energycourse.mc.common.CommonConfig;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 
 /**
- * Created by Marco on 2018/3/31
+ * Created by Marco on 2018/3/31.
  */
-@EnableAutoConfiguration
-@Configuration
-@ComponentScan(basePackageClasses = Application.class)
-public class Application
+@SpringBootApplication
+@ComponentScan(basePackageClasses = { BizConfig.class, CommonConfig.class })
+public class Application extends SpringBootServletInitializer
 {
+    public static void main(String[] args)
+    {
+        SpringApplication.run(Application.class, args);
+    }
 }
+

@@ -12,9 +12,7 @@ public interface UserRepository
 {
     Integer insertUser(final User user);
     Integer updateUser(final User user);
-    User getUserByName(@Param("userName") String userName);
-    User getUserById(@Param("id") Integer userId);
-    Integer deleteUserById(@Param("id") Integer userId);
-    Integer deleteUserByName(@Param("userName") String userName);
+    User getByUserId(@Param("id") Integer userId);
+    Integer deleteByUserId(@Param("id") Integer userId);
     List<User> getAllUsers();
 }
