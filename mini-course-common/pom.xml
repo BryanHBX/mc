@@ -34,6 +34,11 @@
             <artifactId>druid</artifactId>
             <version>${druid.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

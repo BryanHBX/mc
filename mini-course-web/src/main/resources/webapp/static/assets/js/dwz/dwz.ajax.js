@@ -112,7 +112,7 @@ function _iframeResponse(iframe, callback, dataType){
  * 只有callbackType="forward"时需要forwardUrl值
  * navTabAjaxDone这个回调函数基本可以通用了，如果还有特殊需要也可以自定义回调函数.
  * 如果表单提交只提示操作是否成功, 就可以不指定回调函数. 框架会默认调用DWZ.ajaxDone()
- * <form action="/user.do?method=save" onsubmit="return validateCallback(this, navTabAjaxDone)">
+ * <form action="/member.do?method=save" onsubmit="return validateCallback(this, navTabAjaxDone)">
  * 
  * form提交后返回json数据结构statusCode=DWZ.statusCode.ok表示操作成功, 做页面跳转等操作. statusCode=DWZ.statusCode.error表示操作失败, 提示错误原因. 
  * statusCode=DWZ.statusCode.timeout表示session超时，下次点击时跳转到DWZ.loginUrl

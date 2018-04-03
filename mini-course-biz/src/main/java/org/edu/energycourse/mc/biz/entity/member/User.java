@@ -1,8 +1,9 @@
-package org.edu.energycourse.mc.biz.entity;
+package org.edu.energycourse.mc.biz.entity.member;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
+import org.edu.energycourse.mc.biz.entity.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,10 +18,10 @@ import java.util.List;
 public class User extends BaseEntity
 {
     private String userId;
-    //private String userDisplayName;
-    //private String userMail;
-    //private String userPassword;
+    private String userName;
+    private String userPassword;
     private Date lastLoginTime;
+    private int userStatus;
 
     private String role;
     private List<UserRole> roles;

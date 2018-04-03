@@ -28,8 +28,8 @@ public class PublicController extends AbstractController
 //        return auth instanceof AnonymousAuthenticationToken ? getModulePage("logon") : getModulePage("index");
     }
 
-    protected String getModulePath()
+    protected String getMyModulePath()
     {
-        return "modules";
+        return null;
     }
 }

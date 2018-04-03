@@ -36,7 +36,10 @@ public class ResponseData<T>
     public ResponseData (boolean success, T data, String error)
     {
         this.success = success;
-        this.error = error;
         this.data = data;
+        if (!success)
+        {
+            this.error = error;
+        }
     }
 }

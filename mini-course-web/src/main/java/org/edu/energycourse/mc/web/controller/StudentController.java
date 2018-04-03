@@ -23,8 +23,14 @@ public class StudentController extends AbstractController
         return getModulePage("contractList");
     }
 
-    protected String getModulePath()
+    @RequestMapping("/studentList")
+    public String showStudentList ()
     {
-        return "modules/student";
+        return getModulePage("studentList");
+    }
+
+    protected String getMyModulePath()
+    {
+        return "student";
     }
 }

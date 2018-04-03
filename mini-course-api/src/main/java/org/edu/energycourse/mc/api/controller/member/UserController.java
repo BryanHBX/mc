@@ -1,7 +1,8 @@
-package org.edu.energycourse.mc.api.controller.user;
+package org.edu.energycourse.mc.api.controller.member;
 
-import org.edu.energycourse.mc.biz.entity.User;
-import org.edu.energycourse.mc.biz.service.UserService;
+import org.edu.energycourse.mc.api.controller.BaseController;
+import org.edu.energycourse.mc.biz.entity.member.User;
+import org.edu.energycourse.mc.biz.service.member.UserService;
 import org.edu.energycourse.mc.common.entity.ResponseData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +17,8 @@ import java.util.List;
  * Created by x36zhao on 2018/4/3.
  */
 @RestController
-@RequestMapping("/api/${version}/users")
-public class UserController
+@RequestMapping("/api/${api.version}/member")
+public class UserController extends BaseController
 {
     private static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
@@ -29,9 +30,8 @@ public class UserController
     {
         if (LOGGER.isDebugEnabled())
         {
-            LOGGER.debug(String.format("Enter getAllUsers"));
         }
 
-        return new ResponseData<List<User>>(userService.getAllUsers());
+        return new ResponseData<List<User>>(userService.getAll());
     }
 }

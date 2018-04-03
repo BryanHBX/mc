@@ -35,8 +35,8 @@ public class FinanceController extends AbstractController
         return getModulePage("consumptionList");
     }
 
-    protected String getModulePath()
+    protected String getMyModulePath()
     {
-        return "modules/finance";
+        return "finance";
     }
 }
