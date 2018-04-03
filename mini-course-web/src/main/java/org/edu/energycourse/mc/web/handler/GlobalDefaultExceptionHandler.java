@@ -1,16 +1,18 @@
-package org.edu.energycourse.mc.common.controller;
+package org.edu.energycourse.mc.web.handler;
 
 import org.edu.energycourse.mc.common.constants.Constants;
+import org.edu.energycourse.mc.common.controller.BaseController;
 import org.edu.energycourse.mc.common.entity.ResponseData;
 import org.edu.energycourse.mc.common.exception.NoPermissionAccessPageException;
 import org.edu.energycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.security.access.AccessDeniedException;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 

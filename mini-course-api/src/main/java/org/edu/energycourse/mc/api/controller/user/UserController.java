@@ -1,4 +1,4 @@
-package org.edu.energycourse.mc.api.user;
+package org.edu.energycourse.mc.api.controller.user;
 
 import org.edu.energycourse.mc.biz.entity.User;
 import org.edu.energycourse.mc.biz.service.UserService;
@@ -17,9 +17,9 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/${version}/users")
-public class UserApiController
+public class UserController
 {
-    private static Logger LOGGER = LoggerFactory.getLogger(UserApiController.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;

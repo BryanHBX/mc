@@ -2,7 +2,6 @@ package org.edu.energycourse.mc.common.controller;
 
 import org.edu.energycourse.mc.common.entity.ResponseData;
 import org.edu.energycourse.mc.common.utils.StringUtil;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -45,17 +44,6 @@ public abstract class BaseController
     protected Map<String, List<String>> getAllRequestParameters (HttpServletRequest request)
     {
         return this.getAllRequestParameters(request, null);
-    }
-
-    protected Object getAuthenticatedPrinciple()
-    {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal != null)
-        {
-            return principal;
-        }
-
-        return null;
     }
 
     /**
