@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.edu.energycourse.mc.biz.repository.school.SchoolInfoRepository">
+<mapper namespace="org.edu.timelycourse.mc.biz.repository.school.SchoolInfoRepository">
 
     <cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
 
-    <resultMap type="org.edu.energycourse.mc.biz.entity.school.SchoolInfo" id="result_school">
+    <resultMap type="org.edu.timelycourse.mc.biz.entity.school.SchoolInfo" id="result_school">
         <id property="id" column="id"/>  
         <result property="schoolName" column="school_name"/>
         <result property="schoolAddress" column="school_address"/>
