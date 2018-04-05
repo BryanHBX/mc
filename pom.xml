@@ -15,7 +15,8 @@
         <java.version>1.8</java.version>
         <spring-boot.version>2.0.0.RELEASE</spring-boot.version>
         <spring-mybatis.version>1.3.2</spring-mybatis.version>
-        <swagger2.version>2.8.0</swagger2.version>
+        <swagger2.version>2.4.0</swagger2.version>
+        <swagger-annotation.version>1.5.18</swagger-annotation.version>
         <druid.version>1.0.18</druid.version>
         <jjwt.version>0.9.0</jjwt.version>
         <guava.version>24.1-jre</guava.version>

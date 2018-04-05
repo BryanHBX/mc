@@ -41,7 +41,7 @@
     </select>
 
     <update id="delete" parameterType="java.lang.Integer">
-        DELETE FROM `t_user` WHERE `id` = #{id};
+        DELETE FROM `t_user` WHERE `id` = #{id}
     </update>
 
     <select id="getAll" resultMap="result_user">

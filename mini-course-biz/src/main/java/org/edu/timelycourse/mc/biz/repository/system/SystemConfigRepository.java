@@ -11,6 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 public interface SystemConfigRepository extends BaseRepository<SystemConfig>
 {
-    SystemConfig getByPropertyName(@Param("name") String propertyName);
-    Integer deleteByPropertyName(@Param("name") String propertyName);
+    SystemConfig getByConfigName(@Param("name") String configName);
+    Integer deleteByConfigName(@Param("name") String configName);
 }

@@ -28,9 +28,16 @@ public class SchoolController extends BaseController
     public ResponseData<List<SchoolInfo>> getAllSchools()
     {
         if (LOGGER.isDebugEnabled())
+            LOGGER.debug("Enter getAllSchools");
+
+        try
         {
+            return new ResponseData<List<SchoolInfo>>(schoolService.getAll());
         }
-        return new ResponseData<List<SchoolInfo>>(schoolService.getAll());
+        catch (ServiceException ex)
+        {
+            return new ResponseData<List<SchoolInfo>>(false, null, ex.getMessage());
+        }
     }
 
     @RequestMapping(path="/{schoolId}", method= RequestMethod.GET)
@@ -39,8 +46,15 @@ public class SchoolController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter getSchool - [schoolId : %s]", schoolId));
 
-        SchoolInfo entity = schoolService.get(schoolId);
-        return new ResponseData<SchoolInfo>(entity != null, entity, "School does not exist");
+        try
+        {
+            SchoolInfo entity = schoolService.get(schoolId);
+            return new ResponseData<SchoolInfo>(entity != null, entity, "School does not exist");
+        }
+        catch (ServiceException ex)
+        {
+            return new ResponseData<SchoolInfo>(false, null, ex.getMessage());
+        }
     }
 
     @RequestMapping(path="/{schoolId}", method= RequestMethod.DELETE)
@@ -49,15 +63,22 @@ public class SchoolController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter deleteSchool - [schoolId: %d]", schoolId));
 
-        SchoolInfo schoolInfo = this.schoolService.get(schoolId);
-        if (schoolInfo != null)
+        try
         {
-            Integer result = this.schoolService.delete(schoolId);
-            return new ResponseData<Integer>(result != null);
+            SchoolInfo schoolInfo = this.schoolService.get(schoolId);
+            if (schoolInfo != null)
+            {
+                Integer result = this.schoolService.delete(schoolId);
+                return new ResponseData<Integer>(result != null);
+            }
+            else
+            {
+                return new ResponseData<Integer>(false, null, "School does not exist");
+            }
         }
-        else
+        catch (ServiceException ex)
         {
-            return new ResponseData<Integer>(false, null, "School does not exist");
+            return new ResponseData<Integer>(false, null, ex.getMessage());
         }
     }
 
@@ -85,14 +106,21 @@ public class SchoolController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter updateSchool - [schoolId: %d, schoolInfo: %s]", schoolId, schoolInfo));
 
-        SchoolInfo entity = this.schoolService.get(schoolId);
-        if (entity != null)
+        try
         {
-            return new ResponseData<SchoolInfo>(this.schoolService.update(schoolInfo));
+            SchoolInfo entity = this.schoolService.get(schoolId);
+            if (entity != null)
+            {
+                return new ResponseData<SchoolInfo>(this.schoolService.update(schoolInfo));
+            }
+            else
+            {
+                return new ResponseData<SchoolInfo>(false, null, "School does not exist");
+            }
         }
-        else
+        catch (ServiceException ex)
         {
-            return new ResponseData<SchoolInfo>(false, null, "School does not exist");
+            return new ResponseData<SchoolInfo>(false, null, ex.getMessage());
         }
     }
 }

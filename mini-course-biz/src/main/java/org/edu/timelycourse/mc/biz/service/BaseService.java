@@ -23,7 +23,6 @@ public abstract class BaseService<T extends BaseEntity>
         {
             return this.repository.get(id);
         }
-
         throw new ServiceException(String.format("Invalid entity id (%d) for fetching", id));
     }
 

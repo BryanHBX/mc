@@ -6,13 +6,13 @@
 	
     <resultMap type="org.edu.timelycourse.mc.biz.entity.system.SystemConfig" id="result_sysConf">
         <id property="id" column="id"/>  
-        <result property="propertyName" column="prop_name"/>  
-        <result property="propertyValue" column="prop_value"/>
-        <result property="propertyDescription" column="prop_desc"/>
+        <result property="configName" column="c_name"/>
+        <result property="configDescription" column="c_desc"/>
+        <result property="multiple" column="c_single"/>
     </resultMap>
     
-    <select id="getByPropertyName" parameterType="java.lang.String" resultMap="result_sysConf">
-		SELECT * FROM `t_sys_config` WHERE `prop_name` = #{name}
+    <select id="getByConfigName" parameterType="java.lang.String" resultMap="result_sysConf">
+		SELECT * FROM `t_sys_config` WHERE `c_name` = #{name}
 	</select>
 	
     <select id="get" parameterType="java.lang.Integer" resultMap="result_sysConf">
@@ -20,13 +20,13 @@
 	</select>
 	
     <insert id="insert" parameterType="SystemConfig" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_sys_config` (prop_name, prop_value, prop_desc)
-			VALUES(#{propertyName}, #{propertyValue}, #{propertyDescription})
+        INSERT INTO `t_sys_config` (c_name, c_desc, c_single)
+			VALUES(#{configName}, #{configDescription}, #{multiple})
     </insert>
 	
     <update id="update" parameterType="SystemConfig">
-        UPDATE `t_sys_config` SET prop_name = #{propertyName}, prop_value = #{propertyValue}, prop_desc = #{propertyDescription}
-        	where id = #{id};
+        UPDATE `t_sys_config` SET c_name = #{configName}, c_desc = #{configDescription}, c_single = #{multiple}
+        	where id = #{id}
     </update>
     
     <select id="getAll" resultMap="result_sysConf">
@@ -34,11 +34,11 @@
 	</select>
     
     <update id="delete" parameterType="java.lang.Integer">
-        DELETE FROM `t_sys_config` WHERE `id` = #{id};
+        DELETE FROM `t_sys_config` WHERE `id` = #{id}
     </update>
     
-    <update id="deleteByPropertyName" parameterType="java.lang.String">
-        DELETE FROM `t_sys_config` WHERE `prop_name` = #{name};
+    <update id="deleteByConfigName" parameterType="java.lang.String">
+        DELETE FROM `t_sys_config` WHERE `c_name` = #{name}
     </update>
     
 </mapper>

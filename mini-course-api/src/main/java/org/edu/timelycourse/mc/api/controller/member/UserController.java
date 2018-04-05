@@ -4,6 +4,7 @@ import org.edu.timelycourse.mc.api.controller.BaseController;
 import org.edu.timelycourse.mc.biz.entity.member.User;
 import org.edu.timelycourse.mc.biz.service.member.UserService;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
+import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,15 @@ public class UserController extends BaseController
     public ResponseData<List<User>> getAllUsers()
     {
         if (LOGGER.isDebugEnabled())
-        {
-        }
+            LOGGER.debug("Enter getAllUsers");
 
-        return new ResponseData<List<User>>(userService.getAll());
+        try
+        {
+            return new ResponseData<List<User>>(userService.getAll());
+        }
+        catch (ServiceException ex)
+        {
+            return new ResponseData<List<User>>(false, null, ex.getMessage());
+        }
     }
 }

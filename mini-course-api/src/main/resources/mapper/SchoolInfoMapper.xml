@@ -23,7 +23,7 @@
             school_address = #{schoolAddress},
             school_contact = #{schoolContact},
             status = #{schoolStatus}
-        WHERE id = #{id};
+        WHERE id = #{id}
     </update>
     
     <select id="get" parameterType="java.lang.Integer" resultMap="result_school">
@@ -31,7 +31,7 @@
     </select>
 
     <update id="delete" parameterType="java.lang.Integer">
-        DELETE FROM `t_school` WHERE `id` = #{id};
+        DELETE FROM `t_school` WHERE `id` = #{id}
     </update>
 
     <select id="getBySchoolName" parameterType="java.lang.String" resultMap="result_school">
