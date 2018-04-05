@@ -9,6 +9,7 @@ import org.edu.timelycourse.mc.biz.entity.system.SystemConfig;
 import org.edu.timelycourse.mc.biz.entity.system.SystemConfigValue;
 import org.edu.timelycourse.mc.biz.service.system.SystemConfigService;
 import org.edu.timelycourse.mc.biz.service.system.SystemConfigValueService;
+import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
@@ -23,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/${api.version}/system/config")
-@Api(value = "Test", tags = { "平台配置API" })
+@Api(tags = { "平台配置API" })
 public class SystemConfigController extends BaseController
 {
     private static Logger LOGGER = LoggerFactory.getLogger(SystemConfigController.class);
@@ -46,7 +47,7 @@ public class SystemConfigController extends BaseController
         {
             if (Strings.isNotEmpty(configName))
             {
-                SystemConfig entity = sysConfigService.getByConfigName(configName);
+                SystemConfig entity = assertEntityNotNullByName(configName);
                 return new ResponseData<List<SystemConfig>>(true, Lists.newArrayList(entity), null);
             }
 
@@ -68,17 +69,9 @@ public class SystemConfigController extends BaseController
 
         try
         {
-            SystemConfig entity = this.sysConfigService.get(configId);
-            if (entity != null)
-            {
-                Integer result = this.sysConfigService.delete(entity.getId());
-                return new ResponseData<Integer>(result != null);
-            }
-            else
-            {
-                return new ResponseData<Integer>(false, null,
-                        String.format("Config does not exist - [id: %d]", configId));
-            }
+            Asserts.assertEntityNotNullById(sysConfigService, configId);
+            Integer result = this.sysConfigService.delete(configId);
+            return new ResponseData<Integer>(result != null);
         }
         catch (ServiceException ex)
         {
@@ -115,16 +108,10 @@ public class SystemConfigController extends BaseController
 
         try
         {
-            SystemConfig entity = this.sysConfigService.get(configId);
-            if (entity != null)
-            {
-                return new ResponseData<SystemConfig>(this.sysConfigService.update(systemConfig));
-            }
-            else
-            {
-                return new ResponseData<SystemConfig>(false, null,
-                        String.format("Config does not exist - [id: %d]", configId));
-            }
+            Asserts.assertEntityNotNullById(sysConfigService, configId);
+            // in order to avoid overwritten id in request body
+            systemConfig.setId(configId);
+            return new ResponseData<SystemConfig>(this.sysConfigService.update(systemConfig));
         }
         catch (ServiceException ex)
         {
@@ -145,16 +132,8 @@ public class SystemConfigController extends BaseController
 
         try
         {
-            SystemConfig entity = sysConfigService.get(configId);
-            if (entity != null)
-            {
-                return new ResponseData<List<SystemConfigValue>>(sysConfigValueService.getByConfigId(configId));
-            }
-            else
-            {
-                return new ResponseData<List<SystemConfigValue>>(false, null,
-                        String.format("Config does not exist - [id: %d]", configId));
-            }
+            Asserts.assertEntityNotNullById(sysConfigService, configId);
+            return new ResponseData<List<SystemConfigValue>>(sysConfigValueService.getByConfigId(configId));
         }
         catch (ServiceException ex)
         {
@@ -173,16 +152,8 @@ public class SystemConfigController extends BaseController
 
         try
         {
-            SystemConfig entity = sysConfigService.get(configId);
-            if (entity != null)
-            {
-                return new ResponseData<Integer>(sysConfigValueService.delete(id) != null);
-            }
-            else
-            {
-                return new ResponseData<Integer>(false, null,
-                        String.format("Config does not exist - [id: %d]", configId));
-            }
+            Asserts.assertEntityNotNullById(sysConfigService, configId);
+            return new ResponseData<Integer>(sysConfigValueService.delete(id) != null);
         }
         catch (ServiceException ex)
         {
@@ -201,17 +172,10 @@ public class SystemConfigController extends BaseController
 
         try
         {
-            SystemConfig entity = sysConfigService.get(configId);
-            if (entity != null)
-            {
-                configValue.setConfigId(configId);
-                return new ResponseData<SystemConfigValue>(sysConfigValueService.add(configValue));
-            }
-            else
-            {
-                return new ResponseData<SystemConfigValue>(false, null,
-                        String.format("Config does not exist - [id: %d]", configId));
-            }
+            Asserts.assertEntityNotNullById(sysConfigService, configId);
+            // in order to avoid overwritten id in request body
+            configValue.setConfigId(configId);
+            return new ResponseData<SystemConfigValue>(sysConfigValueService.add(configValue));
         }
         catch (ServiceException ex)
         {
@@ -231,32 +195,27 @@ public class SystemConfigController extends BaseController
 
         try
         {
-            SystemConfig config = sysConfigService.get(configId);
-            if (config != null)
-            {
-                SystemConfigValue entity = sysConfigValueService.get(id);
-                if (entity != null)
-                {
-                    configValue.setConfigId(configId);
-                    configValue.setId(id);
-                    return new ResponseData<SystemConfigValue>(sysConfigValueService.update(configValue));
-                }
-                else
-                {
-                    return new ResponseData<SystemConfigValue>(false, null,
-                            String.format("Config value does not exist - [id: %d]", id));
-                }
-            }
-            else
-            {
-                return new ResponseData<SystemConfigValue>(false, null,
-                        String.format("Config does not exist - [id: %d]", configId));
-            }
+            Asserts.assertEntityNotNullById(sysConfigService, configId);
+            Asserts.assertEntityNotNullById(sysConfigValueService, id);
+
+            configValue.setConfigId(configId);
+            configValue.setId(id);
+            return new ResponseData<SystemConfigValue>(sysConfigValueService.update(configValue));
         }
         catch (ServiceException ex)
         {
             return new ResponseData<SystemConfigValue>(false, null, ex.getMessage());
         }
+    }
 
+    private SystemConfig assertEntityNotNullByName (String configName)
+    {
+        SystemConfig entity = sysConfigService.getByConfigName(configName);
+        if (entity != null)
+        {
+            return entity;
+        }
+
+        throw new ServiceException(String.format("Entity does not exist with specified name: %s", configName));
     }
 }

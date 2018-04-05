@@ -75,7 +75,4 @@ public abstract class BaseService<T extends BaseEntity>
     {
         return entity.getId() != null ? update(entity) : add(entity);
     }
-
-    //protected abstract String getServiceCategory();
-    //protected abstract String getServiceDomain();
 }

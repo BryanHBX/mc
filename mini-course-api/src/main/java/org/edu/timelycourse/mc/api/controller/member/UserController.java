@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.api.controller.member;
 
+import io.swagger.annotations.Api;
 import org.edu.timelycourse.mc.api.controller.BaseController;
 import org.edu.timelycourse.mc.biz.entity.member.User;
 import org.edu.timelycourse.mc.biz.service.member.UserService;
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/${api.version}/member")
+@Api(tags = { "平台用户API" })
 public class UserController extends BaseController
 {
     private static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
