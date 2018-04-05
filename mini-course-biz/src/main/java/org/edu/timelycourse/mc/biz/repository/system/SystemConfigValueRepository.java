@@ -14,7 +14,12 @@ import java.util.List;
 @Component
 public interface SystemConfigValueRepository extends BaseRepository<SystemConfigValue>
 {
-    List<SystemConfigValue> getByConfigId(@Param("configId") Integer configId);
-    Integer deleteByConfigId(@Param("configId") Integer configId);
-    SystemConfigValue getByConfigValue (@Param("value") String configValue);
+    List<SystemConfigValue> getByConfigId(
+            @Param("configId") Integer configId);
+
+    Integer deleteByConfigId(
+            @Param("configId") Integer configId);
+
+    SystemConfigValue getByConfigValue (
+            final SystemConfigValue configValue);
 }

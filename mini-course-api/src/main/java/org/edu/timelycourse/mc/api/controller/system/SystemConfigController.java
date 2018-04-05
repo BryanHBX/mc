@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 /**
  * Created by x36zhao on 2018/4/3.
@@ -37,7 +36,7 @@ public class SystemConfigController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all configs or by given config name")
-    public ResponseData<List<SystemConfig>> getConfigs(
+    public ResponseData getConfigs(
             @RequestParam(required = false) String configName)
     {
         if (LOGGER.isDebugEnabled())
@@ -48,21 +47,21 @@ public class SystemConfigController extends BaseController
             if (Strings.isNotEmpty(configName))
             {
                 SystemConfig entity = assertEntityNotNullByName(configName);
-                return new ResponseData<List<SystemConfig>>(true, Lists.newArrayList(entity), null);
+                return ResponseData.success(Lists.newArrayList(entity));
             }
 
-            return new ResponseData<List<SystemConfig>>(sysConfigService.getAll());
+            return ResponseData.success(sysConfigService.getAll());
         }
         catch (ServiceException ex)
         {
-            return new ResponseData<List<SystemConfig>>(false, null, ex.getMessage());
+            return ResponseData.failure(ex.getMessage());
         }
     }
 
     @RequestMapping(path="/{configId}", method= RequestMethod.DELETE)
     @ApiOperation(value = "Delete config by given config id")
-    public ResponseData<Integer> deleteConfigById (
-            @PathVariable Integer configId)
+    public ResponseData deleteConfigById (
+            @PathVariable(required = true) Integer configId)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter deleteConfigByName - [configId: %d]", configId));
@@ -71,17 +70,17 @@ public class SystemConfigController extends BaseController
         {
             Asserts.assertEntityNotNullById(sysConfigService, configId);
             Integer result = this.sysConfigService.delete(configId);
-            return new ResponseData<Integer>(result != null);
+            return result != null ? ResponseData.success() : ResponseData.failure("Failed to delete config");
         }
         catch (ServiceException ex)
         {
-            return new ResponseData<Integer>(false, null, ex.getMessage());
+            return ResponseData.failure(ex.getMessage());
         }
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add config by given config entity")
-    public ResponseData<SystemConfig> addConfig (
+    public ResponseData addConfig (
             @RequestBody SystemConfig systemConfig)
     {
         if (LOGGER.isDebugEnabled())
@@ -89,18 +88,18 @@ public class SystemConfigController extends BaseController
 
         try
         {
-            return new ResponseData<SystemConfig>(sysConfigService.add(systemConfig));
+            return ResponseData.success(sysConfigService.add(systemConfig));
         }
         catch (ServiceException ex)
         {
-            return new ResponseData<SystemConfig>(false, null, ex.getMessage());
+            return ResponseData.failure(ex.getMessage());
         }
     }
 
     @RequestMapping(path="/{configId}", method= RequestMethod.PATCH)
     @ApiOperation(value = "Update config with respect to the specified id")
-    public ResponseData<SystemConfig> updateConfig (
-            @PathVariable Integer configId,
+    public ResponseData updateConfig (
+            @PathVariable(required = true) Integer configId,
             @RequestBody SystemConfig systemConfig)
     {
         if (LOGGER.isDebugEnabled())
@@ -111,11 +110,12 @@ public class SystemConfigController extends BaseController
             Asserts.assertEntityNotNullById(sysConfigService, configId);
             // in order to avoid overwritten id in request body
             systemConfig.setId(configId);
-            return new ResponseData<SystemConfig>(this.sysConfigService.update(systemConfig));
+
+            return ResponseData.success(this.sysConfigService.update(systemConfig));
         }
         catch (ServiceException ex)
         {
-            return new ResponseData<SystemConfig>(false, null, ex.getMessage());
+            return ResponseData.failure(ex.getMessage());
         }
 
     }
@@ -124,7 +124,7 @@ public class SystemConfigController extends BaseController
 
     @RequestMapping(path="/{configId}/values", method= RequestMethod.GET)
     @ApiOperation(value = "Get config values by given config id")
-    public ResponseData<List<SystemConfigValue>> getConfigValues(
+    public ResponseData getConfigValues(
             @PathVariable(required = true) Integer configId)
     {
         if (LOGGER.isDebugEnabled())
@@ -133,17 +133,38 @@ public class SystemConfigController extends BaseController
         try
         {
             Asserts.assertEntityNotNullById(sysConfigService, configId);
-            return new ResponseData<List<SystemConfigValue>>(sysConfigValueService.getByConfigId(configId));
+            return ResponseData.success(sysConfigValueService.getByConfigId(configId));
         }
         catch (ServiceException ex)
         {
-            return new ResponseData<List<SystemConfigValue>>(false, null, ex.getMessage());
+            return ResponseData.failure(ex.getMessage());
         }
     }
 
+    /*
+    @RequestMapping(path="/values/{id}", method= RequestMethod.GET)
+    @ApiOperation(value = "Get config value by given id")
+    public ResponseData getConfigValueById(
+            @PathVariable(required = true) Integer id)
+    {
+        if (LOGGER.isDebugEnabled())
+            LOGGER.debug(String.format("Enter getConfigValueById - [id: %d]", id));
+
+        try
+        {
+            SystemConfigValue entity = (SystemConfigValue) Asserts.assertEntityNotNullById(sysConfigValueService, id);
+            return ResponseData.success(entity);
+        }
+        catch (ServiceException ex)
+        {
+            return ResponseData.failure(ex.getMessage());
+        }
+    }
+    */
+
     @RequestMapping(path="/{configId}/values/{id}", method= RequestMethod.DELETE)
     @ApiOperation(value = "Delete config values by given config id and value id")
-    public ResponseData<Integer> deleteConfigValue(
+    public ResponseData deleteConfigValue(
             @PathVariable(required = true) Integer configId,
             @PathVariable(required = true) Integer id)
     {
@@ -153,17 +174,17 @@ public class SystemConfigController extends BaseController
         try
         {
             Asserts.assertEntityNotNullById(sysConfigService, configId);
-            return new ResponseData<Integer>(sysConfigValueService.delete(id) != null);
+            return sysConfigValueService.delete(id) != null ? ResponseData.success() : ResponseData.failure("Failed to delete config value");
         }
         catch (ServiceException ex)
         {
-            return new ResponseData<Integer>(false, null, ex.getMessage());
+            return ResponseData.failure(ex.getMessage());
         }
     }
 
     @RequestMapping(path="/{configId}/values", method= RequestMethod.POST)
     @ApiOperation(value = "Add config value against the specified config")
-    public ResponseData<SystemConfigValue> addConfigValue (
+    public ResponseData addConfigValue (
             @PathVariable(required = true) Integer configId,
             @RequestBody SystemConfigValue configValue)
     {
@@ -175,17 +196,17 @@ public class SystemConfigController extends BaseController
             Asserts.assertEntityNotNullById(sysConfigService, configId);
             // in order to avoid overwritten id in request body
             configValue.setConfigId(configId);
-            return new ResponseData<SystemConfigValue>(sysConfigValueService.add(configValue));
+            return ResponseData.success(sysConfigValueService.add(configValue));
         }
         catch (ServiceException ex)
         {
-            return new ResponseData<SystemConfigValue>(false, null, ex.getMessage());
+            return ResponseData.failure(ex.getMessage());
         }
     }
 
     @RequestMapping(path="/{configId}/values/{id}", method= RequestMethod.PATCH)
     @ApiOperation(value = "Update config value with respect to the specified id")
-    public ResponseData<SystemConfigValue> updateConfigValue (
+    public ResponseData updateConfigValue (
             @PathVariable(required = true) Integer configId,
             @PathVariable(required = true) Integer id,
             @RequestBody SystemConfigValue configValue)
@@ -200,11 +221,11 @@ public class SystemConfigController extends BaseController
 
             configValue.setConfigId(configId);
             configValue.setId(id);
-            return new ResponseData<SystemConfigValue>(sysConfigValueService.update(configValue));
+            return ResponseData.success(sysConfigValueService.update(configValue));
         }
         catch (ServiceException ex)
         {
-            return new ResponseData<SystemConfigValue>(false, null, ex.getMessage());
+            return ResponseData.failure(ex.getMessage());
         }
     }
 

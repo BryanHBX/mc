@@ -12,29 +12,6 @@ import java.util.*;
 public abstract class BaseController
 {
     /**
-     * Placeholder and must be replaced with valid query result
-     *
-     * @param <T>
-     * @return
-     */
-    protected <T> ResponseData<T> createEmptyQueryResult()
-    {
-        return new ResponseData<T>(false, null);
-    }
-
-    /**
-     * Creates error query result with exception message
-     *
-     * @param ex
-     * @param <T>
-     * @return
-     */
-    protected <T> ResponseData<T> createErrorQueryResult (Exception ex)
-    {
-        return new ResponseData<T>(false, null, ex.getMessage());
-    }
-
-    /**
      * Obtains all of the requested parameters
      *
      * @param request

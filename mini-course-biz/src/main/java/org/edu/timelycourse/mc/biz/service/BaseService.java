@@ -2,7 +2,9 @@ package org.edu.timelycourse.mc.biz.service;
 
 import org.edu.timelycourse.mc.biz.entity.BaseEntity;
 import org.edu.timelycourse.mc.biz.repository.BaseRepository;
+import org.edu.timelycourse.mc.biz.utils.LocaleMessageSource;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -12,6 +14,10 @@ import java.util.List;
 public abstract class BaseService<T extends BaseEntity>
 {
     private final BaseRepository<T> repository;
+
+    @Autowired
+    protected LocaleMessageSource messageSource;
+
     public BaseService (BaseRepository<T> repository)
     {
         this.repository = repository;

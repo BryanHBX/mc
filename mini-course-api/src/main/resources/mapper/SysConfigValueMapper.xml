@@ -14,8 +14,8 @@
 		SELECT * FROM `t_sys_config_val` WHERE `c_id` = #{configId}
 	</select>
 
-    <select id="getByConfigValue" parameterType="java.lang.String" resultMap="result_sysConfValue">
-        SELECT * FROM `t_sys_config_val` WHERE `c_value` = #{value}
+    <select id="getByConfigValue" resultMap="result_sysConfValue">
+        SELECT * FROM `t_sys_config_val` WHERE `c_value` = #{configValue} AND `c_id` = #{configId}
     </select>
 	
     <select id="get" parameterType="java.lang.Integer" resultMap="result_sysConfValue">

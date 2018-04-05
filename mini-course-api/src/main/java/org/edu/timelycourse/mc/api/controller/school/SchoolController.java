@@ -3,14 +3,13 @@ package org.edu.timelycourse.mc.api.controller.school;
 import org.edu.timelycourse.mc.api.controller.BaseController;
 import org.edu.timelycourse.mc.biz.entity.school.SchoolInfo;
 import org.edu.timelycourse.mc.biz.service.school.SchoolInfoService;
+import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created by x36zhao on 2018/4/3.
@@ -25,102 +24,85 @@ public class SchoolController extends BaseController
     private SchoolInfoService schoolService;
 
     @RequestMapping(path="", method= RequestMethod.GET)
-    public ResponseData<List<SchoolInfo>> getAllSchools()
+    public ResponseData getAllSchools()
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter getAllSchools");
 
         try
         {
-            return new ResponseData<List<SchoolInfo>>(schoolService.getAll());
+            return ResponseData.success(schoolService.getAll());
         }
         catch (ServiceException ex)
         {
-            return new ResponseData<List<SchoolInfo>>(false, null, ex.getMessage());
+            return ResponseData.failure(ex.getMessage());
         }
     }
 
-    @RequestMapping(path="/{schoolId}", method= RequestMethod.GET)
-    public ResponseData<SchoolInfo> getSchool(@PathVariable Integer schoolId)
+    @RequestMapping(path="/{id}", method= RequestMethod.GET)
+    public ResponseData getSchool(@PathVariable(required = true) Integer id)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter getSchool - [schoolId : %s]", schoolId));
+            LOGGER.debug(String.format("Enter getSchool - [schoolId : %s]", id));
 
         try
         {
-            SchoolInfo entity = schoolService.get(schoolId);
-            return new ResponseData<SchoolInfo>(entity != null, entity, "School does not exist");
+            SchoolInfo entity = (SchoolInfo) Asserts.assertEntityNotNullById(schoolService, id);
+            return ResponseData.success(entity);
         }
         catch (ServiceException ex)
         {
-            return new ResponseData<SchoolInfo>(false, null, ex.getMessage());
+            return ResponseData.failure(ex.getMessage());
         }
     }
 
-    @RequestMapping(path="/{schoolId}", method= RequestMethod.DELETE)
-    public ResponseData<Integer> deleteSchool(@PathVariable Integer schoolId)
+    @RequestMapping(path="/{id}", method= RequestMethod.DELETE)
+    public ResponseData deleteSchool(@PathVariable(required = true) Integer id)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter deleteSchool - [schoolId: %d]", schoolId));
+            LOGGER.debug(String.format("Enter deleteSchool - [schoolId: %d]", id));
 
         try
         {
-            SchoolInfo schoolInfo = this.schoolService.get(schoolId);
-            if (schoolInfo != null)
-            {
-                Integer result = this.schoolService.delete(schoolId);
-                return new ResponseData<Integer>(result != null);
-            }
-            else
-            {
-                return new ResponseData<Integer>(false, null, "School does not exist");
-            }
+            Asserts.assertEntityNotNullById(schoolService, id);
+            return ResponseData.success(schoolService.delete(id));
         }
         catch (ServiceException ex)
         {
-            return new ResponseData<Integer>(false, null, ex.getMessage());
+            return ResponseData.failure(ex.getMessage());
         }
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
-    public ResponseData<SchoolInfo> createSchool(@RequestBody SchoolInfo schoolInfo)
+    public ResponseData addSchool(@RequestBody SchoolInfo schoolInfo)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter createSchool - [schoolInfo: %s]", schoolInfo));
+            LOGGER.debug(String.format("Enter addSchool - [schoolInfo: %s]", schoolInfo));
 
         try
         {
-            return new ResponseData<SchoolInfo>(schoolService.add(schoolInfo));
+            return ResponseData.success(schoolService.add(schoolInfo));
         }
         catch (ServiceException ex)
         {
-            return new ResponseData<SchoolInfo>(false, null, ex.getMessage());
+            return ResponseData.failure(ex.getMessage());
         }
     }
 
-    @RequestMapping(path="/{schoolId}", method= RequestMethod.PATCH)
-    public ResponseData<SchoolInfo> updateSchool(
-            @PathVariable Integer schoolId,
-            @RequestBody SchoolInfo schoolInfo)
+    @RequestMapping(path="/{id}", method= RequestMethod.PATCH)
+    public ResponseData updateSchool(@PathVariable(required = true) Integer id, @RequestBody SchoolInfo schoolInfo)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter updateSchool - [schoolId: %d, schoolInfo: %s]", schoolId, schoolInfo));
+            LOGGER.debug(String.format("Enter updateSchool - [id: %d, schoolInfo: %s]", id, schoolInfo));
 
         try
         {
-            SchoolInfo entity = this.schoolService.get(schoolId);
-            if (entity != null)
-            {
-                return new ResponseData<SchoolInfo>(this.schoolService.update(schoolInfo));
-            }
-            else
-            {
-                return new ResponseData<SchoolInfo>(false, null, "School does not exist");
-            }
+            Asserts.assertEntityNotNullById(schoolService, id);
+            return ResponseData.success(this.schoolService.update(schoolInfo));
         }
         catch (ServiceException ex)
         {
-            return new ResponseData<SchoolInfo>(false, null, ex.getMessage());
+            return ResponseData.failure(ex.getMessage());
         }
     }
 }

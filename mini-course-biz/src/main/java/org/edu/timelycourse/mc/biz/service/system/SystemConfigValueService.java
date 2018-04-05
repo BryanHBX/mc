@@ -1,33 +1,43 @@
 package org.edu.timelycourse.mc.biz.service.system;
 
 import org.edu.timelycourse.mc.biz.entity.system.SystemConfigValue;
+import org.edu.timelycourse.mc.biz.repository.system.SystemConfigRepository;
 import org.edu.timelycourse.mc.biz.repository.system.SystemConfigValueRepository;
 import org.edu.timelycourse.mc.biz.service.BaseService;
+import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class SystemConfigValueService extends BaseService<SystemConfigValue>
 {
     private static Logger LOGGER = LoggerFactory.getLogger(SystemConfigValueService.class);
 
-    private SystemConfigValueRepository repository;
+    private SystemConfigRepository configRepository;
+    private SystemConfigValueRepository configValueRepository;
 
-    public SystemConfigValueService(SystemConfigValueRepository repository)
+    @Autowired
+    public SystemConfigValueService(
+            SystemConfigValueRepository configValueRepository,
+            SystemConfigRepository configRepository)
     {
-        super(repository);
-        this.repository = repository;
+        super(configValueRepository);
+        this.configValueRepository = configValueRepository;
+        this.configRepository = configRepository;
     }
 
     @Override
-    public SystemConfigValue add (SystemConfigValue configValue)
+    public SystemConfigValue add (SystemConfigValue entity)
     {
-        SystemConfigValue entity = repository.getByConfigValue(configValue.getConfigValue());
-        if (entity == null)
+        Asserts.assertEntityNotNullById(configRepository, entity.getConfigId());
+        SystemConfigValue configValue = configValueRepository.getByConfigValue(entity);
+        if (configValue == null)
         {
             return super.add(entity);
         }
@@ -37,15 +47,33 @@ public class SystemConfigValueService extends BaseService<SystemConfigValue>
                 entity.getConfigValue(), entity.getConfigId()));
     }
 
+    @Override
+    public SystemConfigValue update(SystemConfigValue entity)
+    {
+        Asserts.assertEntityNotNullById(configRepository, entity.getConfigId());
+        SystemConfigValue configValue = configValueRepository.getByConfigValue(entity);
+        if (configValue == null || configValue.getId().equals(entity.getId()))
+        {
+            return super.update(entity);
+        }
+
+        throw new ServiceException(messageSource.getMessage("sys.config.value.exists", entity.getConfigValue()));
+                //String.format(
+                //"The config value (%s) against config (id: %d) already exists.",
+                //messageSource.getMessage("sys.config.value.exists"), entity.getConfigValue()));
+                //entity.getConfigValue(), entity.getConfigId()));
+    }
+
     public List<SystemConfigValue> getByConfigId (Integer configId)
     {
         try
         {
-            return this.repository.getByConfigId(configId);
+            return this.configValueRepository.getByConfigId(configId);
         }
         catch (Exception ex)
         {
-            throw new ServiceException(String.format("Failed to get config values by id: %d", configId), ex);
+            throw new ServiceException(String.format(
+                    "Failed to get config values by id: %d", configId), ex);
         }
     }
 }

@@ -1,45 +1,54 @@
 package org.edu.timelycourse.mc.common.entity;
 
 import lombok.Data;
+import org.edu.timelycourse.mc.common.enums.ResultCode;
+
+import java.io.Serializable;
 
 /**
  * Created by Marco on 2018/3/31.
  */
 @Data
-public class ResponseData<T>
+public class ResponseData implements Serializable
 {
     private boolean success;
-    private T data;
+    private Object data;
     private String error;
 
-    public ResponseData (T data)
+    public ResponseData () {}
+
+    public static ResponseData success ()
     {
-        this(true, data);
+        return success(null);
     }
 
-    public ResponseData (String error)
+    public static ResponseData success (Object data)
     {
-        this.error = error;
-        this.success = false;
+        ResponseData result = new ResponseData();
+        result.setData(data);
+        result.setSuccess(true);
+        return result;
     }
 
-    public ResponseData (boolean success)
+    public static ResponseData failure (ResultCode resultCode)
     {
-        this(success, null);
+        return failure(resultCode, null);
     }
 
-    public ResponseData (boolean success, T data)
+    public static ResponseData failure (ResultCode resultCode, Object data)
     {
-        this(success, data, null);
+        ResponseData result = new ResponseData();
+        result.setSuccess(false);
+        result.setData(data);
+        result.setError(resultCode.message());
+        return result;
     }
 
-    public ResponseData (boolean success, T data, String error)
+    public static ResponseData failure (String message)
     {
-        this.success = success;
-        this.data = data;
-        if (!success)
-        {
-            this.error = error;
-        }
+        ResponseData result = new ResponseData();
+        result.setSuccess(false);
+        result.setError(message);
+        return result;
     }
 }
