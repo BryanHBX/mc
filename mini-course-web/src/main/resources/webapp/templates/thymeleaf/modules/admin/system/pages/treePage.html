@@ -1,0 +1,20 @@
+<div xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     xmlns:th="http://www.thymeleaf.org" layouth="0.5" class="treePanel" th:fragment="tree">
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li class=""><a class="add" href="admin/system/settings/dialog" target="dialog" mask="true" width="350" height="200"><span>添加父字段</span></a></li>
+            <li class="line">line</li>
+            <li class=""><a class="delete" href="demo/pagination/ajaxDone3.html?uid={sid_obj}" target="ajaxTodo" title="确定要删除吗?"><span>删除父字段</span></a></li>
+            <li class="line">line</li>
+            <li class=""><a class="edit" href="demo/pagination/dialog2.html?uid={sid_obj}" target="dialog" mask="true"><span>修改父字段</span></a></li>
+        </ul>
+    </div>
+    <ul class="tree treeFolder treeCheck">
+        <li th:each="config : ${configs}">
+            <a th:text="${config.configName}" th:href="@{'admin/system/settings/' + ${config.id}}" target="ajax" rel="jbsxBox">配置項</a>
+            <ul th:if="${not #lists.isEmpty(config.children)}"
+                th:with="menuItemsList=${config.children}"
+                layout:include="~{modules/admin/system/fragment/treeFragment::menu}"></ul>
+        </li>
+    </ul>
+</div>

@@ -378,7 +378,7 @@ var navTab = {
 			//var tabFrag = '<li tabid="#tabid#"><a href="javascript:" title="#title#" class="#tabid#"><span>#title#</span></a><a href="javascript:;" class="close">close</a></li>';
             var tabFrag = '<li tabid="#tabid#"><a href="javascript:" title="#title#" class="#tabid#"><span><span class="' + (options.icon != "" ? options.icon : "icon-default icon") + '">#title#</span></span></a><a href="javascript:;" class="close">close</a></li>';
             this._tabBox.append(tabFrag.replaceAll("#tabid#", tabid).replaceAll("#title#", op.title));
-			this._panelBox.append('<div class="page unitBox"></div>');
+			this._panelBox.append('<div class="pages unitBox"></div>');
 			this._moreBox.append('<li><a href="javascript:" title="#title#">#title#</a></li>'.replaceAll("#title#", op.title));
 			
 			var $tabs = this._getTabs();

@@ -16,13 +16,17 @@ public class SystemConfig extends BaseEntity
 {
     private String configName;
     private String configDescription;
-    private int multiple;
+    private Integer parentId;
+    private int single;
+
+    //private SystemConfig parent;
+    private List<SystemConfig> children;
 
     @ApiModelProperty(required = false, hidden = true)
     private List<SystemConfigValue> values;
 
     public boolean hasMultipleValue ()
     {
-        return multiple > 0;
+        return single > 0;
     }
 }

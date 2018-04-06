@@ -13,7 +13,10 @@
 				"POST",
 				jsonData,
 				null,
-				(function(result){
+				(function(result) {
+				    $.pdialog.closeCurrent();
+				    alertMsg.correct("配置項'" + result.data.configName + "'添加成功");
+				    navTab.reload();
                 }
             ));
 		});

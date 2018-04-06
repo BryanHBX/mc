@@ -45,7 +45,7 @@ public class GlobalDefaultExceptionHandler extends BaseController
     @ExceptionHandler(NoPermissionAccessPageException.class)
     public String handleNoPermissionAccessPageException(HttpServletRequest req, Exception ex)
     {
-        LOGGER.error("No permission when accessing page - " + req.getRequestURI());
+        LOGGER.error("No permission when accessing pages - " + req.getRequestURI());
         return Constants.PAGE_UNAUTHORIZED;
     }
 

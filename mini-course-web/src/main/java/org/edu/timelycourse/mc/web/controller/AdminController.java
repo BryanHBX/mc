@@ -1,9 +1,17 @@
 package org.edu.timelycourse.mc.web.controller;
 
+import com.google.common.reflect.TypeToken;
+import org.edu.timelycourse.mc.biz.entity.system.SystemConfig;
+import org.edu.timelycourse.mc.biz.vo.SystemConfigVO;
+import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -24,8 +32,11 @@ public class AdminController extends AbstractController
     }
 
     @RequestMapping("/system/settings")
-    public String showSystemSettings ()
+    public String showSystemSettings (Model model)
     {
+        model.addAttribute("configs", remoteCall("system/config",
+                new TypeToken<List<SystemConfig>>() {}).getData());
+
         return getModulePage("system/systemSettings");
     }
 

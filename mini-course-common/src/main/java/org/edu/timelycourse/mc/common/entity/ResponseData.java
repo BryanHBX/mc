@@ -9,10 +9,10 @@ import java.io.Serializable;
  * Created by Marco on 2018/3/31.
  */
 @Data
-public class ResponseData implements Serializable
+public class ResponseData<T> implements Serializable
 {
     private boolean success;
-    private Object data;
+    private T data;
     private String error;
 
     public ResponseData () {}
@@ -22,9 +22,9 @@ public class ResponseData implements Serializable
         return success(null);
     }
 
-    public static ResponseData success (Object data)
+    public static <T> ResponseData success (T data)
     {
-        ResponseData result = new ResponseData();
+        ResponseData<T> result = new ResponseData<T>();
         result.setData(data);
         result.setSuccess(true);
         return result;
@@ -35,9 +35,9 @@ public class ResponseData implements Serializable
         return failure(resultCode, null);
     }
 
-    public static ResponseData failure (ResultCode resultCode, Object data)
+    public static <T> ResponseData failure (ResultCode resultCode, T data)
     {
-        ResponseData result = new ResponseData();
+        ResponseData<T> result = new ResponseData<T>();
         result.setSuccess(false);
         result.setData(data);
         result.setError(resultCode.message());

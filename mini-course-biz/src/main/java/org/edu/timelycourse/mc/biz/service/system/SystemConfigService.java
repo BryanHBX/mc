@@ -40,6 +40,11 @@ public class SystemConfigService extends BaseService<SystemConfig>
         SystemConfig config = sysConfigRepository.getByConfigName(entity.getConfigName());
         if (config == null)
         {
+            if (entity.getParentId() != null && entity.getParentId() > 0)
+            {
+                Asserts.assertEntityNotNullById(sysConfigRepository, entity.getParentId());
+            }
+
             return super.add(entity);
         }
 
@@ -70,25 +75,29 @@ public class SystemConfigService extends BaseService<SystemConfig>
 
     public SystemConfig getByConfigName(String configName)
     {
-        SystemConfig config = sysConfigRepository.getByConfigName(configName);
-        if (config != null)
-        {
-            //config.setValues(sysConfigValueRepository.getByConfigId(config.getId()));
-            return config;
-        }
+        return assertEntityNotNullByName(configName);
+    }
 
-        throw new ServiceException(String.format("Config name (%s) does not exist", configName));
+    public List<SystemConfig> getChildrenConfig (Integer parentId)
+    {
+        Asserts.assertEntityNotNullById(sysConfigRepository, parentId);
+        return sysConfigRepository.getChildrenConfig(parentId);
     }
 
     public Integer deleteByConifgName(String configName)
     {
-        SystemConfig config = sysConfigRepository.getByConfigName(configName);
-        if (config != null)
+        SystemConfig config = assertEntityNotNullByName(configName);
+        return sysConfigValueRepository.deleteByConfigId(config.getId()) + sysConfigRepository.delete(config.getId());
+    }
+
+    private SystemConfig assertEntityNotNullByName (String configName)
+    {
+        SystemConfig entity = sysConfigRepository.getByConfigName(configName);
+        if (entity != null)
         {
-            sysConfigValueRepository.deleteByConfigId(config.getId());
-            return sysConfigRepository.delete(config.getId());
+            return entity;
         }
 
-        throw new ServiceException(String.format("Config name (%s) does not exist", configName));
+        throw new ServiceException(String.format("Entity does not exist with specified name: %s", configName));
     }
 }

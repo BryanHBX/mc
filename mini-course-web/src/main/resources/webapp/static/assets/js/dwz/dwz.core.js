@@ -34,7 +34,7 @@ var DWZ = {
 		sbar:true,
 		hideMode:'display' //navTab组件切换的隐藏方式，支持的值有’display’，’offsets’负数偏移位置的值，默认值为’display’
 	},
-	frag:{}, //page fragment
+	frag:{}, //pages fragment
 	_msg:{}, //alert message
 	_set:{
 		loginUrl:"", //session timeout
