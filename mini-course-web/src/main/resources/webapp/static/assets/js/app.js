@@ -1,4 +1,101 @@
-function enableAjaxLoading(text) 
+/**
+ * The generic method of Ajax operation through JQuery
+ *
+ * @param url: the request url for ajax
+ * @param data_params: params to be appended to the request url
+ * @param send_handler: the handler to process before the request sends
+ * @param successs_handler: the handler to process after the request succeeds
+ *
+ * @author Zhao.Xiang
+ *
+ **/
+function generic_ajax_op(url,type,json_data,send_handler,success_handler,error_handler,global,asyn){
+    var _url = url;
+    var _asyn = asyn && 1;
+    var _global = global && true;
+    var _data = json_data || {};
+    var callback_args = [];
+    var _type = type || "post";
+
+    $.ajax({
+        type: _type,
+        url: _url,
+        async: _asyn > 0 ? true : false,
+        global: _global ? true : false,
+        data: JSON.stringify(_data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        beforeSend: function() {
+            showLoading();
+            if(send_handler != undefined && typeof(send_handler) == "function" ){
+                callback_args.length > 0 ? send_handler(callback_args) : send_handler();
+            }
+        },
+        success: function(e) {
+            showLoading(false);
+            if (e.success) {
+                if (success_handler != undefined && typeof(success_handler) == "function") {
+                    callback_args.length > 0 ? success_handler(e, callback_args) : success_handler(e);
+                }
+            } else {
+                if(error_handler != undefined && typeof(error_handler) == "function"){
+                    error_handler(e.error);
+                } else {
+                    alertMsg.error(e.error);
+                }
+            }
+        },
+        error: function() {
+            showLoading(false);
+            if(error_handler != undefined && typeof(error_handler) == "function"){
+                error_handler();
+            }
+        }
+    });
+}
+
+function showLoading (show) {
+    if (show == undefined || show) {
+        $("#background, #progressBar").show()
+    } else {
+        $("#background, #progressBar").hide() ;
+    }
+}
+
+/**
+ * The format helper for date using javascript. In fact,it's revised from others
+ *
+ * @param fmt: the formatter rule,like 'yy-MM-dd','dd-m-s' and so on
+ *
+ * @author Zhao.Xiang
+ *
+ **/
+Date.prototype.Format = function(fmt)  {
+
+    var o = {
+        "M+" : this.getMonth()+1,					//月份
+        "d+" : this.getDate(),						//日
+        "h+" : this.getHours(),					//小时
+        "m+" : this.getMinutes(),					//分
+        "s+" : this.getSeconds(),					//秒
+        "q+" : Math.floor((this.getMonth()+3)/3),  //季度
+        "S"  : this.getMilliseconds()				//毫秒
+    };
+
+    if(/(y+)/.test(fmt)){
+        fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    }
+
+    for(var k in o){
+        if(new RegExp("("+ k +")").test(fmt)){
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+        }
+    }
+
+    return fmt;
+}
+
+function enableAjaxLoading(text)
 {  
      $("<div class=\"datagrid-mask\"></div>").css(
     		{ display: "block", height: $(window).height()}).appendTo("body");  

@@ -67,7 +67,6 @@ function initUI($p){
 		options.eventType = $this.attr("eventType") || "click";
 		$this.tabs(options);
 	});
-
 	if ($.fn.jTree) $("ul.tree", $p).jTree();
 
 	if ($.fn.jTree){

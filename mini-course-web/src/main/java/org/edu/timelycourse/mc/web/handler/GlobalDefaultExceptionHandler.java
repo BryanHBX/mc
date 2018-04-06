@@ -27,19 +27,19 @@ public class GlobalDefaultExceptionHandler extends BaseController
     @ExceptionHandler(ServiceException.class)
     @org.springframework.web.bind.annotation.ResponseBody
     @ResponseStatus( HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseData<Map<String, Object>> handleServiceException(Exception ex)
+    public ResponseData handleServiceException(Exception ex)
     {
         LOGGER.error("Internal server error caught: " + ex);
-        return createErrorQueryResult(ex);
+        return ResponseData.failure(ex.getMessage());
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     @org.springframework.web.bind.annotation.ResponseBody
     @ResponseStatus( HttpStatus.UNAUTHORIZED)
-    public ResponseData<Map<String, Object>> handleUnauthorizedException(HttpServletRequest req, Exception ex)
+    public ResponseData handleUnauthorizedException(HttpServletRequest req, Exception ex)
     {
         LOGGER.error("Access defined when requesting API - " + req.getRequestURI());
-        return createErrorQueryResult(ex);
+        return ResponseData.failure(ex.getMessage());
     }
 
     @ExceptionHandler(NoPermissionAccessPageException.class)
@@ -52,10 +52,10 @@ public class GlobalDefaultExceptionHandler extends BaseController
     @ExceptionHandler(Exception.class)
     @org.springframework.web.bind.annotation.ResponseBody
     @ResponseStatus( HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseData<Map<String, Object>> handleUnexpectedException(Exception ex)
+    public ResponseData handleUnexpectedException(Exception ex)
     {
         LOGGER.error("Unexpected exception caught: " + ex);
-        return createErrorQueryResult(ex);
+        return ResponseData.failure(ex.getMessage());
     }
 
     protected String getModulePath ()

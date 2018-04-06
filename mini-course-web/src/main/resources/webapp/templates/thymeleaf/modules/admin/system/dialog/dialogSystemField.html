@@ -1,0 +1,45 @@
+<script>
+	$(function(){
+		$("#btnSaveField").unbind("click");
+        $("#btnSaveField").bind("click", function(){
+			if (!$("#formSettingField").valid()) {
+                return false;
+			}
+
+			var api = "http://localhost:8091/api/v1/system/config";
+			var jsonData = $("#formSettingField").serializeJSON();
+            generic_ajax_op(
+                api,
+				"POST",
+				jsonData,
+				null,
+				(function(result){
+                }
+            ));
+		});
+	});
+</script>
+
+<div class="pageContent">
+	<form id="formSettingField" method="post" action="app/system/role.do?action=actionSaveRole" class="pageForm required-validate">
+		<div class="pageFormContent" layoutH="56">
+			<table cellspacing="10" cellpadding="10" class="dform">
+				<tr>
+					<td>字段ID：</td>
+					<td><input name="configName" type="text" size="30" value="" class="required" /></td>
+				</tr>
+				<tr>
+					<td>字段名称：</td>
+					<td><input name="configDescription" type="text" size="30" value="" class="required" /></td>
+				</tr>
+			</table>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="button" id="btnSaveField">保存</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button class="close" type="button">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+<div>
+		

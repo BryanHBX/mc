@@ -382,7 +382,7 @@ select { border:1px solid; border-color: #A2BAC0 #B8D0D6 #B8D0D6 #A2BAC0}
 .inputDateButton { float:left; display:block; overflow:hidden; text-indent:-1000px; width:16px; height:21px; background-position:0 -100px;}
 .inputDateButton:hover { background-position:0 -150px;}
 
-span.error { display:block; overflow:hidden; width:165px; height:21px; padding:0 3px; line-height:21px; background:#F00; color:#FFF; position:absolute; top:5px; left:318px;}
+span.error { display:block; overflow:hidden; /* width:165px; */ height:21px; padding:0 3px; line-height:21px; background:#F00; color:#FFF; position:absolute; /* top:1px; left:318px;*/}
 label.alt {display:block; overflow:hidden; position:absolute;line-height:20px}
 .nowrap span.error{position: static;}
 

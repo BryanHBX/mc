@@ -32,7 +32,7 @@
     </form>
 </div>
 <div class="pageContent j-resizeGrid">
-    <div class="grid">
+    <div class="grid"><input id="sid_user" type="hidden" value="1">
         <div class="gridHeader">
             <div class="gridThead" style="position: relative; left: 0px;">
                 <table style="width:100%;">
@@ -58,19 +58,18 @@
                 </table>
             </div>
         </div>
-        <div class="resizeMarker" style="height:300px; left:57px;display:none;"></div><div class="resizeProxy" style="height:300px; left:377px;display:none;"></div>
-    </div>
-    <div class="panelBar">
-        <div class="pages">
-            <span>显示</span>
-            <div class="combox"><div id="combox_9181136" class="select"><a href="javascript:" name="numPerPage" value="20" default-value="20">20</a><select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})" style="display: none;">
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-                <option value="200">200</option>
-            </select></div></div>
-            <span>条，共${totalCount}条</span>
-        </div>
+        <div class="resizeMarker" style="height:300px; left:57px;display:none;"></div><div class="resizeProxy" style="height:300px; left:377px;display:none;"></div></div>
+            <div class="panelBar">
+                <div class="pages">
+                    <span>显示</span>
+                    <div class="combox"><div id="combox_9181136" class="select"><a href="javascript:" name="numPerPage" value="20" default-value="20">20</a><select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})" style="display: none;">
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                    </select></div></div>
+                    <span>条，共${totalCount}条</span>
+                </div>
 
         <div class="pagination" targettype="navTab" totalcount="200" numperpage="20" pagenumshown="10" currentpage="1">
             <ul>
@@ -94,5 +93,6 @@
                 <li class="jumpto"><input class="textInput" type="text" size="4" value="1"><input class="goto" type="button" value="确定"></li>
             </ul>
         </div>
+
     </div>
 </div>

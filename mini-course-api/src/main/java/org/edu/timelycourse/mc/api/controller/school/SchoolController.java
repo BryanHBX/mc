@@ -1,8 +1,8 @@
 package org.edu.timelycourse.mc.api.controller.school;
 
 import org.edu.timelycourse.mc.api.controller.BaseController;
-import org.edu.timelycourse.mc.biz.entity.school.SchoolInfo;
-import org.edu.timelycourse.mc.biz.service.school.SchoolInfoService;
+import org.edu.timelycourse.mc.biz.entity.school.SchoolBasicInfo;
+import org.edu.timelycourse.mc.biz.service.school.SchoolBasicInfoService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
@@ -21,7 +21,7 @@ public class SchoolController extends BaseController
     private static Logger LOGGER = LoggerFactory.getLogger(SchoolController.class);
 
     @Autowired
-    private SchoolInfoService schoolService;
+    private SchoolBasicInfoService schoolService;
 
     @RequestMapping(path="", method= RequestMethod.GET)
     public ResponseData getAllSchools()
@@ -47,7 +47,7 @@ public class SchoolController extends BaseController
 
         try
         {
-            SchoolInfo entity = (SchoolInfo) Asserts.assertEntityNotNullById(schoolService, id);
+            SchoolBasicInfo entity = (SchoolBasicInfo) Asserts.assertEntityNotNullById(schoolService, id);
             return ResponseData.success(entity);
         }
         catch (ServiceException ex)
@@ -74,7 +74,7 @@ public class SchoolController extends BaseController
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
-    public ResponseData addSchool(@RequestBody SchoolInfo schoolInfo)
+    public ResponseData addSchool(@RequestBody SchoolBasicInfo schoolInfo)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter addSchool - [schoolInfo: %s]", schoolInfo));
@@ -90,7 +90,7 @@ public class SchoolController extends BaseController
     }
 
     @RequestMapping(path="/{id}", method= RequestMethod.PATCH)
-    public ResponseData updateSchool(@PathVariable(required = true) Integer id, @RequestBody SchoolInfo schoolInfo)
+    public ResponseData updateSchool(@PathVariable(required = true) Integer id, @RequestBody SchoolBasicInfo schoolInfo)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter updateSchool - [id: %d, schoolInfo: %s]", id, schoolInfo));

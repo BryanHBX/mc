@@ -4,7 +4,7 @@ import lombok.Data;
 import org.edu.timelycourse.mc.biz.entity.BaseEntity;
 
 @Data
-public class SchoolInfo extends BaseEntity
+public class SchoolBasicInfo extends BaseEntity
 {
     private String schoolName;
     private String schoolAddress;

@@ -92,3 +92,10 @@ fieldset { margin-bottom: 10px; }
 .searchBar label {width: 60px;}
 .grid .gridHeader th { text-align: center; }
 .date {width: 80px;}
+
+/* */
+.treePanel {float: left; display: block; overflow: auto; width: 300px; border-right: 1px solid rgb(204, 204, 204); line-height: 21px; background: rgb(255, 255, 255); }
+.treeRelPanel {margin-left: 305px;}
+table.dform { border-spacing:12px; width: 100%;}
+table.dform input.textInput {width: 100%;}
+span.error { left: 90px; }
