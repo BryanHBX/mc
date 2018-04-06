@@ -9,7 +9,7 @@
             <li class=""><a class="edit" href="demo/pagination/dialog2.html?uid={sid_obj}" target="dialog" mask="true"><span>修改父字段</span></a></li>
         </ul>
     </div>
-    <ul class="tree treeFolder treeCheck">
+    <ul class="tree treeFolder treeCheck expand">
         <li th:each="config : ${configs}">
             <a th:text="${config.configName}" th:href="@{'admin/system/settings/' + ${config.id}}" target="ajax" rel="jbsxBox">配置項</a>
             <ul th:if="${not #lists.isEmpty(config.children)}"
