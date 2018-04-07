@@ -4,7 +4,7 @@
         <div class="panelBar">
             <ul class="toolBar">
                 <li class="">
-                    <a class="add" href="admin/system/settings/dialog" target="dialog" mask="true" width="350" height="200">
+                    <a class="add" id="cfgBtnAddSub" href="javascript:void(0);">
                         <span>添加子字段</span>
                     </a>
                 </li>
@@ -14,9 +14,9 @@
         <table class="table" width="100%" layoutH="75" rel="jbsxBox">
             <thead>
                 <tr>
-                    <th>子字段名</th>
+                    <th width="120">子字段ID</th>
                     <th>子字段描述</th>
-                    <th>编辑</th>
+                    <th width="56">编辑</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,7 +25,10 @@
                     th:each="entity: ${config.children}">
                     <td align="center" th:text="${entity.configName}"></td>
                     <td align="center" th:text="${entity.configDescription}"></td>
-                    <td></td>
+                    <td align="center">
+                        <a title="删除" target="ajaxTodo" href="demo/common/ajaxDone.html?id=xxx" class="btnDel">删除</a>
+                        <a title="编辑" target="navTab" href="demo_page4.html?id=xxx" class="btnEdit">编辑</a>
+                    </td>
                 </tr>
                 </div>
             </tbody>
@@ -47,3 +50,21 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(function() {
+        $("#cfgBtnAddSub").click(function(){
+            var selectedItem = $("#cfgTree").find(".selected");
+            if (selectedItem.size() > 0) {
+                var itemId = selectedItem.find("a").attr("tvalue");
+                $.pdialog.open(
+                    "admin/system/settings/dialog?pid=" + itemId,
+                    "dlg_cfgNewSub",
+                    $(this).find("span").text(),
+                    {width: 350, height: 240, mask: true, max: false});
+            } else {
+                alertMsg.error("请从左侧树形结构中选择父节点字段..");
+            }
+        });
+    });
+</script>

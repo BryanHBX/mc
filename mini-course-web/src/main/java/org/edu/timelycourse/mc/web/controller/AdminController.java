@@ -53,11 +53,18 @@ public class AdminController extends AbstractController
     @RequestMapping("/system/settings/dialog")
     public String showSystemSettingDialog (
             Model model,
-            @RequestParam(required = false, value = "id") Integer configId)
+            @RequestParam(required = false, value = "id")  Integer configId,
+            @RequestParam(required = false, value = "pid") Integer parentId)
     {
         if (configId != null && configId > 0)
         {
             model.addAttribute("config", fetchConfigById(configId));
+        }
+
+        if (parentId != null && parentId > 0)
+        {
+            model.addAttribute("parentId", parentId);
+            model.addAttribute("parent", fetchConfigById(parentId));
         }
 
         return getModulePage("system/dialog/dialogConfigField");

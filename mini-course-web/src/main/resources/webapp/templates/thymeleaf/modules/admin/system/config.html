@@ -10,7 +10,7 @@
 </div>
 
 <script type="text/javascript">
-    $(function(){
+    $(function() {
         $("#cfgBtnEdit").click(function(){
             var selectedItem = $("#cfgTree").find(".selected");
             if (selectedItem.size() > 0) {
@@ -20,6 +20,8 @@
                     "dlg_cfgEdit",
                     $(this).find("span").text(),
                     {width: 350, height: 200, mask: true, max: false});
+            } else {
+                alertMsg.error("请从左侧树形结构中需要修改的字段项..");
             }
         });
 
@@ -40,6 +42,13 @@
                 });
             } else {
                 alertMsg.error("请从树形结构中选择要删除的配置项..");
+            }
+        });
+
+        $("#cfgBtnAddSub").click(function(){
+            var selectedItem = $("#cfgTree").find(".selected");
+            if (selectedItem.size() == 0) {
+                alertMsg.error("请从左侧树形结构中选择父节点字段..");
             }
         });
     });
