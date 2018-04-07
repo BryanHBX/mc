@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -32,18 +34,38 @@ public class AdminController extends AbstractController
     }
 
     @RequestMapping("/system/settings")
-    public String showSystemSettings (Model model)
+    public String showSystemSettings (
+            Model model,
+            @RequestParam(required = false, value = "id") Integer configId)
     {
+        if (configId != null && configId > 0)
+        {
+            model.addAttribute("config", fetchConfigById(configId));
+            return getModulePage("system/pages/configListPage");
+        }
+
         model.addAttribute("configs", remoteCall("system/config",
                 new TypeToken<List<SystemConfig>>() {}).getData());
 
-        return getModulePage("system/systemSettings");
+        return getModulePage("system/config");
     }
 
     @RequestMapping("/system/settings/dialog")
-    public String showSystemSettingDialog ()
+    public String showSystemSettingDialog (
+            Model model,
+            @RequestParam(required = false, value = "id") Integer configId)
     {
-        return getModulePage("system/dialog/dialogSystemField");
+        if (configId != null && configId > 0)
+        {
+            model.addAttribute("config", fetchConfigById(configId));
+        }
+
+        return getModulePage("system/dialog/dialogConfigField");
+    }
+
+    private SystemConfig fetchConfigById (Integer configId)
+    {
+        return remoteCall("system/config/" + configId, new TypeToken<SystemConfig>() {}).getData();
     }
 
     protected String getMyModulePath()

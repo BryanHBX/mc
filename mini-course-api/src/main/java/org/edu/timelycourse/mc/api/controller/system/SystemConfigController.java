@@ -60,6 +60,24 @@ public class SystemConfigController extends BaseController
         }
     }
 
+    @RequestMapping(path="/{configId}", method= RequestMethod.GET)
+    @ApiOperation(value = "Get config by given id")
+    public ResponseData getConfigById(
+            @PathVariable(required = true) Integer configId)
+    {
+        if (LOGGER.isDebugEnabled())
+            LOGGER.debug(String.format("Enter getConfigById - [configId: %d]", configId));
+
+        try
+        {
+            return ResponseData.success(Asserts.assertEntityNotNullById(sysConfigService, configId));
+        }
+        catch (ServiceException ex)
+        {
+            return ResponseData.failure(ex.getMessage());
+        }
+    }
+
     @RequestMapping(path="/{configId}", method= RequestMethod.DELETE)
     @ApiOperation(value = "Delete config by given config id")
     public ResponseData deleteConfigById (

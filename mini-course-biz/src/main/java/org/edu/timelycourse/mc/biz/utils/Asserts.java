@@ -15,7 +15,7 @@ public final class Asserts
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format(
-                    "Enter assertEntityNotNullById - [entityId: %d]", service.getClass().getName(), entityId));
+                    "Enter assertEntityNotNullById from %s - [entityId: %d]", service.getClass().getName(), entityId));
 
         return assertEntityNotNull(service.get(entityId));
     }
@@ -24,7 +24,7 @@ public final class Asserts
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format(
-                    "Enter assertEntityNotNullById - [entityId: %d]", repository.getClass().getName(), entityId));
+                    "Enter assertEntityNotNullById from %s - [entityId: %d]", repository.getClass().getName(), entityId));
 
         return assertEntityNotNull(repository.get(entityId));
     }

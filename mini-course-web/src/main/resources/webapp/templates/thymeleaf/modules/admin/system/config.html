@@ -1,0 +1,26 @@
+<div class="pageContent">
+
+    <!-- Tree Page -->
+    <div xmlns:th="http://www.thymeleaf.org" th:replace="~{modules/admin/system/pages/configTreePage::tree}" />
+
+    <!-- Table List -->
+    <div id="cfgTableList">
+        <div xmlns:th="http://www.thymeleaf.org" th:replace="~{modules/admin/system/pages/configListPage::table}" />
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        $("#btnEdit").click(function(){
+            var selectedItem = $("#cfgTree").find(".selected");
+            if (selectedItem.size() > 0) {
+                var itemId = selectedItem.find("a").attr("tvalue");
+                $.pdialog.open(
+                    "admin/system/settings/dialog?id=" + itemId,
+                    "dlg_cfgEdit",
+                    $(this).find("span").text(),
+                    {width: 350, height: 200, mask: true, max: false});
+            }
+        });
+    });
+</script>

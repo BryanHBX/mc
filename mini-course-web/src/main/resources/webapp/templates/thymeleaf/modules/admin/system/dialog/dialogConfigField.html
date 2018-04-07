@@ -8,9 +8,10 @@
 
 			var api = "http://localhost:8091/api/v1/system/config";
 			var jsonData = $("#formSettingField").serializeJSON();
+			var isUpdateReq = jsonData.id != "" && jsonData.id > 0;
             generic_ajax_op(
-                api,
-				"POST",
+                isUpdateReq ? (api + "/" + jsonData.id) : api,
+                isUpdateReq ? "PATCH" : "POST",
 				jsonData,
 				null,
 				(function(result) {
@@ -23,17 +24,17 @@
 	});
 </script>
 
-<div class="pageContent">
-	<form id="formSettingField" method="post" action="app/system/role.do?action=actionSaveRole" class="pageForm required-validate">
+<div xmlns:th="http://www.thymeleaf.org" class="pageContent">
+	<form id="formSettingField" method="post" class="pageForm required-validate">
 		<div class="pageFormContent" layoutH="56">
 			<table cellspacing="10" cellpadding="10" class="dform">
 				<tr>
 					<td>字段ID：</td>
-					<td><input name="configName" type="text" size="30" value="" class="required" /></td>
+					<td><input name="configName" type="text" size="30" th:value="${config != null ? config.configName : ''}" class="required" /></td>
 				</tr>
 				<tr>
 					<td>字段名称：</td>
-					<td><input name="configDescription" type="text" size="30" value="" class="required" /></td>
+					<td><input name="configDescription" type="text" size="30" th:value="${config != null ? config.configDescription : ''}" class="required" /></td>
 				</tr>
 			</table>
 		</div>
@@ -43,6 +44,7 @@
 				<li><div class="button"><div class="buttonContent"><button class="close" type="button">取消</button></div></div></li>
 			</ul>
 		</div>
+		<input type="hidden" name="id" th:value="${config != null ? config.id : ''}" />
 	</form>
 <div>
 		

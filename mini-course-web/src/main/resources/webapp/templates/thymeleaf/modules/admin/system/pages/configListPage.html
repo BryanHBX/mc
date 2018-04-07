@@ -1,0 +1,49 @@
+<div xmlns:th="http://www.thymeleaf.org" id="jbsxBox" class="unitBox treeRelPanel" th:fragment="table">
+    <div class="pageContent" style="border-left:1px #B8D0D6 solid;border-right:1px #B8D0D6 solid">
+
+        <div class="panelBar">
+            <ul class="toolBar">
+                <li class="">
+                    <a class="add" href="admin/system/settings/dialog" target="dialog" mask="true" width="350" height="200">
+                        <span>添加子字段</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <table class="table" width="100%" layoutH="75" rel="jbsxBox">
+            <thead>
+                <tr>
+                    <th>子字段名</th>
+                    <th>子字段描述</th>
+                    <th>编辑</th>
+                </tr>
+            </thead>
+            <tbody>
+                <div th:if="${#ctx.containsVariable('config') and not #lists.isEmpty(config.children)}">
+                <tr
+                    th:each="entity: ${config.children}">
+                    <td align="center" th:text="${entity.configName}"></td>
+                    <td align="center" th:text="${entity.configDescription}"></td>
+                    <td></td>
+                </tr>
+                </div>
+            </tbody>
+        </table>
+
+        <div class="panelBar">
+            <div class="pages">
+                <span>显示</span>
+                <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value}, 'jbsxBox')">
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                </select>
+                <span>条，共${totalCount}条</span>
+            </div>
+
+            <div class="pagination" rel="jbsxBox" totalCount="200" numPerPage="20" pageNumShown="5" currentPage="1"></div>
+        </div>
+    </div>
+</div>

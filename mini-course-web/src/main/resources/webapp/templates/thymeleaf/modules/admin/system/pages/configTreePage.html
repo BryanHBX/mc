@@ -1,0 +1,40 @@
+<div xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     xmlns:th="http://www.thymeleaf.org" layouth="0.5" class="treePanel" th:fragment="tree">
+
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li class="">
+                <a class="add" href="admin/system/settings/dialog" target="dialog" mask="true" width="350" height="200">
+                    <span>添加根字段</span>
+                </a>
+            </li>
+            <li class="line">line</li>
+            <li class="">
+                <a class="delete" href="demo/pagination/ajaxDone3.html?uid={sid_obj}" target="ajaxTodo" title="确定要删除吗?">
+                    <span>删除字段</span>
+                </a>
+            </li>
+            <li class="line">line</li>
+            <li class="">
+                <a class="edit" id="btnEdit" href="javascript:void(0);">
+                    <span>修改字段</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+
+    <ul class="tree treeFolder expand" id="cfgTree">
+        <li th:each="config : ${configs}">
+            <a th:text="${config.configDescription}"
+               th:href="@{'admin/system/settings?id=' + ${config.id}}"
+               target="ajax"
+               th:tname="${config.configName}"
+               th:tvalue="${config.id}"
+               rel="cfgTableList">配置項</a>
+            <ul th:if="${not #lists.isEmpty(config.children)}"
+                th:with="menuItemsList=${config.children}"
+                layout:include="~{modules/admin/system/fragment/configTreeFragment::tree}"></ul>
+        </li>
+    </ul>
+</div>

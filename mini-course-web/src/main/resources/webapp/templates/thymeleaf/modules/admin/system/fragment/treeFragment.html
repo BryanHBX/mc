@@ -1,8 +1,0 @@
-<ul xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" layout:fragment="menu">
-    <li th:each="menuItem : ${menuItemsList}">
-        <a th:text="${menuItem.configName}" th:href="@{'admin/system/settings/' + ${menuItem.id}}" target="ajax" rel="jbsxBox">配置項</a>
-        <ul th:if="${not #lists.isEmpty(menuItem.children)}"
-            th:with="menuItemsList=${menuItem.children}"
-            layout:include="~{modules/admin/system/fragment/treeFragment::menu}"></ul>
-    </li>
-</ul>

@@ -55,7 +55,7 @@ public class SystemConfigService extends BaseService<SystemConfig>
     @Override
     public SystemConfig update (SystemConfig entity)
     {
-        SystemConfig config = getByConfigName(entity.getConfigName());
+        SystemConfig config = sysConfigRepository.getByConfigName(entity.getConfigName());
         if (config == null || config.getId().equals(entity.getId()))
         {
             return super.update(entity);
