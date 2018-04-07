@@ -141,7 +141,7 @@ public class SystemConfigController extends BaseController
     }
 
     // ==================== System Config Value API ==============================/
-
+    /*
     @RequestMapping(path="/{configId}/values", method= RequestMethod.GET)
     @ApiOperation(value = "Get config values by given config id")
     public ResponseData getConfigValues(
@@ -160,27 +160,6 @@ public class SystemConfigController extends BaseController
             return ResponseData.failure(ex.getMessage());
         }
     }
-
-    /*
-    @RequestMapping(path="/values/{id}", method= RequestMethod.GET)
-    @ApiOperation(value = "Get config value by given id")
-    public ResponseData getConfigValueById(
-            @PathVariable(required = true) Integer id)
-    {
-        if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter getConfigValueById - [id: %d]", id));
-
-        try
-        {
-            SystemConfigValue entity = (SystemConfigValue) Asserts.assertEntityNotNullById(sysConfigValueService, id);
-            return ResponseData.success(entity);
-        }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
-    }
-    */
 
     @RequestMapping(path="/{configId}/values/{id}", method= RequestMethod.DELETE)
     @ApiOperation(value = "Delete config values by given config id and value id")
@@ -248,6 +227,7 @@ public class SystemConfigController extends BaseController
             return ResponseData.failure(ex.getMessage());
         }
     }
+    */
 
     private SystemConfig assertEntityNotNullByName (String configName)
     {
