@@ -6,15 +6,15 @@
                 return false;
 			}
 
-			var api = "http://localhost:8091/api/v1/system/config";
+            var base = "system/config";
+            var isPatch = jsonData.id != "" && jsonData.id > 0;
+            var uri = isPatch ? (base + "/" + jsonData.id) : base;
+			var type = isPatch ? "PATCH" : "POST";
 			var jsonData = $("#formSettingField").serializeJSON();
-			var isUpdateReq = jsonData.id != "" && jsonData.id > 0;
-            generic_ajax_op(
-                isUpdateReq ? (api + "/" + jsonData.id) : api,
-                isUpdateReq ? "PATCH" : "POST",
-				jsonData,
-				null,
-				(function(result) {
+
+            uri = isPatch && (base + "/" + jsonData.id);
+            generic_ajax_op(uri, type, jsonData, null, (
+                function(result) {
 				    $.pdialog.closeCurrent();
 				    alertMsg.correct("配置項 '" + result.data.configDescription + "' " + (isUpdateReq ? "更新" : "添加") + "成功");
 				    navTab.reload();

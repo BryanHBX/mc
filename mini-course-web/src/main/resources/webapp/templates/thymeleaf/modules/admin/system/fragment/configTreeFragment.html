@@ -4,7 +4,7 @@
         <a th:text="${menuItem.configDescription}"
            th:href="@{'admin/system/settings?id=' + ${menuItem.id}}"
            target="ajax"
-           th:tname="${menuItem.configName}"
+           th:tname="${menuItem.configDescription}"
            th:tvalue="${menuItem.id}"
            rel="cfgTableList">配置項</a>
 

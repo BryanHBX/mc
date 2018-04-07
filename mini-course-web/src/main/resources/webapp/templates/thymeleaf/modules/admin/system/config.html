@@ -11,7 +11,7 @@
 
 <script type="text/javascript">
     $(function(){
-        $("#btnEdit").click(function(){
+        $("#cfgBtnEdit").click(function(){
             var selectedItem = $("#cfgTree").find(".selected");
             if (selectedItem.size() > 0) {
                 var itemId = selectedItem.find("a").attr("tvalue");
@@ -20,6 +20,26 @@
                     "dlg_cfgEdit",
                     $(this).find("span").text(),
                     {width: 350, height: 200, mask: true, max: false});
+            }
+        });
+
+        $("#cfgBtnDel").click(function(){
+            var selectedItem = $("#cfgTree").find(".selected");
+            if (selectedItem.size() > 0) {
+                var itemName = selectedItem.find("a").attr("tname");
+                var itemId = selectedItem.find("a").attr("tvalue");
+                alertMsg.confirm("确定删除 '" + itemName + "' 配置项么?", {
+                    okCall: function() {
+                        generic_ajax_op("system/config/" + itemId, "DELETE", null, null, (
+                            function(result) {
+                                alertMsg.correct("配置項 '" + itemName + "' 已成功删除");
+                                navTab.reload();
+                            }
+                        ));
+                    }
+                });
+            } else {
+                alertMsg.error("请从树形结构中选择要删除的配置项..");
             }
         });
     });

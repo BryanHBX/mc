@@ -10,7 +10,7 @@
  *
  **/
 function generic_ajax_op(url,type,json_data,send_handler,success_handler,error_handler,global,asyn){
-    var _url = url;
+    var _url = openApiContextPath + "/" + url;
     var _asyn = asyn && 1;
     var _global = global && true;
     var _data = json_data || {};

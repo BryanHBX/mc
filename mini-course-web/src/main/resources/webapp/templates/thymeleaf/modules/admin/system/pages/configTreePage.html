@@ -10,13 +10,13 @@
             </li>
             <li class="line">line</li>
             <li class="">
-                <a class="delete" href="demo/pagination/ajaxDone3.html?uid={sid_obj}" target="ajaxTodo" title="确定要删除吗?">
+                <a class="delete" id="cfgBtnDel" href="javascript:void(0);">
                     <span>删除字段</span>
                 </a>
             </li>
             <li class="line">line</li>
             <li class="">
-                <a class="edit" id="btnEdit" href="javascript:void(0);">
+                <a class="edit" id="cfgBtnEdit" href="javascript:void(0);">
                     <span>修改字段</span>
                 </a>
             </li>
@@ -29,7 +29,7 @@
             <a th:text="${config.configDescription}"
                th:href="@{'admin/system/settings?id=' + ${config.id}}"
                target="ajax"
-               th:tname="${config.configName}"
+               th:tname="${config.configDescription}"
                th:tvalue="${config.id}"
                rel="cfgTableList">配置項</a>
             <ul th:if="${not #lists.isEmpty(config.children)}"
