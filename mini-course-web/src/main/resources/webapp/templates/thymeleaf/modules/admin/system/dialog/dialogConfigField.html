@@ -16,7 +16,7 @@
 				null,
 				(function(result) {
 				    $.pdialog.closeCurrent();
-				    alertMsg.correct("配置項'" + result.data.configName + "'添加成功");
+				    alertMsg.correct("配置項 '" + result.data.configDescription + "' " + (isUpdateReq ? "更新" : "添加") + "成功");
 				    navTab.reload();
                 }
             ));
