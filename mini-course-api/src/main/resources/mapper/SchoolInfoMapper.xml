@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.edu.timelycourse.mc.biz.repository.school.SchoolBasicInfoRepository">
+<mapper namespace="org.edu.timelycourse.mc.biz.repository.school.SchoolInfoRepository">
 
     <cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
 
-    <resultMap type="org.edu.timelycourse.mc.biz.entity.school.SchoolBasicInfo" id="result_school">
+    <resultMap type="org.edu.timelycourse.mc.biz.entity.school.SchoolInfo" id="result_school">
         <id property="id" column="id"/>  
         <result property="schoolName" column="s_name"/>
         <result property="schoolAddress" column="s_address"/>
         <result property="schoolContact" column="s_contact"/>
         <result property="schoolStatus" column="s_status"/>
+        <result property="creationTime" column="s_createTime" />
+        <result property="lastUpdateTime" column="s_lastUpdateTime" />
     </resultMap>
     
-    <insert id="insert" parameterType="SchoolBasicInfo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_school` (s_name, s_address, s_contact, s_status)
-            VALUES(#{schoolName}, #{schoolAddress}, #{schoolContact}, #{schoolStatus})
+    <insert id="insert" parameterType="SchoolInfo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `t_school` (s_name, s_address, s_contact, s_status, s_createTime, s_lastUpdateTime)
+            VALUES(#{schoolName}, #{schoolAddress}, #{schoolContact}, #{schoolStatus}, #{creationTime}, #{lastUpdateTime})
     </insert>
 
-    <update id="update" parameterType="SchoolBasicInfo">
+    <update id="update" parameterType="SchoolInfo">
         UPDATE `t_school` SET
             s_name = #{schoolName},
             s_address = #{schoolAddress},
             s_contact = #{schoolContact},
-            s_status = #{schoolStatus}
+            s_status = #{schoolStatus},
+            s_lastUpdateTime = #{lastUpdateTime}
         WHERE id = #{id}
     </update>
     
