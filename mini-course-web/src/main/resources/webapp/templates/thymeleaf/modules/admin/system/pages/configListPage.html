@@ -14,8 +14,9 @@
         <table class="table" width="100%" layoutH="75" rel="jbsxBox">
             <thead>
                 <tr>
+                    <th width="120">父字段</th>
                     <th width="120">子字段ID</th>
-                    <th>子字段描述</th>
+                    <th>子字段名称</th>
                     <th width="56">编辑</th>
                 </tr>
             </thead>
@@ -23,11 +24,12 @@
                 <div th:if="${#ctx.containsVariable('config') and not #lists.isEmpty(config.children)}">
                 <tr
                     th:each="entity: ${config.children}">
-                    <td align="center" th:text="${entity.configName}"></td>
-                    <td align="center" th:text="${entity.configDescription}"></td>
+                    <td align="center" th:text="${config.configDescription}" style="background-color: #f7fafb"/>
+                    <td align="center" th:text="${entity.configName}" />
+                    <td align="center" th:text="${entity.configDescription}" />
                     <td align="center">
-                        <a title="删除" target="ajaxTodo" href="demo/common/ajaxDone.html?id=xxx" class="btnDel">删除</a>
-                        <a title="编辑" target="navTab" href="demo_page4.html?id=xxx" class="btnEdit">编辑</a>
+                        <a title="删除" target="ajaxToDo" callback="onDeleteSuccess" type="DELETE" th:title="'确定要删除\'' + ${entity.configDescription} + '\' 配置项么?'" th:href="'system/config/' + ${entity.id}" class="btnDel">删除</a>
+                        <a title="编辑" target="dialog" mask="true" width="350" height="240" th:href="'admin/system/settings/dialog?id=' + ${entity.id} + '&pid=' + ${config.id}" class="btnEdit">编辑</a>
                     </td>
                 </tr>
                 </div>
@@ -52,6 +54,12 @@
 </div>
 
 <script type="text/javascript">
+
+    function onDeleteSuccess() {
+        //alertMsg.success("配置项已删除..");
+        reloadConfigNavTab();
+    }
+
     $(function() {
         $("#cfgBtnAddSub").click(function(){
             var selectedItem = $("#cfgTree").find(".selected");

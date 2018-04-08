@@ -287,11 +287,12 @@ function dialogPageBreak(args, rel){
 }
 
 
-function ajaxTodo(url, callback){
+function ajaxTodo(url, callback, type){
 	var $callback = callback || navTabAjaxDone;
+	var _type = type || "POST";
 	if (! $.isFunction($callback)) $callback = eval('(' + callback + ')');
 	$.ajax({
-		type:'POST',
+		type:_type,
 		url:url,
 		dataType:"json",
 		cache: false,
@@ -377,6 +378,11 @@ $.fn.extend({
 				}
 				
 				var url = unescape($this.attr("href")).replaceTmById($(event.target).parents(".unitBox:first"));
+
+				if (openApiContextPath) {
+					url = openApiContextPath + "/" + url;
+				}
+
 				DWZ.debug(url);
 				if (!url.isFinishedTm()) {
 					alertMsg.error($this.attr("warn") || DWZ.msg("alertSelectMsg"));
@@ -386,7 +392,7 @@ $.fn.extend({
 				if (title) {
 					alertMsg.confirm(title, {
 						okCall: function(){
-							ajaxTodo(url, $this.attr("callback"));
+							ajaxTodo(url, $this.attr("callback"), $this.attr("type"));
 						}
 					});
 				} else {

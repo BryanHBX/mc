@@ -16,24 +16,7 @@
                 function(result) {
 				    $.pdialog.closeCurrent();
 				    alertMsg.correct("子配置項 '" + result.data.configDescription + "' " + (isPatch ? "更新" : "添加") + "成功");
-
-                    var selectedItemId = 0;
-				    var selectedItem = $("#cfgTree").find(".selected");
-                    if (selectedItem.size() > 0) {
-                        selectedItemId = selectedItem.find("a").attr("tvalue");
-                    }
-
-				    navTab.reload(null, {
-				        callback: function(){
-                            if (selectedItemId > 0) {
-                                var targetEle = $("#cfgTree").find("a[tvalue=" + selectedItemId + "]");
-                                if (targetEle.size() > 0) {
-                                    targetEle.click();
-                                    targetEle.parent().addClass("selected");
-                                }
-                            }
-                        }
-                    });
+                    reloadConfigNavTab();
                 }
             ));
 		});
