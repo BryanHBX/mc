@@ -25,20 +25,20 @@
                     <dd><input readonly="true" name="field5" type="text" class="textInput readonly"></dd>
                 </dl>
                 <dl>
-                    <dt>学生年级：</dt>
+                    <dt>学生年段：</dt>
                     <dd><input disabled="true" name="field6" type="text" class="textInput disabled"></dd>
                 </dl>
                 <dl>
-                    <dt>课程大类：</dt>
+                    <dt>细分年段：</dt>
+                    <dd><input disabled="true" name="field6" type="text" class="textInput disabled"></dd>
+                </dl>
+                <dl>
+                    <dt>课程名称：</dt>
                     <dd><input name="password" type="text" class="textInput"></dd>
                 </dl>
                 <dl>
                     <dt>课程子类：</dt>
                     <dd><input name="password" type="text" class="textInput"></dd>
-                </dl>
-                <dl>
-                    <dt></dt>
-                    <dd></dd>
                 </dl>
                 <dl>
                     <dt>报名课时：</dt>
@@ -65,32 +65,53 @@
                     <dd><input name="password" type="text" class="textInput"></dd>
                 </dl>
                 <dl>
-                    <dt>监护人姓名：</dt>
+                    <dt>联系人姓名：</dt>
                     <dd><input name="password" type="text" class="textInput"></dd>
                 </dl>
                 <dl>
-                    <dt>监护人关系：</dt>
+                    <dt>联系人关系：</dt>
                     <dd><input name="password" type="text" class="textInput"></dd>
                 </dl>
                 <dl>
                     <dt>联系方式：</dt>
                     <dd><input name="password" type="text" class="textInput"></dd>
                 </dl>
+                <dl>
+                    <dt>其他备注方式：</dt>
+                    <dd><input name="password" type="text" alt="如学校信息/家庭地址等" class="textInput"></dd>
+                </dl>
+                </table>
             </fieldset>
             <fieldset>
                 <legend>收据信息</legend>
-                <dl>
-                    <dt>收据编号：</dt>
-                    <dd><input name="field1" type="text" class="textInput"></dd>
-                </dl>
-                <dl>
-                    <dt>支付金额：</dt>
-                    <dd><input name="field2" type="text" alt="提示信息" class="textInput" id="field2_5009"><label class="alt" for="field2_5009" style="width: 154px; top: 5px; left: 130px; opacity: 1;">提示信息</label></dd>
-                </dl>
-                <dl>
-                    <dt>支付方式：</dt>
-                    <dd><input class="required textInput" name="field3" type="text"></dd>
-                </dl>
+                <div style="max-height: 200px; overflow: auto;" id="cform">
+                    <table class="list nowrap itemDetail" addButton="添加收据" width="100%">
+                        <thead>
+                            <tr>
+                                <th type="text" width="" name="items[#index#].itemString" fieldClass="required">收据编号</th>
+                                <th type="text" width="" name="items[#index#].itemInt" defaultVal="0.00" size="12" fieldClass="number required">支付金额</th>
+                                <th type="enum" width="" name="items[#index#].itemFloat" enum="现金,转账,微信,支付宝,其他">支付方式</th>
+                                <th type="del" width="60" align="center">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="unitBox">
+                                <td ><input type="text" name="items[0].itemString" value="" size="12" class="required" maxlength="10"></td>
+                                <td ><input type="text" name="items[0].itemInt" value="0.00" size="12" class="required number textInput"></td>
+                                <td align="center">
+                                    <select class="combox" name="${param.inputName}">
+                                        <option value="Yes">现金</option>
+                                        <option value="No">转账</option>
+                                        <option value="No">微信</option>
+                                        <option value="No">支付宝</option>
+                                        <option value="No">其他</option>
+                                    </select>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </fieldset>
             <div class="divider"></div>
             <p>
@@ -101,11 +122,7 @@
         </div>
         <div class="formBar">
             <ul>
-                <!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
                 <li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
-                <li>
-                    <div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
-                </li>
             </ul>
         </div>
     </form>

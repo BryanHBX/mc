@@ -114,3 +114,4 @@ fieldset { margin-bottom: 10px; }
 table.dform { border-spacing:12px; width: 100%;}
 table.dform input.textInput {width: 100%;}
 span.error { left: 90px; }
+#cform table.list a {margin: 0 auto; float: none}

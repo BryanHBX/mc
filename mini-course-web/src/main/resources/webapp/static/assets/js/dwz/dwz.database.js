@@ -244,6 +244,7 @@
 						defaultVal: $th.attr("defaultVal") || "",
 						size: $th.attr("size") || "12",
 						enumUrl: $th.attr("enumUrl") || "",
+						enum: $th.attr("enum") || "",
 						lookupGroup: $th.attr("lookupGroup") || "",
 						lookupUrl: $th.attr("lookupUrl") || "",
 						lookupPk: $th.attr("lookupPk") || "id",
@@ -365,14 +366,24 @@
 							+ '<a class="btnAttach" href="'+field.lookupUrl+'" lookupGroup="'+field.lookupGroup+'" '+suffixFrag+' lookupPk="'+field.lookupPk+'" width="560" height="300" title="查找带回">查找带回</a>';
 						break;
 					case 'enum':
-						$.ajax({
-							type:"POST", dataType:"html", async: false,
-							url:field.enumUrl, 
-							data:{inputName:field.name}, 
-							success:function(response){
-								html = response;
-							}
-						});
+						if (field.enumUrl != "") {
+                            $.ajax({
+                                type: "POST", dataType: "html", async: false,
+                                url: field.enumUrl,
+                                data: {inputName: field.name},
+                                success: function (response) {
+                                    html = response;
+                                }
+                            });
+                        } else if (field.enum != "") {
+							var select = "<select class='combox'>";
+							var options = field.enum.split(",");
+							for (var i = 0; i < options.length; i++) {
+                            	select += "<option value='" + options[i] + "'>" + options[i] + "</option>";
+                            }
+                            select += "</select>";
+							html = select;
+						}
 						break;
 					case 'date':
 						html = '<input type="text" name="'+field.name+'" value="'+field.defaultVal+'" class="date '+field.fieldClass+'" dateFmt="'+field.patternDate+'" size="'+field.size+'"/>'

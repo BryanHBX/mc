@@ -6,24 +6,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/student")
-public class StudentController extends AbstractController
+@RequestMapping("/contract")
+public class ContractController extends AbstractController
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StudentController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContractController.class);
 
-    @RequestMapping("/contractForm")
+    @RequestMapping("/form")
     public String showContractForm ()
     {
         return getModulePage("contractForm");
     }
 
-    @RequestMapping("/contractList")
+    @RequestMapping("/list")
     public String showContractList ()
     {
         return getModulePage("contractList");
     }
 
-    @RequestMapping("/studentList")
+    @RequestMapping("/students")
     public String showStudentList ()
     {
         return getModulePage("studentList");
@@ -31,6 +31,6 @@ public class StudentController extends AbstractController
 
     protected String getMyModulePath()
     {
-        return "student";
+        return "contract";
     }
 }

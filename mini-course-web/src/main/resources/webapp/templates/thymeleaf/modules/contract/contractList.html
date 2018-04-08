@@ -1,0 +1,90 @@
+<form id="pagerForm" method="post" action="w_removeSelected.html">
+    <input type="hidden" name="pageNum" value="1">
+    <input type="hidden" name="numPerPage" value="${model.numPerPage}">
+    <input type="hidden" name="orderField" value="${param.orderField}">
+    <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+    <input type="hidden" name="keywords" value=""><input type="hidden" name="province" value="">
+</form>
+
+<div class="pageHeader">
+    <form id="mySearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="w_removeSelected.html" method="post">
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        <label>学生姓名：</label>
+                        <input type="text" name="keywords" value="" style="width: 100px;" class="textInput">
+                    </td>
+                    <td>
+                        <label>咨询师：</label>
+                        <input type="text" name="keywords" value="" style="width: 100px;" class="textInput">
+                    </td>
+                    <td>
+                        <label>合同状态：</label>
+                        <select class="combox" name="province" style="display: none;">
+                            <option value="">所有</option>
+                            <option value="北京">执行中</option>
+                            <option value="上海">已结束</option>
+                        </select>
+                    </td>
+                    <td>
+                        <label>缴费状态：</label>
+                        <select class="combox" name="province" style="display: none;">
+                            <option value="">所有</option>
+                            <option value="广东">有欠费</option>
+                        </select>
+                    </td>
+            </table>
+            <div class="subBar">
+                <ul>
+                    <li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="pageContent">
+    <table class="table" width="100%" layoutH="110">
+        <thead>
+            <tr>
+                <th width="60">报名类型</th>
+                <th width="80">签约日期</th>
+                <th>合同编号</th>
+                <th>姓名</th>
+                <th>年级</th>
+                <th>报名课程</th>
+                <th width="80">报名课时</th>
+                <th width="80">赠送课时</th>
+                <th>签约总价</th>
+                <th>实收金额</th>
+                <th>实际单价</th>
+                <th>已缴费</th>
+                <th>欠费</th>
+                <th>转退课时</th>
+                <th width="80">剩余课时</th>
+                <th width="80">课时记录</th>
+                <th width="80">补缴</th>
+                <th>咨询师</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+                <option value="250">250</option>
+            </select>
+            <span>条，共${totalCount}条</span>
+        </div>
+        <div class="pagination" targetType="navTab" totalCount="200" numPerPage="20" pageNumShown="10" currentPage="1"></div>
+    </div>
+</div>
