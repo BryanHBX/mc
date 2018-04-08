@@ -49,5 +49,8 @@
     <update id="deleteByConfigName" parameterType="java.lang.String">
         DELETE FROM `t_sys_config` WHERE `c_name` = #{name}
     </update>
-    
+
+    <select id="findByPage" resultMap="result_sysConf">
+        SELECT * FROM `t_sys_config`
+    </select>
 </mapper>

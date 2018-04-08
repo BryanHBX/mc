@@ -11,7 +11,7 @@
             </ul>
         </div>
 
-        <table class="table" width="100%" layoutH="75" rel="jbsxBox">
+        <table class="table" width="100%" layoutH="35" rel="jbsxBox">
             <thead>
                 <tr>
                     <th width="120">父字段</th>
@@ -35,21 +35,6 @@
                 </div>
             </tbody>
         </table>
-
-        <div class="panelBar">
-            <div class="pages">
-                <span>显示</span>
-                <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value}, 'jbsxBox')">
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                    <option value="200">200</option>
-                </select>
-                <span>条，共${totalCount}条</span>
-            </div>
-
-            <div class="pagination" rel="jbsxBox" totalCount="200" numPerPage="20" pageNumShown="5" currentPage="1"></div>
-        </div>
     </div>
 </div>
 

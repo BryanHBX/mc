@@ -20,6 +20,7 @@
         <druid.version>1.0.18</druid.version>
         <jjwt.version>0.9.0</jjwt.version>
         <guava.version>24.1-jre</guava.version>
+        <pagehelper.version>1.2.3</pagehelper.version>
     </properties>
 
     <modules>
