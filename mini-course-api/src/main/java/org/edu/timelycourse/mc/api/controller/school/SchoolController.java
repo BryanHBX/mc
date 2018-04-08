@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/${api.version}/school")
-@Api(tags = { "学校配置API" })
+@Api(tags = { "学校信息API" })
 public class SchoolController extends BaseController
 {
     private static Logger LOGGER = LoggerFactory.getLogger(SchoolController.class);
@@ -92,16 +92,19 @@ public class SchoolController extends BaseController
     }
 
     @RequestMapping(path="/{id}", method= RequestMethod.PATCH)
-    public ResponseData updateSchool(@PathVariable(required = true) Integer id, @RequestBody SchoolInfo schoolInfo)
+    public ResponseData updateSchool(
+            @PathVariable(required = true) Integer id,
+            @RequestBody SchoolInfo schoolInfo)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter updateSchool - [id: %d, schoolInfo: %s]", id, schoolInfo));
 
         try
         {
-            Asserts.assertEntityNotNullById(schoolService, id);
+            SchoolInfo entity = (SchoolInfo) Asserts.assertEntityNotNullById(schoolService, id);
 
             schoolInfo.setId(id);
+            schoolInfo.setCreationTime(entity.getCreationTime());
             return ResponseData.success(this.schoolService.update(schoolInfo));
         }
         catch (ServiceException ex)
