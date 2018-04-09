@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.biz.service.school;
 
-import org.edu.timelycourse.mc.biz.entity.school.SchoolInfo;
+import org.edu.timelycourse.mc.biz.model.school.SchoolInfo;
 import org.edu.timelycourse.mc.biz.repository.school.SchoolInfoRepository;
 import org.edu.timelycourse.mc.biz.service.BaseService;
 import org.slf4j.Logger;

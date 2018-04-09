@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.biz.utils;
 
-import org.edu.timelycourse.mc.biz.entity.BaseEntity;
+import org.edu.timelycourse.mc.biz.model.BaseEntity;
 import org.edu.timelycourse.mc.biz.repository.BaseRepository;
 import org.edu.timelycourse.mc.biz.service.BaseService;
 import org.edu.timelycourse.mc.common.exception.ServiceException;

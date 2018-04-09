@@ -1,7 +1,7 @@
-package org.edu.timelycourse.mc.biz.entity.school;
+package org.edu.timelycourse.mc.biz.model.school;
 
 import lombok.Data;
-import org.edu.timelycourse.mc.biz.entity.BaseEntity;
+import org.edu.timelycourse.mc.biz.model.BaseEntity;
 
 @Data
 public class SchoolProduct extends BaseEntity

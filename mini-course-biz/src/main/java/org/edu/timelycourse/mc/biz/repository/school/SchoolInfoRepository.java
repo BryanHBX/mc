@@ -1,7 +1,7 @@
 package org.edu.timelycourse.mc.biz.repository.school;
 
 import org.apache.ibatis.annotations.Param;
-import org.edu.timelycourse.mc.biz.entity.school.SchoolInfo;
+import org.edu.timelycourse.mc.biz.model.school.SchoolInfo;
 import org.edu.timelycourse.mc.biz.repository.BaseRepository;
 import org.springframework.stereotype.Component;
 

@@ -2,7 +2,7 @@ package org.edu.timelycourse.mc.api.controller.school;
 
 import io.swagger.annotations.Api;
 import org.edu.timelycourse.mc.api.controller.BaseController;
-import org.edu.timelycourse.mc.biz.entity.school.SchoolInfo;
+import org.edu.timelycourse.mc.biz.model.school.SchoolInfo;
 import org.edu.timelycourse.mc.biz.service.school.SchoolInfoService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;

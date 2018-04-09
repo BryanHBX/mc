@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.biz.service.member;
 
-import org.edu.timelycourse.mc.biz.entity.member.UserRole;
+import org.edu.timelycourse.mc.biz.model.member.UserRole;
 import org.edu.timelycourse.mc.biz.repository.member.UserRoleRepository;
 import org.edu.timelycourse.mc.biz.service.BaseService;
 import org.slf4j.Logger;

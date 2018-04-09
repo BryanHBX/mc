@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.biz.repository.member;
 
-import org.edu.timelycourse.mc.biz.entity.member.User;
+import org.edu.timelycourse.mc.biz.model.member.User;
 import org.apache.ibatis.annotations.Param;
 import org.edu.timelycourse.mc.biz.repository.BaseRepository;
 import org.springframework.stereotype.Component;
@@ -11,6 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 public interface UserRepository extends BaseRepository<User>
 {
-    User getByUserName (@Param("name") String userName);
+    User getByUsername (@Param("name") String username);
     User getByUserId (@Param("uid") String userId);
 }

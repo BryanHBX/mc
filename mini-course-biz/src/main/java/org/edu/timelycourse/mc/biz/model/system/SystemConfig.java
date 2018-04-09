@@ -1,9 +1,9 @@
-package org.edu.timelycourse.mc.biz.entity.system;
+package org.edu.timelycourse.mc.biz.model.system;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
-import org.edu.timelycourse.mc.biz.entity.BaseEntity;
+import org.edu.timelycourse.mc.biz.model.BaseEntity;
 
 import java.util.List;
 

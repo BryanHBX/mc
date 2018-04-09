@@ -1,9 +1,9 @@
-package org.edu.timelycourse.mc.biz.entity.member;
+package org.edu.timelycourse.mc.biz.model.member;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
-import org.edu.timelycourse.mc.biz.entity.BaseEntity;
+import org.edu.timelycourse.mc.biz.model.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,12 +19,13 @@ public class User extends BaseEntity
 {
     private String userId;
     private String userName;
-    private String userPassword;
+    private String password;
+    private String phone;
     private Date lastLoginTime;
     private int userStatus;
 
     private String role;
-    private List<UserRole> roles;
+    private List<UserRole> authorities;
 
     public User()
     {
@@ -41,7 +42,7 @@ public class User extends BaseEntity
 
         if (role != null)
         {
-            this.roles.add(role);
+            this.authorities.add(role);
         }
     }
 
@@ -49,12 +50,12 @@ public class User extends BaseEntity
     {
         if (userRole != null)
         {
-            if (roles == null)
+            if (authorities == null)
             {
-                roles = new ArrayList<UserRole>();
+                authorities = new ArrayList<UserRole>();
             }
 
-            roles.add(userRole);
+            authorities.add(userRole);
         }
     }
 

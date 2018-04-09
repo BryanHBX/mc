@@ -1,7 +1,7 @@
 package org.edu.timelycourse.mc.biz.repository.member;
 
 import org.apache.ibatis.annotations.Param;
-import org.edu.timelycourse.mc.biz.entity.member.UserRole;
+import org.edu.timelycourse.mc.biz.model.member.UserRole;
 import org.edu.timelycourse.mc.biz.repository.BaseRepository;
 import org.springframework.stereotype.Component;
 

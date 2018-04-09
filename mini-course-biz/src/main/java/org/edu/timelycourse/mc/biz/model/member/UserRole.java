@@ -1,9 +1,9 @@
-package org.edu.timelycourse.mc.biz.entity.member;
+package org.edu.timelycourse.mc.biz.model.member;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
-import org.edu.timelycourse.mc.biz.entity.BaseEntity;
+import org.edu.timelycourse.mc.biz.model.BaseEntity;
 
 /**
  * Created by Marco on 2018/3/31.
@@ -14,15 +14,15 @@ import org.edu.timelycourse.mc.biz.entity.BaseEntity;
 public class UserRole extends BaseEntity
 {
     private int userId;
-    private String role;
+    private String name;
 
     public UserRole()
     {
     }
 
-    public UserRole(int userId, String role)
+    public UserRole(int userId, String authorityName)
     {
         this.userId = userId;
-        this.role = role;
+        this.name = authorityName;
     }
 }

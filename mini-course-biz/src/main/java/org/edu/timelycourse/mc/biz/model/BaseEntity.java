@@ -1,4 +1,4 @@
-package org.edu.timelycourse.mc.biz.entity;
+package org.edu.timelycourse.mc.biz.model;
 
 import lombok.Getter;
 

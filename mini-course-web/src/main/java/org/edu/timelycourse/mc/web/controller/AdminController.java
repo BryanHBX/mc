@@ -1,15 +1,11 @@
 package org.edu.timelycourse.mc.web.controller;
 
 import com.google.common.reflect.TypeToken;
-import org.edu.timelycourse.mc.biz.entity.system.SystemConfig;
-import org.edu.timelycourse.mc.biz.vo.SystemConfigVO;
-import org.edu.timelycourse.mc.common.entity.ResponseData;
+import org.edu.timelycourse.mc.biz.model.system.SystemConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 

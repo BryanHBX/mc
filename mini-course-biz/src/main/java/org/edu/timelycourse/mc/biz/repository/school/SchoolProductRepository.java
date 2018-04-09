@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.biz.repository.school;
 
-import org.edu.timelycourse.mc.biz.entity.school.SchoolProduct;
+import org.edu.timelycourse.mc.biz.model.school.SchoolProduct;
 import org.edu.timelycourse.mc.biz.repository.BaseRepository;
 import org.springframework.stereotype.Component;
 

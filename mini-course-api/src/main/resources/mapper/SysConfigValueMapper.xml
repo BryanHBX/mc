@@ -4,7 +4,7 @@
     
 	<cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
 	
-    <resultMap type="org.edu.timelycourse.mc.biz.entity.system.SystemConfigValue" id="result_sysConfValue">
+    <resultMap type="org.edu.timelycourse.mc.biz.model.system.SystemConfigValue" id="result_sysConfValue">
         <id property="id" column="id"/>  
         <result property="configId" column="c_id"/>
         <result property="configValue" column="c_value"/>

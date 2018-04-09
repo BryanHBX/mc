@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.biz.service.system;
 
-import org.edu.timelycourse.mc.biz.entity.system.SystemConfig;
+import org.edu.timelycourse.mc.biz.model.system.SystemConfig;
 import org.edu.timelycourse.mc.biz.repository.system.SystemConfigRepository;
 import org.edu.timelycourse.mc.biz.repository.system.SystemConfigValueRepository;
 import org.edu.timelycourse.mc.biz.service.BaseService;

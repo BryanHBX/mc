@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.biz.service.system;
 
-import org.edu.timelycourse.mc.biz.entity.system.SystemConfigValue;
+import org.edu.timelycourse.mc.biz.model.system.SystemConfigValue;
 import org.edu.timelycourse.mc.biz.repository.system.SystemConfigRepository;
 import org.edu.timelycourse.mc.biz.repository.system.SystemConfigValueRepository;
 import org.edu.timelycourse.mc.biz.service.BaseService;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class SystemConfigValueService extends BaseService<SystemConfigValue>

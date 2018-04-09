@@ -4,7 +4,7 @@
     
 	<cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
 	
-    <resultMap type="org.edu.timelycourse.mc.biz.entity.member.UserRole" id="result_userRole">
+    <resultMap type="org.edu.timelycourse.mc.biz.model.member.UserRole" id="result_userRole">
         <id property="id" column="id"/>  
         <result property="userId" column="u_id"/>
         <result property="role" column="role"/>
