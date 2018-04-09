@@ -1,6 +1,7 @@
 package org.edu.timelycourse.mc.api.controller.school;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.edu.timelycourse.mc.api.controller.BaseController;
 import org.edu.timelycourse.mc.biz.model.school.SchoolInfo;
 import org.edu.timelycourse.mc.biz.service.school.SchoolInfoService;
@@ -26,6 +27,7 @@ public class SchoolController extends BaseController
     private SchoolInfoService schoolService;
 
     @RequestMapping(path="", method= RequestMethod.GET)
+    @ApiOperation(value = "Get either list of all schools or by given query")
     public ResponseData getAllSchools()
     {
         if (LOGGER.isDebugEnabled())
@@ -42,6 +44,7 @@ public class SchoolController extends BaseController
     }
 
     @RequestMapping(path="/{id}", method= RequestMethod.GET)
+    @ApiOperation(value = "Get school by given id")
     public ResponseData getSchool(@PathVariable(required = true) Integer id)
     {
         if (LOGGER.isDebugEnabled())
@@ -59,6 +62,7 @@ public class SchoolController extends BaseController
     }
 
     @RequestMapping(path="/{id}", method= RequestMethod.DELETE)
+    @ApiOperation(value = "Delete school by given id")
     public ResponseData deleteSchool(@PathVariable(required = true) Integer id)
     {
         if (LOGGER.isDebugEnabled())
@@ -76,6 +80,7 @@ public class SchoolController extends BaseController
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
+    @ApiOperation(value = "Add school by given entity")
     public ResponseData addSchool(@RequestBody SchoolInfo schoolInfo)
     {
         if (LOGGER.isDebugEnabled())
@@ -92,6 +97,7 @@ public class SchoolController extends BaseController
     }
 
     @RequestMapping(path="/{id}", method= RequestMethod.PATCH)
+    @ApiOperation(value = "Update school with respect to the specified id")
     public ResponseData updateSchool(
             @PathVariable(required = true) Integer id,
             @RequestBody SchoolInfo schoolInfo)
