@@ -14,17 +14,25 @@ import java.util.List;
  */
 @Data
 @ToString(exclude = "id")
-@JsonIgnoreProperties(value = { "id", "userPassword", "role", "roles"})
+@JsonIgnoreProperties(value = { "id", "password", "role", "roles"})
 public class User extends BaseEntity
 {
-    private String userId;
+    private String userIdentity;
     private String userName;
     private String password;
     private String phone;
-    private Date lastLoginTime;
-    private int userStatus;
+    private String wxId;
 
-    private String role;
+    private int status;
+    private int type;
+    private int role;
+
+    private int schoolId;
+
+    private Date creationTime;
+    private Date lastUpdateTime;
+    private Date lastLoginTime;
+
     private List<UserRole> authorities;
 
     public User()
@@ -38,7 +46,7 @@ public class User extends BaseEntity
 
     public User(User user, UserRole role)
     {
-        this.userId = user.getUserId();
+        this.userIdentity = user.getUserIdentity();
 
         if (role != null)
         {

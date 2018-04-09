@@ -6,24 +6,37 @@
 
     <resultMap type="org.edu.timelycourse.mc.biz.model.member.User" id="result_user">
         <id property="id" column="id"/>  
-        <result property="userId" column="u_id"/>
+        <result property="userIdentity" column="u_identity"/>
         <result property="userName" column="u_name"/>
-        <result property="userPassword" column="u_pwd"/>
-        <result property="userStatus" column="u_status"/>
+        <result property="password" column="u_pwd"/>
+        <result property="phone" column="u_phone"/>
+        <result property="wxId" column="u_wxid"/>
+        <result property="type" column="u_type"/>
+        <result property="role" column="u_role"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="status" column="u_status"/>
         <result property="lastLoginTime" column="u_lastLoginTime"/>
+        <result property="creationTime" column="u_creationTime"/>
+        <result property="lastUpdateTime" column="u_lastUpdateTime" />
     </resultMap>
     
     <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_member` (u_id, u_name, u_pwd, u_status, u_lastLoginTime)
-            VALUES(#{userId}, #{userName}, #{userPassword}, #{userStatus}, #{lastLoginTime})
+        INSERT INTO `t_member` (u_identity, u_name, u_pwd, u_phone, u_wxid, u_type, u_role, school_id, u_status, u_creationTime, u_lastUpdateTime)
+            VALUES(#{userIdentity}, #{userName}, #{password}, #{phone}, #{wxId}, #{type}, #{role}, #{schoolId}, #{status}, #{creationTime}, #{creationTime})
     </insert>
 
     <update id="update" parameterType="User">
         UPDATE `t_member` SET
-            u_id = #{userId},
+            u_identity = #{userIdentity},
             u_name = #{userName},
-            u_pwd = #{userPassword},
-            u_status = #{userStatus},
+            u_pwd = #{password},
+            u_status = #{status},
+            u_phone = #{phone},
+            u_wxid = #{wxId},
+            u_type = #{type},
+            u_role = #{role},
+            school_id = #{schoolId},
+            u_lastUpdateTime = #{lastUpdateTime},
             u_lastLoginTime = #{lastLoginTime}
         WHERE id = #{id}
     </update>
@@ -32,20 +45,24 @@
         SELECT * FROM `t_member` where `id` = #{id}
     </select>
 
-    <select id="getByUserName" parameterType="java.lang.String" resultMap="result_user">
-        SELECT * FROM `t_member` where `u_name` = #{name}
+    <select id="getByUserPhone" parameterType="java.lang.String" resultMap="result_user">
+        SELECT * FROM `t_member` where `u_phone` = #{phone}
     </select>
 
     <select id="getByUserId" parameterType="java.lang.String" resultMap="result_user">
-        SELECT * FROM `t_member` where `u_id` = #{uid}
+        SELECT * FROM `t_member` where `u_identity` = #{identity}
     </select>
 
     <update id="delete" parameterType="java.lang.Integer">
-        DELETE FROM `t_user` WHERE `id` = #{id}
+        DELETE FROM `t_member` WHERE `id` = #{id}
     </update>
 
     <select id="getAll" resultMap="result_user">
-        SELECT * FROM `t_user` order by `u_lastLoginTime` DESC
+        SELECT * FROM `t_member` order by `u_lastLoginTime` DESC
+    </select>
+
+    <select id="getBySchoolId" resultMap="result_user">
+        SELECT * FROM `t_member` WHERE `school_id` = #{sid}
     </select>
     
 </mapper>

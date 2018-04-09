@@ -16,9 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-
 /**
  * Created by x36zhao on 2018/4/3.
  */
@@ -37,7 +34,7 @@ public class SystemConfigController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all configs or by given config name")
-    public ResponseData<List<SystemConfig>> getConfigs(
+    public ResponseData getConfigs(
             @RequestParam(required = false) String configName)
     {
         if (LOGGER.isDebugEnabled())
@@ -88,8 +85,7 @@ public class SystemConfigController extends BaseController
         try
         {
             Asserts.assertEntityNotNullById(sysConfigService, configId);
-            Integer result = this.sysConfigService.delete(configId);
-            return result != null ? ResponseData.success() : ResponseData.failure("Failed to delete config");
+            return ResponseData.success(sysConfigService.delete(configId));
         }
         catch (ServiceException ex)
         {

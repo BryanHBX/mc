@@ -23,7 +23,7 @@ public final class JwtUserFactory
                 user.getId(),
                 user.getUserName(),
                 user.getPassword(),
-                user.getUserId(),
+                user.getUserIdentity(),
                 user.getPhone(),
                 mapToGrantedAuthorities(user.getAuthorities())
         );

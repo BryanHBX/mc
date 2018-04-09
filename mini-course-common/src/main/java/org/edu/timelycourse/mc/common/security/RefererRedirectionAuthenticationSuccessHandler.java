@@ -1,4 +1,4 @@
-package org.edu.timelycourse.mc.web.security;
+package org.edu.timelycourse.mc.common.security;
 
 import org.edu.timelycourse.mc.common.constants.Constants;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
