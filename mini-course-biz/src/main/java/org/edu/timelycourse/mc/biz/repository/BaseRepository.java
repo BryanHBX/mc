@@ -12,5 +12,7 @@ public interface BaseRepository<T extends BaseEntity>
     Integer update(final T entity);
     Integer delete(Integer id);
     List<T> getAll();
-    Page<T> findByPage();
+    List<T> getByEntity (final T entity);
+    Page<T> getByPage();
+    Page<T> getByPage (final T entity);
 }

@@ -27,17 +27,20 @@
 
     <update id="update" parameterType="User">
         UPDATE `t_member` SET
-            u_identity = #{userIdentity},
-            u_name = #{userName},
-            u_pwd = #{password},
-            u_status = #{status},
-            u_phone = #{phone},
-            u_wxid = #{wxId},
-            u_type = #{type},
-            u_role = #{role},
-            school_id = #{schoolId},
-            u_lastUpdateTime = #{lastUpdateTime},
-            u_lastLoginTime = #{lastLoginTime}
+        <set>
+            <if test="userIdentity != null and userIdentity != ''">`u_identity` = #{userIdentity},</if>
+            <if test="userName != null and userName != ''">`u_name` = #{userName},</if>
+            <if test="password != null and password != ''">`u_pwd` = #{password},</if>
+            <if test="status != null and status > -1">`u_status` = #{status},</if>
+            <if test="phone != null and phone != ''">`u_phone` = #{phone},</if>
+            <if test="wxId != null and wxId != ''">`u_wxid` = #{wxId},</if>
+            <if test="type != null and type > -1">`u_type` = #{type},</if>
+            <if test="role != null and role > -1">`u_role` = #{role},</if>
+            <if test="schoolId != null and schoolId > -1">`school_id` = #{schoolId},</if>
+            <if test="lastUpdateTime != null and userIdentity != ''">`u_lastUpdateTime` = #{lastUpdateTime},</if>
+            <if test="lastLoginTime != null and lastLoginTime != ''">`u_lastLoginTime` = #{lastLoginTime},</if>
+            `id` = `id`
+        </set>
         WHERE id = #{id}
     </update>
 
@@ -59,6 +62,22 @@
 
     <select id="getAll" resultMap="result_user">
         SELECT * FROM `t_member` order by `u_lastLoginTime` DESC
+    </select>
+
+    <select id="getByEntity" resultMap="result_user">
+        SELECT * FROM `t_member`
+        <where>
+            1 = 1
+            <if test="userName != null and userName != ''"> AND `u_name` = #{userName}</if>
+            <if test="userIdentity != null and userIdentity != ''"> AND `u_identity` = #{userIdentity}</if>
+            <if test="userName != null and userName != ''"> AND `u_name` = #{userName}</if>
+            <if test="status != null and status > -1"> AND `u_status` = #{status}</if>
+            <if test="phone != null and phone != ''"> AND `u_phone` = #{phone}</if>
+            <if test="wxId != null and wxId != ''"> AND `u_wxid` = #{wxId}</if>
+            <if test="type != null and type > -1"> AND `u_type` = #{type}</if>
+            <if test="role != null and role > -1"> AND `u_role` = #{role}</if>
+            <if test="schoolId != null and schoolId > -1"> AND `school_id` = #{schoolId}</if>
+        </where>
     </select>
 
     <select id="getBySchoolId" resultMap="result_user">
