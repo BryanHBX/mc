@@ -9,6 +9,7 @@ import org.edu.timelycourse.mc.biz.service.member.UserService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
+import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,23 +29,19 @@ public class UserController extends BaseController
     private UserService userService;
 
     @RequestMapping(path="", method= RequestMethod.GET)
-    public ResponseData getUser(
-            @RequestParam(required = false) String phone,
-            @RequestParam(required = false) String identity)
+    @ApiOperation(value = "Get either list of all users or by given query which is either phone or identity")
+    public ResponseData getUser(@RequestParam(required = false, value = "query") String query)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug("Enter getUser - [phone: %s, identity: %s]", phone, identity);
+            LOGGER.debug("Enter getUser - [phone: %s, query: %s]", query);
 
         try
         {
-            if (Strings.isNotEmpty(phone))
+            if (!Strings.isNotEmpty(query))
             {
-                return ResponseData.success(userService.findByUserPhone(phone));
-            }
-
-            if (Strings.isNotEmpty(identity))
-            {
-                return ResponseData.success(userService.findByUserIdentity(identity));
+                return ValidatorUtil.isMobile(query) ?
+                        ResponseData.success(userService.findByUserPhone(query)) :
+                        ResponseData.success(userService.findByUserIdentity(query));
             }
 
             return ResponseData.success(userService.getAll());
