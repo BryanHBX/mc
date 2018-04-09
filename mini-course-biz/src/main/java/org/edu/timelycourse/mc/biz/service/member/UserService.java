@@ -128,7 +128,7 @@ public class UserService extends BaseService<User>
 
     public User findByUserIdentity (String userIdentity)
     {
-        if (Strings.isNullOrEmpty(userIdentity))
+        if (!Strings.isNullOrEmpty(userIdentity))
         {
             return userRepository.getByUserId(userIdentity);
         }
@@ -148,7 +148,7 @@ public class UserService extends BaseService<User>
 
     public User findByUserPhone (String userPhone)
     {
-        if (Strings.isNullOrEmpty(userPhone))
+        if (!Strings.isNullOrEmpty(userPhone))
         {
             return userRepository.getByUserPhone(userPhone);
         }
