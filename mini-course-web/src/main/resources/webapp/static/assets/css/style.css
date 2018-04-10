@@ -18,6 +18,12 @@
     background: url("../images/icons/icon-admin.png") no-repeat left 3px;
 }
 
+.icon-user,
+.tree div.icon-user,
+.accordion .accordionHeader h2 span.icon-user {
+    background: url("../images/icons/icon-user.jpg") no-repeat left 3px;
+}
+
 .icon-finance,
 .tree div.icon-finance,
 .accordion .accordionHeader h2 span.icon-finance {
@@ -33,7 +39,7 @@
 .icon-settings,
 .tree div.icon-settings,
 .accordion .accordionHeader h2 span.icon-settings {
-    background: url("../images/icons/icon-settings.png") no-repeat left 3px;
+    background: url("../images/icons/icon-setting.png") no-repeat left 3px;
 }
 
 .icon-system,
@@ -50,19 +56,33 @@
     background: url("../images/icons/menu/system/icon-field.png") no-repeat left 3px;
 }
 
+.icon-contractAdd,
+.tree div.icon-contractAdd,
+.tabsPage .tabsPageHeader li span.icon-contractAdd,
+.accordion .accordionHeader h2 span.icon-contractAdd {
+    background: url("../images/icons/menu/contract/icon-cadd.gif") no-repeat left 3px;
+}
+
+.icon-contractStu,
+.tree div.icon-contractStu,
+.tabsPage .tabsPageHeader li span.icon-contractStu,
+.accordion .accordionHeader h2 span.icon-contractStu {
+    background: url("../images/icons/menu/contract/icon-stu.png") no-repeat left 3px;
+}
+
 
 .icon-contractForm,
 .tree div.icon-contractForm,
 .tabsPage .tabsPageHeader li span.icon-contractForm,
 .accordion .accordionHeader h2 span.icon-contractForm {
-    background: url("../images/icons/menu/humans/icon-contract.png") no-repeat left 3px;
+    background: url("../images/icons/menu/contract/icon-contract.png") no-repeat left 3px;
 }
 
 .icon-contractList,
 .tree div.icon-contractList,
 .tabsPage .tabsPageHeader li span.icon-contractList,
 .accordion .accordionHeader h2 span.icon-contractList {
-    background: url("../images/icons/menu/humans/icon-list.jpg") no-repeat left 3px;
+    background: url("../images/icons/menu/contract/icon-clist.png") no-repeat left 3px;
 }
 
 .icon-financeContract,
@@ -78,7 +98,6 @@
 .tabsPage .tabsPageHeader li span.icon-financeInvoice,
 .accordion .accordionHeader h2 span.icon-financeInvoice {
     background: url("../images/icons/menu/finance/icon-invoice.png") no-repeat left 3px;
-    padding: 0 0 0 20px;
 }
 
 
@@ -87,7 +106,28 @@
 .tabsPage .tabsPageHeader li span.icon-financeAttendance,
 .accordion .accordionHeader h2 span.icon-financeAttendance {
     background: url("../images/icons/menu/finance/icon-attendance.png") no-repeat left 3px;
-    padding: 0 0 0 20px;
+}
+
+
+.icon-academicPlan,
+.tree div.icon-academicPlan,
+.tabsPage .tabsPageHeader li span.icon-academicPlan,
+.accordion .accordionHeader h2 span.icon-academicPlan {
+    background: url("../images/icons/menu/academic/icon-plan.png") no-repeat left 3px;
+}
+
+.icon-academicAttendance,
+.tree div.icon-academicAttendance,
+.tabsPage .tabsPageHeader li span.icon-academicAttendance,
+.accordion .accordionHeader h2 span.icon-academicAttendance {
+    background: url("../images/icons/menu/academic/icon-attendance.png") no-repeat left 3px;
+}
+
+.icon-academicPeriod,
+.tree div.icon-academicPeriod,
+.tabsPage .tabsPageHeader li span.icon-academicPeriod,
+.accordion .accordionHeader h2 span.icon-academicPeriod {
+    background: url("../images/icons/menu/academic/icon-period.png") no-repeat left 3px;
 }
 
 
@@ -96,7 +136,6 @@
 .tabsPage .tabsPageHeader li span.icon-financeConsumption,
 .accordion .accordionHeader h2 span.icon-financeConsumption {
     background: url("../images/icons/menu/finance/icon-consumption.png") no-repeat left 3px;
-    padding: 0 0 0 20px;
 }
 
 
