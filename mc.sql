@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 09/04/2018 23:48:12
+ Date: 10/04/2018 23:40:16
 */
 
 SET NAMES utf8mb4;
@@ -82,10 +82,30 @@ INSERT INTO `t_school` VALUES (3, 'string', 'string12', 'string12', 0, '2018-04-
 DROP TABLE IF EXISTS `t_school_contract`;
 CREATE TABLE `t_school_contract`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `contract_no` varchar(80) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `student_id` int(11) NOT NULL,
+  `contract_no` varchar(80) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '合同编号',
+  `student_id` int(11) NOT NULL COMMENT '学生ID',
+  `consult_id` int(11) NOT NULL COMMENT '咨询师ID',
+  `contract_type` tinyint(4) NOT NULL COMMENT '报名类型',
+  `period_enroll` double(4, 0) NOT NULL COMMENT '报名课时',
+  `period_free` double(4, 0) NULL DEFAULT NULL COMMENT '赠送课时',
+  `contract_price` double(4, 0) NULL DEFAULT NULL COMMENT '签约总价',
+  `discount_price` double(4, 0) NULL DEFAULT NULL COMMENT '优惠',
+  `total_price` double(4, 0) NOT NULL COMMENT '实收金额',
+  `cfg_level` int(4) NULL DEFAULT NULL COMMENT '学生年段',
+  `cfg_subLevel` int(4) NULL DEFAULT NULL COMMENT '细分年段',
+  `cfg_course` int(4) NULL DEFAULT NULL COMMENT '课程名称',
+  `cfg_subCourse` int(4) NULL DEFAULT NULL COMMENT '课程子类',
+  `contract_date` date NOT NULL COMMENT '签约日期',
+  `creationTime` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `recorder` int(4) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_school_contract
+-- ----------------------------
+INSERT INTO `t_school_contract` VALUES (1, 'fea', 1, 12, 2, 12, 0, 12, 0, 12, 41, 43, 18, 21, '2018-04-24', '2018-04-10 22:50:53', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for t_school_invoice
@@ -93,12 +113,22 @@ CREATE TABLE `t_school_contract`  (
 DROP TABLE IF EXISTS `t_school_invoice`;
 CREATE TABLE `t_school_invoice`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `contract_id` int(11) NULL DEFAULT NULL,
-  `invoice_no` int(11) NULL DEFAULT NULL,
-  `pay_money` double NULL DEFAULT NULL,
-  `pay_type` tinyint(4) NULL DEFAULT NULL,
+  `contract_id` int(11) NOT NULL COMMENT '合同ID',
+  `invoice_no` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '收据编号',
+  `fee_amount` double NOT NULL COMMENT '支付金额',
+  `fee_type` tinyint(4) NULL DEFAULT NULL COMMENT '支付方式',
+  `creationTime` datetime NULL DEFAULT NULL,
+  `updateTime` datetime NULL DEFAULT NULL,
+  `recorder` int(4) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
+) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_school_invoice
+-- ----------------------------
+INSERT INTO `t_school_invoice` VALUES (1, 1, '124', 123, 1, '2018-04-10 22:50:53', NULL, NULL);
+INSERT INTO `t_school_invoice` VALUES (2, 1, '1241', 24, 3, '2018-04-10 22:50:53', NULL, NULL);
+INSERT INTO `t_school_invoice` VALUES (3, 1, '123', 231, 4, '2018-04-10 22:50:53', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for t_school_product
@@ -121,15 +151,26 @@ CREATE TABLE `t_school_product`  (
 DROP TABLE IF EXISTS `t_school_student`;
 CREATE TABLE `t_school_student`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `s_name` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `s_wxid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `s_contactName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `s_contactType` tinyint(4) NOT NULL,
-  `s_contactPhone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `s_meto` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `memberId` int(11) NOT NULL,
+  `s_name` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '学生姓名',
+  `s_wxid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信ID',
+  `s_contactName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '联系人姓名',
+  `s_contactRelation` tinyint(4) NOT NULL COMMENT '联系人关系',
+  `s_contactPhone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '联系人方式',
+  `s_meto` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '其他备注',
+  `consultant_id` int(11) NOT NULL COMMENT '咨询师ID',
+  `cfg_level` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `cfg_subLevel` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `cfg_course` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `cfg_subCourse` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `creationTime` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `updateTime` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_school_student
+-- ----------------------------
+INSERT INTO `t_school_student` VALUES (1, '12142', 'fewa', '142141', 3, '12421', '', 12, '41', '43', '18', '21', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for t_sys_config
@@ -142,7 +183,7 @@ CREATE TABLE `t_sys_config`  (
   `c_single` tinyint(4) NULL DEFAULT NULL,
   `c_parent` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 40 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 47 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_sys_config
@@ -154,11 +195,18 @@ INSERT INTO `t_sys_config` VALUES (21, '种类', '种类', NULL, 18);
 INSERT INTO `t_sys_config` VALUES (31, 'C1_1', '音乐', 0, 21);
 INSERT INTO `t_sys_config` VALUES (30, 'C5', '机械舞', 0, 22);
 INSERT INTO `t_sys_config` VALUES (22, 'C1_2', '舞蹈', 0, 21);
-INSERT INTO `t_sys_config` VALUES (16, 'C_TYPE', '课程种类', 0, NULL);
+INSERT INTO `t_sys_config` VALUES (16, 'C_CRS_TYPE', '课程种类', 0, NULL);
+INSERT INTO `t_sys_config` VALUES (41, 'STU_LEVEL_1', '小学', 0, 40);
 INSERT INTO `t_sys_config` VALUES (18, '艺术体育', '艺术体育', 0, 16);
 INSERT INTO `t_sys_config` VALUES (32, 'M_1', '流行音乐', 0, 31);
 INSERT INTO `t_sys_config` VALUES (34, 'M_3', '古典音乐', 0, 31);
+INSERT INTO `t_sys_config` VALUES (42, 'STU_LEVEL_2', '早教', 0, 40);
+INSERT INTO `t_sys_config` VALUES (43, 'STU_LEVEL_1_1', '小一', 0, 41);
 INSERT INTO `t_sys_config` VALUES (39, '51', '画画', 0, 21);
+INSERT INTO `t_sys_config` VALUES (40, 'C_STU_LEVEL', '学生年段', NULL, NULL);
+INSERT INTO `t_sys_config` VALUES (44, 'STU_LEVEL_1_2', '小二', 0, 41);
+INSERT INTO `t_sys_config` VALUES (45, 'STU_LEVEL_2_1', '早一', 0, 42);
+INSERT INTO `t_sys_config` VALUES (46, 'STU_LEVEL_2_2', '早二', 0, 42);
 
 -- ----------------------------
 -- Table structure for t_sys_config_val
