@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/${api.version}/school")
-@Api(tags = { "平台学校API" })
+@Api(tags = { "学校信息API" })
 public class SchoolController extends BaseController
 {
     private static Logger LOGGER = LoggerFactory.getLogger(SchoolController.class);

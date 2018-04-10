@@ -152,10 +152,4 @@ public class UserService extends BaseService<UserModel>
 
         throw new ServiceException(String.format("Invalid user phone %s",  userPhone));
     }
-
-    public static void main (String[] args)
-    {
-        String value = "1";
-        System.out.println(Enums.getIfPresent(EUserStatus.class, "ENABLED").isPresent());
-    }
 }

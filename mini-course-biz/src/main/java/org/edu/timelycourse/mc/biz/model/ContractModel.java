@@ -1,9 +1,13 @@
 package org.edu.timelycourse.mc.biz.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.apache.logging.log4j.util.Strings;
+import org.edu.timelycourse.mc.biz.enums.EEnrollmentType;
 import org.edu.timelycourse.mc.biz.model.BaseEntity;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class ContractModel extends BaseEntity
@@ -93,9 +97,31 @@ public class ContractModel extends BaseEntity
      */
     private StudentModel student;
 
+    /**
+     * 收据列表
+     */
+    private List<InvoiceModel> invoices;
+
     @Override
     public boolean isValid()
     {
-        return true;
+        boolean valid = EEnrollmentType.hasValue(enrollType) && Strings.isNotEmpty(contractNo) &&
+                isValidFloat(contractPrice, totalPrice) &&
+                isValidId(consultantId, levelId, subLevelId, courseId, subCourseId) &&
+                student.isValid() && contractDate != null;
+
+        if (valid && invoices != null)
+        {
+            for (InvoiceModel invoice : invoices)
+            {
+                valid = invoice.isValid();
+                if (!valid)
+                {
+                    break;
+                }
+            }
+        }
+
+        return valid;
     }
 }

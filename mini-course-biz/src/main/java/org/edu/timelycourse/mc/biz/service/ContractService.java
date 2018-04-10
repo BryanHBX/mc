@@ -1,9 +1,13 @@
 package org.edu.timelycourse.mc.biz.service;
 
 import org.edu.timelycourse.mc.biz.model.ContractModel;
+import org.edu.timelycourse.mc.biz.model.InvoiceModel;
+import org.edu.timelycourse.mc.biz.model.StudentModel;
 import org.edu.timelycourse.mc.biz.repository.ContractRepository;
+import org.edu.timelycourse.mc.biz.repository.InvoiceRepository;
 import org.edu.timelycourse.mc.biz.repository.StudentRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
+import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,24 +25,64 @@ public class ContractService extends BaseService<ContractModel>
 
     private StudentRepository studentRepository;
 
+    private InvoiceRepository invoiceRepository;
+
     @Autowired
     public ContractService(ContractRepository repository,
-                           StudentRepository studentRepository)
+                           StudentRepository studentRepository,
+                           InvoiceRepository invoiceRepository)
     {
         super(repository);
         this.studentRepository = studentRepository;
+        this.invoiceRepository = invoiceRepository;
     }
 
     @Override
-    public ContractModel add(ContractModel entity)
+    public ContractModel add(ContractModel model)
     {
-        if (entity.getStudentId() != null && entity.getStudentId() > 0)
+        StudentModel studentEntity = model.getStudent();
+        if (studentEntity != null)
         {
-            Asserts.assertEntityNotNullById(studentRepository, entity.getStudentId());
+            studentEntity.setConsultantId(model.getConsultantId());
+            studentEntity.setCourseId(model.getCourseId());
+            studentEntity.setLevelId(model.getLevelId());
+            studentEntity.setSubCourseId(model.getSubCourseId());
+            studentEntity.setSubLevelId(model.getSubLevelId());
+
+            if (model.isValid())
+            {
+                // in case student been selected from suggest lookup
+                if (model.getStudentId() != null && model.getStudentId() > 0)
+                {
+                    studentEntity = (StudentModel) Asserts.assertEntityNotNullById(studentRepository, model.getStudentId());
+                }
+                else
+                {
+                    studentRepository.insert(model.getStudent());
+                }
+
+                model.setStudentId(studentEntity.getId());
+                model.setCreationTime(new Date());
+
+                // add contract
+                super.add(model);
+
+                // add invoices
+                if (model.getInvoices() != null)
+                {
+                    for (InvoiceModel invoice : model.getInvoices())
+                    {
+                        invoice.setCreationTime(new Date());
+                        invoice.setContractId(model.getId());
+                        invoiceRepository.insert(invoice);
+                    }
+                }
+
+                return model;
+            }
         }
 
-        entity.setCreationTime(new Date());
-        return super.add(entity);
+        throw new ServiceException(String.format("Invalid model data to add, %s", model));
     }
 
     @Override

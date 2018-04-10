@@ -1,6 +1,8 @@
 package org.edu.timelycourse.mc.biz.model;
 
 import lombok.Data;
+import org.apache.logging.log4j.util.Strings;
+import org.edu.timelycourse.mc.biz.enums.EPaymentType;
 import org.edu.timelycourse.mc.biz.model.BaseEntity;
 
 import java.util.Date;
@@ -41,6 +43,6 @@ public class InvoiceModel extends BaseEntity
     @Override
     public boolean isValid()
     {
-        return true;
+        return EPaymentType.hasValue(type) && price > 0 && Strings.isNotEmpty(invoiceNo);
     }
 }

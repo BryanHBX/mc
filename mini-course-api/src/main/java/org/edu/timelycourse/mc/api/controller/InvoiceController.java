@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/${api.version}/invoice")
-@Api(tags = { "平台收据API" })
+@Api(tags = { "合同收据API" })
 public class InvoiceController extends BaseController
 {
     private static Logger LOGGER = LoggerFactory.getLogger(InvoiceController.class);

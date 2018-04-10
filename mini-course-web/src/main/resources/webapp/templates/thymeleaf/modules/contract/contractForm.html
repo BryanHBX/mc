@@ -132,18 +132,18 @@
                     <table class="list nowrap itemDetail" addButton="添加收据" rowNumWidth="30">
                         <thead>
                             <tr>
-                                <th type="text" width="" name="items[#index#][invoiceNo]" fieldClass="required">收据编号</th>
-                                <th type="text" width="" name="items[#index#][price]" defaultVal="0.00" size="12" fieldClass="number required">支付金额</th>
-                                <th type="enum" width="80" name="items[#index#][type]" enum="现金:1,转账:2,微信:3,支付宝:4,其他:5">支付方式</th>
+                                <th type="text" width="" name="invoices[][invoiceNo]" fieldClass="required">收据编号</th>
+                                <th type="text" width="" name="invoices[][price]" defaultVal="0.00" size="12" fieldClass="number required">支付金额</th>
+                                <th type="enum" width="80" name="invoices[][type]" enum="现金:1,转账:2,微信:3,支付宝:4,其他:5">支付方式</th>
                                 <th type="del" width="60" align="center">操作</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="unitBox">
-                                <td><input type="text" name="items[0][invoiceNo]" value="" size="12" class="required" maxlength="10"></td>
-                                <td><input type="text" name="items[0][price]" value="0.00" size="12" class="required number textInput"></td>
+                                <td><input type="text" name="invoices[][invoiceNo]" value="" size="12" class="required" maxlength="10"></td>
+                                <td><input type="text" name="invoices[][price]" value="0.00" size="12" class="required number textInput"></td>
                                 <td>
-                                    <select class="combox" style="width: 80px" name="items[0][type]">
+                                    <select class="combox" style="width: 80px" name="invoices[][type]">
                                         <option value="1">现金</option>
                                         <option value="2">转账</option>
                                         <option value="3">微信</option>
@@ -179,16 +179,9 @@
                 return false;
             }
 
-            var base = "system/config";
-            var jsonData = $("#contractForm").serializeJSON();
-            var isPatch = jsonData.id != "" && jsonData.id > 0;
-            var uri = isPatch ? (base + "/" + jsonData.id) : base;
-            var type = isPatch ? "PATCH" : "POST";
-
-            generic_ajax_op(uri, type, jsonData, null, (
+            generic_ajax_op("contract", "POST", $("#contractForm").serializeJSON(), null, (
                 function(result) {
-                    $.pdialog.closeCurrent();
-                    alertMsg.correct("子配置項 '" + result.data.configDescription + "' " + (isPatch ? "更新" : "添加") + "成功");
+                    alertMsg.correct("合同添加成功");
                     reloadConfigNavTab();
                 }
             ));
