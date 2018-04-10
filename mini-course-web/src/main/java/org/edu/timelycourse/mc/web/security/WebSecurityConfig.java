@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.web.security;
 
+import org.edu.timelycourse.mc.common.security.RefererRedirectionAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

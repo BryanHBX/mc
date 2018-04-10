@@ -88,6 +88,11 @@ public class ContractModel extends BaseEntity
      */
     private Date lastUpdateTime;
 
+    /**
+     * 学生信息
+     */
+    private StudentModel student;
+
     @Override
     public boolean isValid()
     {

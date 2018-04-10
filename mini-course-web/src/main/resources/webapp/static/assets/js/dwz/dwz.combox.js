@@ -20,24 +20,45 @@
 	
 	var _onchange = function(event){
 		var $ref = $("#"+event.data.ref);
+		var $parent = event.data.$this;
+
 		if ($ref.size() == 0) return false;
+
+		if (encodeURIComponent(event.data.$this.val()) == "" &&
+			$parent.attr("callIfEmpty") == "false") {
+            var html = '<option value="">请选择</option>';
+            var $refCombox = $ref.parents("div.combox:first");
+            $ref.html(html).insertAfter($refCombox);
+            $refCombox.remove();
+            $ref.trigger("change").combox();
+            return;
+		}
+
 		$.ajax({
-			type:'POST', dataType:"json", url:event.data.refUrl.replace("{value}", encodeURIComponent(event.data.$this.val())), cache: false,
+			type:'GET', dataType:"json", url:event.data.refUrl.replace("{value}", encodeURIComponent(event.data.$this.val())), cache: false,
 			data:{},
 			success: function(json){
-				_comboxRefresh($ref, json);
+				_comboxRefresh($ref, event.data.$this, event.data.$this.attr("data") ? json[event.data.$this.attr("data")] : json);
 			},
 			error: DWZ.ajaxError
 		});
 	};
 
-	var _comboxRefresh = function($select, json){
+	var _comboxRefresh = function($select, $parent, json){
 		if (!json) return;
 		var html = '';
 
+		if (!json.length && $parent.attr("group")) {
+            json = json[$parent.attr("group")];
+		}
+
 		$.each(json, function(i){
-			if (json[i] && json[i].length > 1){
-				html += '<option value="'+json[i][0]+'">' + json[i][1] + '</option>';
+			if ($parent.attr("optName") && $parent.attr("optVal")) {
+				html += '<option value="' + json[i][$parent.attr("optVal")] + '">' + json[i][$parent.attr("optName")] + '</option>';
+			} else {
+                if (json[i] && json[i].length > 1) {
+                    html += '<option value="' + json[i][0] + '">' + json[i][1] + '</option>';
+                }
 			}
 		});
 
@@ -73,6 +94,11 @@
 							if(top + options.height() > $(window).height() - 20) {
 								top =  $(window).height() - 20 - options.height();
 							}
+							var boxWidth = box.css("width");
+							if (boxWidth) {
+								options.css({width: parseInt(boxWidth) - 20 });
+							}
+
 							options.css({top:top,left:box.offset().left}).show();
 							killAllBox(box.attr("id"));
 							$(document).click(killAllBox);
@@ -122,15 +148,22 @@
 				var label = $('option[value="' + value + '"]',$this).text();
 				var ref = $this.attr("ref");
 				var refUrl = $this.attr('refUrl') || '';
+
+				if (refUrl && openApiContextPath) {
+					refUrl = openApiContextPath + "/" + refUrl;
+				}
+
 				var resetValue = $this.attr('reset-value') !== undefined ? $this.attr('reset-value') : value
 
+				var width = $this.css("width");
+
 				var cid = $this.attr("id") || Math.round(Math.random()*10000000);
-				var select = '<div class="combox"><div id="combox_'+ cid +'" class="select"' + (ref?' ref="' + ref + '"' : '') + '>';
-				select += '<a href="javascript:" name="' + name +'" value="' + value + '" default-value="'+resetValue+'">' + label +'</a></div></div>';
-				var options = '<ul class="comboxop" id="op_combox_'+ cid +'">';
+				var select = '<div class="combox" ' + (width ? 'style="width:' + width + '"' : '') + '><div id="combox_'+ cid +'" class="select"' + (ref?' ref="' + ref + '"' : '') + '>';
+				select += '<a '+ (width ? 'style="width:' + (parseInt(width) - 28) + 'px"' : '') +  + ' href="javascript:" name="' + name +'" value="' + value + '" default-value="'+resetValue+'">' + label +'</a></div></div>';
+				var options = '<ul ' + (width ? 'style="width:' + (parseInt(width) - 28) + 'px"' : '') + 'class="comboxop" id="op_combox_'+ cid +'">';
 				$("option", $this).each(function(){
 					var option = $(this);
-					options +="<li><a class=\""+ ((value||option[0].text) && value==option[0].value?"selected":"") +"\" href=\"#\" value=\"" + option[0].value + "\">" + option[0].text + "</a></li>";
+					options +="<li><a " + (width ? "style='display:block; width:" + (parseInt(width) - 30) + "px'" : '') + " class=\""+ ((value||option[0].text) && value==option[0].value?"selected":"") +"\" href=\"#\" value=\"" + option[0].value + "\">" + option[0].text + "</a></li>";
 				});
 				options +="</ul>";
 				

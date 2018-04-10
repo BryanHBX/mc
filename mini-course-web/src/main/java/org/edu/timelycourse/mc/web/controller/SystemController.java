@@ -13,9 +13,9 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminController extends AbstractController
+public class SystemController extends AbstractController
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SystemController.class);
 
     @RequestMapping("/user/org")
     public String showOrganizationUserList ()

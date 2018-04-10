@@ -1,6 +1,5 @@
 package org.edu.timelycourse.mc.biz.model;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 
@@ -33,15 +32,10 @@ public class SystemConfigModel extends BaseEntity
      */
     private int single;
 
-    //private SystemConfigModel parent;
-
     /**
      * 子配置项
      */
     private List<SystemConfigModel> children;
-
-    @ApiModelProperty(required = false, hidden = true)
-    private List<SystemConfigValue> values;
 
     public boolean hasMultipleValue ()
     {

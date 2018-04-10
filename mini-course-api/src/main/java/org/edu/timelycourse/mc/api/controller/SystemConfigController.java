@@ -39,8 +39,7 @@ public class SystemConfigController extends BaseController
         {
             if (Strings.isNotEmpty(configName))
             {
-                SystemConfigModel entity = assertEntityNotNullByName(configName);
-                return ResponseData.success(Lists.newArrayList(entity));
+                return ResponseData.success(assertEntityNotNullByName(configName));
             }
 
             return ResponseData.success(sysConfigService.getAll());

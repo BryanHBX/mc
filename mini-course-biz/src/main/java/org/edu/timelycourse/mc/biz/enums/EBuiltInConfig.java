@@ -1,23 +1,25 @@
 package org.edu.timelycourse.mc.biz.enums;
 
-public enum EEnrollmentType
+public enum EBuiltInConfig
 {
-    FRESHER     (1, "新报"),
-    CONTINUED   (2, "续保");
+    STUDENT_LEVEL     ("C_STU_LEVEL",       "学生年段"),
+    STUDENT_SUBLEVEL  ("C_STU_SUB_LEVEL",   "细分年段"),
+    COURSE_TYPE       ("C_CRS_TYPE",        "课程名称"),
+    COURSE_SUBTYPE    ("C_CRS_SUB_TYPE",    "课程子类");
 
-    private Integer code;
+    private String code;
     private String label;
 
-    EEnrollmentType(Integer code, String label)
+    EBuiltInConfig(String code, String label)
     {
         this.code = code;
         this.label = label;
     }
 
-    public Integer code()
-    {
-        return this.code;
-    }
+    public String code()
+{
+    return this.code;
+}
 
     public String label()
     {
@@ -26,7 +28,7 @@ public enum EEnrollmentType
 
     public static String getLabel(String name)
     {
-        for (EEnrollmentType item : EEnrollmentType.values())
+        for (EBuiltInConfig item : EBuiltInConfig.values())
         {
             if (item.name().equals(name))
             {
@@ -37,9 +39,9 @@ public enum EEnrollmentType
         return name;
     }
 
-    public static Integer getCode(String name)
+    public static String getCode(String name)
     {
-        for (EEnrollmentType item : EEnrollmentType.values())
+        for (EBuiltInConfig item : EBuiltInConfig.values())
         {
             if (item.name().equals(name))
             {
@@ -51,7 +53,7 @@ public enum EEnrollmentType
 
     public static boolean hasValue (Integer code)
     {
-        for (EEnrollmentType item : EEnrollmentType.values())
+        for (EBuiltInConfig item : EBuiltInConfig.values())
         {
             if (item.code().equals(code))
             {
