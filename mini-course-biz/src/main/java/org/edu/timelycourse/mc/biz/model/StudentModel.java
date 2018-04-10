@@ -47,11 +47,6 @@ public class StudentModel extends BaseEntity
     private Integer consultantId;
 
     /**
-     * 学生ID
-     */
-    private Integer studentId;
-
-    /**
      * 学生年段
      */
     private Integer levelId;
