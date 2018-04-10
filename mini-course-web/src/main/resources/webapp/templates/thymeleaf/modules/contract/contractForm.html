@@ -1,12 +1,16 @@
+<style>
+    #contractForm .textInput {width: 155px;}
+    #contractForm span.error {left: auto;}
+</style>
 <h2 class="contentTitle">合同录入</h2>
 <div xmlns:th="http://www.thymeleaf.org" class="pageContent">
-    <form method="post" action="" class="pageForm required-validate"  novalidate="novalidate">
+    <form method="post" action="" class="pageForm required-validate" id="contractForm" novalidate="novalidate">
         <div class="pageFormContent " layouth="87" style="overflow: auto;">
             <fieldset>
                 <legend>合同信息</legend>
                 <dl>
                     <dt>绑定微信号：</dt>
-                    <dd><input name="student.wxId" type="text" class="textInput required"></dd>
+                    <dd><input name="student[wxId]" type="text" class="textInput required"></dd>
                 </dl>
                 <dl>
                     <dt>合同编号：</dt>
@@ -14,7 +18,7 @@
                 </dl>
                 <dl>
                     <dt>咨询师：</dt>
-                    <dd><input name="consultantId" type="text" class="required textInput" ></dd>
+                    <dd><input name="consultantId" type="text" class="required textInput"></dd>
                 </dl>
                 <dl>
                     <dt>报名类型：</dt>
@@ -27,12 +31,12 @@
                 </dl>
                 <dl>
                     <dt>学生姓名：</dt>
-                    <dd><input readonly="true" name="student.name" type="text" class="textInput required"></dd>
+                    <dd><input name="student[name]" type="text" class="textInput required"></dd>
                 </dl>
                 <dl>
                     <dt>学生年段：</dt>
                     <dd>
-                        <select class="combox" name="levelId" style="width: 160px"
+                        <select class="combox required" name="levelId" style="width: 160px"
                                 ref="r_subLevel" refUrl="system/config/{value}" callIfEmpty="false"
                                 data="data" group="children" optName="configDescription" optVal="id"
                                 th:if="${not #lists.isEmpty(level.children)}"
@@ -45,7 +49,7 @@
                 <dl>
                     <dt>细分年段：</dt>
                     <dd>
-                        <select class="combox" name="subLevelId" style="width: 160px" id="r_subLevel">
+                        <select class="combox required" name="subLevelId" style="width: 160px" id="r_subLevel">
                             <option value="">请选择</option>
                         </select>
                     </dd>
@@ -53,7 +57,7 @@
                 <dl>
                     <dt>课程名称：</dt>
                     <dd>
-                        <select class="combox" name="courseId" style="width: 160px"
+                        <select class="combox required" name="courseId" style="width: 160px"
                                 ref="r_subCourse" refUrl="system/config/{value}" callIfEmpty="false"
                                 data="data" group="children" optName="configDescription" optVal="id"
                                 th:if="${not #lists.isEmpty(course.children)}"
@@ -66,7 +70,7 @@
                 <dl>
                     <dt>课程子类：</dt>
                     <dd>
-                        <select class="combox" name="subCourseId" style="width: 160px" id="r_subCourse">
+                        <select class="combox required" name="subCourseId" style="width: 160px" id="r_subCourse">
                             <option value="">请选择</option>
                         </select>
                     </dd>
@@ -97,12 +101,12 @@
                 </dl>
                 <dl>
                     <dt>联系人姓名：</dt>
-                    <dd><input name="student.contactName" type="text" class="textInput"></dd>
+                    <dd><input name="student[contactName]" type="text" class="textInput"></dd>
                 </dl>
                 <dl>
                     <dt>联系人关系：</dt>
                     <dd>
-                        <select class="combox" style="width: 160px" name="student.contactRelationType">
+                        <select class="combox" style="width: 160px" name="student[contactRelationType]">
                             <option value="1">父亲</option>
                             <option value="2">母亲</option>
                             <option value="3">爷爷</option>
@@ -114,32 +118,32 @@
                 </dl>
                 <dl>
                     <dt>联系方式：</dt>
-                    <dd><input name="student.contactPhone" type="text" class="textInput"></dd>
+                    <dd><input name="student[contactPhone]" type="text" class="textInput"></dd>
                 </dl>
                 <dl>
                     <dt>其他备注方式：</dt>
-                    <dd><input name="student.meto" type="text" alt="如学校信息/家庭地址等" class="textInput"></dd>
+                    <dd><input name="student[meto]" type="text" alt="如学校信息/家庭地址等" class="textInput"></dd>
                 </dl>
                 </table>
             </fieldset>
             <fieldset>
                 <legend>收据信息</legend>
                 <div style="max-height: 200px; overflow: auto;" id="cform">
-                    <table class="list nowrap itemDetail" addButton="添加收据" width="100%">
+                    <table class="list nowrap itemDetail" addButton="添加收据" rowNumWidth="30">
                         <thead>
                             <tr>
-                                <th type="text" width="" name="items[#index#].invoiceNo" fieldClass="required">收据编号</th>
-                                <th type="text" width="" name="items[#index#].price" defaultVal="0.00" size="12" fieldClass="number required">支付金额</th>
-                                <th type="enum" width="" name="items[#index#].type" enum="现金,转账,微信,支付宝,其他">支付方式</th>
+                                <th type="text" width="" name="items[#index#][invoiceNo]" fieldClass="required">收据编号</th>
+                                <th type="text" width="" name="items[#index#][price]" defaultVal="0.00" size="12" fieldClass="number required">支付金额</th>
+                                <th type="enum" width="80" name="items[#index#][type]" enum="现金:1,转账:2,微信:3,支付宝:4,其他:5">支付方式</th>
                                 <th type="del" width="60" align="center">操作</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="unitBox">
-                                <td><input type="text" name="items[0].invoiceNo" value="" size="12" class="required" maxlength="10"></td>
-                                <td><input type="text" name="items[0].price" value="0.00" size="12" class="required number textInput"></td>
+                                <td><input type="text" name="items[0][invoiceNo]" value="" size="12" class="required" maxlength="10"></td>
+                                <td><input type="text" name="items[0][price]" value="0.00" size="12" class="required number textInput"></td>
                                 <td>
-                                    <select class="combox" style="width: 80px" name="items[0].type">
+                                    <select class="combox" style="width: 80px" name="items[0][type]">
                                         <option value="1">现金</option>
                                         <option value="2">转账</option>
                                         <option value="3">微信</option>
@@ -167,3 +171,27 @@
         </div>
     </form>
 </div>
+
+<script>
+    $(function(){
+        $("#btnSaveContract").unbind("click").bind("click", function(){
+            if (!$("#contractForm").valid()) {
+                return false;
+            }
+
+            var base = "system/config";
+            var jsonData = $("#contractForm").serializeJSON();
+            var isPatch = jsonData.id != "" && jsonData.id > 0;
+            var uri = isPatch ? (base + "/" + jsonData.id) : base;
+            var type = isPatch ? "PATCH" : "POST";
+
+            generic_ajax_op(uri, type, jsonData, null, (
+                function(result) {
+                    $.pdialog.closeCurrent();
+                    alertMsg.correct("子配置項 '" + result.data.configDescription + "' " + (isPatch ? "更新" : "添加") + "成功");
+                    reloadConfigNavTab();
+                }
+            ));
+        });
+    });
+</script>

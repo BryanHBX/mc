@@ -252,7 +252,8 @@
 						suggestFields: $th.attr("suggestFields"),
 						postField: $th.attr("postField") || "",
 						fieldClass: $th.attr("fieldClass") || "",
-						fieldAttrs: $th.attr("fieldAttrs") || ""
+						fieldAttrs: $th.attr("fieldAttrs") || "",
+						width: $th.attr("width") || ""
 					};
 					fields.push(field);
 				});
@@ -289,7 +290,8 @@
 				var addButTxt = $table.attr('addButton') || "Add New";
 				if (addButTxt) {
 					var $addBut = $('<div class="button"><div class="buttonContent"><button type="button">'+addButTxt+'</button></div></div>').insertBefore($table).find("button");
-					var $rowNum = $('<input type="text" name="dwz_rowNum" class="textInput" style="margin:2px;" value="1" size="2"/>').insertBefore($table);
+					var $rowNum = $('<input type="text" name="dwz_rowNum" class="textInput" style="margin:2px;' +
+						($table.attr("rowNumWidth") ? "width:" + $table.attr("rowNumWidth")+ "px": "") + '" value="1" />').insertBefore($table);
 					
 					var trTm = "";
 					$addBut.click(function(){
@@ -376,10 +378,13 @@
                                 }
                             });
                         } else if (field.enum != "") {
-							var select = "<select class='combox'>";
+							var select = "<select class='combox' name='" + field.name + "'" + (field.width ? " style='width: " + field.width + "px'" : "") + ">";
 							var options = field.enum.split(",");
 							for (var i = 0; i < options.length; i++) {
-                            	select += "<option value='" + options[i] + "'>" + options[i] + "</option>";
+								var entry = options[i].split(":");
+								var name = entry[0];
+								var value = entry.length > 1 ? entry[1] : entry[0];
+                            	select += "<option value='" + value + "'>" + name + "</option>";
                             }
                             select += "</select>";
 							html = select;
