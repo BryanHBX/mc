@@ -1,7 +1,7 @@
 package org.edu.timelycourse.mc.biz.service;
 
 import org.edu.timelycourse.mc.biz.model.SchoolModel;
-import org.edu.timelycourse.mc.biz.repository.SchoolInfoRepository;
+import org.edu.timelycourse.mc.biz.repository.SchoolRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +13,12 @@ import java.util.Date;
  * Created by x36zhao on 2017/3/17.
  */
 @Service
-public class SchoolInfoService extends BaseService<SchoolModel>
+public class SchoolService extends BaseService<SchoolModel>
 {
-    private static Logger LOGGER = LoggerFactory.getLogger(SchoolInfoService.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(SchoolService.class);
 
     @Autowired
-    public SchoolInfoService(SchoolInfoRepository repository)
+    public SchoolService(SchoolRepository repository)
     {
         super(repository);
     }

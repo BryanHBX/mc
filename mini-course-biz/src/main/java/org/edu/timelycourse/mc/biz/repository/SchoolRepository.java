@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * Created by x36zhao on 2018/3/31.
  */
 @Component
-public interface SchoolInfoRepository extends BaseRepository<SchoolModel>
+public interface SchoolRepository extends BaseRepository<SchoolModel>
 {
     SchoolModel getBySchoolName(@Param("name") String schoolName);
 }

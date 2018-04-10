@@ -1,4 +1,4 @@
-package org.edu.timelycourse.mc.biz.service;
+package org.edu.timelycourse.mc.biz.security;
 
 import org.edu.timelycourse.mc.biz.model.UserModel;
 import org.edu.timelycourse.mc.biz.repository.UserRepository;

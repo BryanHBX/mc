@@ -7,7 +7,7 @@ import org.edu.timelycourse.mc.biz.enums.EUserStatus;
 import org.edu.timelycourse.mc.biz.enums.EUserType;
 import org.edu.timelycourse.mc.biz.model.UserModel;
 import org.edu.timelycourse.mc.biz.repository.UserRepository;
-import org.edu.timelycourse.mc.biz.repository.SchoolInfoRepository;
+import org.edu.timelycourse.mc.biz.repository.SchoolRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
@@ -28,10 +28,10 @@ public class UserService extends BaseService<UserModel>
     private static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private UserRepository userRepository;
-    private SchoolInfoRepository schoolInfoRepository;
+    private SchoolRepository schoolInfoRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, SchoolInfoRepository schoolInfoRepository)
+    public UserService(UserRepository userRepository, SchoolRepository schoolInfoRepository)
     {
         super(userRepository);
         this.userRepository = userRepository;

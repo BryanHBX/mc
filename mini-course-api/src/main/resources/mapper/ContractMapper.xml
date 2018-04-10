@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.edu.timelycourse.mc.biz.repository.ContractRepository">
+
+    <cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
+
+    <resultMap type="org.edu.timelycourse.mc.biz.model.ContractModel" id="result_contract">
+        <id property="id" column="id"/>  
+        <result property="contractNo" column="contract_no"/>
+        <result property="studentId" column="student_id"/>
+        <result property="consultantId" column="consult_id"/>
+        <result property="enrollType" column="contract_type"/>
+        <result property="enrollPeriod" column="period_enroll" />
+        <result property="freePeriod" column="period_free" />
+        <result property="contractPrice" column="contract_price"/>
+        <result property="discountPrice" column="discount_price"/>
+        <result property="totalPrice" column="total_price"/>
+        <result property="levelId" column="cfg_level"/>
+        <result property="subLevelId" column="cfg_subLevel" />
+        <result property="courseId" column="cfg_course" />
+        <result property="subCourseId" column="cfg_subCourse"/>
+        <result property="contractDate" column="contract_date"/>
+        <result property="creationTime" column="creationTime"/>
+        <result property="lastUpdateTime" column="updateTime" />
+    </resultMap>
+    
+    <insert id="insert" parameterType="ContractModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `t_school_contract` (
+            contract_no, student_id, consult_id, contract_type, period_enroll, period_free, contract_price, discount_price, total_price,
+            cfg_level, cfg_subLevel, cfg_course, cfg_subCourse, contract_date, creationTime, updateTime
+        ) VALUES (
+            #{contractNo}, #{studentId}, #{consultantId}, #{enrollType}, #{enrollPeriod}, #{freePeriod}, #{contractPrice}, #{discountPrice}, #{totalPrice},
+            #{levelId}, #{subLevelId}, #{courseId}, #{subCourseId}, #{contractDate}, #{creationTime}, #{lastUpdateTime}
+        )
+    </insert>
+
+    <update id="update" parameterType="ContractModel">
+        UPDATE `t_school_contract` SET
+        <set>
+            <if test="contractNo != null and contractNo != ''">`contract_no` = #{contractNo},</if>
+            <if test="consultantId != null and consultantId > -1">`consult_id` = #{consultantId},</if>
+            <if test="enrollType != null and enrollType > -1">`contract_type` = #{enrollType},</if>
+            <if test="enrollPeriod != null and enrollPeriod > 0">`period_enroll` = #{enrollPeriod},</if>
+            <if test="freePeriod != null and freePeriod > -1">`period_free` = #{freePeriod},</if>
+            <if test="contractPrice != null and contractPrice > 0">`contract_price` = #{contractPrice},</if>
+            <if test="discountPrice != null and discountPrice > -1">`discount_price` = #{discountPrice},</if>
+            <if test="totalPrice != null and totalPrice > 0">`total_price` = #{totalPrice},</if>
+            <if test="levelId != null and levelId > -1">`cfg_level` = #{levelId},</if>
+            <if test="subLevelId != null and subLevelId > -1">`cfg_subLevel` = #{subLevelId},</if>
+            <if test="courseId != null and courseId > -1">`cfg_course` = #{courseId},</if>
+            <if test="subCourseId != null and subCourseId > -1">`cfg_subCourse` = #{subCourseId},</if>
+            <if test="contractDate != null">`contract_date` = #{contractDate},</if>
+            <if test="lastUpdateTime != null">`updateTime` = #{lastUpdateTime},</if>
+            `id` = `id`
+        </set>
+        WHERE id = #{id}
+    </update>
+    
+    <select id="get" parameterType="java.lang.Integer" resultMap="result_contract">
+        SELECT * FROM `t_school_contract` where `id` = #{id}
+    </select>
+
+    <update id="delete" parameterType="java.lang.Integer">
+        DELETE FROM `t_school_contract` WHERE `id` = #{id}
+    </update>
+
+    <select id="getByContractNo" parameterType="java.lang.String" resultMap="result_contract">
+        SELECT * FROM `t_school_contract` where `contract_no` = #{contractNo}
+    </select>
+
+    <select id="getAll" resultMap="result_contract">
+        SELECT * FROM `t_school_contract` ORDER BY `contract_date` DESC
+    </select>
+    
+</mapper>

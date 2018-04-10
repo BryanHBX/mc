@@ -2,7 +2,6 @@ package org.edu.timelycourse.mc.biz.service;
 
 import org.edu.timelycourse.mc.biz.model.SystemConfigModel;
 import org.edu.timelycourse.mc.biz.repository.SystemConfigRepository;
-import org.edu.timelycourse.mc.biz.repository.SystemConfigValueRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
@@ -21,16 +20,12 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
     private static Logger LOGGER = LoggerFactory.getLogger(SystemConfigService.class);
 
     private SystemConfigRepository sysConfigRepository;
-    private SystemConfigValueRepository sysConfigValueRepository;
 
     @Autowired
-    public SystemConfigService(SystemConfigRepository sysConfigRepository,
-                               SystemConfigValueRepository sysConfigValueRepository)
+    public SystemConfigService(SystemConfigRepository sysConfigRepository)
     {
         super(sysConfigRepository);
-
         this.sysConfigRepository = sysConfigRepository;
-        this.sysConfigValueRepository = sysConfigValueRepository;
     }
 
     @Override
@@ -68,7 +63,6 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
     public Integer delete(Integer configId)
     {
         Asserts.assertEntityNotNullById(sysConfigRepository, configId);
-        sysConfigValueRepository.deleteByConfigId(configId);
         return sysConfigRepository.delete(configId);
     }
 
@@ -86,7 +80,7 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
     public Integer deleteByConifgName(String configName)
     {
         SystemConfigModel config = assertEntityNotNullByName(configName);
-        return sysConfigValueRepository.deleteByConfigId(config.getId()) + sysConfigRepository.delete(config.getId());
+        return sysConfigRepository.delete(config.getId());
     }
 
     private SystemConfigModel assertEntityNotNullByName (String configName)

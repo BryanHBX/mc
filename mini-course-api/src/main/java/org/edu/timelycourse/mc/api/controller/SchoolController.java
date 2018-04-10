@@ -1,10 +1,9 @@
-package org.edu.timelycourse.mc.api.controller.school;
+package org.edu.timelycourse.mc.api.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.edu.timelycourse.mc.api.controller.BaseController;
 import org.edu.timelycourse.mc.biz.model.SchoolModel;
-import org.edu.timelycourse.mc.biz.service.SchoolInfoService;
+import org.edu.timelycourse.mc.biz.service.SchoolService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
@@ -18,13 +17,13 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/${api.version}/school")
-@Api(tags = { "学校信息API" })
+@Api(tags = { "平台学校API" })
 public class SchoolController extends BaseController
 {
     private static Logger LOGGER = LoggerFactory.getLogger(SchoolController.class);
 
     @Autowired
-    private SchoolInfoService schoolService;
+    private SchoolService schoolService;
 
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all schools or by given query")

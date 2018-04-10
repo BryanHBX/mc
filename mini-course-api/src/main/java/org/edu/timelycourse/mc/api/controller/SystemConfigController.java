@@ -1,13 +1,11 @@
-package org.edu.timelycourse.mc.api.controller.system;
+package org.edu.timelycourse.mc.api.controller;
 
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.util.Strings;
-import org.edu.timelycourse.mc.api.controller.BaseController;
 import org.edu.timelycourse.mc.biz.model.SystemConfigModel;
 import org.edu.timelycourse.mc.biz.service.SystemConfigService;
-import org.edu.timelycourse.mc.biz.service.SystemConfigValueService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
@@ -28,9 +26,6 @@ public class SystemConfigController extends BaseController
 
     @Autowired
     private SystemConfigService sysConfigService;
-
-    @Autowired
-    private SystemConfigValueService sysConfigValueService;
 
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all configs or by given config name")

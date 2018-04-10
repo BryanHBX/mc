@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.edu.timelycourse.mc.biz.repository.InvoiceRepository">
+
+    <cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
+
+    <resultMap type="org.edu.timelycourse.mc.biz.model.InvoiceModel" id="result_invoice">
+        <id property="id" column="id"/>  
+        <result property="contractId" column="contract_id"/>
+        <result property="invoiceNo" column="invoice_no"/>
+        <result property="price" column="fee_amount"/>
+        <result property="type" column="fee_type"/>
+        <result property="creationTime" column="creationTime" />
+        <result property="lastUpdateTime" column="updateTime" />
+    </resultMap>
+    
+    <insert id="insert" parameterType="InvoiceModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `t_school_invoice` (contract_id, invoice_no, fee_amount, fee_type, creationTime)
+          VALUES (#{contractId}, #{invoiceNo}, #{price}, #{type}, #{creationTime})
+    </insert>
+
+    <update id="update" parameterType="InvoiceModel">
+        UPDATE `t_school_invoice` SET
+        <set>
+            <if test="contractId != null and contractId > 0">`contract_id` = #{contractId},</if>
+            <if test="invoiceNo != null and invoiceNo != ''">`invoice_no` = #{invoiceNo},</if>
+            <if test="price != null and price > 0">`fee_amount` = #{price},</if>
+            <if test="type != null and type > -1">`fee_type` = #{type},</if>
+            <if test="updateTime != null">`updateTime` = #{lastUpdateTime},</if>
+            `id` = `id`
+        </set>
+        WHERE id = #{id}
+    </update>
+    
+    <select id="get" parameterType="java.lang.Integer" resultMap="result_invoice">
+        SELECT * FROM `t_school_invoice` where `id` = #{id}
+    </select>
+
+    <update id="delete" parameterType="java.lang.Integer">
+        DELETE FROM `t_school_invoice` WHERE `id` = #{id}
+    </update>
+
+    <select id="getByContractId" parameterType="java.lang.Integer" resultMap="result_invoice">
+        SELECT * FROM `t_school_invoice` where `contract_id` = #{contractId}
+    </select>
+
+    <select id="getAll" resultMap="result_invoice">
+        SELECT * FROM `t_school_invoice` ORDER BY `creationTime` DESC
+    </select>
+    
+</mapper>

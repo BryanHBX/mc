@@ -1,9 +1,8 @@
-package org.edu.timelycourse.mc.api.controller.member;
+package org.edu.timelycourse.mc.api.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.util.Strings;
-import org.edu.timelycourse.mc.api.controller.BaseController;
 import org.edu.timelycourse.mc.biz.model.UserModel;
 import org.edu.timelycourse.mc.biz.service.UserService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
@@ -33,7 +32,7 @@ public class UserController extends BaseController
     public ResponseData getUser(@RequestParam(required = false, value = "query") String query)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug("Enter getUser - [phone: %s, query: %s]", query);
+            LOGGER.debug("Enter getUser - [query: %s]", query);
 
         try
         {

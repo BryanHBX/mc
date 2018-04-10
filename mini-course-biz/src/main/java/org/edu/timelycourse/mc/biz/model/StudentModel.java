@@ -2,6 +2,8 @@ package org.edu.timelycourse.mc.biz.model;
 
 import org.edu.timelycourse.mc.biz.model.BaseEntity;
 
+import java.util.Date;
+
 public class StudentModel extends BaseEntity
 {
     /**
@@ -63,6 +65,16 @@ public class StudentModel extends BaseEntity
      * 课程子类
      */
     private Integer subCourseId;
+
+    /**
+     * 创建时间
+     */
+    private Date creationTime;
+
+    /**
+     * 更新时间
+     */
+    private Date lastUpdateTime;
 
     @Override
     public boolean isValid()

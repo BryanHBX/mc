@@ -3,6 +3,8 @@ package org.edu.timelycourse.mc.biz.model;
 import lombok.Data;
 import org.edu.timelycourse.mc.biz.model.BaseEntity;
 
+import java.util.Date;
+
 @Data
 public class InvoiceModel extends BaseEntity
 {
@@ -25,6 +27,16 @@ public class InvoiceModel extends BaseEntity
      * 支付方式
      */
     private Integer type;
+
+    /**
+     * 收据添加时间
+     */
+    private Date creationTime;
+
+    /**
+     * 收据更新时间
+     */
+    private Date lastUpdateTime;
 
     @Override
     public boolean isValid()
