@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.edu.timelycourse.mc.biz.repository.system.SystemConfigValueRepository">
+<mapper namespace="org.edu.timelycourse.mc.biz.repository.SystemConfigValueRepository">
     
 	<cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
 	
-    <resultMap type="org.edu.timelycourse.mc.biz.model.system.SystemConfigValue" id="result_sysConfValue">
+    <resultMap type="org.edu.timelycourse.mc.biz.model.SystemConfigValue" id="result_sysConfValue">
         <id property="id" column="id"/>  
         <result property="configId" column="c_id"/>
         <result property="configValue" column="c_value"/>
@@ -22,12 +22,12 @@
         SELECT * FROM `t_sys_config_val` WHERE `id` = #{id}
 	</select>
 	
-    <insert id="insert" parameterType="SystemConfig" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="SystemConfigValue" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `t_sys_config_val` (c_id, c_value)
 			VALUES(#{configId}, #{configValue})
     </insert>
 	
-    <update id="update" parameterType="SystemConfig">
+    <update id="update" parameterType="SystemConfigValue">
         UPDATE `t_sys_config_val` SET c_id = #{configId}, c_value = #{configValue}
         	where id = #{id}
     </update>

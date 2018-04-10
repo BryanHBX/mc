@@ -1,9 +1,8 @@
-package org.edu.timelycourse.mc.biz.service.system;
+package org.edu.timelycourse.mc.biz.service;
 
-import org.edu.timelycourse.mc.biz.model.system.SystemConfigValue;
-import org.edu.timelycourse.mc.biz.repository.system.SystemConfigRepository;
-import org.edu.timelycourse.mc.biz.repository.system.SystemConfigValueRepository;
-import org.edu.timelycourse.mc.biz.service.BaseService;
+import org.edu.timelycourse.mc.biz.model.SystemConfigValue;
+import org.edu.timelycourse.mc.biz.repository.SystemConfigRepository;
+import org.edu.timelycourse.mc.biz.repository.SystemConfigValueRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;

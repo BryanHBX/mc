@@ -1,7 +1,7 @@
 package org.edu.timelycourse.mc.web.controller;
 
 import com.google.common.reflect.TypeToken;
-import org.edu.timelycourse.mc.biz.model.system.SystemConfig;
+import org.edu.timelycourse.mc.biz.model.SystemConfigModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -41,7 +41,7 @@ public class AdminController extends AbstractController
         }
 
         model.addAttribute("configs", remoteCall("system/config",
-                new TypeToken<List<SystemConfig>>() {}).getData());
+                new TypeToken<List<SystemConfigModel>>() {}).getData());
 
         return getModulePage("system/config");
     }
@@ -66,9 +66,9 @@ public class AdminController extends AbstractController
         return getModulePage("system/dialog/dialogConfigField");
     }
 
-    private SystemConfig fetchConfigById (Integer configId)
+    private SystemConfigModel fetchConfigById (Integer configId)
     {
-        return remoteCall("system/config/" + configId, new TypeToken<SystemConfig>() {}).getData();
+        return remoteCall("system/config/" + configId, new TypeToken<SystemConfigModel>() {}).getData();
     }
 
     protected String getMyModulePath()

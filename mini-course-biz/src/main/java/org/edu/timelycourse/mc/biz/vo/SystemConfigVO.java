@@ -2,7 +2,7 @@ package org.edu.timelycourse.mc.biz.vo;
 
 import lombok.Data;
 import org.dozer.DozerBeanMapper;
-import org.edu.timelycourse.mc.biz.model.system.SystemConfig;
+import org.edu.timelycourse.mc.biz.model.SystemConfigModel;
 
 import java.io.Serializable;
 
@@ -13,7 +13,7 @@ public class SystemConfigVO implements Serializable
     private String configName;
     private String configDescription;
 
-    public static SystemConfigVO from (final SystemConfig entity)
+    public static SystemConfigVO from (final SystemConfigModel entity)
     {
         return new DozerBeanMapper().map(entity, SystemConfigVO.class);
     }

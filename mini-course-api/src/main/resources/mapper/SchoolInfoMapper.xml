@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.edu.timelycourse.mc.biz.repository.school.SchoolInfoRepository">
+<mapper namespace="org.edu.timelycourse.mc.biz.repository.SchoolInfoRepository">
 
     <cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
 
-    <resultMap type="org.edu.timelycourse.mc.biz.model.school.SchoolInfo" id="result_school">
+    <resultMap type="org.edu.timelycourse.mc.biz.model.SchoolModel" id="result_school">
         <id property="id" column="id"/>  
         <result property="schoolName" column="s_name"/>
         <result property="schoolAddress" column="s_address"/>
@@ -14,12 +14,12 @@
         <result property="lastUpdateTime" column="s_lastUpdateTime" />
     </resultMap>
     
-    <insert id="insert" parameterType="SchoolInfo" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="SchoolModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `t_school` (s_name, s_address, s_contact, s_status, s_createTime, s_lastUpdateTime)
             VALUES(#{schoolName}, #{schoolAddress}, #{schoolContact}, #{schoolStatus}, #{creationTime}, #{lastUpdateTime})
     </insert>
 
-    <update id="update" parameterType="SchoolInfo">
+    <update id="update" parameterType="SchoolModel">
         UPDATE `t_school` SET
             s_name = #{schoolName},
             s_address = #{schoolAddress},

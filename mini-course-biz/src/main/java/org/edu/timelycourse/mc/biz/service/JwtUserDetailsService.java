@@ -1,7 +1,7 @@
-package org.edu.timelycourse.mc.biz.service.member;
+package org.edu.timelycourse.mc.biz.service;
 
-import org.edu.timelycourse.mc.biz.model.member.User;
-import org.edu.timelycourse.mc.biz.repository.member.UserRepository;
+import org.edu.timelycourse.mc.biz.model.UserModel;
+import org.edu.timelycourse.mc.biz.repository.UserRepository;
 import org.edu.timelycourse.mc.biz.security.JwtUserFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,7 +32,7 @@ public class JwtUserDetailsService implements UserDetailsService
      */
     public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException
     {
-        User user = userRepository.getByUserPhone(username);
+        UserModel user = userRepository.getByUserPhone(username);
         if (user == null)
         {
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));

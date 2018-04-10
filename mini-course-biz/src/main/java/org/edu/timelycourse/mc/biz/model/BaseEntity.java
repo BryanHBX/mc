@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Created by Marco on 2018/3/31.
  */
 @Getter
-public class BaseEntity implements Serializable
+public abstract class BaseEntity implements Serializable
 {
     private static final long serialVersionUID = -2488885189931569213L;
 
@@ -25,4 +25,6 @@ public class BaseEntity implements Serializable
     {
         this.id = (id == null || id <= 0) ? null : id;
     }
+
+    public abstract boolean isValid ();
 }

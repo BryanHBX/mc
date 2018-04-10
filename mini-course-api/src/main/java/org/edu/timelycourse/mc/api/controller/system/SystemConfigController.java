@@ -5,9 +5,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.util.Strings;
 import org.edu.timelycourse.mc.api.controller.BaseController;
-import org.edu.timelycourse.mc.biz.model.system.SystemConfig;
-import org.edu.timelycourse.mc.biz.service.system.SystemConfigService;
-import org.edu.timelycourse.mc.biz.service.system.SystemConfigValueService;
+import org.edu.timelycourse.mc.biz.model.SystemConfigModel;
+import org.edu.timelycourse.mc.biz.service.SystemConfigService;
+import org.edu.timelycourse.mc.biz.service.SystemConfigValueService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
@@ -44,7 +44,7 @@ public class SystemConfigController extends BaseController
         {
             if (Strings.isNotEmpty(configName))
             {
-                SystemConfig entity = assertEntityNotNullByName(configName);
+                SystemConfigModel entity = assertEntityNotNullByName(configName);
                 return ResponseData.success(Lists.newArrayList(entity));
             }
 
@@ -96,7 +96,7 @@ public class SystemConfigController extends BaseController
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add config by given config entity")
     public ResponseData addConfig (
-            @RequestBody SystemConfig systemConfig)
+            @RequestBody SystemConfigModel systemConfig)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter addConfig - [systemConfig: %s]", systemConfig));
@@ -115,7 +115,7 @@ public class SystemConfigController extends BaseController
     @ApiOperation(value = "Update config with respect to the specified id")
     public ResponseData updateConfig (
             @PathVariable(required = true) Integer configId,
-            @RequestBody SystemConfig systemConfig)
+            @RequestBody SystemConfigModel systemConfig)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter updateConfig - [configId: %d, systemConfig: %s]", configId, systemConfig));
@@ -134,9 +134,9 @@ public class SystemConfigController extends BaseController
         }
     }
 
-    private SystemConfig assertEntityNotNullByName (String configName)
+    private SystemConfigModel assertEntityNotNullByName (String configName)
     {
-        SystemConfig entity = sysConfigService.getByConfigName(configName);
+        SystemConfigModel entity = sysConfigService.getByConfigName(configName);
         if (entity != null)
         {
             return entity;

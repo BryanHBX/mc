@@ -1,9 +1,8 @@
-package org.edu.timelycourse.mc.biz.model.member;
+package org.edu.timelycourse.mc.biz.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
-import org.edu.timelycourse.mc.biz.model.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +14,7 @@ import java.util.List;
 @Data
 @ToString(exclude = "id")
 @JsonIgnoreProperties(value = { "id", "password", "role", "roles"})
-public class User extends BaseEntity
+public class UserModel extends BaseEntity
 {
     private String userIdentity;
     private String userName;
@@ -33,18 +32,18 @@ public class User extends BaseEntity
     private Date lastUpdateTime;
     private Date lastLoginTime;
 
-    private List<UserRole> authorities;
+    private List<UserRoleModel> authorities;
 
-    public User()
+    public UserModel()
     {
     }
 
-    public User(User user)
+    public UserModel(UserModel user)
     {
         this(user, null);
     }
 
-    public User(User user, UserRole role)
+    public UserModel(UserModel user, UserRoleModel role)
     {
         this.userIdentity = user.getUserIdentity();
 
@@ -54,17 +53,22 @@ public class User extends BaseEntity
         }
     }
 
-    public void addRole (final UserRole userRole)
+    public void addRole (final UserRoleModel userRole)
     {
         if (userRole != null)
         {
             if (authorities == null)
             {
-                authorities = new ArrayList<UserRole>();
+                authorities = new ArrayList<UserRoleModel>();
             }
 
             authorities.add(userRole);
         }
     }
 
+    @Override
+    public boolean isValid()
+    {
+        return true;
+    }
 }

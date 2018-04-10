@@ -1,9 +1,8 @@
-package org.edu.timelycourse.mc.biz.model.system;
+package org.edu.timelycourse.mc.biz.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
-import org.edu.timelycourse.mc.biz.model.BaseEntity;
 
 import java.util.List;
 
@@ -12,15 +11,34 @@ import java.util.List;
  */
 @Data
 @ToString(exclude = "id")
-public class SystemConfig extends BaseEntity
+public class SystemConfigModel extends BaseEntity
 {
+    /**
+     * 配置项ID
+     */
     private String configName;
+
+    /**
+     * 配置项名
+     */
     private String configDescription;
+
+    /**
+     * 父配置项ID
+     */
     private Integer parentId;
+
+    /**
+     * 单配置项, 不支持添加子节点
+     */
     private int single;
 
-    //private SystemConfig parent;
-    private List<SystemConfig> children;
+    //private SystemConfigModel parent;
+
+    /**
+     * 子配置项
+     */
+    private List<SystemConfigModel> children;
 
     @ApiModelProperty(required = false, hidden = true)
     private List<SystemConfigValue> values;
@@ -28,5 +46,11 @@ public class SystemConfig extends BaseEntity
     public boolean hasMultipleValue ()
     {
         return single > 0;
+    }
+
+    @Override
+    public boolean isValid()
+    {
+        return true;
     }
 }

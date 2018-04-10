@@ -4,8 +4,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.util.Strings;
 import org.edu.timelycourse.mc.api.controller.BaseController;
-import org.edu.timelycourse.mc.biz.model.member.User;
-import org.edu.timelycourse.mc.biz.service.member.UserService;
+import org.edu.timelycourse.mc.biz.model.UserModel;
+import org.edu.timelycourse.mc.biz.service.UserService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
@@ -71,7 +71,7 @@ public class UserController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add user by given entity")
-    public ResponseData addUser (@RequestBody User user)
+    public ResponseData addUser (@RequestBody UserModel user)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter addUser - [user: %s]", user));
@@ -109,7 +109,7 @@ public class UserController extends BaseController
     @ApiOperation(value = "Update user with respect to the specified id")
     public ResponseData updateUser (
             @PathVariable(required = true) Integer userId,
-            @RequestBody User user)
+            @RequestBody UserModel user)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter updateUser - [userId: %d, user: %s]", userId, user));

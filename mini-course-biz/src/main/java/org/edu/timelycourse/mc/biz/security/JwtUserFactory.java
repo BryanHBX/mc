@@ -1,7 +1,7 @@
 package org.edu.timelycourse.mc.biz.security;
 
-import org.edu.timelycourse.mc.biz.model.member.User;
-import org.edu.timelycourse.mc.biz.model.member.UserRole;
+import org.edu.timelycourse.mc.biz.model.UserModel;
+import org.edu.timelycourse.mc.biz.model.UserRoleModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -17,7 +17,7 @@ public final class JwtUserFactory
     {
     }
 
-    public static JwtUser create(User user)
+    public static JwtUser create(UserModel user)
     {
         return new JwtUser (
                 user.getId(),
@@ -29,7 +29,7 @@ public final class JwtUserFactory
         );
     }
 
-    private static List<GrantedAuthority> mapToGrantedAuthorities(List<UserRole> authorities)
+    private static List<GrantedAuthority> mapToGrantedAuthorities(List<UserRoleModel> authorities)
     {
         return authorities.stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getName()))

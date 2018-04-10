@@ -1,4 +1,4 @@
-package org.edu.timelycourse.mc.biz.model.system;
+package org.edu.timelycourse.mc.biz.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -16,4 +16,10 @@ public class SystemConfigValue extends BaseEntity
     private int configId;
 
     private String configValue;
+
+    @Override
+    public boolean isValid()
+    {
+        return true;
+    }
 }

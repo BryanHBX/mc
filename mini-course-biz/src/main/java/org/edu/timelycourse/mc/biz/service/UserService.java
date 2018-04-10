@@ -1,14 +1,13 @@
-package org.edu.timelycourse.mc.biz.service.member;
+package org.edu.timelycourse.mc.biz.service;
 
 import com.google.common.base.Enums;
 import com.google.common.base.Strings;
 import org.edu.timelycourse.mc.biz.enums.EUserRole;
 import org.edu.timelycourse.mc.biz.enums.EUserStatus;
 import org.edu.timelycourse.mc.biz.enums.EUserType;
-import org.edu.timelycourse.mc.biz.model.member.User;
-import org.edu.timelycourse.mc.biz.repository.member.UserRepository;
-import org.edu.timelycourse.mc.biz.repository.school.SchoolInfoRepository;
-import org.edu.timelycourse.mc.biz.service.BaseService;
+import org.edu.timelycourse.mc.biz.model.UserModel;
+import org.edu.timelycourse.mc.biz.repository.UserRepository;
+import org.edu.timelycourse.mc.biz.repository.SchoolInfoRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
@@ -18,15 +17,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by x36zhao on 2017/3/17.
  */
 @Service
-public class UserService extends BaseService<User>
+public class UserService extends BaseService<UserModel>
 {
     private static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
@@ -42,7 +39,7 @@ public class UserService extends BaseService<User>
     }
 
     @Override
-    public User add (User entity)
+    public UserModel add (UserModel entity)
     {
         Asserts.assertEntityNotNullById(schoolInfoRepository, entity.getSchoolId());
 
@@ -70,14 +67,14 @@ public class UserService extends BaseService<User>
         }
 
         throw new ServiceException(String.format(
-                "User with ( phone - %s, identity - %s ) already exists",
+                "UserModel with ( phone - %s, identity - %s ) already exists",
                 entity.getPhone(),
                 entity.getUserIdentity()
         ));
     }
 
     @Override
-    public User update(User entity)
+    public UserModel update(UserModel entity)
     {
         Asserts.assertEntityNotNullById(schoolInfoRepository, entity.getSchoolId());
 
@@ -89,7 +86,7 @@ public class UserService extends BaseService<User>
         boolean valid = true;
         if (entity.getUserIdentity() != null)
         {
-            User user = userRepository.getByUserId(entity.getUserIdentity());
+            UserModel user = userRepository.getByUserId(entity.getUserIdentity());
             if (user != null && !user.getId().equals(entity.getId()))
             {
                 valid = false;
@@ -98,7 +95,7 @@ public class UserService extends BaseService<User>
 
         if (valid && Strings.isNullOrEmpty(entity.getPhone()))
         {
-            User user = userRepository.getByUserPhone(entity.getPhone());
+            UserModel user = userRepository.getByUserPhone(entity.getPhone());
             if (user != null && !user.getId().equals(entity.getId()))
             {
                 valid = false;
@@ -113,20 +110,20 @@ public class UserService extends BaseService<User>
         }
 
         throw new ServiceException(String.format(
-                "User with ( phone - %s, identity - %s ) already exists",
+                "UserModel with ( phone - %s, identity - %s ) already exists",
                 entity.getPhone(),
                 entity.getUserIdentity()
         ));
     }
 
-    private boolean isUserEntityValid (final User entity)
+    private boolean isUserEntityValid (final UserModel entity)
     {
         return EUserStatus.hasValue(entity.getStatus()) &&
                 EUserRole.hasValue(entity.getStatus()) &&
                 EUserType.hasValue(entity.getType());
     }
 
-    public User findByUserIdentity (String userIdentity)
+    public UserModel findByUserIdentity (String userIdentity)
     {
         if (!Strings.isNullOrEmpty(userIdentity))
         {
@@ -136,7 +133,7 @@ public class UserService extends BaseService<User>
         throw new ServiceException(String.format("Invalid user identity %s",  userIdentity));
     }
 
-    public List<User> findBySchoolId (Integer schoolId)
+    public List<UserModel> findBySchoolId (Integer schoolId)
     {
         if (schoolId != null && schoolId > 0)
         {
@@ -146,7 +143,7 @@ public class UserService extends BaseService<User>
         throw new ServiceException(String.format("Invalid school id %d",  schoolId));
     }
 
-    public User findByUserPhone (String userPhone)
+    public UserModel findByUserPhone (String userPhone)
     {
         if (!Strings.isNullOrEmpty(userPhone))
         {

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.edu.timelycourse.mc.biz.repository.system.SystemConfigRepository">
+<mapper namespace="org.edu.timelycourse.mc.biz.repository.SystemConfigRepository">
     
 	<cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
 	
-    <resultMap type="org.edu.timelycourse.mc.biz.model.system.SystemConfig" id="result_sysConf">
+    <resultMap type="org.edu.timelycourse.mc.biz.model.SystemConfigModel" id="result_sysConf">
         <id property="id" column="id"/>  
         <result property="configName" column="c_name"/>
         <result property="configDescription" column="c_desc"/>
         <result property="single" column="c_single"/>
         <result property="parentId" column="c_parent"/>
         <collection property="children" column="id" javaType="java.util.ArrayList"
-                    ofType="org.edu.timelycourse.mc.biz.model.system.SystemConfig"
+                    ofType="org.edu.timelycourse.mc.biz.model.SystemConfigModel"
                     select="getChildrenConfig"
         />
     </resultMap>
@@ -28,12 +28,12 @@
         SELECT * FROM `t_sys_config` WHERE `id` = #{id}
 	</select>
 	
-    <insert id="insert" parameterType="SystemConfig" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="SystemConfigModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `t_sys_config` (c_name, c_desc, c_single, c_parent)
 			VALUES(#{configName}, #{configDescription}, #{single}, #{parentId})
     </insert>
 	
-    <update id="update" parameterType="SystemConfig">
+    <update id="update" parameterType="SystemConfigModel">
         UPDATE `t_sys_config` SET c_name = #{configName}, c_desc = #{configDescription}, c_single = #{single}
         	where id = #{id}
     </update>

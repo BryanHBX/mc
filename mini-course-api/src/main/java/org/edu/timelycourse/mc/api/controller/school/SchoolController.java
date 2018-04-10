@@ -3,8 +3,8 @@ package org.edu.timelycourse.mc.api.controller.school;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.edu.timelycourse.mc.api.controller.BaseController;
-import org.edu.timelycourse.mc.biz.model.school.SchoolInfo;
-import org.edu.timelycourse.mc.biz.service.school.SchoolInfoService;
+import org.edu.timelycourse.mc.biz.model.SchoolModel;
+import org.edu.timelycourse.mc.biz.service.SchoolInfoService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
@@ -52,7 +52,7 @@ public class SchoolController extends BaseController
 
         try
         {
-            SchoolInfo entity = (SchoolInfo) Asserts.assertEntityNotNullById(schoolService, id);
+            SchoolModel entity = (SchoolModel) Asserts.assertEntityNotNullById(schoolService, id);
             return ResponseData.success(entity);
         }
         catch (ServiceException ex)
@@ -81,7 +81,7 @@ public class SchoolController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add school by given entity")
-    public ResponseData addSchool(@RequestBody SchoolInfo schoolInfo)
+    public ResponseData addSchool(@RequestBody SchoolModel schoolInfo)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter addSchool - [schoolInfo: %s]", schoolInfo));
@@ -100,14 +100,14 @@ public class SchoolController extends BaseController
     @ApiOperation(value = "Update school with respect to the specified id")
     public ResponseData updateSchool(
             @PathVariable(required = true) Integer id,
-            @RequestBody SchoolInfo schoolInfo)
+            @RequestBody SchoolModel schoolInfo)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter updateSchool - [id: %d, schoolInfo: %s]", id, schoolInfo));
 
         try
         {
-            SchoolInfo entity = (SchoolInfo) Asserts.assertEntityNotNullById(schoolService, id);
+            SchoolModel entity = (SchoolModel) Asserts.assertEntityNotNullById(schoolService, id);
 
             schoolInfo.setId(id);
             schoolInfo.setCreationTime(entity.getCreationTime());

@@ -1,9 +1,8 @@
-package org.edu.timelycourse.mc.biz.service.system;
+package org.edu.timelycourse.mc.biz.service;
 
-import org.edu.timelycourse.mc.biz.model.system.SystemConfig;
-import org.edu.timelycourse.mc.biz.repository.system.SystemConfigRepository;
-import org.edu.timelycourse.mc.biz.repository.system.SystemConfigValueRepository;
-import org.edu.timelycourse.mc.biz.service.BaseService;
+import org.edu.timelycourse.mc.biz.model.SystemConfigModel;
+import org.edu.timelycourse.mc.biz.repository.SystemConfigRepository;
+import org.edu.timelycourse.mc.biz.repository.SystemConfigValueRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
@@ -17,7 +16,7 @@ import java.util.List;
  * Created by x36zhao on 2017/3/17.
  */
 @Service
-public class SystemConfigService extends BaseService<SystemConfig>
+public class SystemConfigService extends BaseService<SystemConfigModel>
 {
     private static Logger LOGGER = LoggerFactory.getLogger(SystemConfigService.class);
 
@@ -35,9 +34,9 @@ public class SystemConfigService extends BaseService<SystemConfig>
     }
 
     @Override
-    public SystemConfig add (SystemConfig entity)
+    public SystemConfigModel add (SystemConfigModel entity)
     {
-        SystemConfig config = sysConfigRepository.getByConfigName(entity.getConfigName());
+        SystemConfigModel config = sysConfigRepository.getByConfigName(entity.getConfigName());
         if (config == null)
         {
             if (entity.getParentId() != null && entity.getParentId() > 0)
@@ -53,9 +52,9 @@ public class SystemConfigService extends BaseService<SystemConfig>
     }
 
     @Override
-    public SystemConfig update (SystemConfig entity)
+    public SystemConfigModel update (SystemConfigModel entity)
     {
-        SystemConfig config = sysConfigRepository.getByConfigName(entity.getConfigName());
+        SystemConfigModel config = sysConfigRepository.getByConfigName(entity.getConfigName());
         if (config == null || config.getId().equals(entity.getId()))
         {
             return super.update(entity);
@@ -73,12 +72,12 @@ public class SystemConfigService extends BaseService<SystemConfig>
         return sysConfigRepository.delete(configId);
     }
 
-    public SystemConfig getByConfigName(String configName)
+    public SystemConfigModel getByConfigName(String configName)
     {
         return assertEntityNotNullByName(configName);
     }
 
-    public List<SystemConfig> getChildrenConfig (Integer parentId)
+    public List<SystemConfigModel> getChildrenConfig (Integer parentId)
     {
         Asserts.assertEntityNotNullById(sysConfigRepository, parentId);
         return sysConfigRepository.getChildrenConfig(parentId);
@@ -86,13 +85,13 @@ public class SystemConfigService extends BaseService<SystemConfig>
 
     public Integer deleteByConifgName(String configName)
     {
-        SystemConfig config = assertEntityNotNullByName(configName);
+        SystemConfigModel config = assertEntityNotNullByName(configName);
         return sysConfigValueRepository.deleteByConfigId(config.getId()) + sysConfigRepository.delete(config.getId());
     }
 
-    private SystemConfig assertEntityNotNullByName (String configName)
+    private SystemConfigModel assertEntityNotNullByName (String configName)
     {
-        SystemConfig entity = sysConfigRepository.getByConfigName(configName);
+        SystemConfigModel entity = sysConfigRepository.getByConfigName(configName);
         if (entity != null)
         {
             return entity;

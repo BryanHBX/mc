@@ -1,4 +1,4 @@
-package org.edu.timelycourse.mc.biz.model.member;
+package org.edu.timelycourse.mc.biz.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -11,18 +11,24 @@ import org.edu.timelycourse.mc.biz.model.BaseEntity;
 @Data
 @ToString(exclude = "id")
 @JsonIgnoreProperties(value= { "id", "userId" } )
-public class UserRole extends BaseEntity
+public class UserRoleModel extends BaseEntity
 {
     private int userId;
     private String name;
 
-    public UserRole()
+    public UserRoleModel()
     {
     }
 
-    public UserRole(int userId, String authorityName)
+    public UserRoleModel(int userId, String authorityName)
     {
         this.userId = userId;
         this.name = authorityName;
+    }
+
+    @Override
+    public boolean isValid()
+    {
+        return true;
     }
 }

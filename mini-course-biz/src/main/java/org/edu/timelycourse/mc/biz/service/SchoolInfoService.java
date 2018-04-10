@@ -1,8 +1,7 @@
-package org.edu.timelycourse.mc.biz.service.school;
+package org.edu.timelycourse.mc.biz.service;
 
-import org.edu.timelycourse.mc.biz.model.school.SchoolInfo;
-import org.edu.timelycourse.mc.biz.repository.school.SchoolInfoRepository;
-import org.edu.timelycourse.mc.biz.service.BaseService;
+import org.edu.timelycourse.mc.biz.model.SchoolModel;
+import org.edu.timelycourse.mc.biz.repository.SchoolInfoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import java.util.Date;
  * Created by x36zhao on 2017/3/17.
  */
 @Service
-public class SchoolInfoService extends BaseService<SchoolInfo>
+public class SchoolInfoService extends BaseService<SchoolModel>
 {
     private static Logger LOGGER = LoggerFactory.getLogger(SchoolInfoService.class);
 
@@ -25,14 +24,14 @@ public class SchoolInfoService extends BaseService<SchoolInfo>
     }
 
     @Override
-    public SchoolInfo add(SchoolInfo entity)
+    public SchoolModel add(SchoolModel entity)
     {
         entity.setCreationTime(new Date());
         return super.add(entity);
     }
 
     @Override
-    public SchoolInfo update(SchoolInfo entity)
+    public SchoolModel update(SchoolModel entity)
     {
         entity.setLastUpdateTime(new Date());
         return super.update(entity);
