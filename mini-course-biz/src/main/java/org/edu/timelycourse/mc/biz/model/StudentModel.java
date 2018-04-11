@@ -1,9 +1,8 @@
 package org.edu.timelycourse.mc.biz.model;
 
 import lombok.Data;
-import org.apache.logging.log4j.util.Strings;
 import org.edu.timelycourse.mc.biz.enums.EContactType;
-import org.edu.timelycourse.mc.biz.model.BaseEntity;
+import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
 
 import java.util.Date;
@@ -77,10 +76,10 @@ public class StudentModel extends BaseEntity
     private Date lastUpdateTime;
 
     @Override
-    public boolean isValid()
+    public boolean isValidInput ()
     {
         return EContactType.hasValue(this.contactRelationType) &&
                 StringUtil.isNotEmpty(wxId, contactName, contactPhone, name) &&
-                isValidId(levelId, subLevelId, courseId, subCourseId);
+                EntityUtils.isValidEntityId(levelId, subLevelId, courseId, subCourseId);
     }
 }

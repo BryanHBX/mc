@@ -99,4 +99,23 @@ public final class ValidatorUtil
     {
         return Pattern.matches(REGEX_CHINESE, chinese);
     }
+
+    public static boolean isFloatNumber (Double... numbers)
+    {
+        if (numbers != null && numbers.length > 0)
+        {
+            for (Double number : numbers)
+            {
+                if (number == null || number < 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

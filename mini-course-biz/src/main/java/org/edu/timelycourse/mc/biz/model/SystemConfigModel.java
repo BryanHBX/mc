@@ -43,7 +43,7 @@ public class SystemConfigModel extends BaseEntity
     }
 
     @Override
-    public boolean isValid()
+    public boolean isValidInput ()
     {
         return true;
     }

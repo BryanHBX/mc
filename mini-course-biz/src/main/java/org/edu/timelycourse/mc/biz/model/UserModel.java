@@ -67,7 +67,7 @@ public class UserModel extends BaseEntity
     }
 
     @Override
-    public boolean isValid()
+    public boolean isValidInput ()
     {
         return true;
     }

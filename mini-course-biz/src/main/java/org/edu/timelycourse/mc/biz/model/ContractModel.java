@@ -1,10 +1,10 @@
 package org.edu.timelycourse.mc.biz.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
 import org.edu.timelycourse.mc.biz.enums.EEnrollmentType;
-import org.edu.timelycourse.mc.biz.model.BaseEntity;
+import org.edu.timelycourse.mc.common.utils.EntityUtils;
+import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -103,18 +103,18 @@ public class ContractModel extends BaseEntity
     private List<InvoiceModel> invoices;
 
     @Override
-    public boolean isValid()
+    public boolean isValidInput ()
     {
         boolean valid = EEnrollmentType.hasValue(enrollType) && Strings.isNotEmpty(contractNo) &&
-                isValidFloat(contractPrice, totalPrice) &&
-                isValidId(consultantId, levelId, subLevelId, courseId, subCourseId) &&
-                student.isValid() && contractDate != null;
+                ValidatorUtil.isFloatNumber(contractPrice, totalPrice) &&
+                EntityUtils.isValidEntityId(consultantId, levelId, subLevelId, courseId, subCourseId) &&
+                student.isValidInput() && contractDate != null;
 
         if (valid && invoices != null)
         {
             for (InvoiceModel invoice : invoices)
             {
-                valid = invoice.isValid();
+                valid = invoice.isValidInput();
                 if (!valid)
                 {
                     break;

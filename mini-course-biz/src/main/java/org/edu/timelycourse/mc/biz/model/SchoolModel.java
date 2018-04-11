@@ -39,7 +39,7 @@ public class SchoolModel extends BaseEntity
     private Date lastUpdateTime;
 
     @Override
-    public boolean isValid()
+    public boolean isValidInput ()
     {
         return true;
     }

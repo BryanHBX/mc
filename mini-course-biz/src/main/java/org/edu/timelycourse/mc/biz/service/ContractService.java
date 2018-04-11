@@ -5,6 +5,7 @@ import org.edu.timelycourse.mc.biz.model.InvoiceModel;
 import org.edu.timelycourse.mc.biz.model.StudentModel;
 import org.edu.timelycourse.mc.biz.repository.ContractRepository;
 import org.edu.timelycourse.mc.biz.repository.InvoiceRepository;
+import org.edu.timelycourse.mc.biz.repository.SchoolRepository;
 import org.edu.timelycourse.mc.biz.repository.StudentRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
@@ -24,21 +25,22 @@ public class ContractService extends BaseService<ContractModel>
     private static Logger LOGGER = LoggerFactory.getLogger(ContractService.class);
 
     private StudentRepository studentRepository;
-
     private InvoiceRepository invoiceRepository;
+    private SchoolRepository schoolRepository;
 
     @Autowired
     public ContractService(ContractRepository repository,
                            StudentRepository studentRepository,
-                           InvoiceRepository invoiceRepository)
+                           InvoiceRepository invoiceRepository,
+                           SchoolRepository schoolRepository)
     {
         super(repository);
         this.studentRepository = studentRepository;
         this.invoiceRepository = invoiceRepository;
+        this.schoolRepository = schoolRepository;
     }
 
-    @Override
-    public ContractModel add(ContractModel model)
+    private StudentModel initStudentModelBeforeAdd (final ContractModel model)
     {
         StudentModel studentEntity = model.getStudent();
         if (studentEntity != null)
@@ -48,38 +50,46 @@ public class ContractService extends BaseService<ContractModel>
             studentEntity.setLevelId(model.getLevelId());
             studentEntity.setSubCourseId(model.getSubCourseId());
             studentEntity.setSubLevelId(model.getSubLevelId());
+            return studentEntity;
+        }
 
-            if (model.isValid())
+        throw new ServiceException("Student model is not given in contract");
+    }
+
+    @Override
+    public ContractModel add(ContractModel model)
+    {
+        StudentModel studentEntity = initStudentModelBeforeAdd(model);
+        if (model.isValidInput())
+        {
+            // in case student been selected from suggest lookup
+            if (model.getStudentId() != null && model.getStudentId() > 0)
             {
-                // in case student been selected from suggest lookup
-                if (model.getStudentId() != null && model.getStudentId() > 0)
-                {
-                    studentEntity = (StudentModel) Asserts.assertEntityNotNullById(studentRepository, model.getStudentId());
-                }
-                else
-                {
-                    studentRepository.insert(model.getStudent());
-                }
-
-                model.setStudentId(studentEntity.getId());
-                model.setCreationTime(new Date());
-
-                // add contract
-                super.add(model);
-
-                // add invoices
-                if (model.getInvoices() != null)
-                {
-                    for (InvoiceModel invoice : model.getInvoices())
-                    {
-                        invoice.setCreationTime(new Date());
-                        invoice.setContractId(model.getId());
-                        invoiceRepository.insert(invoice);
-                    }
-                }
-
-                return model;
+                studentEntity = (StudentModel) Asserts.assertEntityNotNullById(studentRepository, model.getStudentId());
             }
+            else
+            {
+                studentRepository.insert(model.getStudent());
+            }
+
+            model.setStudentId(studentEntity.getId());
+            model.setCreationTime(new Date());
+
+            // add contract
+            super.add(model);
+
+            // add invoices
+            if (model.getInvoices() != null)
+            {
+                for (InvoiceModel invoice : model.getInvoices())
+                {
+                    invoice.setCreationTime(new Date());
+                    invoice.setContractId(model.getId());
+                    invoiceRepository.insert(invoice);
+                }
+            }
+
+            return model;
         }
 
         throw new ServiceException(String.format("Invalid model data to add, %s", model));

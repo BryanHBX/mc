@@ -18,7 +18,7 @@ public class SystemConfigValue extends BaseEntity
     private String configValue;
 
     @Override
-    public boolean isValid()
+    public boolean isValidInput ()
     {
         return true;
     }

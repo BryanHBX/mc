@@ -41,7 +41,7 @@ public class InvoiceModel extends BaseEntity
     private Date lastUpdateTime;
 
     @Override
-    public boolean isValid()
+    public boolean isValidInput ()
     {
         return EPaymentType.hasValue(type) && price > 0 && Strings.isNotEmpty(invoiceNo);
     }

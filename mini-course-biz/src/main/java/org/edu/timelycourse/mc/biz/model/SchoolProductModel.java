@@ -18,7 +18,7 @@ public class SchoolProductModel extends BaseEntity
     private Date lastUpdateTime;
 
     @Override
-    public boolean isValid()
+    public boolean isValidInput ()
     {
         return false;
     }
