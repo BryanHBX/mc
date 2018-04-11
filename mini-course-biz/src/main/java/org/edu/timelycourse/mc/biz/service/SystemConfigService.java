@@ -19,24 +19,24 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
 {
     private static Logger LOGGER = LoggerFactory.getLogger(SystemConfigService.class);
 
-    private SystemConfigRepository sysConfigRepository;
+    private SystemConfigRepository configRepository;
 
     @Autowired
-    public SystemConfigService(SystemConfigRepository sysConfigRepository)
+    public SystemConfigService(SystemConfigRepository repository)
     {
-        super(sysConfigRepository);
-        this.sysConfigRepository = sysConfigRepository;
+        super(repository);
+        this.configRepository = repository;
     }
 
     @Override
     public SystemConfigModel add (SystemConfigModel entity)
     {
-        SystemConfigModel config = sysConfigRepository.getByConfigName(entity.getConfigName());
+        SystemConfigModel config = configRepository.getByConfigName(entity.getConfigName());
         if (config == null)
         {
             if (entity.getParentId() != null && entity.getParentId() > 0)
             {
-                Asserts.assertEntityNotNullById(sysConfigRepository, entity.getParentId());
+                Asserts.assertEntityNotNullById(repository, entity.getParentId());
             }
 
             return super.add(entity);
@@ -49,7 +49,7 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
     @Override
     public SystemConfigModel update (SystemConfigModel entity)
     {
-        SystemConfigModel config = sysConfigRepository.getByConfigName(entity.getConfigName());
+        SystemConfigModel config = configRepository.getByConfigName(entity.getConfigName());
         if (config == null || config.getId().equals(entity.getId()))
         {
             return super.update(entity);
@@ -62,8 +62,8 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
     @Override
     public Integer delete(Integer configId)
     {
-        Asserts.assertEntityNotNullById(sysConfigRepository, configId);
-        return sysConfigRepository.delete(configId);
+        Asserts.assertEntityNotNullById(repository, configId);
+        return repository.delete(configId);
     }
 
     public SystemConfigModel getByConfigName(String configName)
@@ -73,19 +73,19 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
 
     public List<SystemConfigModel> getChildrenConfig (Integer parentId)
     {
-        Asserts.assertEntityNotNullById(sysConfigRepository, parentId);
-        return sysConfigRepository.getChildrenConfig(parentId);
+        Asserts.assertEntityNotNullById(repository, parentId);
+        return configRepository.getChildrenConfig(parentId);
     }
 
     public Integer deleteByConifgName(String configName)
     {
         SystemConfigModel config = assertEntityNotNullByName(configName);
-        return sysConfigRepository.delete(config.getId());
+        return configRepository.delete(config.getId());
     }
 
     private SystemConfigModel assertEntityNotNullByName (String configName)
     {
-        SystemConfigModel entity = sysConfigRepository.getByConfigName(configName);
+        SystemConfigModel entity = configRepository.getByConfigName(configName);
         if (entity != null)
         {
             return entity;

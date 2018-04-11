@@ -13,7 +13,7 @@ import java.util.List;
  */
 public abstract class BaseService<T extends BaseEntity>
 {
-    private final BaseRepository<T> repository;
+    protected final BaseRepository<T> repository;
 
     @Autowired
     protected LocaleMessageSource messageSource;
