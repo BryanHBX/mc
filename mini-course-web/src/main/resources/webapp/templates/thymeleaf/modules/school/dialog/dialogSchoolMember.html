@@ -1,0 +1,71 @@
+<script>
+	$(function(){
+		$("#btnSaveMember").unbind("click").bind("click", function(){
+			if (!$("#formSchoolMember").valid()) {
+                return false;
+			}
+
+            var base = "system/config";
+            var jsonData = $("#formSchoolMember").serializeJSON();
+            var isPatch = jsonData.id != "" && jsonData.id > 0;
+            var uri = isPatch ? (base + "/" + jsonData.id) : base;
+			var type = isPatch ? "PATCH" : "POST";
+
+            generic_ajax_op(uri, type, jsonData, null, (
+                function(result) {
+				    $.pdialog.closeCurrent();
+                    reloadConfigNavTab();
+                }
+            ));
+		});
+	});
+</script>
+
+<div xmlns:th="http://www.thymeleaf.org" class="pageContent">
+	<form id="formSchoolMember" method="post" class="pageForm required-validate">
+		<div class="pageFormContent" layoutH="56">
+			<table cellspacing="10" cellpadding="10" class="dform">
+                <tr>
+                    <td>微信号：</td>
+                    <td><input name="rootName" type="text" size="15" th:value="${parent != null ? parent.configDescription : ''}" readonly /></td>
+					<td>姓名：</td>
+					<td><input name="rootName" type="text" size="15" th:value="${parent != null ? parent.configDescription : ''}" readonly /></td>
+					<td>手机号：</td>
+					<td><input name="rootName" type="text" size="15" th:value="${parent != null ? parent.configDescription : ''}" readonly /></td>
+                </tr>
+				<tr>
+					<td>身份证号：</td>
+					<td colspan="5"><input name="configName" type="text" size="30" th:value="${config != null ? config.configName : ''}" class="required" /></td>
+				</tr>
+				<tr>
+					<td>角色：</td>
+					<td colspan="5"><input name="configDescription" type="text" size="30" th:value="${config != null ? config.configDescription : ''}" class="required" /></td>
+				</tr>
+				<tr>
+					<td>所授课程：</td>
+					<td colspan="5"><input name="configDescription" type="text" size="30" th:value="${config != null ? config.configDescription : ''}" class="required" /></td>
+				</tr>
+				<tr th:if="${grades != null }">
+					<td th:text="${grades.configDescription}">年级：</td>
+					<td colspan="5" th:if="${not #lists.isEmpty(grades.children)}" th:with="options=${grades.children}">
+						<div th:each="option:${options}" style="float: left">
+							<input type="checkbox" th:value="${option.id}" /> <span th:text="${option.configDescription}" ></span>
+						</div>
+					</td>
+				</tr>
+				<tr th:if="${subjects != null}">
+					<td>科目：</td>
+					<td colspan="5"></td>
+				</tr>
+			</table>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="button" id="btnSaveMember">保存</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button class="close" type="button">取消</button></div></div></li>
+			</ul>
+		</div>
+		<input type="hidden" name="id" th:value="${config != null ? config.id : ''}" />
+	</form>
+<div>
+		

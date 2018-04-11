@@ -1,30 +1,73 @@
-<h2 class="contentTitle">学校信息设置</h2>
-<div class="pageContent">
-    <form method="post" action="" class="pageForm required-validate"  novalidate="novalidate">
-        <div class="pageFormContent " layouth="87" style="overflow: auto;">
-            <div>
-                <dl>
-                    <dt>学校名称：</dt>
-                    <dd><input name="field1" type="text" class="textInput"></dd>
-                </dl>
+<form id="pagerForm" method="post" action="w_removeSelected.html">
+    <input type="hidden" name="pageNum" value="1">
+    <input type="hidden" name="numPerPage" value="${model.numPerPage}">
+    <input type="hidden" name="orderField" value="${param.orderField}">
+    <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+    <input type="hidden" name="keywords" value=""><input type="hidden" name="province" value="">
+</form>
+
+<div class="pageHeader">
+    <form id="mySearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="w_removeSelected.html" method="post">
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        <label>教师姓名：</label>
+                        <input type="text" name="keywords" value="" style="width: 100px;" class="textInput">
+                    </td>
+            </table>
+            <div class="subBar">
+                <ul>
+                    <li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
+                </ul>
             </div>
-            <div>
-                <dl>
-                    <dt>学校地址：</dt>
-                    <dd><input name="field2" type="text" alt="提示信息" class="textInput" id="field2_5009"><label class="alt" for="field2_5009" style="width: 154px; top: 5px; left: 130px; opacity: 1;">提示信息</label></dd>
-                </dl>
-            </div>
-            <div>
-                <dl>
-                    <dt>联系电话：</dt>
-                    <dd><input class="required textInput" name="field3" type="text"></dd>
-                </dl>
-            </div>
-        </div>
-        <div class="formBar">
-            <ul>
-                <li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
-            </ul>
         </div>
     </form>
+</div>
+
+<div class="panelBar">
+    <ul class="toolBar">
+        <li class="">
+            <a class="add" href="school/member/dialog" target="dialog" mask="true" width="660" height="450">
+                <span>添加教师</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="pageContent">
+    <table class="table" width="100%" layoutH="110">
+        <thead>
+            <tr>
+                <th width="100">姓名</th>
+                <th width="150">身份证</th>
+                <th>微信号</th>
+                <th>手机号</th>
+                <th>所授课程</th>
+                <th>其他描述</th>
+                <th>角色</th>
+                <th>密码重置</th>
+                <th>编辑</th>
+                <th>解绑</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+                <option value="250">250</option>
+            </select>
+            <span>条，共${totalCount}条</span>
+        </div>
+        <div class="pagination" targetType="navTab" totalCount="200" numPerPage="20" pageNumShown="10" currentPage="1"></div>
+    </div>
 </div>

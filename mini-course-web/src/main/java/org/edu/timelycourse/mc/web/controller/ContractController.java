@@ -18,8 +18,8 @@ public class ContractController extends AbstractController
     @RequestMapping("/form")
     public String showContractForm (Model model)
     {
-        model.addAttribute("level", fetchConfigByName(EBuiltInConfig.STUDENT_LEVEL.code()));
-        model.addAttribute("course", fetchConfigByName(EBuiltInConfig.COURSE_TYPE.code()));
+        model.addAttribute("level", fetchConfigByName(EBuiltInConfig.C_STUDENT_LEVEL.name()));
+        model.addAttribute("course", fetchConfigByName(EBuiltInConfig.C_COURSE_TYPE.name()));
         return getModulePage("contractForm");
     }
 

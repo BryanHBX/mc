@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.edu.timelycourse.mc.biz.repository.SystemRoleRepository">
+    
+	<cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
+	
+    <resultMap type="org.edu.timelycourse.mc.biz.model.SystemRoleModel" id="result_sysRole">
+        <id property="id" column="id"/>  
+        <result property="roleName" column="role_name"/>
+        <result property="roleAlias" column="role_alias"/>
+    </resultMap>
+    
+    <insert id="insert" parameterType="SystemRoleModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `t_sys_role` (role_name, role_alias) VALUES(#{roleName}, #{roleAlias})
+    </insert>
+	
+    <update id="update" parameterType="SystemRoleModel">
+        UPDATE `t_sys_role` SET role_name = #{roleName}, role_alias = #{roleAlias} WHERE id = #{id}
+    </update>
+    
+    <select id="get" parameterType="java.lang.Integer" resultMap="result_sysRole">
+        SELECT * FROM `t_sys_role` WHERE id = #{id}
+	</select>
+    
+    <update id="delete" parameterType="java.lang.Integer">
+        DELETE FROM `t_sys_role` WHERE id = #{id}
+    </update>
+    
+    <select id="getByAlias" parameterType="java.lang.String" resultMap="result_sysRole">
+        SELECT * FROM `t_sys_role` WHERE role_alias = #{alias}
+    </select>
+
+    <select id="getAll" resultMap="result_sysRole">
+        SELECT * FROM `t_sys_role`
+    </select>
+
+</mapper>

@@ -6,7 +6,8 @@ public enum EAuthorityName
     ROLE_CONSULTANT     (2, "咨询师"),
     ROLE_ACADEMIC_DEAN  (3, "教务员"),
     ROLE_TREASURER      (4, "财务"),
-    ROLE_SUPERUSER      (5, "超级管理员");
+    ROLE_ADMINISTRATOR  (5, "管理员"),
+    ROLE_SUPERUSER      (6, "超级管理员");
 
     private Integer code;
     private String label;

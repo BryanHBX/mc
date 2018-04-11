@@ -1,7 +1,6 @@
 <script>
 	$(function(){
-		$("#btnSaveField").unbind("click");
-        $("#btnSaveField").bind("click", function(){
+		$("#btnSaveField").unbind("click").bind("click", function(){
 			if (!$("#formSettingField").valid()) {
                 return false;
 			}

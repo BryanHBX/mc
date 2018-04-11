@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 10/04/2018 23:40:16
+ Date: 11/04/2018 23:51:22
 */
 
 SET NAMES utf8mb4;
@@ -183,7 +183,7 @@ CREATE TABLE `t_sys_config`  (
   `c_single` tinyint(4) NULL DEFAULT NULL,
   `c_parent` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 47 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 61 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_sys_config
@@ -206,25 +206,20 @@ INSERT INTO `t_sys_config` VALUES (39, '51', '画画', 0, 21);
 INSERT INTO `t_sys_config` VALUES (40, 'C_STU_LEVEL', '学生年段', NULL, NULL);
 INSERT INTO `t_sys_config` VALUES (44, 'STU_LEVEL_1_2', '小二', 0, 41);
 INSERT INTO `t_sys_config` VALUES (45, 'STU_LEVEL_2_1', '早一', 0, 42);
-INSERT INTO `t_sys_config` VALUES (46, 'STU_LEVEL_2_2', '早二', 0, 42);
-
--- ----------------------------
--- Table structure for t_sys_config_val
--- ----------------------------
-DROP TABLE IF EXISTS `t_sys_config_val`;
-CREATE TABLE `t_sys_config_val`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `c_id` int(11) NOT NULL,
-  `c_value` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `c_id`(`c_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of t_sys_config_val
--- ----------------------------
-INSERT INTO `t_sys_config_val` VALUES (3, 4, 'ab');
-INSERT INTO `t_sys_config_val` VALUES (4, 4, 'e1fg');
+INSERT INTO `t_sys_config` VALUES (46, 'STU_LEVEL_2_2C_SUBJECT', '早二', 0, 42);
+INSERT INTO `t_sys_config` VALUES (47, 'C_GRADE', '年级', NULL, NULL);
+INSERT INTO `t_sys_config` VALUES (48, 'C_SUBJECT', '科目', NULL, NULL);
+INSERT INTO `t_sys_config` VALUES (50, 'C_GRADE_1', '小一', 0, 47);
+INSERT INTO `t_sys_config` VALUES (51, 'C_GRADE_2', '小二', 0, 47);
+INSERT INTO `t_sys_config` VALUES (52, 'C_GRADE_3', '小三', 0, 47);
+INSERT INTO `t_sys_config` VALUES (53, 'C_GRADE_4', '小四', 0, 47);
+INSERT INTO `t_sys_config` VALUES (54, 'C_GRADE_5', '小六', 0, 47);
+INSERT INTO `t_sys_config` VALUES (55, 'C_GRADE_6', '初一', 0, 47);
+INSERT INTO `t_sys_config` VALUES (56, 'C_GRADE_7', '初二', 0, 47);
+INSERT INTO `t_sys_config` VALUES (57, 'C_GRADE_8', '初三', 0, 47);
+INSERT INTO `t_sys_config` VALUES (58, 'C_GRADE_9', '高一', 0, 47);
+INSERT INTO `t_sys_config` VALUES (59, 'C_GRADE_10', '高二', 0, 47);
+INSERT INTO `t_sys_config` VALUES (60, 'C_GRADE_11', '高三', 0, 47);
 
 -- ----------------------------
 -- Table structure for t_sys_role
@@ -233,8 +228,18 @@ DROP TABLE IF EXISTS `t_sys_role`;
 CREATE TABLE `t_sys_role`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `role_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `role_alias` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_sys_role
+-- ----------------------------
+INSERT INTO `t_sys_role` VALUES (1, '教师', 'ROLE_TEACHER');
+INSERT INTO `t_sys_role` VALUES (2, '咨询师', 'ROLE_CONSULTANT');
+INSERT INTO `t_sys_role` VALUES (3, '教务员', 'ROLE_ACADEMIC_DEAN');
+INSERT INTO `t_sys_role` VALUES (4, '财务', 'ROLE_TREASURER');
+INSERT INTO `t_sys_role` VALUES (6, '超级管理员', 'ROLE_SUPERUSER');
+INSERT INTO `t_sys_role` VALUES (5, '管理员', 'ROLE_ADMINISTRATOR');
 
 SET FOREIGN_KEY_CHECKS = 1;
