@@ -55,7 +55,22 @@
         </set>
         WHERE id = #{id}
     </update>
-    
+
+    <select id="getByPage" parameterType="ContractModel" resultMap="result_contract">
+        SELECT * FROM `t_school_contract`
+        <where>
+            1 = 1
+            <if test="contractNo != null and contractNo != ''"> AND `contract_no` LIKE CONCAT('%',#{contractNo},'%')</if>
+            <if test="enrollType != null and enrollType > -1"> AND `contract_type` = #{enrollType}</if>
+            <if test="enrollPeriod != null and enrollPeriod > 0"> AND `period_enroll` &gt;= #{enrollPeriod},</if>
+            <if test="levelId != null and levelId > -1"> AND `cfg_level` = #{levelId}</if>
+            <if test="subLevelId != null and subLevelId > -1"> AND `cfg_subLevel` = #{subLevelId}</if>
+            <if test="courseId != null and courseId > -1"> AND `cfg_course` = #{courseId}</if>
+            <if test="subCourseId != null and subCourseId > -1"> AND `cfg_subCourse` = #{subCourseId}</if>
+            <if test="contractDate != null"> AND `contract_date` = #{contractDate}</if>
+        </where>
+    </select>
+
     <select id="get" parameterType="java.lang.Integer" resultMap="result_contract">
         SELECT * FROM `t_school_contract` where `id` = #{id}
     </select>

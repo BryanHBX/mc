@@ -31,6 +31,16 @@
         </set>
         WHERE id = #{id}
     </update>
+
+    <select id="getByPage" parameterType="InvoiceModel" resultMap="result_invoice">
+        SELECT * FROM `t_school_invoice`
+        <where>
+            1 = 1
+            <if test="contractId != null and contractId > 0"> AND `contract_id` = ${contractId}</if>
+            <if test="invoiceNo != null and invoiceNo != ''"> AND `invoice_no` LIKE CONCAT('%',#{invoiceNo},'%')</if>
+            <if test="type != null and type > -1"> AND `fee_type` = #{type}</if>
+        </where>
+    </select>
     
     <select id="get" parameterType="java.lang.Integer" resultMap="result_invoice">
         SELECT * FROM `t_school_invoice` where `id` = #{id}

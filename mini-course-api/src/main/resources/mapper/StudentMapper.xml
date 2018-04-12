@@ -50,6 +50,23 @@
         </set>
         WHERE id = #{id}
     </update>
+
+    <select id="getByPage" parameterType="StudentModel" resultMap="result_student">
+        SELECT * FROM `t_school_student`
+        <where>
+            1 = 1
+            <if test="name != null and name != ''"> AND `s_name` LIKE CONCAT('%',#{name},'%')</if>
+            <if test="wxId != null and wxId != ''"> AND `s_wxid` LIKE CONCAT('%',#{wxId},'%')</if>
+            <if test="contactName != null and contactName != ''"> AND `s_contactName` LIKE CONCAT('%',#{contactName},'%')</if>
+            <if test="contactRelationType != null and contactRelationType > -1"> AND `s_contactRelation` = #{contactRelationType}</if>
+            <if test="contactPhone != null and contactPhone != ''"> AND `s_contactPhone` LIKE CONCAT('%',#{contactPhone},'%')</if>
+            <if test="consultantId != null and consultantId > 0"> AND `consultant_id` = #{consultantId}</if>
+            <if test="levelId != null and levelId > -1"> AND `cfg_level` = #{levelId}</if>
+            <if test="subLevelId != null and subLevelId > -1"> AND `cfg_subLevel` = #{subLevelId}</if>
+            <if test="courseId != null and courseId > -1"> AND `cfg_course` = #{courseId}</if>
+            <if test="subCourseId != null and subCourseId > -1"> AND cfg_subCourse` = #{subCourseId}</if>
+        </where>
+    </select>
     
     <select id="get" parameterType="java.lang.Integer" resultMap="result_student">
         SELECT * FROM `t_school_student` where `id` = #{id}
