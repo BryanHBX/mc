@@ -10,4 +10,9 @@ public final class Constants
     public static final String PAGE_UNAUTHORIZED            = "401";
     public static final String REDIRECT_URL_PARAMETER       = "redirect";
     public static final Integer BUFF_SIZE                   = 1024;
+
+    /**
+     * The default page size
+     */
+    public static Integer DEFAULT_PAGE_SIZE = Integer.valueOf(20);
 }

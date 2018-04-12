@@ -5,10 +5,12 @@ import com.github.pagehelper.PageHelper;
 import org.edu.timelycourse.mc.biz.model.BaseEntity;
 import org.edu.timelycourse.mc.biz.repository.BaseRepository;
 import org.edu.timelycourse.mc.biz.utils.LocaleMessageSource;
+import org.edu.timelycourse.mc.common.constants.Constants;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.edu.timelycourse.mc.common.paging.PagingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.xml.ws.Service;
 import java.util.List;
 
 /**
@@ -82,9 +84,21 @@ public abstract class BaseService<T extends BaseEntity>
 
     public PagingBean<T> findByPage (final T entity, int pageNum, int pageSize)
     {
-        PageHelper.startPage(pageNum, pageSize);
-        Page<T> result = this.repository.getByPage(entity);
-        return new PagingBean<T>(result);
+        try
+        {
+            PageHelper.startPage(
+                    pageNum > 0 ? pageNum : 1,
+                    pageSize > 0 ? pageSize : Constants.DEFAULT_PAGE_SIZE);
+
+            Page<T> result = this.repository.getByPage(entity);
+            return new PagingBean<T>(result);
+        }
+        catch (Exception ex)
+        {
+            throw new ServiceException(String.format(
+                    "Failed to find by page - [entity: %s, pageNum: %d, pageSize: %d]",
+                    entity, pageNum, pageSize), ex);
+        }
     }
 
     public T saveOrUpdate(T entity)

@@ -23,6 +23,7 @@ package org.edu.timelycourse.mc.common.paging;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.pagehelper.Page;
 import lombok.Data;
+import org.edu.timelycourse.mc.common.constants.Constants;
 
 import java.io.Serializable;
 import java.util.List;
@@ -38,30 +39,9 @@ import java.util.List;
 public class PagingBean<T> implements Serializable
 {
 	/**
-	 * The default page size
-	 */
-	public static Integer DEFAULT_PAGE_SIZE = Integer.valueOf(20);
-	
-	/**
-	 * The default shown page count 
-	 */
-	public static final int DEFAULT_SHOW_PAGES = 10;
-	
-	/**
-	 * The default target type in DWZ.
-	 */
-	public static final String DEFAULT_TARGET_TYPE = "navTab";
-	
-	/**
-	 * The start index offset, by default as 0.
-	 */
-	@JsonIgnore
-	private Integer startIndex = 0;
-	
-	/**
 	 * The page size
 	 */
-	private Integer pageSize = DEFAULT_PAGE_SIZE;
+	private Integer pageSize = Constants.DEFAULT_PAGE_SIZE;
 	
 	/**
 	 * The total entity item number
@@ -72,19 +52,7 @@ public class PagingBean<T> implements Serializable
 	 * The current page number
 	 */
 	private Integer pageNumber = 1;
-	
-	/**
-	 * The shown page number
-	 */
-	@JsonIgnore
-    private Integer pageNumShown = DEFAULT_SHOW_PAGES;
-	
-	/**
-	 * The target type in DWZ
-	 */
-	@JsonIgnore
-	private String targetType = DEFAULT_TARGET_TYPE;
-	
+
 	/**
 	 * The total page number
 	 */
@@ -114,7 +82,6 @@ public class PagingBean<T> implements Serializable
 	{
 		this.pageNumber = pageNumber;
 		this.pageSize = pageSize;
-		this.startIndex = (pageNumber - 1 < 0 ? 0 : pageNumber - 1) * pageSize;
 	}
 
 	public PagingBean(final Page<T> pageEntity)
