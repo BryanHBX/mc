@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 11/04/2018 23:51:22
+ Date: 12/04/2018 23:52:08
 */
 
 SET NAMES utf8mb4;
@@ -136,11 +136,13 @@ INSERT INTO `t_school_invoice` VALUES (3, 1, '123', 231, 4, '2018-04-10 22:50:53
 DROP TABLE IF EXISTS `t_school_product`;
 CREATE TABLE `t_school_product`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `p_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `p_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `p_label` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `p_parent` int(255) NULL DEFAULT NULL,
-  `school_id` int(11) NOT NULL,
+  `p_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '课程名称',
+  `p_type` int(11) NULL DEFAULT NULL COMMENT '课程类别',
+  `p_period` double(11, 0) NOT NULL COMMENT '课时',
+  `p_parent` int(11) NULL DEFAULT NULL COMMENT '父课程ID',
+  `school_id` int(11) NOT NULL COMMENT '学校ID',
+  `p_createTime` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `p_lastUpdateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `school_id`(`school_id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
@@ -183,7 +185,7 @@ CREATE TABLE `t_sys_config`  (
   `c_single` tinyint(4) NULL DEFAULT NULL,
   `c_parent` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 61 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 68 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_sys_config
@@ -192,17 +194,16 @@ INSERT INTO `t_sys_config` VALUES (26, 'C1', '拉丁舞', 0, 22);
 INSERT INTO `t_sys_config` VALUES (27, 'C2', '民族舞', 0, 22);
 INSERT INTO `t_sys_config` VALUES (28, 'C3', '街舞', 0, 22);
 INSERT INTO `t_sys_config` VALUES (21, '种类', '种类', NULL, 18);
-INSERT INTO `t_sys_config` VALUES (31, 'C1_1', '音乐', 0, 21);
 INSERT INTO `t_sys_config` VALUES (30, 'C5', '机械舞', 0, 22);
-INSERT INTO `t_sys_config` VALUES (22, 'C1_2', '舞蹈', 0, 21);
+INSERT INTO `t_sys_config` VALUES (65, 'C_SUBJECT_5', '社会', 0, 48);
 INSERT INTO `t_sys_config` VALUES (16, 'C_CRS_TYPE', '课程种类', 0, NULL);
-INSERT INTO `t_sys_config` VALUES (41, 'STU_LEVEL_1', '小学', 0, 40);
+INSERT INTO `t_sys_config` VALUES (63, 'C_SUBJECT_3', '英语', 0, 48);
 INSERT INTO `t_sys_config` VALUES (18, '艺术体育', '艺术体育', 0, 16);
 INSERT INTO `t_sys_config` VALUES (32, 'M_1', '流行音乐', 0, 31);
 INSERT INTO `t_sys_config` VALUES (34, 'M_3', '古典音乐', 0, 31);
-INSERT INTO `t_sys_config` VALUES (42, 'STU_LEVEL_2', '早教', 0, 40);
+INSERT INTO `t_sys_config` VALUES (62, 'C_SUBJECT_2', '语文', 0, 48);
 INSERT INTO `t_sys_config` VALUES (43, 'STU_LEVEL_1_1', '小一', 0, 41);
-INSERT INTO `t_sys_config` VALUES (39, '51', '画画', 0, 21);
+INSERT INTO `t_sys_config` VALUES (64, 'C_SUBJECT_4', '科学', 0, 48);
 INSERT INTO `t_sys_config` VALUES (40, 'C_STU_LEVEL', '学生年段', NULL, NULL);
 INSERT INTO `t_sys_config` VALUES (44, 'STU_LEVEL_1_2', '小二', 0, 41);
 INSERT INTO `t_sys_config` VALUES (45, 'STU_LEVEL_2_1', '早一', 0, 42);
@@ -220,6 +221,9 @@ INSERT INTO `t_sys_config` VALUES (57, 'C_GRADE_8', '初三', 0, 47);
 INSERT INTO `t_sys_config` VALUES (58, 'C_GRADE_9', '高一', 0, 47);
 INSERT INTO `t_sys_config` VALUES (59, 'C_GRADE_10', '高二', 0, 47);
 INSERT INTO `t_sys_config` VALUES (60, 'C_GRADE_11', '高三', 0, 47);
+INSERT INTO `t_sys_config` VALUES (61, 'C_SUBJECT_1', '数学', 0, 48);
+INSERT INTO `t_sys_config` VALUES (66, 'C_SUBJECT_6', '物理', 0, 48);
+INSERT INTO `t_sys_config` VALUES (67, 'C_SUBJECT_7', '化学', 0, 48);
 
 -- ----------------------------
 -- Table structure for t_sys_role
@@ -229,17 +233,18 @@ CREATE TABLE `t_sys_role`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `role_alias` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `role_visible` tinyint(4) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_sys_role
 -- ----------------------------
-INSERT INTO `t_sys_role` VALUES (1, '教师', 'ROLE_TEACHER');
-INSERT INTO `t_sys_role` VALUES (2, '咨询师', 'ROLE_CONSULTANT');
-INSERT INTO `t_sys_role` VALUES (3, '教务员', 'ROLE_ACADEMIC_DEAN');
-INSERT INTO `t_sys_role` VALUES (4, '财务', 'ROLE_TREASURER');
-INSERT INTO `t_sys_role` VALUES (6, '超级管理员', 'ROLE_SUPERUSER');
-INSERT INTO `t_sys_role` VALUES (5, '管理员', 'ROLE_ADMINISTRATOR');
+INSERT INTO `t_sys_role` VALUES (1, '教师', 'ROLE_TEACHER', 1);
+INSERT INTO `t_sys_role` VALUES (2, '咨询师', 'ROLE_CONSULTANT', 1);
+INSERT INTO `t_sys_role` VALUES (3, '教务员', 'ROLE_ACADEMIC_DEAN', 1);
+INSERT INTO `t_sys_role` VALUES (4, '财务', 'ROLE_TREASURER', 1);
+INSERT INTO `t_sys_role` VALUES (6, '超级管理员', 'ROLE_SUPERUSER', 0);
+INSERT INTO `t_sys_role` VALUES (5, '管理员', 'ROLE_ADMINISTRATOR', 0);
 
 SET FOREIGN_KEY_CHECKS = 1;

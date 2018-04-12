@@ -18,9 +18,8 @@
  * limitations under the License.
  */
 
-package org.edu.timelycourse.mc.common.paging;
+package org.edu.timelycourse.mc.biz.paging;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.pagehelper.Page;
 import lombok.Data;
 import org.edu.timelycourse.mc.common.constants.Constants;

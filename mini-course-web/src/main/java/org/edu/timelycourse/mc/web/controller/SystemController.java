@@ -66,11 +66,6 @@ public class SystemController extends AbstractController
         return getModulePage("system/dialog/dialogConfigField");
     }
 
-    private SystemConfigModel fetchConfigById (Integer configId)
-    {
-        return remoteCall("system/config/" + configId, new TypeToken<SystemConfigModel>() {}).getData();
-    }
-
     protected String getMyModulePath()
     {
         return "admin";

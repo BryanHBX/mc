@@ -8,14 +8,16 @@
         <id property="id" column="id"/>  
         <result property="roleName" column="role_name"/>
         <result property="roleAlias" column="role_alias"/>
+        <result property="roleVisible" column="role_visible"/>
     </resultMap>
     
     <insert id="insert" parameterType="SystemRoleModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_sys_role` (role_name, role_alias) VALUES(#{roleName}, #{roleAlias})
+        INSERT INTO `t_sys_role` (role_name, role_alias, role_visible)
+          VALUES (#{roleName}, #{roleAlias}, #{roleVisible})
     </insert>
 	
     <update id="update" parameterType="SystemRoleModel">
-        UPDATE `t_sys_role` SET role_name = #{roleName}, role_alias = #{roleAlias} WHERE id = #{id}
+        UPDATE `t_sys_role` SET role_name = #{roleName}, role_alias = #{roleAlias}, role_visible = #{roleVisible} WHERE id = #{id}
     </update>
     
     <select id="get" parameterType="java.lang.Integer" resultMap="result_sysRole">

@@ -5,7 +5,9 @@ import org.edu.timelycourse.mc.biz.repository.SystemRoleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SystemRoleService extends BaseService<SystemRoleModel>
 {
     private static Logger LOGGER = LoggerFactory.getLogger(SystemRoleService.class);

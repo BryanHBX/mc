@@ -18,8 +18,12 @@ public class ContractController extends AbstractController
     @RequestMapping("/form")
     public String showContractForm (Model model)
     {
-        model.addAttribute("level", fetchConfigByName(EBuiltInConfig.C_STUDENT_LEVEL.name()));
-        model.addAttribute("course", fetchConfigByName(EBuiltInConfig.C_COURSE_TYPE.name()));
+        model.addAttribute("level",
+                (EBuiltInConfig.C_STUDENT_LEVEL.name()));
+
+        model.addAttribute("course",
+                fetchConfigByName(EBuiltInConfig.C_COURSE_TYPE.name()));
+
         return getModulePage("contractForm");
     }
 
@@ -38,11 +42,5 @@ public class ContractController extends AbstractController
     protected String getMyModulePath()
     {
         return "contract";
-    }
-
-    private SystemConfigModel fetchConfigByName (String configName)
-    {
-        return remoteCall("system/config?configName=" + configName,
-                new TypeToken<SystemConfigModel>() {}).getData();
     }
 }

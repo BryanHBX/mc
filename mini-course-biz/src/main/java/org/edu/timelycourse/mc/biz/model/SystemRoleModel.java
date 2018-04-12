@@ -9,11 +9,12 @@ import lombok.ToString;
  */
 @Data
 @ToString(exclude = "id")
-@JsonIgnoreProperties(value= { "id" } )
+//ccc@JsonIgnoreProperties(value= { "id" } )
 public class SystemRoleModel extends BaseEntity
 {
     private String roleName;
     private String roleAlias;
+    private Integer roleVisible;
 
     @Override
     public boolean isValidInput ()

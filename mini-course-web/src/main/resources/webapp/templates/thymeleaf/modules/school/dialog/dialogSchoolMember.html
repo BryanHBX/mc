@@ -21,41 +21,60 @@
 	});
 </script>
 
+<style>
+    #formSchoolMember label { padding: 0; width: 60px; }
+    #formSchoolMember li { float: left; width: 105px; margin: 3px 0; }
+</style>
+
 <div xmlns:th="http://www.thymeleaf.org" class="pageContent">
 	<form id="formSchoolMember" method="post" class="pageForm required-validate">
 		<div class="pageFormContent" layoutH="56">
 			<table cellspacing="10" cellpadding="10" class="dform">
                 <tr>
-                    <td>微信号：</td>
+                    <td><label>微信号：</label></td>
                     <td><input name="rootName" type="text" size="15" th:value="${parent != null ? parent.configDescription : ''}" readonly /></td>
-					<td>姓名：</td>
+					<td align="center"><label>姓名：</label></td>
 					<td><input name="rootName" type="text" size="15" th:value="${parent != null ? parent.configDescription : ''}" readonly /></td>
-					<td>手机号：</td>
+					<td align="center"><label>手机号：</label></td>
 					<td><input name="rootName" type="text" size="15" th:value="${parent != null ? parent.configDescription : ''}" readonly /></td>
                 </tr>
 				<tr>
-					<td>身份证号：</td>
-					<td colspan="5"><input name="configName" type="text" size="30" th:value="${config != null ? config.configName : ''}" class="required" /></td>
+					<td><label>身份证号：</label></td>
+					<td colspan="3"><input name="configName" type="text" size="30" th:value="${config != null ? config.configName : ''}" class="required" /></td>
 				</tr>
 				<tr>
-					<td>角色：</td>
-					<td colspan="5"><input name="configDescription" type="text" size="30" th:value="${config != null ? config.configDescription : ''}" class="required" /></td>
+					<td><label>角色：</label></td>
+					<td colspan="5">
+                        <ul>
+                            <li th:each="role,roleStat:${roles}">
+                                <input type="checkbox" th:if="${role.roleVisible == 1}" th:value="${role.id}" /> <span th:if="${role.roleVisible == 1}" th:text="${role.roleName}" />
+                            </li>
+                        </ul>
+                    </td>
 				</tr>
 				<tr>
-					<td>所授课程：</td>
+					<td><label>所授课程：</label></td>
 					<td colspan="5"><input name="configDescription" type="text" size="30" th:value="${config != null ? config.configDescription : ''}" class="required" /></td>
 				</tr>
 				<tr th:if="${grades != null }">
-					<td th:text="${grades.configDescription}">年级：</td>
+					<td th:text="${grades.configDescription} + '：'" style="vertical-align: top; padding-top: 8px;">年级：</td>
 					<td colspan="5" th:if="${not #lists.isEmpty(grades.children)}" th:with="options=${grades.children}">
-						<div th:each="option:${options}" style="float: left">
-							<input type="checkbox" th:value="${option.id}" /> <span th:text="${option.configDescription}" ></span>
-						</div>
+                        <ul>
+                            <li th:each="opt,optStat:${options}">
+                                <input type="checkbox" th:value="${opt.id}" /> <span th:text="${opt.configDescription}" />
+                            </li>
+                        </ul>
 					</td>
 				</tr>
 				<tr th:if="${subjects != null}">
-					<td>科目：</td>
-					<td colspan="5"></td>
+                    <td th:text="${subjects.configDescription} + '：'" style="vertical-align: top; padding-top: 8px;">年级：</td>
+                    <td colspan="5" th:if="${not #lists.isEmpty(subjects.children)}" th:with="options=${subjects.children}">
+                        <ul>
+                            <li th:each="opt,optStat:${options}">
+                                <input type="checkbox" th:value="${opt.id}" /> <span th:text="${opt.configDescription}" />
+                            </li>
+                        </ul>
+                    </td>
 				</tr>
 			</table>
 		</div>

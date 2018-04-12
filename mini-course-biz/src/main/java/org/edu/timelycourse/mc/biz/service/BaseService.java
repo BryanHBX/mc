@@ -7,7 +7,7 @@ import org.edu.timelycourse.mc.biz.repository.BaseRepository;
 import org.edu.timelycourse.mc.biz.utils.LocaleMessageSource;
 import org.edu.timelycourse.mc.common.constants.Constants;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
-import org.edu.timelycourse.mc.common.paging.PagingBean;
+import org.edu.timelycourse.mc.biz.paging.PagingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.xml.ws.Service;
