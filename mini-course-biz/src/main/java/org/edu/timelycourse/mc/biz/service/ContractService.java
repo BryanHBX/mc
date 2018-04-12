@@ -3,10 +3,7 @@ package org.edu.timelycourse.mc.biz.service;
 import org.edu.timelycourse.mc.biz.model.ContractModel;
 import org.edu.timelycourse.mc.biz.model.InvoiceModel;
 import org.edu.timelycourse.mc.biz.model.StudentModel;
-import org.edu.timelycourse.mc.biz.repository.ContractRepository;
-import org.edu.timelycourse.mc.biz.repository.InvoiceRepository;
-import org.edu.timelycourse.mc.biz.repository.SchoolRepository;
-import org.edu.timelycourse.mc.biz.repository.StudentRepository;
+import org.edu.timelycourse.mc.biz.repository.*;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
@@ -27,17 +24,20 @@ public class ContractService extends BaseService<ContractModel>
     private StudentRepository studentRepository;
     private InvoiceRepository invoiceRepository;
     private SchoolRepository schoolRepository;
+    private UserRepository userRepository;
 
     @Autowired
     public ContractService(ContractRepository repository,
                            StudentRepository studentRepository,
                            InvoiceRepository invoiceRepository,
-                           SchoolRepository schoolRepository)
+                           SchoolRepository schoolRepository,
+                           UserRepository userRepository)
     {
         super(repository);
         this.studentRepository = studentRepository;
         this.invoiceRepository = invoiceRepository;
         this.schoolRepository = schoolRepository;
+        this.userRepository = userRepository;
     }
 
     private StudentModel initStudentModelBeforeAdd (final ContractModel model)
@@ -62,6 +62,9 @@ public class ContractService extends BaseService<ContractModel>
         StudentModel studentEntity = initStudentModelBeforeAdd(model);
         if (model.isValidInput())
         {
+            // check 
+            Asserts.assertEntityNotNullById(userRepository, model.getConsultantId());
+
             // in case student been selected from suggest lookup
             if (model.getStudentId() != null && model.getStudentId() > 0)
             {

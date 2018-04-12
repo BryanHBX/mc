@@ -26,7 +26,7 @@ public class SchoolModel extends BaseEntity
     /**
      * 学校状态
      */
-    private int schoolStatus;
+    private Integer schoolStatus;
 
     /**
      * 创建时间
@@ -37,6 +37,16 @@ public class SchoolModel extends BaseEntity
      * 更新时间
      */
     private Date lastUpdateTime;
+
+    public SchoolModel () {}
+
+    public SchoolModel (String name, String address, String contact, Integer status)
+    {
+        this.schoolName = name;
+        this.schoolAddress = address;
+        this.schoolContact = contact;
+        this.schoolStatus = status;
+    }
 
     @Override
     public boolean isValidInput ()

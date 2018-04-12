@@ -1,9 +1,12 @@
 package org.edu.timelycourse.mc.biz.service;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.edu.timelycourse.mc.biz.model.BaseEntity;
 import org.edu.timelycourse.mc.biz.repository.BaseRepository;
 import org.edu.timelycourse.mc.biz.utils.LocaleMessageSource;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
+import org.edu.timelycourse.mc.common.paging.PagingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -75,6 +78,13 @@ public abstract class BaseService<T extends BaseEntity>
     public List<T> getAll ()
     {
         return this.repository.getAll();
+    }
+
+    public PagingBean<T> findByPage (final T entity, int pageNum, int pageSize)
+    {
+        PageHelper.startPage(pageNum, pageSize);
+        Page<T> result = this.repository.getByPage(entity);
+        return new PagingBean<T>(result);
     }
 
     public T saveOrUpdate(T entity)

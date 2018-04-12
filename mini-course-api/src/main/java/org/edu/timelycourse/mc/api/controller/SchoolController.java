@@ -25,16 +25,25 @@ public class SchoolController extends BaseController
     @Autowired
     private SchoolService schoolService;
 
+    @ModelAttribute("school")
+    public SchoolModel getMessage()
+    {
+        return new SchoolModel ();
+    }
+
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all schools or by given query")
-    public ResponseData getAllSchools()
+    public ResponseData getSchools(
+            @RequestParam(name="pageNum", required = false) Integer pageNum,
+            @RequestParam(name="pageSize", required = false) Integer pageSize,
+            @ModelAttribute("school") SchoolModel model)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug("Enter getAllSchools");
+            LOGGER.debug("Enter getSchools - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
 
         try
         {
-            return ResponseData.success(schoolService.getAll());
+            return ResponseData.success(schoolService.findByPage(model, pageNum, pageSize));
         }
         catch (ServiceException ex)
         {
@@ -47,7 +56,7 @@ public class SchoolController extends BaseController
     public ResponseData getSchool(@PathVariable(required = true) Integer id)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter getSchool - [schoolId : %s]", id));
+            LOGGER.debug("Enter getSchool - [schoolId : {}]", id);
 
         try
         {
@@ -65,7 +74,7 @@ public class SchoolController extends BaseController
     public ResponseData deleteSchool(@PathVariable(required = true) Integer id)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter deleteSchool - [schoolId: %d]", id));
+            LOGGER.debug("Enter deleteSchool - [schoolId: {}]", id);
 
         try
         {
@@ -80,14 +89,14 @@ public class SchoolController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add school by given entity")
-    public ResponseData addSchool(@RequestBody SchoolModel schoolInfo)
+    public ResponseData addSchool(@RequestBody SchoolModel model)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter addSchool - [schoolInfo: %s]", schoolInfo));
+            LOGGER.debug("Enter addSchool - [schoolInfo: {}]", model);
 
         try
         {
-            return ResponseData.success(schoolService.add(schoolInfo));
+            return ResponseData.success(schoolService.add(model));
         }
         catch (ServiceException ex)
         {
@@ -99,18 +108,18 @@ public class SchoolController extends BaseController
     @ApiOperation(value = "Update school with respect to the specified id")
     public ResponseData updateSchool(
             @PathVariable(required = true) Integer id,
-            @RequestBody SchoolModel schoolInfo)
+            @RequestBody SchoolModel model)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter updateSchool - [id: %d, schoolInfo: %s]", id, schoolInfo));
+            LOGGER.debug("Enter updateSchool - [id: {}, schoolInfo: {}]", id, model);
 
         try
         {
             SchoolModel entity = (SchoolModel) Asserts.assertEntityNotNullById(schoolService, id);
 
-            schoolInfo.setId(id);
-            schoolInfo.setCreationTime(entity.getCreationTime());
-            return ResponseData.success(this.schoolService.update(schoolInfo));
+            model.setId(id);
+            model.setCreationTime(entity.getCreationTime());
+            return ResponseData.success(this.schoolService.update(model));
         }
         catch (ServiceException ex)
         {

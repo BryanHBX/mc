@@ -21,16 +21,30 @@
 
     <update id="update" parameterType="SchoolModel">
         UPDATE `t_school` SET
-            s_name = #{schoolName},
-            s_address = #{schoolAddress},
-            s_contact = #{schoolContact},
-            s_status = #{schoolStatus},
-            s_lastUpdateTime = #{lastUpdateTime}
+        <set>
+            <if test="schoolName != null and schoolName != ''">`s_name` = #{schoolName},</if>
+            <if test="schoolAddress != null and schoolAddress != ''">`s_address` = #{schoolAddress},</if>
+            <if test="schoolContact != null and schoolContact != ''">`s_contact` = #{schoolContact},</if>
+            <if test="schoolStatus != null and schoolStatus > -1">`s_status` = #{schoolStatus},</if>
+            <if test="lastUpdateTime != null">`s_lastUpdateTime` = #{lastUpdateTime},</if>
+            `id` = `id`
+        </set>
         WHERE id = #{id}
     </update>
+
+    <select id="getByPage" parameterType="SchoolModel" resultMap="result_school">
+        SELECT * FROM `t_school`
+        <where>
+            1 = 1
+            <if test="schoolName != null and schoolName != ''"> AND `s_name` LIKE "%"#{userName}"%"</if>
+            <if test="schoolAddress != null and schoolAddress != ''"> AND `s_address` LIKE "%"#{schoolAddress}"%"</if>
+            <if test="schoolContact != null and schoolContact != ''"> AND `s_contact` LIKE "%"#{schoolContact}"%"</if>
+            <if test="schoolStatus != null and schoolStatus > -1"> AND `s_status` = #{schoolStatus}</if>
+        </where>
+    </select>
     
     <select id="get" parameterType="java.lang.Integer" resultMap="result_school">
-        SELECT * FROM `t_school` where `id` = #{id}
+        SELECT * FROM `t_school` WHERE `id` = #{id}
     </select>
 
     <update id="delete" parameterType="java.lang.Integer">

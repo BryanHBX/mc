@@ -20,7 +20,12 @@
 
 package org.edu.timelycourse.mc.common.paging;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.pagehelper.Page;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Bean class for pagination.
@@ -30,7 +35,7 @@ import lombok.Data;
  *
  */
 @Data
-public class PagingBean
+public class PagingBean<T> implements Serializable
 {
 	/**
 	 * The default page size
@@ -50,6 +55,7 @@ public class PagingBean
 	/**
 	 * The start index offset, by default as 0.
 	 */
+	@JsonIgnore
 	private Integer startIndex = 0;
 	
 	/**
@@ -65,22 +71,29 @@ public class PagingBean
 	/**
 	 * The current page number
 	 */
-	private Integer currentPage = 1;
+	private Integer pageNumber = 1;
 	
 	/**
 	 * The shown page number
 	 */
-	private Integer pageNumShown = DEFAULT_SHOW_PAGES;
+	@JsonIgnore
+    private Integer pageNumShown = DEFAULT_SHOW_PAGES;
 	
 	/**
 	 * The target type in DWZ
 	 */
+	@JsonIgnore
 	private String targetType = DEFAULT_TARGET_TYPE;
 	
 	/**
-	 * The total pages
+	 * The total page number
 	 */
-	private Integer totalPages = 0;
+	private Integer totalPageNumber = 0;
+
+	/**
+	 * The list of data items
+	 */
+	private List<T> items;
 	
 	/**
 	 * The default constructor
@@ -92,15 +105,25 @@ public class PagingBean
 	/**
 	 * The sole constructor
 	 * 
-	 * @param currentPage
+	 * @param pageNumber
 	 *          the current page
 	 * @param pageSize
 	 *          the page size
 	 */
-	public PagingBean(int currentPage, int pageSize)
+	public PagingBean(int pageNumber, int pageSize)
 	{
-		this.currentPage = currentPage;
+		this.pageNumber = pageNumber;
 		this.pageSize = pageSize;
-		this.startIndex = (currentPage - 1 < 0 ? 0 : currentPage - 1) * pageSize;
+		this.startIndex = (pageNumber - 1 < 0 ? 0 : pageNumber - 1) * pageSize;
 	}
+
+	public PagingBean(final Page<T> pageEntity)
+	{
+		this.pageNumber = pageEntity.getPageNum();
+		this.pageSize = pageEntity.getPageSize();
+		this.items = pageEntity.getResult();
+		this.totalItems = pageEntity.getResult().size();
+        this.totalPageNumber = pageEntity.getPages();
+	}
+
 }

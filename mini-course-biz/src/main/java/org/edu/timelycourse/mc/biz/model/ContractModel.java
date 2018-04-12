@@ -105,7 +105,9 @@ public class ContractModel extends BaseEntity
     @Override
     public boolean isValidInput ()
     {
-        boolean valid = EEnrollmentType.hasValue(enrollType) && Strings.isNotEmpty(contractNo) &&
+        boolean valid =
+                EEnrollmentType.hasValue(enrollType) &&
+                Strings.isNotEmpty(contractNo) &&
                 ValidatorUtil.isFloatNumber(contractPrice, totalPrice) &&
                 EntityUtils.isValidEntityId(consultantId, levelId, subLevelId, courseId, subCourseId) &&
                 student.isValidInput() && contractDate != null;
