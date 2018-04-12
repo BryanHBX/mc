@@ -36,9 +36,9 @@
         SELECT * FROM `t_school`
         <where>
             1 = 1
-            <if test="schoolName != null and schoolName != ''"> AND `s_name` LIKE "%"#{schoolName}"%"</if>
-            <if test="schoolAddress != null and schoolAddress != ''"> AND `s_address` LIKE "%"#{schoolAddress}"%"</if>
-            <if test="schoolContact != null and schoolContact != ''"> AND `s_contact` LIKE "%"#{schoolContact}"%"</if>
+            <if test="schoolName != null and schoolName != ''"> AND `s_name` LIKE CONCAT('%',#{schoolName},'%')</if>
+            <if test="schoolAddress != null and schoolAddress != ''"> AND `s_address` LIKE CONCAT('%',#{schoolAddress},'%')</if>
+            <if test="schoolContact != null and schoolContact != ''"> AND `s_contact` LIKE CONCAT('%',#{schoolContact},'%')</if>
             <if test="schoolStatus != null and schoolStatus > -1"> AND `s_status` = #{schoolStatus}</if>
         </where>
     </select>
