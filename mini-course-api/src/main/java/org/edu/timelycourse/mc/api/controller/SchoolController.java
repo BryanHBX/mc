@@ -26,7 +26,7 @@ public class SchoolController extends BaseController
     private SchoolService schoolService;
 
     @ModelAttribute("school")
-    public SchoolModel getMessage()
+    public SchoolModel getModel()
     {
         return new SchoolModel ();
     }

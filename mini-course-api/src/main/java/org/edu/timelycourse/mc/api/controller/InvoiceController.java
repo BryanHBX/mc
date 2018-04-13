@@ -25,16 +25,25 @@ public class InvoiceController extends BaseController
     @Autowired
     private InvoiceService invoiceService;
 
+    @ModelAttribute("invoice")
+    public InvoiceModel getModel()
+    {
+        return new InvoiceModel ();
+    }
+
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all invoices or by given query")
-    public ResponseData getInvoice(@RequestParam(required = false, value = "query") String query)
+    public ResponseData getInvoice(
+            @RequestParam(name="pageNum", required = false) Integer pageNum,
+            @RequestParam(name="pageSize", required = false) Integer pageSize,
+            @ModelAttribute("invoice") InvoiceModel model)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug("Enter getInvoice - [query: %s]", query);
+            LOGGER.debug("Enter getInvoice - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
 
         try
         {
-            return ResponseData.success(invoiceService.getAll());
+            return ResponseData.success(invoiceService.findByPage(model, pageNum, pageSize));
         }
         catch (ServiceException ex)
         {

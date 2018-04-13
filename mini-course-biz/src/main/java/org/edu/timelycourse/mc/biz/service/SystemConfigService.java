@@ -4,6 +4,7 @@ import org.edu.timelycourse.mc.biz.model.SystemConfigModel;
 import org.edu.timelycourse.mc.biz.repository.SystemConfigRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
+import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
         SystemConfigModel config = configRepository.getByConfigName(entity.getConfigName());
         if (config == null)
         {
-            if (entity.getParentId() != null && entity.getParentId() > 0)
+            if (EntityUtils.isValidEntityId(entity.getParentId()))
             {
                 Asserts.assertEntityNotNullById(repository, entity.getParentId());
             }

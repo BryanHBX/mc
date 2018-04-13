@@ -6,6 +6,7 @@ import org.edu.timelycourse.mc.biz.model.StudentModel;
 import org.edu.timelycourse.mc.biz.repository.*;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
+import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ public class ContractService extends BaseService<ContractModel>
             Asserts.assertEntityNotNullById(userRepository, model.getConsultantId());
 
             // in case student been selected from suggest lookup
-            if (model.getStudentId() != null && model.getStudentId() > 0)
+            if (EntityUtils.isValidEntityId(model.getStudentId()))
             {
                 studentEntity = (StudentModel) Asserts.assertEntityNotNullById(studentRepository, model.getStudentId());
             }

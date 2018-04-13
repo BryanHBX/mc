@@ -4,6 +4,8 @@ import org.edu.timelycourse.mc.biz.model.SchoolModel;
 import org.edu.timelycourse.mc.biz.model.SchoolProductModel;
 import org.edu.timelycourse.mc.biz.repository.SchoolProductRepository;
 import org.edu.timelycourse.mc.biz.repository.SchoolRepository;
+import org.edu.timelycourse.mc.biz.utils.Asserts;
+import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +21,23 @@ public class SchoolProductService extends BaseService<SchoolProductModel>
 {
     private static Logger LOGGER = LoggerFactory.getLogger(SchoolProductService.class);
 
+    private SchoolProductRepository productRepository;
+
     @Autowired
     public SchoolProductService(SchoolProductRepository repository)
     {
         super(repository);
+        this.productRepository = repository;
     }
 
     @Override
     public SchoolProductModel add(SchoolProductModel entity)
     {
+        if (EntityUtils.isValidEntityId(entity.getParentId()))
+        {
+            Asserts.assertEntityNotNullById(repository, entity.getParentId());
+        }
+
         entity.setCreationTime(new Date());
         return super.add(entity);
     }
