@@ -34,8 +34,14 @@
     </insert>
 	
     <update id="update" parameterType="SystemConfigModel">
-        UPDATE `t_sys_config` SET c_name = #{configName}, c_desc = #{configDescription}, c_single = #{single}
-        	where id = #{id}
+        UPDATE `t_sys_config` SET
+        <set>
+            <if test="configName != null and configName != ''">`c_name` = #{configName},</if>
+            <if test="configDescription != null and configDescription != ''">`c_desc` = #{configDescription},</if>
+            <if test="single != null and single > -1">`c_single` = #{single},</if>
+            `id` = `id`
+        </set>
+        WHERE id = #{id}
     </update>
     
     <select id="getAll" resultMap="result_sysConf">

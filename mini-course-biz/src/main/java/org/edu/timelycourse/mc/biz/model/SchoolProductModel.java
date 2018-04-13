@@ -16,7 +16,7 @@ public class SchoolProductModel extends BaseEntity
     /**
      * 课时
      */
-    private double productPeriod;
+    private Double productPeriod;
 
     /**
      * 课程类别

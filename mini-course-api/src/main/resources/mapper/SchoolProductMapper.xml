@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.edu.timelycourse.mc.biz.repository.SchoolProductRepository">
+    
+	<cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
+	
+    <resultMap type="org.edu.timelycourse.mc.biz.model.SchoolProductModel" id="result_product">
+        <id property="id" column="id"/>  
+        <result property="productName" column="p_name"/>
+        <result property="productType" column="p_type"/>
+        <result property="productPeriod" column="p_period"/>
+        <result property="parentId" column="p_parent"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="creationTime" column="p_createTime"/>
+        <result property="lastUpdateTime" column="p_lastUpdateTime"/>
+
+        <collection property="children" column="id" javaType="java.util.ArrayList"
+                    ofType="org.edu.timelycourse.mc.biz.model.SchoolProductModel"
+                    select="getChildren"
+        />
+    </resultMap>
+
+    <select id="getByProductName" parameterType="java.lang.String" resultMap="result_product">
+		SELECT * FROM `t_school_product` WHERE
+        <where>
+            1 = 1
+            <if test="productName != null and productName != ''"> AND `p_name` = #{productName}</if>
+            <if test="parentId != null and parentId > 0"> AND `p_parent` = #{parentId}</if>
+        </where>
+	</select>
+
+    <select id="getChildren" parameterType="java.lang.Integer" resultMap="result_product">
+        SELECT * FROM `t_school_product` WHERE `p_parent` = #{parentId}
+    </select>
+	
+    <select id="get" parameterType="java.lang.Integer" resultMap="result_product">
+        SELECT * FROM `t_school_product` WHERE `id` = #{id}
+	</select>
+	
+    <insert id="insert" parameterType="SchoolProductModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `t_school_product` (p_name, p_type, p_period, p_parent, school_id, p_createTime)
+			VALUES (#{productName}, #{productType}, #{productPeriod}, #{parentId}, #{schoolId}, #{creationTime})
+    </insert>
+	
+    <update id="update" parameterType="SchoolProductModel">
+        UPDATE `t_school_product` SET
+        <set>
+            <if test="configName != null and configName != ''">`p_name` = #{configName},</if>
+            <if test="productType != null and productType > 0">`p_type` = #{productType},</if>
+            <if test="productPeriod != null and productPeriod > 0">`p_period` = #{productPeriod},</if>
+            <if test="parentId != null and parentId > 0">`p_parent` = #{parentId},</if>
+            <if test="schoolId != null and schoolId > 0">`school_id` = #{single},</if>
+            <if test="lastUpdateTime != null">`p_lastUpdateTime` = #{lastUpdateTime},</if>
+            `id` = `id`
+        </set>
+        WHERE id = #{id}
+    </update>
+    
+    <select id="getAll" resultMap="result_product">
+		SELECT * FROM `t_school_product` WHERE `p_parent` IS NULL
+	</select>
+    
+    <update id="delete" parameterType="java.lang.Integer">
+        DELETE FROM `t_school_product` WHERE `id` = #{id}
+    </update>
+
+</mapper>
