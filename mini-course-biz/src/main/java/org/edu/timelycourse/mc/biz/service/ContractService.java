@@ -3,6 +3,7 @@ package org.edu.timelycourse.mc.biz.service;
 import org.edu.timelycourse.mc.biz.model.ContractModel;
 import org.edu.timelycourse.mc.biz.model.InvoiceModel;
 import org.edu.timelycourse.mc.biz.model.StudentModel;
+import org.edu.timelycourse.mc.biz.model.UserModel;
 import org.edu.timelycourse.mc.biz.repository.*;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
@@ -26,6 +27,7 @@ public class ContractService extends BaseService<ContractModel>
     private InvoiceRepository invoiceRepository;
     private SchoolRepository schoolRepository;
     private UserRepository userRepository;
+    private ContractRepository contractRepository;
 
     @Autowired
     public ContractService(ContractRepository repository,
@@ -39,6 +41,7 @@ public class ContractService extends BaseService<ContractModel>
         this.invoiceRepository = invoiceRepository;
         this.schoolRepository = schoolRepository;
         this.userRepository = userRepository;
+        this.contractRepository = repository;
     }
 
     private StudentModel initStudentModelBeforeAdd (final ContractModel model)
@@ -60,29 +63,51 @@ public class ContractService extends BaseService<ContractModel>
     @Override
     public ContractModel add(ContractModel model)
     {
-        StudentModel studentEntity = initStudentModelBeforeAdd(model);
         if (model.isValidInput())
         {
-            // check 
-            Asserts.assertEntityNotNullById(userRepository, model.getConsultantId());
+            StudentModel studentEntity = initStudentModelBeforeAdd(model);
 
-            // in case student been selected from suggest lookup
+            // check if user exists
+            UserModel consultant = (UserModel) Asserts.assertEntityNotNullById(userRepository, model.getConsultantId());
+
+            // check if student exists in case selection from suggest lookup
             if (EntityUtils.isValidEntityId(model.getStudentId()))
             {
                 studentEntity = (StudentModel) Asserts.assertEntityNotNullById(studentRepository, model.getStudentId());
             }
             else
             {
+                // save student
                 studentRepository.insert(model.getStudent());
+                studentEntity = model.getStudent();
+            }
+
+            // check if same school id in place
+            if (consultant.getSchoolId() != model.getSchoolId() &&
+                    studentEntity.getSchoolId() != model.getSchoolId())
+            {
+                throw new ServiceException(String.format(
+                        "Conflict school id in payload request - [consultant (sid: %d), student (sid: %d), contract (sid: %d)]",
+                        consultant.getSchoolId(), model.getSchoolId(), studentEntity.getSchoolId()
+                ));
+            }
+
+            // check if contract no. exists already or not
+            if (contractRepository.getByEntity(new ContractModel(
+                    model.getContractNo(), model.getSchoolId())) != null)
+            {
+                throw new ServiceException(String.format(
+                        "Contract already exists with [no: %s, schoolId: %d]",
+                        model.getContractNo(), model.getSchoolId()));
             }
 
             model.setStudentId(studentEntity.getId());
             model.setCreationTime(new Date());
 
-            // add contract
-            super.add(model);
+            // save contract
+            repository.insert(model);
 
-            // add invoices
+            // save invoices
             if (model.getInvoices() != null)
             {
                 for (InvoiceModel invoice : model.getInvoices())
@@ -100,10 +125,42 @@ public class ContractService extends BaseService<ContractModel>
     }
 
     @Override
+    public Integer delete (Integer id)
+    {
+        return repository.delete(id);
+    }
+
+    @Override
     public ContractModel update(ContractModel entity)
     {
-        entity.setLastUpdateTime(new Date());
-        return super.update(entity);
+        if (entity.isValidInput() && EntityUtils.isValidEntityId(entity.getId()))
+        {
+            // check if entity exists
+            ContractModel entityInDb = (ContractModel) Asserts.assertEntityNotNullById(repository, entity.getId());
+
+            // check if school changed
+            if (entity.getSchoolId() != null && !entity.getSchoolId().equals(entityInDb.getSchoolId()))
+            {
+                throw new ServiceException(String.format(
+                        "It's not allowed to change the school from %d to %d",
+                        entityInDb.getSchoolId(), entity.getSchoolId()));
+            }
+            entity.setSchoolId(entityInDb.getSchoolId());
+
+            // check if contract no exists
+            entityInDb = contractRepository.getByEntity(new ContractModel(entity.getContractNo(), entity.getSchoolId()));
+            if (entityInDb != null && !entityInDb.getId().equals(entity.getId()))
+            {
+                throw new ServiceException(String.format(
+                        "Contract already exists with [no: %s, schoolId: %d]",
+                        entity.getContractNo(), entity.getSchoolId()));
+            }
+
+            entity.setLastUpdateTime(new Date());
+            return super.update(entity);
+        }
+
+        throw new ServiceException(String.format("Invalid model data to update, %s", entity));
     }
 
 }

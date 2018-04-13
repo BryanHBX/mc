@@ -75,11 +75,16 @@ public class StudentModel extends BaseEntity
      */
     private Date lastUpdateTime;
 
+    /**
+     * 学校ID
+     */
+    private Integer schoolId;
+
     @Override
     public boolean isValidInput ()
     {
         return EContactType.hasValue(this.contactRelationType) &&
                 StringUtil.isNotEmpty(wxId, contactName, contactPhone, name) &&
-                EntityUtils.isValidEntityId(levelId, subLevelId, courseId, subCourseId);
+                EntityUtils.isValidEntityId(schoolId, levelId, subLevelId, courseId, subCourseId);
     }
 }

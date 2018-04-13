@@ -2,6 +2,7 @@ package org.edu.timelycourse.mc.biz.service;
 
 import org.edu.timelycourse.mc.biz.model.InvoiceModel;
 import org.edu.timelycourse.mc.biz.repository.InvoiceRepository;
+import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +27,25 @@ public class InvoiceService extends BaseService<InvoiceModel>
     @Override
     public InvoiceModel add(InvoiceModel entity)
     {
-        entity.setCreationTime(new Date());
-        return super.add(entity);
+        if (entity.isValidInput())
+        {
+            entity.setCreationTime(new Date());
+            return super.add(entity);
+        }
+
+        throw new ServiceException(String.format("Invalid model data to add, %s", entity));
     }
 
     @Override
     public InvoiceModel update(InvoiceModel entity)
     {
-        entity.setLastUpdateTime(new Date());
-        return super.update(entity);
+        if (entity.isValidInput())
+        {
+            entity.setLastUpdateTime(new Date());
+            return super.update(entity);
+        }
+
+        throw new ServiceException(String.format("Invalid model data to add, %s", entity));
     }
 
 }
