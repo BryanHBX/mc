@@ -4,7 +4,9 @@ import org.edu.timelycourse.mc.biz.model.SchoolModel;
 import org.edu.timelycourse.mc.biz.model.SchoolProductModel;
 import org.edu.timelycourse.mc.biz.repository.SchoolProductRepository;
 import org.edu.timelycourse.mc.biz.repository.SchoolRepository;
+import org.edu.timelycourse.mc.biz.repository.SystemConfigRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
+import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,24 +24,58 @@ public class SchoolProductService extends BaseService<SchoolProductModel>
     private static Logger LOGGER = LoggerFactory.getLogger(SchoolProductService.class);
 
     private SchoolProductRepository productRepository;
+    private SchoolRepository schoolRepository;
+    private SystemConfigRepository systemConfigRepository;
 
     @Autowired
-    public SchoolProductService(SchoolProductRepository repository)
+    public SchoolProductService(SchoolProductRepository repository,
+                                SchoolRepository schoolRepository,
+                                SystemConfigRepository systemConfigRepository)
     {
         super(repository);
         this.productRepository = repository;
+        this.schoolRepository = schoolRepository;
+        this.systemConfigRepository = systemConfigRepository;
     }
 
     @Override
     public SchoolProductModel add(SchoolProductModel entity)
     {
-        if (EntityUtils.isValidEntityId(entity.getParentId()))
+        if (entity.isValidInput())
         {
-            Asserts.assertEntityNotNullById(repository, entity.getParentId());
+            // check if school entity exists
+            Asserts.assertEntityNotNullById(schoolRepository, entity.getSchoolId());
+
+            // check if product type exists
+            if (entity.getParentId() == null)
+            {
+                Asserts.assertEntityNotNullById(systemConfigRepository, entity.getProductType());
+            }
+
+            // check if parent entity exists if given
+            if (entity.getParentId() != null && EntityUtils.isValidEntityId(entity.getParentId()))
+            {
+                Asserts.assertEntityNotNullById(repository, entity.getParentId());
+
+                // reset the product type as it's only applicable for root
+                entity.setProductType(null);
+            }
+
+            // check if product name exists before add
+            if (productRepository.getByEntity(new SchoolProductModel(
+                    entity.getProductName(), entity.getParentId(), entity.getSchoolId())) != null)
+            {
+                throw new ServiceException(String.format(
+                        "Product already exists with [name: %s, parent: %d, school: %d]",
+                        entity.getProductName(), entity.getParentId(), entity.getSchoolId()));
+            }
+
+            entity.setCreationTime(new Date());
+            return super.add(entity);
         }
 
-        entity.setCreationTime(new Date());
-        return super.add(entity);
+        throw new ServiceException(String.format(
+                "Invalid model input to add, %s", entity));
     }
 
     @Override

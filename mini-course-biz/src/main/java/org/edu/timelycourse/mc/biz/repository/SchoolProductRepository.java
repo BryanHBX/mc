@@ -9,8 +9,5 @@ import java.util.List;
 @Component
 public interface SchoolProductRepository extends BaseRepository<SchoolProductModel>
 {
-    SchoolProductModel getByProductName (@Param("name") String productName,
-                                  @Param("parentId") Integer parentId);
-
     List<SchoolProductModel> getChildren (@Param("parentId") Integer parentId);
 }

@@ -20,12 +20,15 @@
         />
     </resultMap>
 
-    <select id="getByProductName" parameterType="java.lang.String" resultMap="result_product">
-		SELECT * FROM `t_school_product` WHERE
+    <select id="getByEntity" parameterType="SchoolProductModel" resultMap="result_product">
+		SELECT * FROM `t_school_product`
         <where>
             1 = 1
             <if test="productName != null and productName != ''"> AND `p_name` = #{productName}</if>
+            <if test="schoolId != null and schoolId > 0"> AND `school_id` = #{schoolId}</if>
             <if test="parentId != null and parentId > 0"> AND `p_parent` = #{parentId}</if>
+            <if test="productType != null and productType > 0"> AND `p_type` = #{productType}</if>
+            <if test="productPeriod != null and productPeriod > 0"> AND `p_period` = #{productPeriod}</if>
         </where>
 	</select>
 

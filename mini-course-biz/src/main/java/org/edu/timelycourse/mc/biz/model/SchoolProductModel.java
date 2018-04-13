@@ -1,7 +1,11 @@
 package org.edu.timelycourse.mc.biz.model;
 
 import lombok.Data;
+import org.edu.timelycourse.mc.common.utils.EntityUtils;
+import org.edu.timelycourse.mc.common.utils.StringUtil;
+import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.Date;
 import java.util.List;
 
@@ -48,9 +52,22 @@ public class SchoolProductModel extends BaseEntity
      */
     private List<SchoolProductModel> children;
 
+    public SchoolProductModel () {}
+
+    public SchoolProductModel (String name, Integer parentId, Integer schoolId)
+    {
+        this.productName = name;
+        this.parentId = parentId;
+        this.schoolId = schoolId;
+    }
+
     @Override
     public boolean isValidInput ()
     {
-        return false;
+        return EntityUtils.isValidEntityId(schoolId) &&
+                StringUtil.isNotEmpty(productName) &&
+                ValidatorUtil.isFloatNumber(productPeriod) &&
+                (parentId == null ? EntityUtils.isValidEntityId(productType) :
+                        EntityUtils.isValidEntityId(parentId));
     }
 }
