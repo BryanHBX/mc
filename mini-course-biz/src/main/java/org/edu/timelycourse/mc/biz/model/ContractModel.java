@@ -102,6 +102,19 @@ public class ContractModel extends BaseEntity
      */
     private List<InvoiceModel> invoices;
 
+    /**
+     * 学校ID
+     */
+    private Integer schoolId;
+
+    public ContractModel () {}
+
+    public ContractModel (String contractNo, Integer schoolId)
+    {
+        this.contractNo = contractNo;
+        this.schoolId = schoolId;
+    }
+
     @Override
     public boolean isValidInput ()
     {
@@ -109,7 +122,7 @@ public class ContractModel extends BaseEntity
                 EEnrollmentType.hasValue(enrollType) &&
                 Strings.isNotEmpty(contractNo) &&
                 ValidatorUtil.isFloatNumber(contractPrice, totalPrice) &&
-                EntityUtils.isValidEntityId(consultantId, levelId, subLevelId, courseId, subCourseId) &&
+                EntityUtils.isValidEntityId(consultantId, levelId, subLevelId, courseId, subCourseId, schoolId) &&
                 student.isValidInput() && contractDate != null;
 
         if (valid && invoices != null)

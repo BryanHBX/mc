@@ -1,7 +1,5 @@
 package org.edu.timelycourse.mc.biz.service;
 
-import com.google.common.base.Enums;
-import com.google.common.base.Strings;
 import org.edu.timelycourse.mc.biz.enums.EUserRole;
 import org.edu.timelycourse.mc.biz.enums.EUserStatus;
 import org.edu.timelycourse.mc.biz.enums.EUserType;
@@ -10,6 +8,8 @@ import org.edu.timelycourse.mc.biz.repository.UserRepository;
 import org.edu.timelycourse.mc.biz.repository.SchoolRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
+import org.edu.timelycourse.mc.common.utils.EntityUtils;
+import org.edu.timelycourse.mc.common.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,20 +41,20 @@ public class UserService extends BaseService<UserModel>
     @Override
     public UserModel add (UserModel entity)
     {
-        Asserts.assertEntityNotNullById(schoolInfoRepository, entity.getSchoolId());
-
-        if (!isUserEntityValid(entity))
+        if (!entity.isValidInput())
         {
             throw new ServiceException(String.format("Invalid user entity %s", entity));
         }
 
+        Asserts.assertEntityNotNullById(schoolInfoRepository, entity.getSchoolId());
+
         boolean exists = false;
-        if (entity.getUserIdentity() != null)
+        if (StringUtil.isNotEmpty(entity.getUserIdentity()))
         {
             exists = (userRepository.getByUserId(entity.getUserIdentity()) != null);
         }
 
-        if (!exists && Strings.isNullOrEmpty(entity.getPhone()))
+        if (!exists && StringUtil.isNotEmpty(entity.getPhone()))
         {
             exists = (userRepository.getByUserPhone(entity.getPhone()) != null);
         }
@@ -84,7 +84,7 @@ public class UserService extends BaseService<UserModel>
         }
 
         boolean valid = true;
-        if (entity.getUserIdentity() != null)
+        if (StringUtil.isNotEmpty(entity.getUserIdentity()))
         {
             UserModel user = userRepository.getByUserId(entity.getUserIdentity());
             if (user != null && !user.getId().equals(entity.getId()))
@@ -93,7 +93,7 @@ public class UserService extends BaseService<UserModel>
             }
         }
 
-        if (valid && Strings.isNullOrEmpty(entity.getPhone()))
+        if (valid && StringUtil.isNotEmpty(entity.getPhone()))
         {
             UserModel user = userRepository.getByUserPhone(entity.getPhone());
             if (user != null && !user.getId().equals(entity.getId()))
@@ -125,31 +125,34 @@ public class UserService extends BaseService<UserModel>
 
     public UserModel findByUserIdentity (String userIdentity)
     {
-        if (!Strings.isNullOrEmpty(userIdentity))
+        if (!StringUtil.isNotEmpty(userIdentity))
         {
             return userRepository.getByUserId(userIdentity);
         }
 
-        throw new ServiceException(String.format("Invalid user identity %s",  userIdentity));
+        throw new ServiceException(String.format(
+                "Invalid user identity %s",  userIdentity));
     }
 
     public List<UserModel> findBySchoolId (Integer schoolId)
     {
-        if (schoolId != null && schoolId > 0)
+        if (EntityUtils.isValidEntityId(schoolId))
         {
             return userRepository.getBySchoolId(schoolId);
         }
 
-        throw new ServiceException(String.format("Invalid school id %d",  schoolId));
+        throw new ServiceException(String.format(
+                "Invalid school id %d",  schoolId));
     }
 
     public UserModel findByUserPhone (String userPhone)
     {
-        if (!Strings.isNullOrEmpty(userPhone))
+        if (!StringUtil.isNotEmpty(userPhone))
         {
             return userRepository.getByUserPhone(userPhone);
         }
 
-        throw new ServiceException(String.format("Invalid user phone %s",  userPhone));
+        throw new ServiceException(String.format(
+                "Invalid user phone %s",  userPhone));
     }
 }

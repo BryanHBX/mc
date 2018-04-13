@@ -8,6 +8,7 @@ import org.edu.timelycourse.mc.biz.utils.LocaleMessageSource;
 import org.edu.timelycourse.mc.common.constants.Constants;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.edu.timelycourse.mc.biz.paging.PagingBean;
+import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.xml.ws.Service;
@@ -39,7 +40,7 @@ public abstract class BaseService<T extends BaseEntity>
 
     public T add (T entity)
     {
-        if (entity != null)
+        if (entity != null && entity.isValidInput())
         {
             Integer result = this.repository.insert(entity);
             if (result > 0)
@@ -54,13 +55,15 @@ public abstract class BaseService<T extends BaseEntity>
 
     public T update (T entity)
     {
-        if (entity != null && entity.getId() != null)
+        if (entity != null && entity.isValidInput() &&
+                EntityUtils.isValidEntityId(entity.getId()))
         {
             Integer result = this.repository.update(entity);
             if (result > 0)
             {
                 return entity;
             }
+
             throw new ServiceException("Failed to update entity: " + entity);
         }
 
@@ -69,7 +72,7 @@ public abstract class BaseService<T extends BaseEntity>
 
     public Integer delete (Integer id)
     {
-        if (id != null && id > 0)
+        if (EntityUtils.isValidEntityId(id))
         {
             return this.repository.delete(id);
         }
@@ -82,13 +85,13 @@ public abstract class BaseService<T extends BaseEntity>
         return this.repository.getAll();
     }
 
-    public PagingBean<T> findByPage (final T entity, int pageNum, int pageSize)
+    public PagingBean<T> findByPage (final T entity, Integer pageNum, Integer pageSize)
     {
         try
         {
             PageHelper.startPage(
-                    pageNum > 0 ? pageNum : 1,
-                    pageSize > 0 ? pageSize : Constants.DEFAULT_PAGE_SIZE);
+                    EntityUtils.isValidEntityId(pageNum) ? pageNum : 1,
+                    EntityUtils.isValidEntityId(pageSize) ? pageSize : Constants.DEFAULT_PAGE_SIZE);
 
             Page<T> result = this.repository.getByPage(entity);
             return new PagingBean<T>(result);

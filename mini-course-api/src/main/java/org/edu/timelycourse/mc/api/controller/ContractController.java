@@ -25,12 +25,21 @@ public class ContractController extends BaseController
     @Autowired
     private ContractService contractService;
 
+    @ModelAttribute("contract")
+    public ContractModel getModel()
+    {
+        return new ContractModel ();
+    }
+
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all contracts or by given query")
-    public ResponseData getContract(@RequestParam(required = false, value = "query") String query)
+    public ResponseData getContract(
+            @RequestParam(name="pageNum", required = false) Integer pageNum,
+            @RequestParam(name="pageSize", required = false) Integer pageSize,
+            @ModelAttribute("contract") ContractModel model)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug("Enter getContract - [query: %s]", query);
+            LOGGER.debug("Enter getContract - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
 
         try
         {
@@ -47,7 +56,7 @@ public class ContractController extends BaseController
     public ResponseData getContractById(@PathVariable(required = true) Integer contractId)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter getContractById - [contractId: %d]", contractId));
+            LOGGER.debug("Enter getContractById - [contractId: {}]", contractId);
 
         try
         {
@@ -64,7 +73,7 @@ public class ContractController extends BaseController
     public ResponseData addContract (@RequestBody ContractModel model)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter addContract - [model: %s]", model));
+            LOGGER.debug("Enter addContract - [model: {}]", model);
 
         try
         {
@@ -81,7 +90,7 @@ public class ContractController extends BaseController
     public ResponseData deleteContractById (@PathVariable(required = true) Integer contractId)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter deleteContractById - [contractId: %d]", contractId));
+            LOGGER.debug("Enter deleteContractById - [contractId: {}]", contractId);
 
         try
         {
@@ -101,7 +110,7 @@ public class ContractController extends BaseController
             @RequestBody ContractModel model)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter updateContract - [contractId: %d, model: %s]", contractId, model));
+            LOGGER.debug("Enter updateContract - [contractId: {}, model: {}]", contractId, model);
 
         try
         {

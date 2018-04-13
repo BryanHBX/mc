@@ -3,6 +3,10 @@ package org.edu.timelycourse.mc.biz.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
+import org.edu.timelycourse.mc.biz.enums.EUserRole;
+import org.edu.timelycourse.mc.biz.enums.EUserStatus;
+import org.edu.timelycourse.mc.biz.enums.EUserType;
+import org.edu.timelycourse.mc.common.utils.EntityUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,6 +73,8 @@ public class UserModel extends BaseEntity
     @Override
     public boolean isValidInput ()
     {
-        return true;
+        return EUserRole.hasValue(this.getStatus()) &&
+                EUserType.hasValue(this.getType()) &&
+                EntityUtils.isValidEntityId(this.getSchoolId());
     }
 }

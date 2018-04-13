@@ -2,8 +2,8 @@ package org.edu.timelycourse.mc.biz.enums;
 
 public enum EVisible
 {
-    VISIBLE      (1, "可见"),
-    INVISIBLE    (0, "不可见");
+    VISIBLE      (1, "UI可见"),
+    INVISIBLE    (0, "UI不可见");
 
     private Integer code;
     private String label;

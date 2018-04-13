@@ -4,7 +4,10 @@ import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
 import org.edu.timelycourse.mc.biz.enums.EPaymentType;
 import org.edu.timelycourse.mc.biz.model.BaseEntity;
+import org.edu.timelycourse.mc.common.utils.EntityUtils;
+import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
 
+import javax.xml.validation.Validator;
 import java.util.Date;
 
 @Data
@@ -43,6 +46,9 @@ public class InvoiceModel extends BaseEntity
     @Override
     public boolean isValidInput ()
     {
-        return EPaymentType.hasValue(type) && price > 0 && Strings.isNotEmpty(invoiceNo);
+        return EPaymentType.hasValue(type) &&
+                ValidatorUtil.isFloatNumber(price) &&
+                EntityUtils.isValidEntityId(contractId) &&
+                Strings.isNotEmpty(invoiceNo);
     }
 }

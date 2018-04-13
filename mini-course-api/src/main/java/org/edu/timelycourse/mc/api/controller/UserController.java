@@ -8,6 +8,7 @@ import org.edu.timelycourse.mc.biz.service.UserService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
+import org.edu.timelycourse.mc.common.utils.StringUtil;
 import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,20 +28,30 @@ public class UserController extends BaseController
     @Autowired
     private UserService userService;
 
+    @ModelAttribute("member")
+    public UserModel getModel()
+    {
+        return new UserModel ();
+    }
+
     @RequestMapping(path="", method= RequestMethod.GET)
-    @ApiOperation(value = "Get either list of all users or by given query which is either phone or identity")
-    public ResponseData getUser(@RequestParam(required = false, value = "query") String query)
+    @ApiOperation(value = "Get either list of all users or by given query")
+    public ResponseData getUser(
+            @RequestParam(name="pageNum", required = false) Integer pageNum,
+            @RequestParam(name="pageSize", required = false) Integer pageSize,
+            @ModelAttribute("member") UserModel model)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug("Enter getUser - [query: %s]", query);
+            LOGGER.debug("Enter getUser - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
 
         try
         {
-            if (!Strings.isNotEmpty(query))
+            if (model != null && (StringUtil.isNotEmpty(model.getPhone()) ||
+                    StringUtil.isNotEmpty(model.getUserIdentity())))
             {
-                return ValidatorUtil.isMobile(query) ?
-                        ResponseData.success(userService.findByUserPhone(query)) :
-                        ResponseData.success(userService.findByUserIdentity(query));
+                return ValidatorUtil.isMobile(model.getPhone()) ?
+                        ResponseData.success(userService.findByUserPhone(model.getPhone())) :
+                        ResponseData.success(userService.findByUserIdentity(model.getUserIdentity()));
             }
 
             return ResponseData.success(userService.getAll());

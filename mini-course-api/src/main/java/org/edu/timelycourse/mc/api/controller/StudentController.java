@@ -2,7 +2,6 @@ package org.edu.timelycourse.mc.api.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.edu.timelycourse.mc.biz.model.ContractModel;
 import org.edu.timelycourse.mc.biz.model.StudentModel;
 import org.edu.timelycourse.mc.biz.service.StudentService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
@@ -26,16 +25,25 @@ public class StudentController extends BaseController
     @Autowired
     private StudentService studentService;
 
+    @ModelAttribute("student")
+    public StudentModel getModel()
+    {
+        return new StudentModel ();
+    }
+
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all students or by given query")
-    public ResponseData getStudent(@RequestParam(required = false, value = "query") String query)
+    public ResponseData getStudent(
+            @RequestParam(name="pageNum", required = false) Integer pageNum,
+            @RequestParam(name="pageSize", required = false) Integer pageSize,
+            @ModelAttribute("student") StudentModel model)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug("Enter getStudent - [query: %s]", query);
+            LOGGER.debug("Enter getStudent - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
 
         try
         {
-            return ResponseData.success(studentService.getAll());
+            return ResponseData.success(studentService.findByPage(model, pageNum, pageSize));
         }
         catch (ServiceException ex)
         {

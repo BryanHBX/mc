@@ -3,13 +3,14 @@ package org.edu.timelycourse.mc.biz.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
+import org.edu.timelycourse.mc.biz.enums.EVisible;
+import org.edu.timelycourse.mc.common.utils.StringUtil;
 
 /**
  * Created by Marco on 2018/3/31.
  */
 @Data
 @ToString(exclude = "id")
-//ccc@JsonIgnoreProperties(value= { "id" } )
 public class SystemRoleModel extends BaseEntity
 {
     private String roleName;
@@ -19,6 +20,7 @@ public class SystemRoleModel extends BaseEntity
     @Override
     public boolean isValidInput ()
     {
-        return true;
+        return StringUtil.isNotEmpty(roleName, roleAlias) &&
+                EVisible.hasValue(roleVisible);
     }
 }

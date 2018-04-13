@@ -12,5 +12,6 @@ public interface BaseRepository<T extends BaseEntity>
     Integer update(final T entity);
     Integer delete(Integer id);
     List<T> getAll();
+    T getByEntity (final T entity);
     Page<T> getByPage (final T entity);
 }

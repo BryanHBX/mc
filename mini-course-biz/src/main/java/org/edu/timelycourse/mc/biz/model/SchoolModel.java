@@ -2,6 +2,7 @@ package org.edu.timelycourse.mc.biz.model;
 
 import lombok.Data;
 import org.edu.timelycourse.mc.biz.model.BaseEntity;
+import org.edu.timelycourse.mc.common.utils.StringUtil;
 
 import java.util.Date;
 
@@ -51,6 +52,6 @@ public class SchoolModel extends BaseEntity
     @Override
     public boolean isValidInput ()
     {
-        return true;
+        return StringUtil.isNotEmpty(schoolName);
     }
 }
