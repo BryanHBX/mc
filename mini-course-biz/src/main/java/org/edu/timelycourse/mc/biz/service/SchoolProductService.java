@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.biz.service;
 
+import com.sun.tools.javac.util.Assert;
 import org.edu.timelycourse.mc.biz.model.SchoolModel;
 import org.edu.timelycourse.mc.biz.model.SchoolProductModel;
 import org.edu.timelycourse.mc.biz.repository.SchoolProductRepository;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.Date;
 
 /**
@@ -74,14 +76,86 @@ public class SchoolProductService extends BaseService<SchoolProductModel>
             return super.add(entity);
         }
 
-        throw new ServiceException(String.format(
-                "Invalid model input to add, %s", entity));
+        throw new ServiceException(String.format("Invalid model input to add, %s", entity));
     }
+
+    @Override
+    public Integer delete (Integer id)
+    {
+        if (EntityUtils.isValidEntityId(id))
+        {
+            SchoolProductModel entity = (SchoolProductModel) Asserts.assertEntityNotNullById(repository, id);
+
+            // remove all children
+            if (entity.getChildren() != null)
+            {
+                for (SchoolProductModel child : entity.getChildren())
+                {
+                    delete(child.getId());
+                }
+
+                /*
+                for (int i = entity.getChildren().size() - 1; i >= 0; i--)
+                {
+                    repository.delete(entity.getChildren().get(i).getId());
+                }
+                */
+            }
+
+            return repository.delete(id);
+        }
+
+        throw new ServiceException(String.format("Invalid entity id (%d) for deletion", id));
+    }
+
 
     @Override
     public SchoolProductModel update(SchoolProductModel entity)
     {
-        entity.setLastUpdateTime(new Date());
-        return super.update(entity);
+        if (entity.isValidInput() && EntityUtils.isValidEntityId(entity.getId()))
+        {
+            // check if entity exists with given id
+            SchoolProductModel entityInDb = (SchoolProductModel) Asserts.assertEntityNotNullById(
+                    repository, entity.getId());
+
+            // replace using the school id from entityInDb
+            // cause it's not allowed overwritten over payload during update
+            entity.setSchoolId(entity.getSchoolId());
+
+            // check if any change with respect to its parent
+            if (entity.getParentId() != entityInDb.getParentId())
+            {
+                throw new ServiceException(String.format(
+                        "It's not allowed to change the parent from %d to %d",
+                        entityInDb.getParentId(), entity.getParentId()));
+            }
+
+            // check if product type exists
+            if (entity.getParentId() == null)
+            {
+                Asserts.assertEntityNotNullById(systemConfigRepository, entity.getProductType());
+            }
+            else
+            {
+                entity.setProductType(null);
+            }
+
+            // check if product name exists before add
+            entityInDb = productRepository.getByEntity(new SchoolProductModel(
+                    entity.getProductName(), entity.getParentId(), entity.getSchoolId()
+            ));
+
+            if (entityInDb != null && !entityInDb.getId().equals(entity.getId()))
+            {
+                throw new ServiceException(String.format(
+                        "Product already exists with [name: %s, parent: %d, school: %d]",
+                        entity.getProductName(), entity.getParentId(), entity.getSchoolId()));
+            }
+
+            entity.setLastUpdateTime(new Date());
+            return super.update(entity);
+        }
+
+        throw new ServiceException(String.format("Invalid model input to update, %s", entity));
     }
 }

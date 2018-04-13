@@ -40,7 +40,7 @@ public abstract class BaseService<T extends BaseEntity>
 
     public T add (T entity)
     {
-        if (entity != null)
+        if (entity != null && entity.isValidInput())
         {
             Integer result = this.repository.insert(entity);
             if (result > 0)
@@ -55,13 +55,15 @@ public abstract class BaseService<T extends BaseEntity>
 
     public T update (T entity)
     {
-        if (entity != null && entity.getId() != null)
+        if (entity != null && entity.isValidInput() &&
+                EntityUtils.isValidEntityId(entity.getId()))
         {
             Integer result = this.repository.update(entity);
             if (result > 0)
             {
                 return entity;
             }
+
             throw new ServiceException("Failed to update entity: " + entity);
         }
 
@@ -70,7 +72,7 @@ public abstract class BaseService<T extends BaseEntity>
 
     public Integer delete (Integer id)
     {
-        if (id != null && id > 0)
+        if (EntityUtils.isValidEntityId(id))
         {
             return this.repository.delete(id);
         }

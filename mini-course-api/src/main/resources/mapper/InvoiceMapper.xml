@@ -20,7 +20,7 @@
     </insert>
 
     <update id="update" parameterType="InvoiceModel">
-        UPDATE `t_school_invoice` SET
+        UPDATE `t_school_invoice`
         <set>
             <if test="contractId != null and contractId > 0">`contract_id` = #{contractId},</if>
             <if test="invoiceNo != null and invoiceNo != ''">`invoice_no` = #{invoiceNo},</if>

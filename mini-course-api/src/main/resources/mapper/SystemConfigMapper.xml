@@ -20,6 +20,16 @@
 		SELECT * FROM `t_sys_config` WHERE `c_name` = #{name}
 	</select>
 
+    <select id="getByEntity" parameterType="SystemConfigModel" resultMap="result_sysConf">
+        SELECT * FROM `t_sys_config`
+        <where>
+            1 = 1
+            <if test="configName != null and configName != ''"> AND `c_name` = #{configName}</if>
+            <if test="parentId != null and parentId > 0"> AND `c_parent` = #{parentId}</if>
+            <if test="configDescription != null and configDescription != ''"> AND `c_desc` = #{configDescription}</if>
+        </where>
+    </select>
+
     <select id="getChildrenConfig" parameterType="java.lang.Integer" resultMap="result_sysConf">
         SELECT * FROM `t_sys_config` WHERE `c_parent` = #{parentId}
     </select>

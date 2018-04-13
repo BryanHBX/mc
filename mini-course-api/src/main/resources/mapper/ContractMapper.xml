@@ -35,7 +35,7 @@
     </insert>
 
     <update id="update" parameterType="ContractModel">
-        UPDATE `t_school_contract` SET
+        UPDATE `t_school_contract`
         <set>
             <if test="contractNo != null and contractNo != ''">`contract_no` = #{contractNo},</if>
             <if test="consultantId != null and consultantId > -1">`consult_id` = #{consultantId},</if>

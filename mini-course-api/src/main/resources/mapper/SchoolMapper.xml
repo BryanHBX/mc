@@ -20,7 +20,7 @@
     </insert>
 
     <update id="update" parameterType="SchoolModel">
-        UPDATE `t_school` SET
+        UPDATE `t_school`
         <set>
             <if test="schoolName != null and schoolName != ''">`s_name` = #{schoolName},</if>
             <if test="schoolAddress != null and schoolAddress != ''">`s_address` = #{schoolAddress},</if>

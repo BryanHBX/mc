@@ -46,13 +46,13 @@
     </insert>
 	
     <update id="update" parameterType="SchoolProductModel">
-        UPDATE `t_school_product` SET
+        UPDATE `t_school_product`
         <set>
-            <if test="configName != null and configName != ''">`p_name` = #{configName},</if>
+            <if test="productName != null and productName != ''">`p_name` = #{productName},</if>
             <if test="productType != null and productType > 0">`p_type` = #{productType},</if>
             <if test="productPeriod != null and productPeriod > 0">`p_period` = #{productPeriod},</if>
             <if test="parentId != null and parentId > 0">`p_parent` = #{parentId},</if>
-            <if test="schoolId != null and schoolId > 0">`school_id` = #{single},</if>
+            <if test="schoolId != null and schoolId > 0">`school_id` = #{schoolId},</if>
             <if test="lastUpdateTime != null">`p_lastUpdateTime` = #{lastUpdateTime},</if>
             `id` = `id`
         </set>

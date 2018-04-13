@@ -32,7 +32,7 @@
     </insert>
 
     <update id="update" parameterType="StudentModel">
-        UPDATE `t_school_student` SET
+        UPDATE `t_school_student`
         <set>
             <if test="name != null and name != ''">`s_name` = #{name},</if>
             <if test="wxId != null and wxId != ''">`s_wxid` = #{wxId},</if>

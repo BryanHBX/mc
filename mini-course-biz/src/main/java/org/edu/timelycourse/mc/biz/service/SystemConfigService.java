@@ -32,39 +32,81 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
     @Override
     public SystemConfigModel add (SystemConfigModel entity)
     {
-        SystemConfigModel config = configRepository.getByConfigName(entity.getConfigName());
-        if (config == null)
+        if (entity.isValidInput())
         {
-            if (EntityUtils.isValidEntityId(entity.getParentId()))
+            // check if parent entity exists if given
+            if (entity.getParentId() != null && EntityUtils.isValidEntityId(entity.getParentId()))
             {
                 Asserts.assertEntityNotNullById(repository, entity.getParentId());
+            }
+
+            // check if same entity
+            if (configRepository.getByEntity(new SystemConfigModel(
+                    entity.getConfigName(), null, entity.getParentId())) != null)
+            {
+                throw new ServiceException(String.format(
+                        "Config already exists with [name: %s, parent: %d]",
+                        entity.getConfigName(), entity.getParentId()));
             }
 
             return super.add(entity);
         }
 
         throw new ServiceException(String.format(
-                "Config already exists with name: %s", config.getConfigName()));
+                "Invalid model input to add, %s", entity));
     }
 
     @Override
     public SystemConfigModel update (SystemConfigModel entity)
     {
-        SystemConfigModel config = configRepository.getByConfigName(entity.getConfigName());
-        if (config == null || config.getId().equals(entity.getId()))
+        if (entity.isValidInput() && EntityUtils.isValidEntityId(entity.getId()))
         {
+            // check if entity exists with given id
+            SystemConfigModel entityInDb = (SystemConfigModel) Asserts.assertEntityNotNullById(repository, entity.getId());
+
+            // check if any change with respect to its parent
+            if (entityInDb.getParentId() != entity.getParentId())
+            {
+                throw new ServiceException(String.format(
+                        "It's not allowed to change the parent from %d to %d",
+                        entityInDb.getParentId(), entity.getParentId()));
+            }
+
+            // check if config name already exists
+            entityInDb = repository.getByEntity(new SystemConfigModel(
+                    entity.getConfigName(), null, entity.getParentId()
+            ));
+
+            if (entityInDb != null && !entityInDb.getId().equals(entity.getId()))
+            {
+                throw new ServiceException(String.format(
+                        "Config already exists with [name: %s, parent: %d]", entity.getConfigName(), entity.getParentId()));
+            }
+
             return super.update(entity);
         }
 
-        throw new ServiceException(String.format(
-                "Config already exists with name: %s", config.getConfigName()));
+        throw new ServiceException(String.format("Invalid model input to update, %s", entity));
     }
 
     @Override
-    public Integer delete(Integer configId)
+    public Integer delete(Integer id)
     {
-        Asserts.assertEntityNotNullById(repository, configId);
-        return repository.delete(configId);
+        if (EntityUtils.isValidEntityId(id))
+        {
+            SystemConfigModel entity = (SystemConfigModel) Asserts.assertEntityNotNullById(repository, id);
+            if (entity.getChildren() != null)
+            {
+                for (SystemConfigModel child : entity.getChildren())
+                {
+                    delete(child.getId());
+                }
+            }
+
+            return repository.delete(id);
+        }
+
+        throw new ServiceException(String.format("Invalid entity id (%d) for deletion", id));
     }
 
     public SystemConfigModel getByConfigName(String configName)
