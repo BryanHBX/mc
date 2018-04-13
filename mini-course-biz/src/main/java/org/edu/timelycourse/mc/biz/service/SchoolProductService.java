@@ -93,13 +93,6 @@ public class SchoolProductService extends BaseService<SchoolProductModel>
                 {
                     delete(child.getId());
                 }
-
-                /*
-                for (int i = entity.getChildren().size() - 1; i >= 0; i--)
-                {
-                    repository.delete(entity.getChildren().get(i).getId());
-                }
-                */
             }
 
             return repository.delete(id);
@@ -144,7 +137,6 @@ public class SchoolProductService extends BaseService<SchoolProductModel>
             entityInDb = productRepository.getByEntity(new SchoolProductModel(
                     entity.getProductName(), entity.getParentId(), entity.getSchoolId()
             ));
-
             if (entityInDb != null && !entityInDb.getId().equals(entity.getId()))
             {
                 throw new ServiceException(String.format(

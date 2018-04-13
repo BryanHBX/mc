@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by x36zhao on 2017/3/17.
@@ -127,7 +128,25 @@ public class ContractService extends BaseService<ContractModel>
     @Override
     public Integer delete (Integer id)
     {
-        return repository.delete(id);
+        if (EntityUtils.isValidEntityId(id))
+        {
+            // check if entity exists
+            Asserts.assertEntityNotNullById(repository, id);
+
+            // delete invoices if have
+            List<InvoiceModel> invoices = invoiceRepository.getByContractId(id);
+            if (invoices != null)
+            {
+                for (InvoiceModel invoice : invoices)
+                {
+                    invoiceRepository.delete(invoice.getId());
+                }
+            }
+
+            return repository.delete(id);
+        }
+
+        throw new ServiceException(String.format("Invalid entity id (%d) to delete", id));
     }
 
     @Override
