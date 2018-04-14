@@ -1,19 +1,19 @@
 <style>
-    #schoolForm input {width: 100%;}
-    #schoolForm .bMap {position: relative;}
-    #schoolForm .bMap .map-warp{position: absolute;left:0;width:100%;height:400px;top:22px;display: none;}
-    #schoolForm .bMap input {width:100%;height:15px;line-height: 15px;border:1px solid #d7d7d7;}
-    #schoolForm svg {margin-top: 0;}
+    #formSchool input {width: 60%;}
+    #formSchool .bMap {position: relative;}
+    #formSchool .bMap .map-warp{position: absolute;left:0;width:100%;height:400px;top:22px;display: none;}
+    #formSchool .bMap input { height:15px;line-height: 15px;border:1px solid #d7d7d7;}
+    #formSchool svg {position: absolute; left: 56%; top: 0px;}
     .tangram-suggestion-main{z-index: 9999; text-align:left;}
 </style>
 
 <h2 class="contentTitle">学校信息设置</h2>
-<div class="pageContent">
-    <form id="schoolForm" method="post" action="" class="pageForm required-validate"  novalidate="novalidate">
+<div xmlns:th="http://www.thymeleaf.org" class="pageContent">
+    <form id="formSchool" method="post" action="" class="pageForm required-validate">
         <div class="pageFormContent nowrap" layouth="87" style="overflow: auto;">
             <dl>
                 <dt>学校名称：</dt>
-                <dd><input name="field1" type="text" class="textInput"></dd>
+                <dd><input name="schoolName" type="text" th:value="${school != null ? school.schoolName : ''}" class="textInput required"></dd>
             </dl>
             <dl>
                 <dt>学校地址：</dt>
@@ -23,34 +23,60 @@
             </dl>
             <dl>
                 <dt>联系电话：</dt>
-                <dd><input class="required textInput" name="field3" type="text"></dd>
+                <dd><input class="textInput" name="schoolContact" th:value="${school != null ? school.schoolContact : ''}" type="text"></dd>
             </dl>
         </div>
         <div class="formBar">
             <ul>
-                <li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+                <li><div class="buttonActive"><div class="buttonContent"><button type="button" id="btnSaveSchool">保存</button></div></div></li>
             </ul>
         </div>
-        <input type="hidden" name="province" id="province" />
-        <input type="hidden" name="city" id="city" />
-        <input type="hidden" name="lat" id="lat" />
-        <input type="hidden" name="lng" id="lng" />
+        <input type="hidden" name="province" id="province" th:value="${school != null ? school.province : ''}" />
+        <input type="hidden" name="city" id="city" th:value="${school != null ? school.city : ''}" />
+        <input type="hidden" name="lat" id="lat" th:value="${school != null ? school.lat : ''}" />
+        <input type="hidden" name="lng" id="lng" th:value="${school != null ? school.lng : ''}" />
+
+        <!-- TODO Remove the debug id and replace using the id from JWT-->
+        <input type="hidden" name="id" th:value="${school != null ? school.id : ''}"/>
     </form>
 </div>
 
-<script>
+<script xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
+    /*<![CDATA[*/
     $(function(){
+        var lng = [[${school.lng}]];
+        var lat = [[${school.lat}]];
         $(".bMap").bMap({
             //address: local.name,  //默认地址，如果为空则通过解析默认坐标获取
-            //location:[116.331398,39.897445],  //默认坐标，如果为空则通过解析默认地址获取
+            location:[lng,lat],  //默认坐标，如果为空则通过解析默认地址获取
             name:"schoolAddress", //提交表单的NAME,默认为map
             callback:function(address,point) //回调函数，返回地址数组与坐标
             {
+                console.log(point);
                 $("#city").val(address.city);
                 $("#province").val(address.province);
                 $("#lat").val(point.lat);
                 $("#lng").val(point.lng);
             }
         });
+
+        $("#btnSaveSchool").unbind("click").bind("click", function(){
+            if (!$("#formSchool").valid()) {
+                return false;
+            }
+
+            var base = "school";
+            var jsonData = $("#formSchool").serializeJSON();
+            if (jsonData.id && jsonData.id > 0) {
+                var uri = base + "/" + jsonData.id;
+                generic_ajax_op(uri, "PATCH", jsonData, null, (
+                    function (result) {
+                        alertMsg.correct("学校信息保存成功");
+                        navTab.reload(null, {});
+                    }
+                ));
+            }
+        });
     });
+    /*]]>*/
 </script>

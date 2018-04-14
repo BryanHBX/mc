@@ -26,8 +26,9 @@ public class SchoolController extends AbstractController
     private static final Logger LOGGER = LoggerFactory.getLogger(SchoolController.class);
 
     @RequestMapping("/info")
-    public String showSchoolInfo ()
+    public String showSchoolInfo (Model model)
     {
+        model.addAttribute("school", fetchSchool());
         return getModulePage("schoolInfo");
     }
 

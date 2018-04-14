@@ -2,10 +2,7 @@ package org.edu.timelycourse.mc.web.controller;
 
 import com.google.common.reflect.TypeParameter;
 import com.google.common.reflect.TypeToken;
-import org.edu.timelycourse.mc.biz.model.SchoolProductModel;
-import org.edu.timelycourse.mc.biz.model.SystemConfigModel;
-import org.edu.timelycourse.mc.biz.model.SystemRoleModel;
-import org.edu.timelycourse.mc.biz.model.UserModel;
+import org.edu.timelycourse.mc.biz.model.*;
 import org.edu.timelycourse.mc.common.controller.BaseController;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.edu.timelycourse.mc.common.reflect.ParameterizedTypeReferenceBuilder;
@@ -52,6 +49,13 @@ public abstract class AbstractController extends BaseController implements Error
     protected UserModel fetchMemberById (Integer memberId)
     {
         return remoteCall("member/" + memberId, new TypeToken<UserModel>() {}).getData();
+    }
+
+    protected SchoolModel fetchSchool ()
+    {
+        // TODO: Debug usage only
+        Integer schoolId = 1;
+        return remoteCall("school/" + schoolId, new TypeToken<SchoolModel>() {}).getData();
     }
 
     protected SchoolProductModel fetchProduct (Integer productId)
