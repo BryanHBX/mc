@@ -15,7 +15,7 @@
                 function(result) {
 				    $.pdialog.closeCurrent();
 				    alertMsg.correct("课程 '" + result.data.productName + "' " + (isPatch ? "更新" : "添加") + "成功");
-                    reloadConfigNavTab();
+                    reloadProductNavTab();
                 }
             ));
 		});
@@ -35,22 +35,23 @@
 					<td>
 						<select class="combox required" name="productType" style="width: 160px"
 								th:if="${not #lists.isEmpty(types.children)}"
-								th:with="options=${types.children}">
-							<option th:each="option:${options}" th:value="${option.id}" th:text="${option.configDescription}">学生年段</option>
+								th:with="options=${types.children}"
+								th:value="${product != null ? product.productType : ''}">
+							<option th:each="option:${options}" th:value="${option.id}" th:selected="${product != null and product.productType == option.id}" th:text="${option.configDescription}">课程类别</option>
 						</select>
 					</td>
 				</tr>
                 <tr th:if="${parentId != null}">
                     <td>课程大类：</td>
-                    <td><input name="rootName" type="text" size="30" th:value="${parent != null ? parent.configDescription : ''}" /></td>
+                    <td><input name="rootName" type="text" size="30" th:value="${parent != null ? parent.productName : ''}" readonly /></td>
                 </tr>
 				<tr>
-					<td>课程名称：</td>
-					<td><input name="productName" type="text" size="30" th:value="${config != null ? config.configName : ''}" class="required" /></td>
+					<td th:text="${parentId != null ? '课程子类：' : '课程大类：'}">课程名称：</td>
+					<td><input name="productName" type="text" size="30" th:value="${product != null ? product.productName : ''}" class="required" /></td>
 				</tr>
 				<tr th:if="${parentId == null}">
 					<td>考勤课时：</td>
-					<td><input name="productPeriod" type="text" size="28" th:value="${parent != null ? parent.configDescription : ''}" class="required number" /></td>
+					<td><input name="productPeriod" type="text" size="28" th:value="${product != null ? product.productPeriod : ''}" class="required number" /></td>
 				</tr>
 			</table>
 		</div>
@@ -60,7 +61,7 @@
 				<li><div class="button"><div class="buttonContent"><button class="close" type="button">取消</button></div></div></li>
 			</ul>
 		</div>
-		<input type="hidden" name="id" th:value="${config != null ? config.id : ''}" />
+		<input type="hidden" name="id" th:value="${product != null ? product.id : ''}" />
         <input th:if="${parent != null}" name="parentId" th:value="${parent.id}" />
 	</form>
 <div>

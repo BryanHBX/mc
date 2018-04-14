@@ -4,16 +4,16 @@
     <div xmlns:th="http://www.thymeleaf.org" th:replace="~{modules/school/pages/productTreePage::tree}" />
 
     <!-- Table List -->
-    <div id="cfgTableList">
+    <div id="productTableList">
         <div xmlns:th="http://www.thymeleaf.org" th:replace="~{modules/school/pages/productListPage::table}" />
     </div>
 </div>
 
 <script type="text/javascript">
 
-    function reloadConfigNavTab () {
+    function reloadProductNavTab () {
         var selectedItemId = 0;
-        var selectedItem = $("#cfgTree").find(".selected");
+        var selectedItem = $("#productTree").find(".selected");
         if (selectedItem.size() > 0) {
             selectedItemId = selectedItem.find("a").attr("tvalue");
         }
@@ -21,7 +21,7 @@
         navTab.reload(null, {
             callback: function(){
                 if (selectedItemId > 0) {
-                    var targetEle = $("#cfgTree").find("a[tvalue=" + selectedItemId + "]");
+                    var targetEle = $("#productTree").find("a[tvalue=" + selectedItemId + "]");
                     if (targetEle.size() > 0) {
                         targetEle.click();
                         targetEle.parent().addClass("selected");
@@ -33,44 +33,54 @@
 
     $(function() {
 
-        $("#cfgBtnEdit").click(function(){
-            var selectedItem = $("#cfgTree").find(".selected");
+        $("#productBtnEdit").click(function(){
+            var selectedItem = $("#productTree").find(".selected");
             if (selectedItem.size() > 0) {
                 var itemId = selectedItem.find("a").attr("tvalue");
-                $.pdialog.open(
-                    "admin/system/settings/dialog?id=" + itemId,
-                    "dlg_cfgEdit",
-                    $(this).find("span").text(),
-                    {width: 350, height: 200, mask: true, max: false});
+                if (itemId) {
+                    $.pdialog.open(
+                        "school/product/dialog?id=" + itemId,
+                        "dlg_productEdit",
+                        $(this).find("span").text(),
+                        {width: 400, height: 250, mask: true, max: false});
+                } else {
+                    alertMsg.error("请从左侧树形结构中选择相应的课程大类..");
+                }
             } else {
                 alertMsg.error("请从左侧树形结构中需要修改的字段项..");
             }
         });
 
-        $("#cfgBtnDel").click(function(){
-            var selectedItem = $("#cfgTree").find(".selected");
+        $("#productBtnDel").click(function(){
+            var selectedItem = $("#productTree").find(".selected");
             if (selectedItem.size() > 0) {
                 var itemName = selectedItem.find("a").attr("tname");
                 var itemId = selectedItem.find("a").attr("tvalue");
-                alertMsg.confirm("确定删除 '" + itemName + "' 配置项么?", {
-                    okCall: function() {
-                        generic_ajax_op("system/config/" + itemId, "DELETE", null, null, (
-                            function(result) {
-                                alertMsg.correct("配置項 '" + itemName + "' 已成功删除");
-                                navTab.reload();
-                            }
-                        ));
-                    }
-                });
+                if (itemId) {
+                    alertMsg.confirm("确定删除 '" + itemName + "' 课程大类么?", {
+                        okCall: function () {
+                            generic_ajax_op("school/product/" + itemId, "DELETE", null, null, (
+                                function (result) {
+                                    alertMsg.correct("课程大类 '" + itemName + "' 已成功删除");
+                                    navTab.reload();
+                                }
+                            ));
+                        }
+                    });
+                } else {
+                    alertMsg.error("请从左侧树形结构中选择要删除的课程大类..");
+                }
             } else {
-                alertMsg.error("请从树形结构中选择要删除的配置项..");
+                alertMsg.error("请从左侧树形结构中选择要删除的课程大类..");
             }
         });
 
         $("#productBtnAddSub").click(function(){
-            var selectedItem = $("#productTree").find(".selected");
-            if (selectedItem.size() == 0) {
-                alertMsg.error("请从左侧树形结构中选择课程大类..");
+            if (!$(this).hasClass("buttonDisabled")) {
+                var selectedItem = $("#productTree").find(".selected");
+                if (selectedItem.size() == 0) {
+                    alertMsg.error("请从左侧树形结构中选择课程大类..");
+                }
             }
         });
     });

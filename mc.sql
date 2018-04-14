@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 12/04/2018 23:52:08
+ Date: 14/04/2018 12:34:52
 */
 
 SET NAMES utf8mb4;
@@ -85,6 +85,7 @@ CREATE TABLE `t_school_contract`  (
   `contract_no` varchar(80) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '合同编号',
   `student_id` int(11) NOT NULL COMMENT '学生ID',
   `consult_id` int(11) NOT NULL COMMENT '咨询师ID',
+  `school_id` int(11) NOT NULL COMMENT '学校ID',
   `contract_type` tinyint(4) NOT NULL COMMENT '报名类型',
   `period_enroll` double(4, 0) NOT NULL COMMENT '报名课时',
   `period_free` double(4, 0) NULL DEFAULT NULL COMMENT '赠送课时',
@@ -105,7 +106,7 @@ CREATE TABLE `t_school_contract`  (
 -- ----------------------------
 -- Records of t_school_contract
 -- ----------------------------
-INSERT INTO `t_school_contract` VALUES (1, 'fea', 1, 12, 2, 12, 0, 12, 0, 12, 41, 43, 18, 21, '2018-04-24', '2018-04-10 22:50:53', NULL, NULL);
+INSERT INTO `t_school_contract` VALUES (1, 'fea', 1, 12, 0, 2, 12, 0, 12, 0, 12, 41, 43, 18, 21, '2018-04-24', '2018-04-10 22:50:53', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for t_school_invoice
@@ -114,6 +115,7 @@ DROP TABLE IF EXISTS `t_school_invoice`;
 CREATE TABLE `t_school_invoice`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `contract_id` int(11) NOT NULL COMMENT '合同ID',
+  `school_id` int(11) NOT NULL COMMENT '学校ID',
   `invoice_no` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '收据编号',
   `fee_amount` double NOT NULL COMMENT '支付金额',
   `fee_type` tinyint(4) NULL DEFAULT NULL COMMENT '支付方式',
@@ -126,9 +128,9 @@ CREATE TABLE `t_school_invoice`  (
 -- ----------------------------
 -- Records of t_school_invoice
 -- ----------------------------
-INSERT INTO `t_school_invoice` VALUES (1, 1, '124', 123, 1, '2018-04-10 22:50:53', NULL, NULL);
-INSERT INTO `t_school_invoice` VALUES (2, 1, '1241', 24, 3, '2018-04-10 22:50:53', NULL, NULL);
-INSERT INTO `t_school_invoice` VALUES (3, 1, '123', 231, 4, '2018-04-10 22:50:53', NULL, NULL);
+INSERT INTO `t_school_invoice` VALUES (1, 1, 0, '124', 123, 1, '2018-04-10 22:50:53', NULL, NULL);
+INSERT INTO `t_school_invoice` VALUES (2, 1, 0, '1241', 24, 3, '2018-04-10 22:50:53', NULL, NULL);
+INSERT INTO `t_school_invoice` VALUES (3, 1, 0, '123', 231, 4, '2018-04-10 22:50:53', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for t_school_product
@@ -138,14 +140,21 @@ CREATE TABLE `t_school_product`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `p_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '课程名称',
   `p_type` int(11) NULL DEFAULT NULL COMMENT '课程类别',
-  `p_period` double(11, 0) NOT NULL COMMENT '课时',
+  `p_period` double(11, 0) NULL DEFAULT NULL COMMENT '课时',
   `p_parent` int(11) NULL DEFAULT NULL COMMENT '父课程ID',
   `school_id` int(11) NOT NULL COMMENT '学校ID',
   `p_createTime` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `p_lastUpdateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `school_id`(`school_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_school_product
+-- ----------------------------
+INSERT INTO `t_school_product` VALUES (1, '一对二', 68, 1, NULL, 1, '2018-04-14 10:36:01', '2018-04-14 12:16:55');
+INSERT INTO `t_school_product` VALUES (2, '测试2', 18, 1, NULL, 1, '2018-04-14 11:39:05', NULL);
+INSERT INTO `t_school_product` VALUES (3, '一对一', 68, 1, NULL, 1, '2018-04-14 11:40:25', NULL);
 
 -- ----------------------------
 -- Table structure for t_school_student
@@ -185,7 +194,7 @@ CREATE TABLE `t_sys_config`  (
   `c_single` tinyint(4) NULL DEFAULT NULL,
   `c_parent` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 68 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 69 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_sys_config
@@ -196,9 +205,9 @@ INSERT INTO `t_sys_config` VALUES (28, 'C3', '街舞', 0, 22);
 INSERT INTO `t_sys_config` VALUES (21, '种类', '种类', NULL, 18);
 INSERT INTO `t_sys_config` VALUES (30, 'C5', '机械舞', 0, 22);
 INSERT INTO `t_sys_config` VALUES (65, 'C_SUBJECT_5', '社会', 0, 48);
-INSERT INTO `t_sys_config` VALUES (16, 'C_CRS_TYPE', '课程种类', 0, NULL);
+INSERT INTO `t_sys_config` VALUES (16, 'C_COURSE_TYPE', '课程种类', 0, NULL);
 INSERT INTO `t_sys_config` VALUES (63, 'C_SUBJECT_3', '英语', 0, 48);
-INSERT INTO `t_sys_config` VALUES (18, '艺术体育', '艺术体育', 0, 16);
+INSERT INTO `t_sys_config` VALUES (18, 'C_COURSE_TYPE_1', '艺术体育', 0, 16);
 INSERT INTO `t_sys_config` VALUES (32, 'M_1', '流行音乐', 0, 31);
 INSERT INTO `t_sys_config` VALUES (34, 'M_3', '古典音乐', 0, 31);
 INSERT INTO `t_sys_config` VALUES (62, 'C_SUBJECT_2', '语文', 0, 48);
@@ -224,6 +233,7 @@ INSERT INTO `t_sys_config` VALUES (60, 'C_GRADE_11', '高三', 0, 47);
 INSERT INTO `t_sys_config` VALUES (61, 'C_SUBJECT_1', '数学', 0, 48);
 INSERT INTO `t_sys_config` VALUES (66, 'C_SUBJECT_6', '物理', 0, 48);
 INSERT INTO `t_sys_config` VALUES (67, 'C_SUBJECT_7', '化学', 0, 48);
+INSERT INTO `t_sys_config` VALUES (68, 'C_COURSE_TYPE_2', '学科辅导', 0, 16);
 
 -- ----------------------------
 -- Table structure for t_sys_role

@@ -2,14 +2,10 @@
     <li th:each="menuItem : ${menuItemsList}">
 
         <a th:text="${menuItem.productName}"
-           th:href="@{'admin/system/settings?id=' + ${menuItem.id}}"
+           th:href="@{'school/product?id=' + ${menuItem.id}}"
            target="ajax"
            th:tname="${menuItem.productName}"
            th:tvalue="${menuItem.id}"
-           rel="productTableList">配置項</a>
-
-        <ul th:if="${not #lists.isEmpty(menuItem.children)}"
-            th:with="menuItemsList=${menuItem.children}"
-            layout:include="~{modules/admin/system/fragment/configTreeFragment::tree}"></ul>
-    </li>
+           rel="productTableList">课程大类</a>
+        </li>
 </ul>

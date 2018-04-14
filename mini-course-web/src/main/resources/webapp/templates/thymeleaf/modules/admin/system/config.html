@@ -68,9 +68,11 @@
         });
 
         $("#cfgBtnAddSub").click(function(){
-            var selectedItem = $("#cfgTree").find(".selected");
-            if (selectedItem.size() == 0) {
-                alertMsg.error("请从左侧树形结构中选择父节点字段..");
+            if (!$(this).hasClass("buttonDisabled")) {
+                var selectedItem = $("#cfgTree").find(".selected");
+                if (selectedItem.size() == 0) {
+                    alertMsg.error("请从左侧树形结构中选择父节点字段..");
+                }
             }
         });
     });

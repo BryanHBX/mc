@@ -3,7 +3,7 @@
         <div class="panelBar">
             <ul class="toolBar">
                 <li class="">
-                    <a class="add" id="cfgBtnAddSub" href="javascript:void(0);">
+                    <a th:class="${config != null ? 'add' : 'add buttonDisabled'}" id="cfgBtnAddSub" href="javascript:void(0);">
                         <span>添加子字段</span>
                     </a>
                 </li>
@@ -46,16 +46,18 @@
 
     $(function() {
         $("#cfgBtnAddSub").click(function(){
-            var selectedItem = $("#cfgTree").find(".selected");
-            if (selectedItem.size() > 0) {
-                var itemId = selectedItem.find("a").attr("tvalue");
-                $.pdialog.open(
-                    "admin/system/settings/dialog?pid=" + itemId,
-                    "dlg_cfgNewSub",
-                    $(this).find("span").text(),
-                    {width: 350, height: 240, mask: true, max: false});
-            } else {
-                alertMsg.error("请从左侧树形结构中选择父节点字段..");
+            if (!$(this).hasClass("buttonDisabled")) {
+                var selectedItem = $("#cfgTree").find(".selected");
+                if (selectedItem.size() > 0) {
+                    var itemId = selectedItem.find("a").attr("tvalue");
+                    $.pdialog.open(
+                        "admin/system/settings/dialog?pid=" + itemId,
+                        "dlg_cfgNewSub",
+                        $(this).find("span").text(),
+                        {width: 350, height: 240, mask: true, max: false});
+                } else {
+                    alertMsg.error("请从左侧树形结构中选择父节点字段..");
+                }
             }
         });
     });

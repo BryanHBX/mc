@@ -26,10 +26,8 @@
     <ul class="tree treeFolder expand" id="productTree">
         <li th:each="product : ${products}">
             <a th:text="${product.key.configDescription}"
-               th:href="@{'school/product?productType=' + ${product.key.id}}"
+               th:href="@{'school/product?id=-1'}"
                target="ajax"
-               th:tname="${product.key.configDescription}"
-               th:tvalue="${product.key.id}"
                rel="productTableList">课程子类</a>
             <ul th:if="${not #lists.isEmpty(product.value)}"
                 th:with="menuItemsList=${product.value}"

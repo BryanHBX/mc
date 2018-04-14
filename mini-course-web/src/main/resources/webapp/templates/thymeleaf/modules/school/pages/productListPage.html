@@ -3,14 +3,14 @@
         <div class="panelBar">
             <ul class="toolBar">
                 <li class="">
-                    <a class="add" id="productBtnAddSub" href="javascript:void(0);">
+                    <a th:class="${product != null ? 'add' : 'add buttonDisabled'}" id="productBtnAddSub" href="javascript:void(0);">
                         <span>添加课程子类</span>
                     </a>
                 </li>
             </ul>
         </div>
 
-        <table class="table" width="100%" layoutH="35" rel="jbsxBox">
+        <table class="table" width="100%" layoutH="35" rel="productBox">
             <thead>
                 <tr>
                     <th width="120">课程大类</th>
@@ -19,14 +19,18 @@
                 </tr>
             </thead>
             <tbody>
-                <div th:if="${#ctx.containsVariable('config') and not #lists.isEmpty(config.children)}">
+                <div th:if="${#ctx.containsVariable('product') and not #lists.isEmpty(product.children)}">
                 <tr
-                    th:each="entity: ${config.children}">
-                    <td align="center" th:text="${config.configDescription}" style="background-color: #f7fafb"/>
-                    <td align="center" th:text="${entity.configDescription}" />
+                    th:each="entity: ${product.children}">
+                    <td align="center" th:text="${product.productName}" style="background-color: #f7fafb"/>
+                    <td align="center" th:text="${entity.productName}" />
                     <td align="center">
-                        <a title="删除" target="ajaxToDo" callback="onDeleteSuccess" type="DELETE" th:title="'确定要删除\'' + ${entity.configDescription} + '\' 配置项么?'" th:href="'system/config/' + ${entity.id}" class="btnDel">删除</a>
-                        <a title="编辑" target="dialog" mask="true" width="350" height="240" th:href="'admin/system/settings/dialog?id=' + ${entity.id} + '&pid=' + ${config.id}" class="btnEdit">编辑</a>
+                        <a title="删除" target="ajaxToDo" callback="onProductDeleteSuccess" type="DELETE"
+                           th:title="'确定要删除\'' + ${entity.productName} + '\' 课程子类么?'"
+                           th:href="'product/' + ${entity.id}" class="btnDel">删除</a>
+
+                        <a title="编辑" target="dialog" mask="true" width="350" height="240"
+                           th:href="'school/product/dialog?id=' + ${entity.id} + '&pid=' + ${product.id}" class="btnEdit">编辑</a>
                     </td>
                 </tr>
                 </div>
@@ -37,23 +41,28 @@
 
 <script type="text/javascript">
 
-    function onDeleteSuccess() {
-        //alertMsg.success("配置项已删除..");
-        reloadConfigNavTab();
+    function onProductDeleteSuccess() {
+        reloadProductNavTab();
     }
 
     $(function() {
-        $("#cfgBtnAddSub").click(function(){
-            var selectedItem = $("#cfgTree").find(".selected");
-            if (selectedItem.size() > 0) {
-                var itemId = selectedItem.find("a").attr("tvalue");
-                $.pdialog.open(
-                    "admin/system/settings/dialog?pid=" + itemId,
-                    "dlg_cfgNewSub",
-                    $(this).find("span").text(),
-                    {width: 350, height: 240, mask: true, max: false});
-            } else {
-                alertMsg.error("请从左侧树形结构中选择父节点字段..");
+        $("#productBtnAddSub").click(function(){
+            if (!$(this).hasClass("buttonDisabled")) {
+                var selectedItem = $("#productTree").find(".selected");
+                if (selectedItem.size() > 0) {
+                    var itemId = selectedItem.find("a").attr("tvalue");
+                    if (itemId) {
+                        $.pdialog.open(
+                            "school/product/dialog?pid=" + itemId,
+                            "dlg_cfgNewSub",
+                            $(this).find("span").text(),
+                            {width: 350, height: 200, mask: true, max: false});
+                    } else {
+                        alertMsg.error("请从左侧树形结构中选择相应的课程大类..");
+                    }
+                } else {
+                    alertMsg.error("请从左侧树形结构中选择父节点字段..");
+                }
             }
         });
     });
