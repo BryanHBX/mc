@@ -30,6 +30,15 @@
         DELETE FROM `t_member_role` WHERE u_id = #{uid}
     </update>
 
+    <select id="getByEntity" parameterType="UserRoleModel" resultMap="result_userRole">
+        SELECT * FROM `t_member_role`
+        <where>
+            1 = 1
+            <if test="userId != null and userId > 0"> AND `u_id` = #{userId}</if>
+            <if test="role != null and role != ''"> AND `role` = #{role}</if>
+        </where>
+    </select>
+
     <select id="getByUserId" parameterType="java.lang.String" resultMap="result_userRole">
         SELECT * FROM `t_member_role` WHERE u_id = #{uid}
     </select>

@@ -45,7 +45,7 @@ public class PagingBean<T> implements Serializable
 	/**
 	 * The total entity item number
 	 */
-	private Integer totalItems = 0;
+	private Long totalItems = 0L;
 	
 	/**
 	 * The current page number
@@ -88,7 +88,7 @@ public class PagingBean<T> implements Serializable
 		this.pageNumber = pageEntity.getPageNum();
 		this.pageSize = pageEntity.getPageSize();
 		this.items = pageEntity.getResult();
-		this.totalItems = pageEntity.getResult().size();
+		this.totalItems = pageEntity.getTotal();
         this.totalPageNumber = pageEntity.getPages();
 	}
 

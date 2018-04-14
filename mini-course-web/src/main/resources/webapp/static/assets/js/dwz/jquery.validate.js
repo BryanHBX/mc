@@ -182,7 +182,7 @@ $.extend($.expr[":"], {
 
 // constructor for validator
 $.validator = function( options, form ) {
-	this.settings = $.extend( true, {}, $.validator.defaults, options );
+	this.settings = $.extend( true, {onkeyup: false, onclick: false}, $.validator.defaults, options );
 	this.currentForm = form;
 	this.init();
 };
@@ -240,13 +240,15 @@ $.extend($.validator, {
 				this.element(element);
 			}
 		},
+
+		/*
 		onkeyup: function( element, event ) {
 			if ( event.which === 9 && this.elementValue(element) === "" ) {
 				return;
 			} else if ( element.name in this.submitted || element === this.lastElement ) {
 				this.element(element);
 			}
-		},
+		},*/
 		onclick: function( element, event ) {
 			// click on selects, radiobuttons and checkboxes
 			if ( element.name in this.submitted ) {
@@ -285,6 +287,8 @@ $.extend($.validator, {
 		url: "Please enter a valid URL.",
 		date: "Please enter a valid date.",
 		dateISO: "Please enter a valid date (ISO).",
+        idCard: "Please enter a valid id card.",
+        mobile: "Please enter a valid mobile phone.",
 		number: "Please enter a valid number.",
 		digits: "Please enter only digits.",
 		creditcard: "Please enter a valid credit card number.",
@@ -811,6 +815,8 @@ $.extend($.validator, {
 		url: {url: true},
 		date: {date: true},
 		dateISO: {dateISO: true},
+        idCard: {idCard: true},
+        mobile: {mobile: true},
 		number: {number: true},
 		digits: {digits: true},
 		creditcard: {creditcard: true}
@@ -1025,6 +1031,14 @@ $.extend($.validator, {
 		date: function( value, element ) {
 			return this.optional(element) || !/Invalid|NaN/.test(new Date(value).toString());
 		},
+
+		idCard: function( value, element) {
+			return this.optional(element) || (/^(\d{6})()?(\d{2})(\d{2})(\d{2})(\d{2})(\w)$/.test(value) || /^(\d{6})()?(\d{4})(\d{2})(\d{2})(\d{3})(\w)$/.test(value));
+        },
+
+		mobile: function( value, element) {
+            return this.optional(element) || (value.length == 11 && /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/.test(value));
+        },
 
 		// http://docs.jquery.com/Plugins/Validation/Methods/dateISO
 		dateISO: function( value, element ) {

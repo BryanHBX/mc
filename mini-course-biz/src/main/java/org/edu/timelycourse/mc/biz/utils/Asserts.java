@@ -7,6 +7,8 @@ import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public final class Asserts
 {
     private static Logger LOGGER = LoggerFactory.getLogger(Asserts.class);
@@ -27,6 +29,16 @@ public final class Asserts
                     "Enter assertEntityNotNullById from %s - [entityId: %d]", repository.getClass().getName(), entityId));
 
         return assertEntityNotNull(repository.get(entityId));
+    }
+
+    public static void assertListNotNull (List entities)
+    {
+        if (entities != null && entities.size() > 0)
+        {
+            return;
+        }
+
+        throw new RuntimeException("Empty list of entities");
     }
 
     private static BaseEntity assertEntityNotNull (BaseEntity entity)

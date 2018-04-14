@@ -12,6 +12,8 @@
 			date: "请输入合法的日期",
 			dateISO: "请输入合法的日期 (ISO).",
 			number: "请输入合法的数字",
+			mobile: "错误号码",
+			idCard: "错误身份证",
 			digits: "只能输入整数",
 			creditcard: "请输入合法的信用卡号",
 			equalTo: "请再次输入相同的值",

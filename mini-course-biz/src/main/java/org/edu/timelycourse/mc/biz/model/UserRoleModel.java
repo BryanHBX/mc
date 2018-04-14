@@ -14,7 +14,7 @@ import org.edu.timelycourse.mc.biz.model.BaseEntity;
 public class UserRoleModel extends BaseEntity
 {
     private int userId;
-    private String name;
+    private String role;
 
     public UserRoleModel()
     {
@@ -23,7 +23,7 @@ public class UserRoleModel extends BaseEntity
     public UserRoleModel(int userId, String authorityName)
     {
         this.userId = userId;
-        this.name = authorityName;
+        this.role = authorityName;
     }
 
     @Override

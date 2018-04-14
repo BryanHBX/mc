@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 14/04/2018 12:34:52
+ Date: 14/04/2018 22:46:23
 */
 
 SET NAMES utf8mb4;
@@ -32,16 +32,28 @@ CREATE TABLE `t_member`  (
   `u_type` tinyint(4) NULL DEFAULT NULL COMMENT '机构 (1), 个人 (0)',
   `u_role` tinyint(4) NULL DEFAULT NULL COMMENT '机构/个人管理员 (1), 普通用户 (2), 系统管理员 (3)',
   `school_id` int(11) NULL DEFAULT NULL COMMENT '学校ID',
+  `u_course` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '所授课程',
+  `u_grade` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '年级',
+  `u_subject` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '科目',
   `u_lastLoginTime` datetime NULL DEFAULT NULL,
   `u_creationTime` datetime NULL DEFAULT NULL,
   `u_lastUpdateTime` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_member
 -- ----------------------------
-INSERT INTO `t_member` VALUES (2, 'string', '$2a$10$RS35Bi3CO2D0PVNCf1nlj.pabFTxnUwGGoQaPMaMc7efceYKsNsDC', '18602889661', 'string', 'string', 1, 1, 0, 1, NULL, '2018-04-09 23:46:07', '2018-04-09 23:46:07');
+INSERT INTO `t_member` VALUES (2, 'string', '$2a$10$RS35Bi3CO2D0PVNCf1nlj.pabFTxnUwGGoQaPMaMc7efceYKsNsDC', '18602889661', 'string', 'string', 1, 1, 0, 1, NULL, NULL, NULL, NULL, '2018-04-09 23:46:07', '2018-04-09 23:46:07');
+INSERT INTO `t_member` VALUES (3, '12421521', '$2a$10$0mZhTKZi0NHNX7ePhk6qoOXAfK5.xvSVkDFPQEffjwaaEBoa6GqC6', '12421521', 'zx', '1213', 1, 1, 2, 1, '1,2', '51,54,55', '63,66,67', NULL, '2018-04-14 20:23:36', '2018-04-14 20:23:36');
+INSERT INTO `t_member` VALUES (4, 'xza', '$2a$10$sV5zkMnfc5BNWvsYrImgg.DRxlY7P0caWTl6.Do0tQwPFpzjE9QGC', '123', 'ewa', 'fewa', 1, 1, 2, 1, '2,3', '54,55,56,57', '63,66,67', NULL, '2018-04-14 20:27:44', '2018-04-14 20:27:44');
+INSERT INTO `t_member` VALUES (5, '5231', '$2a$10$ppqy3f.nLs9lsBmujz/QnuFRo6.rIlpwOCW7I2sJOoH62IDakT5.i', '421', '在d', 'cx', 1, 1, 2, 1, '2,3', '54,55,56,57', '63,66,67', NULL, '2018-04-14 20:35:11', '2018-04-14 20:35:11');
+INSERT INTO `t_member` VALUES (6, '36252319870319081x', '$2a$10$J/ZWM05cjrSL6.VTNqzWl.EQCgG186Cwo1sNZ6wPHQys.CFSAXnLa', '18602889661', '321', '3212', 1, 1, 2, 1, '2,3', '52,55', '63,67', NULL, '2018-04-14 20:59:01', '2018-04-14 20:59:01');
+INSERT INTO `t_member` VALUES (7, '36252319870319021x', '$2a$10$P1xfqcRlfgBts9DTO/0fye2/z/ONhoklwxyZ1y4E2bdCvIzsDFPE6', '18602889161', '321', '3x1', 1, 1, 2, 1, '2,3', '52,55', '63,67', NULL, '2018-04-14 20:59:21', '2018-04-14 20:59:21');
+INSERT INTO `t_member` VALUES (8, '36252319870319021x', '$2a$10$dERnjbf08v.1zlF641qL5OOwdZoTO7nWM0MfFE70G.w49Pxy33N.q', '18602889161', '321', '3x121', 1, 1, 2, 1, '2,3', '52,55', '63,67', NULL, '2018-04-14 20:59:44', '2018-04-14 20:59:44');
+INSERT INTO `t_member` VALUES (9, '36252319870329021x', '$2a$10$Ay/DJaYagpcnMz/aOWGFsuQUnijvZZJwYxdZNmIzSz9Ne3RIaNfva', '18602889261', '321', '3x121', 1, 1, 2, 1, '2,3', '52,55', '63,67', NULL, '2018-04-14 20:59:57', '2018-04-14 20:59:57');
+INSERT INTO `t_member` VALUES (10, '322523198703190812', '$2a$10$4YekFX9/SbygFyfdk2N35ulgUHr4tOrXN5nlOqCZsoKwXwxGSG2t6', '18612889661', '321', '3x12112', 1, 1, 2, 1, '2', '50,54', '65,63', NULL, '2018-04-14 21:00:21', '2018-04-14 21:00:21');
+INSERT INTO `t_member` VALUES (11, '352523198703190812', '$2a$10$VWS6cuZ8Uij53i/oS4sTK.Vb55OyzdsbiMJUTqXTnYkoMIRQ7KZ2.', '18632889661', '31', '3x121122', 1, 1, 2, 1, '6', '53', '64', NULL, '2018-04-14 21:05:04', '2018-04-14 21:05:04');
 
 -- ----------------------------
 -- Table structure for t_member_role
@@ -52,7 +64,19 @@ CREATE TABLE `t_member_role`  (
   `u_id` int(11) NOT NULL,
   `role` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_member_role
+-- ----------------------------
+INSERT INTO `t_member_role` VALUES (2, 5, 'ROLE_ACADEMIC_DEAN');
+INSERT INTO `t_member_role` VALUES (3, 5, 'ROLE_TREASURER');
+INSERT INTO `t_member_role` VALUES (4, 6, 'ROLE_TEACHER');
+INSERT INTO `t_member_role` VALUES (5, 7, 'ROLE_TEACHER');
+INSERT INTO `t_member_role` VALUES (6, 8, 'ROLE_TEACHER');
+INSERT INTO `t_member_role` VALUES (7, 9, 'ROLE_TEACHER');
+INSERT INTO `t_member_role` VALUES (8, 10, 'ROLE_TEACHER');
+INSERT INTO `t_member_role` VALUES (9, 11, 'ROLE_TREASURER');
 
 -- ----------------------------
 -- Table structure for t_school
@@ -66,15 +90,19 @@ CREATE TABLE `t_school`  (
   `s_status` tinyint(4) NULL DEFAULT NULL,
   `s_createTime` datetime NULL DEFAULT NULL,
   `s_lastUpdateTime` datetime NULL DEFAULT NULL,
+  `s_province` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `s_city` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `s_lat` double NULL DEFAULT NULL,
+  `s_lng` double NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_school
 -- ----------------------------
-INSERT INTO `t_school` VALUES (1, 'string', 'string', 'string', 0, NULL, NULL);
-INSERT INTO `t_school` VALUES (2, 'string', 'string', 'string', 0, '2018-04-08 22:46:02', NULL);
-INSERT INTO `t_school` VALUES (3, 'string', 'string12', 'string12', 0, '2018-04-08 22:46:17', '2018-04-08 22:50:19');
+INSERT INTO `t_school` VALUES (1, '测试', '四川省成都市龙泉驿区', '1231', 0, NULL, '2018-04-14 15:46:50', '四川省', '成都市', 30.576657, 104.303412);
+INSERT INTO `t_school` VALUES (2, 'string', 'string', 'string', 0, '2018-04-08 22:46:02', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `t_school` VALUES (3, 'string', 'string12', 'string12', 0, '2018-04-08 22:46:17', '2018-04-08 22:50:19', NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for t_school_contract
@@ -147,7 +175,7 @@ CREATE TABLE `t_school_product`  (
   `p_lastUpdateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `school_id`(`school_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_school_product
@@ -155,6 +183,8 @@ CREATE TABLE `t_school_product`  (
 INSERT INTO `t_school_product` VALUES (1, '一对二', 68, 1, NULL, 1, '2018-04-14 10:36:01', '2018-04-14 12:16:55');
 INSERT INTO `t_school_product` VALUES (2, '测试2', 18, 1, NULL, 1, '2018-04-14 11:39:05', NULL);
 INSERT INTO `t_school_product` VALUES (3, '一对一', 68, 1, NULL, 1, '2018-04-14 11:40:25', NULL);
+INSERT INTO `t_school_product` VALUES (5, '子类2fe', NULL, NULL, 2, 1, '2018-04-14 12:35:11', '2018-04-14 12:42:48');
+INSERT INTO `t_school_product` VALUES (6, '一对三', 68, 1, NULL, 1, '2018-04-14 12:40:56', NULL);
 
 -- ----------------------------
 -- Table structure for t_school_student

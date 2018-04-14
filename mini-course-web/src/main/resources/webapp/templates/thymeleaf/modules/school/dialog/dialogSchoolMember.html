@@ -5,16 +5,17 @@
                 return false;
 			}
 
-            var base = "system/config";
+            var base = "member";
             var jsonData = $("#formSchoolMember").serializeJSON();
-            var isPatch = jsonData.id != "" && jsonData.id > 0;
+            var isPatch = jsonData.id != "member" && jsonData.id > 0;
             var uri = isPatch ? (base + "/" + jsonData.id) : base;
 			var type = isPatch ? "PATCH" : "POST";
 
             generic_ajax_op(uri, type, jsonData, null, (
                 function(result) {
-				    $.pdialog.closeCurrent();
-                    reloadConfigNavTab();
+                    $.pdialog.closeCurrent();
+                    alertMsg.correct("教师 '" + result.data.userName + "' " + (isPatch ? "更新" : "添加") + "成功");
+                    navTab.reload(null, {});
                 }
             ));
 		});
@@ -22,56 +23,65 @@
 </script>
 
 <style>
-    #formSchoolMember label { padding: 0; width: 60px; }
-    #formSchoolMember li { float: left; width: 105px; margin: 3px 0; }
+    #schoolMemberBox label { padding: 0; width: 60px; }
+    #schoolMemberBox li { float: left; width: 105px; margin: 3px 0; }
+	#schoolMemberBox span.error {left: auto; right: -5px;}
+	#schoolMemberBox input, #schoolMemberBox span {vertical-align: middle;}
+	#schoolMemberBox td {position: relative; }
 </style>
 
 <div xmlns:th="http://www.thymeleaf.org" class="pageContent">
-	<form method="post" class="pageForm required-validate">
-		<div id="formSchoolMember" class="pageFormContent" layoutH="56">
+	<form id="formSchoolMember" method="post" class="pageForm required-validate">
+		<div id="schoolMemberBox"“ class="pageFormContent" layoutH="56">
 			<table cellspacing="10" cellpadding="10" class="dform">
                 <tr>
-                    <td><label>微信号：</label></td>
-                    <td><input name="rootName" type="text" size="15" th:value="${parent != null ? parent.configDescription : ''}" readonly /></td>
-					<td align="center"><label>姓名：</label></td>
-					<td><input name="rootName" type="text" size="15" th:value="${parent != null ? parent.configDescription : ''}" readonly /></td>
-					<td align="center"><label>手机号：</label></td>
-					<td><input name="rootName" type="text" size="15" th:value="${parent != null ? parent.configDescription : ''}" readonly /></td>
+                    <td>微信号：</td>
+                    <td><input name="wxId" type="text" size="15" th:value="${parent != null ? parent.configDescription : ''}" class="required" /></td>
+					<td align="right">姓名：</td>
+					<td><input name="userName" type="text" size="15" th:value="${parent != null ? parent.configDescription : ''}" class="required" /></td>
                 </tr>
 				<tr>
-					<td><label>身份证号：</label></td>
-					<td colspan="3"><input name="configName" type="text" size="30" th:value="${config != null ? config.configName : ''}" class="required" /></td>
+					<td align="left">手机号：</td>
+					<td><input name="phone" type="text" size="15" th:value="${parent != null ? parent.configDescription : ''}" class="required mobile" /></td>
+					<td align="right">身份证号：</td>
+					<td><input name="userIdentity" type="text" size="15" th:value="${config != null ? config.configName : ''}" class="required idCard" /></td>
 				</tr>
 				<tr>
-					<td><label>角色：</label></td>
-					<td colspan="5">
+					<td>角色：</td>
+					<td colspan="3">
                         <ul>
                             <li th:each="role,roleStat:${roles}">
-                                <input type="checkbox" th:if="${role.roleVisible == 1}" th:value="${role.id}" /> <span th:if="${role.roleVisible == 1}" th:text="${role.roleName}" />
+                                <input type="checkbox" name="roleIds[]" th:if="${role.roleVisible == 1}" th:value="${role.id}" /> <span th:if="${role.roleVisible == 1}" th:text="${role.roleName}" />
                             </li>
                         </ul>
                     </td>
 				</tr>
 				<tr>
-					<td><label>所授课程：</label></td>
-					<td colspan="5"><input name="configDescription" type="text" size="30" th:value="${config != null ? config.configDescription : ''}" class="required" /></td>
+					<td width="60">所授课程：</td>
+					<td colspan="3">
+						<ul>
+							<li th:each="type,typeStat:${types}">
+								<input type="checkbox" name="courseIds[]" th:value="${type.id}" /> <span th:text="${type.productName}" />
+							</li>
+						</ul>
+					</td>
 				</tr>
 				<tr th:if="${grades != null }">
 					<td th:text="${grades.configDescription} + '：'" style="vertical-align: top; padding-top: 8px;">年级：</td>
-					<td colspan="5" th:if="${not #lists.isEmpty(grades.children)}" th:with="options=${grades.children}">
+					<td colspan="3" th:if="${not #lists.isEmpty(grades.children)}" th:with="options=${grades.children}">
                         <ul>
                             <li th:each="opt,optStat:${options}">
-                                <input type="checkbox" th:value="${opt.id}" /> <span th:text="${opt.configDescription}" />
+                                <input type="checkbox" name="gradeIds[]" th:value="${opt.id}" /> <span th:text="${opt.configDescription}" />
                             </li>
                         </ul>
 					</td>
 				</tr>
 				<tr th:if="${subjects != null}">
                     <td th:text="${subjects.configDescription} + '：'" style="vertical-align: top; padding-top: 8px;">年级：</td>
-                    <td colspan="5" th:if="${not #lists.isEmpty(subjects.children)}" th:with="options=${subjects.children}">
+                    <td colspan="3" th:if="${not #lists.isEmpty(subjects.children)}" th:with="options=${subjects.children}">
                         <ul>
                             <li th:each="opt,optStat:${options}">
-                                <input type="checkbox" th:value="${opt.id}" /> <span th:text="${opt.configDescription}" />
+                                <input type="checkbox" name="subjectIds[]" th:value="${opt.id}" /> <span th:text="${opt.configDescription}" />
                             </li>
                         </ul>
                     </td>
@@ -84,7 +94,10 @@
 				<li><div class="button"><div class="buttonContent"><button class="close" type="button">取消</button></div></div></li>
 			</ul>
 		</div>
-		<input type="hidden" name="id" th:value="${config != null ? config.id : ''}" />
+		<input type="hidden" name="id" th:value="${member != null ? member.id : ''}" />
+
+		<!-- TODO: replace using the school id from JWT token, rather than debug id -->
+		<input type="hidden" name="schoolId" value="1" />
 	</form>
 <div>
 		

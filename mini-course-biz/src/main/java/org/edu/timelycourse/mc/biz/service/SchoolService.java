@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.biz.service;
 
+import org.edu.timelycourse.mc.biz.enums.EUserStatus;
 import org.edu.timelycourse.mc.biz.model.SchoolModel;
 import org.edu.timelycourse.mc.biz.repository.SchoolRepository;
 import org.slf4j.Logger;
@@ -26,6 +27,8 @@ public class SchoolService extends BaseService<SchoolModel>
     @Override
     public SchoolModel add(SchoolModel entity)
     {
+        // enabled by default and need license control in future
+        entity.setSchoolStatus(EUserStatus.ENABLED.code());
         entity.setCreationTime(new Date());
         return super.add(entity);
     }

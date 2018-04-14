@@ -13,6 +13,9 @@
         <result property="wxId" column="u_wxid"/>
         <result property="type" column="u_type"/>
         <result property="role" column="u_role"/>
+        <result property="coursesId" column="u_course"/>
+        <result property="gradesId" column="u_grade"/>
+        <result property="subjectsId" column="u_subject"/>
         <result property="schoolId" column="school_id"/>
         <result property="status" column="u_status"/>
         <result property="lastLoginTime" column="u_lastLoginTime"/>
@@ -21,8 +24,8 @@
     </resultMap>
     
     <insert id="insert" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_member` (u_identity, u_name, u_pwd, u_phone, u_wxid, u_type, u_role, school_id, u_status, u_creationTime, u_lastUpdateTime)
-            VALUES(#{userIdentity}, #{userName}, #{password}, #{phone}, #{wxId}, #{type}, #{role}, #{schoolId}, #{status}, #{creationTime}, #{creationTime})
+        INSERT INTO `t_member` (u_identity, u_name, u_pwd, u_phone, u_wxid, u_type, u_role, school_id, u_status, u_creationTime, u_lastUpdateTime, u_course, u_grade, u_subject)
+            VALUES(#{userIdentity}, #{userName}, #{password}, #{phone}, #{wxId}, #{type}, #{role}, #{schoolId}, #{status}, #{creationTime}, #{creationTime}, #{coursesId}, #{gradesId}, #{subjectsId})
     </insert>
 
     <update id="update" parameterType="UserModel">
@@ -38,6 +41,9 @@
             <if test="role != null and role > -1">`u_role` = #{role},</if>
             <if test="schoolId != null and schoolId > -1">`school_id` = #{schoolId},</if>
             <if test="lastUpdateTime != null and userIdentity != ''">`u_lastUpdateTime` = #{lastUpdateTime},</if>
+            <if test="coursesId != null and coursesId != ''">`u_course` = #{coursesId},</if>
+            <if test="gradesId != null and gradesId != ''">`u_grade` = #{gradesId},</if>
+            <if test="subjectsId != null and subjectsId != ''">`u_subject` = #{subjectsId},</if>
             <if test="lastLoginTime != null and lastLoginTime != ''">`u_lastLoginTime` = #{lastLoginTime},</if>
             `id` = `id`
         </set>
@@ -56,6 +62,19 @@
             <if test="type != null and type > -1"> AND `u_type` = #{type}</if>
             <if test="role != null and role > -1"> AND `u_role` = #{role}</if>
             <if test="schoolId != null and schoolId > -1"> AND `school_id` = #{schoolId}</if>
+            <if test="coursesId != null and coursesId != ''"> AND `u_course` = #{coursesId},</if>
+            <if test="gradesId != null and gradesId != ''"> AND `u_grade` = #{gradesId},</if>
+            <if test="subjectsId != null and subjectsId != ''"> AND `u_subject` = #{subjectsId},</if>
+        </where>
+    </select>
+
+    <select id="getByEntity" parameterType="UserModel" resultMap="result_user">
+        SELECT * FROM `t_member`
+        <where>
+            <if test="userName != null and userName != ''"> `u_name`= #{userName}</if>
+            <if test="userIdentity != null and userIdentity != ''"> OR `u_identity` = #{userIdentity}</if>
+            <if test="phone != null and phone != ''"> OR `u_phone` = #{phone}</if>
+            <if test="wxId != null and wxId != ''"> OR `u_wxid` = #{wxId}</if>
         </where>
     </select>
 

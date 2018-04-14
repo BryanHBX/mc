@@ -106,6 +106,13 @@
     background: url("../images/icons/menu/school/icon-product.png") no-repeat left 3px;
 }
 
+.icon-schoolMember,
+.tree div.icon-schoolMember,
+.tabsPage .tabsPageHeader li span.icon-schoolMember,
+.accordion .accordionHeader h2 span.icon-schoolMember {
+    background: url("../images/icons/menu/school/icon-member.png") no-repeat left 3px;
+}
+
 .icon-financeInvoice,
 .tree div.icon-financeInvoice,
 .tabsPage .tabsPageHeader li span.icon-financeInvoice,

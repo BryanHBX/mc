@@ -49,7 +49,7 @@ public class StringUtil
      * @param strs list of strings to be joined
      * @return the string joined with the separator ","
      */
-    public static String join (Collection<String> strs)
+    public static String join (Collection<Integer> strs)
     {
         return join(strs, ",");
     }
@@ -63,7 +63,7 @@ public class StringUtil
      * @param join the charactor used to join the strings
      * @return the string joined with the separator ","
      */
-    public static String join (Collection<String> strs, String join)
+    public static String join (Collection<Integer> strs, String join)
     {
         return strs != null ? join(strs.toArray(), join) : null;
     }

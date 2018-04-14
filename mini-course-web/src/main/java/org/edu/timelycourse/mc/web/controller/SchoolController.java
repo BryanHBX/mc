@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -88,8 +90,19 @@ public class SchoolController extends AbstractController
     }
 
     @RequestMapping("/member")
-    public String showSchoolMember ()
+    public String showSchoolMember (
+            Model model,
+            @RequestParam(required = false) Integer pageNum,
+            @RequestParam(required = false) Integer numPerPage,
+            @RequestParam(required = false) String userName)
     {
+        // TODO
+        UserModel member = new UserModel();
+        member.setSchoolId(1);
+        member.setUserName(userName);
+
+        model.addAttribute("pagingBean", fetchMembers(pageNum, numPerPage, member));
+        model.addAttribute("search", member);
         return getModulePage("schoolMember");
     }
 
@@ -102,6 +115,8 @@ public class SchoolController extends AbstractController
             model.addAttribute("member", fetchMemberById(memberId));
         }
 
+        // TODO: fetch the types owned to the school only
+        model.addAttribute("types", fetchProducts());
         model.addAttribute("grades", fetchConfigByName(EBuiltInConfig.C_GRADE.name()));
         model.addAttribute("subjects", fetchConfigByName(EBuiltInConfig.C_SUBJECT.name()));
         model.addAttribute("roles", fetchSystemRoles());

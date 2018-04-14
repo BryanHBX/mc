@@ -46,6 +46,7 @@ public class UserController extends BaseController
 
         try
         {
+            /*
             if (model != null && (StringUtil.isNotEmpty(model.getPhone()) ||
                     StringUtil.isNotEmpty(model.getUserIdentity())))
             {
@@ -53,8 +54,9 @@ public class UserController extends BaseController
                         ResponseData.success(userService.findByUserPhone(model.getPhone())) :
                         ResponseData.success(userService.findByUserIdentity(model.getUserIdentity()));
             }
+            */
 
-            return ResponseData.success(userService.getAll());
+            return ResponseData.success(userService.findByPage(model, pageNum, pageSize));
         }
         catch (ServiceException ex)
         {

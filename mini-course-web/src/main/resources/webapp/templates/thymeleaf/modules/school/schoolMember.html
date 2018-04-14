@@ -1,19 +1,16 @@
-<form id="pagerForm" method="post" action="w_removeSelected.html">
-    <input type="hidden" name="pageNum" value="1">
-    <input type="hidden" name="numPerPage" value="${model.numPerPage}">
-    <input type="hidden" name="orderField" value="${param.orderField}">
-    <input type="hidden" name="orderDirection" value="${param.orderDirection}">
-    <input type="hidden" name="keywords" value=""><input type="hidden" name="province" value="">
+<form xmlns:th="http://www.thymeleaf.org" id="pagerForm" method="GET" action="school/member">
+    <input type="hidden" name="pageNum" th:value="${pagingBean ne null ? pagingBean.pageNumber : 1}" />
+    <input type="hidden" name="numPerPage" th:value="${pagingBean ne null ? pagingBean.pageSize : 20}"  />
 </form>
 
-<div class="pageHeader">
-    <form id="mySearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="w_removeSelected.html" method="post">
+<div class="pageHeader" xmlns:th="http://www.thymeleaf.org">
+    <form id="searchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="school/member" method="GET">
         <div class="searchBar">
             <table class="searchContent">
                 <tr>
                     <td>
                         <label>教师姓名：</label>
-                        <input type="text" name="keywords" value="" style="width: 100px;" class="textInput">
+                        <input type="text" name="userName" th:value="${search != null ? search.userName : ''}" style="width: 100px;" class="textInput">
                     </td>
             </table>
             <div class="subBar">
@@ -28,21 +25,21 @@
 <div class="panelBar">
     <ul class="toolBar">
         <li class="">
-            <a class="add" href="school/member/dialog" target="dialog" mask="true" width="550" height="450">
+            <a class="add" href="school/member/dialog" target="dialog" mask="true" width="585" height="450">
                 <span>添加教师</span>
             </a>
         </li>
     </ul>
 </div>
 
-<div class="pageContent">
-    <table class="table" width="100%" layoutH="110">
+<div class="pageContent" xmlns:th="http://www.thymeleaf.org">
+    <table class="table" width="100%" layoutH="135">
         <thead>
             <tr>
                 <th width="100">姓名</th>
                 <th width="150">身份证</th>
+                <th width="100">手机号</th>
                 <th>微信号</th>
-                <th>手机号</th>
                 <th>所授课程</th>
                 <th>其他描述</th>
                 <th>角色</th>
@@ -52,6 +49,18 @@
             </tr>
         </thead>
         <tbody>
+            <tr th:each="item: ${pagingBean.items}">
+                <td th:text="${item.userName}"></td>
+                <td th:text="${item.userIdentity}"></td>
+                <td th:text="${item.phone}"></td>
+                <td th:text="${item.wxId}"></td>
+                <td ></td>
+                <td ></td>
+                <td ></td>
+                <td ></td>
+                <td ></td>
+                <td ></td>
+            </tr>
         </tbody>
     </table>
 
@@ -59,15 +68,20 @@
         <div class="pages">
             <span>显示</span>
             <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
-                <option value="20">20</option>
+                <option value="1" th:selected="${pagingBean != null and pagingBean.pageSize eq 1}">1</option>
+                <option value="20" th:selected="${pagingBean != null and pagingBean.pageSize eq 20}">20</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
                 <option value="150">150</option>
                 <option value="200">200</option>
                 <option value="250">250</option>
             </select>
-            <span>条，共${totalCount}条</span>
+            <span th:text="'条，共' + ${pagingBean ne null ? pagingBean.totalItems : 0} + '条'"></span>
         </div>
-        <div class="pagination" targetType="navTab" totalCount="200" numPerPage="20" pageNumShown="10" currentPage="1"></div>
+        <div class="pagination" targetType="navTab"
+             th:totalCount="${pagingBean ne null ? pagingBean.totalItems : 0}"
+             th:numPerPage="${pagingBean ne null ? pagingBean.pageSize : 20}"
+             pageNumShown="10"
+             th:currentPage="${pagingBean ne null ? pagingBean.pageNumber : 1}"></div>
     </div>
 </div>

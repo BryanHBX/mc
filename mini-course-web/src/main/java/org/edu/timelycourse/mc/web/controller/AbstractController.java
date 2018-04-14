@@ -3,6 +3,8 @@ package org.edu.timelycourse.mc.web.controller;
 import com.google.common.reflect.TypeParameter;
 import com.google.common.reflect.TypeToken;
 import org.edu.timelycourse.mc.biz.model.*;
+import org.edu.timelycourse.mc.biz.paging.PagingBean;
+import org.edu.timelycourse.mc.common.constants.Constants;
 import org.edu.timelycourse.mc.common.controller.BaseController;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.edu.timelycourse.mc.common.reflect.ParameterizedTypeReferenceBuilder;
@@ -61,6 +63,14 @@ public abstract class AbstractController extends BaseController implements Error
     protected SchoolProductModel fetchProduct (Integer productId)
     {
         return remoteCall("product/" + productId, new TypeToken<SchoolProductModel>() {}).getData();
+    }
+
+    protected PagingBean<UserModel> fetchMembers (Integer pageNum, Integer pageSize, final UserModel model)
+    {
+        return remoteCall(String.format("member?pageNum=%d&pageSize=%d&%s",
+                pageNum != null ? pageNum : 1, pageSize != null ? pageSize : Constants.DEFAULT_PAGE_SIZE,
+                model.getUrlParams()),
+                new TypeToken<PagingBean<UserModel>>() {}).getData();
     }
 
     protected List<SchoolProductModel> fetchProducts ()

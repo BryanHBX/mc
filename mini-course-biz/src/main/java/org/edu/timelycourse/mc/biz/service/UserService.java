@@ -3,9 +3,10 @@ package org.edu.timelycourse.mc.biz.service;
 import org.edu.timelycourse.mc.biz.enums.EUserRole;
 import org.edu.timelycourse.mc.biz.enums.EUserStatus;
 import org.edu.timelycourse.mc.biz.enums.EUserType;
+import org.edu.timelycourse.mc.biz.model.SystemRoleModel;
 import org.edu.timelycourse.mc.biz.model.UserModel;
-import org.edu.timelycourse.mc.biz.repository.UserRepository;
-import org.edu.timelycourse.mc.biz.repository.SchoolRepository;
+import org.edu.timelycourse.mc.biz.model.UserRoleModel;
+import org.edu.timelycourse.mc.biz.repository.*;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
@@ -27,20 +29,40 @@ public class UserService extends BaseService<UserModel>
 {
     private static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
+    private static final Integer DEFAULT_PWD_LENGTH = 6;
+
     private UserRepository userRepository;
     private SchoolRepository schoolInfoRepository;
+    private SystemRoleRepository roleRepository;
+    private SystemConfigRepository configRepository;
+    private SchoolProductRepository productRepository;
+    private UserRoleRepository userRoleRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, SchoolRepository schoolInfoRepository)
+    public UserService(UserRepository userRepository,
+                       SchoolRepository schoolInfoRepository,
+                       SystemRoleRepository roleRepository,
+                       SystemConfigRepository configRepository,
+                       SchoolProductRepository productRepository,
+                       UserRoleRepository userRoleRepository)
     {
         super(userRepository);
         this.userRepository = userRepository;
         this.schoolInfoRepository = schoolInfoRepository;
+        this.roleRepository = roleRepository;
+        this.configRepository = configRepository;
+        this.productRepository = productRepository;
+        this.userRoleRepository = userRoleRepository;
     }
 
     @Override
     public UserModel add (UserModel entity)
     {
+        // TODO replace using real code
+        entity.setStatus(EUserStatus.ENABLED.code());
+        entity.setType(EUserType.INSTITUTION.code());
+        entity.setRole(EUserRole.EMPLOYEE.code());
+
         if (!entity.isValidInput())
         {
             throw new ServiceException(String.format("Invalid user entity %s", entity));
@@ -48,28 +70,31 @@ public class UserService extends BaseService<UserModel>
 
         Asserts.assertEntityNotNullById(schoolInfoRepository, entity.getSchoolId());
 
-        boolean exists = false;
-        if (StringUtil.isNotEmpty(entity.getUserIdentity()))
-        {
-            exists = (userRepository.getByUserId(entity.getUserIdentity()) != null);
-        }
-
-        if (!exists && StringUtil.isNotEmpty(entity.getPhone()))
-        {
-            exists = (userRepository.getByUserPhone(entity.getPhone()) != null);
-        }
+        boolean exists  = (userRepository.getByEntity(new UserModel(
+                entity.getUserIdentity(), entity.getPhone(), entity.getWxId())) != null);
 
         if (!exists)
         {
-            entity.setPassword(new BCryptPasswordEncoder().encode(entity.getPassword()));
+            checkUserData(entity);
+
+            entity.setSubjectsId(StringUtil.join(entity.getSubjectIds()));
+            entity.setCoursesId(StringUtil.join(entity.getCourseIds()));
+            entity.setGradesId(StringUtil.join(entity.getGradeIds()));
+
+            initUserPassword(entity);
+            //entity.setPassword(new BCryptPasswordEncoder().encode(entity.getPhone()));
             entity.setCreationTime(new Date());
-            return super.add(entity);
+
+            repository.insert(entity);
+
+            // add user roles
+            addUserRole(entity);
+
+            return entity;
         }
 
-        throw new ServiceException(String.format(
-                "UserModel with ( phone - %s, identity - %s ) already exists",
-                entity.getPhone(),
-                entity.getUserIdentity()
+        throw new ServiceException(String.format("User already exists with - [phone:%s, identity: %s, wxId: %s]",
+                entity.getPhone(), entity.getUserIdentity(), entity.getWxId()
         ));
     }
 
@@ -105,7 +130,8 @@ public class UserService extends BaseService<UserModel>
         if (valid)
         {
             entity.setLastUpdateTime(new Date());
-            entity.setPassword(new BCryptPasswordEncoder().encode(entity.getPassword()));
+            //initUserPassword(entity);
+            //entity.setPassword(new BCryptPasswordEncoder().encode(entity.getPassword()));
             return super.update(entity);
         }
 
@@ -130,8 +156,7 @@ public class UserService extends BaseService<UserModel>
             return userRepository.getByUserId(userIdentity);
         }
 
-        throw new ServiceException(String.format(
-                "Invalid user identity %s",  userIdentity));
+        throw new ServiceException(String.format("Invalid user identity %s",  userIdentity));
     }
 
     public List<UserModel> findBySchoolId (Integer schoolId)
@@ -141,8 +166,7 @@ public class UserService extends BaseService<UserModel>
             return userRepository.getBySchoolId(schoolId);
         }
 
-        throw new ServiceException(String.format(
-                "Invalid school id %d",  schoolId));
+        throw new ServiceException(String.format("Invalid school id %d",  schoolId));
     }
 
     public UserModel findByUserPhone (String userPhone)
@@ -152,7 +176,76 @@ public class UserService extends BaseService<UserModel>
             return userRepository.getByUserPhone(userPhone);
         }
 
-        throw new ServiceException(String.format(
-                "Invalid user phone %s",  userPhone));
+        throw new ServiceException(String.format("Invalid user phone %s",  userPhone));
     }
+
+
+    private void addUserRole (final UserModel entity)
+    {
+        for (Integer roleId : entity.getRoleIds())
+        {
+            SystemRoleModel systemRole = roleRepository.get(roleId);
+            UserRoleModel userRole = new UserRoleModel(entity.getId(), systemRole.getRoleAlias());
+            if (userRoleRepository.getByEntity(userRole) == null)
+            {
+                userRoleRepository.insert(userRole);
+            }
+        }
+
+    }
+
+    private void checkUserData (final UserModel entity)
+    {
+        checkProducts(entity.getCourseIds());
+        checkSubjectAndGrade(entity.getSubjectIds());
+        checkSubjectAndGrade(entity.getGradeIds());
+
+        Assert.notEmpty(entity.getRoleIds(), String.format("Role is not assigned to user: %s", entity));
+        checkRoles(entity.getRoleIds());
+    }
+
+    private void checkProducts (List<Integer> productIds)
+    {
+        if (productIds != null && productIds.size() > 0)
+        {
+            for (Integer productId : productIds)
+            {
+                Asserts.assertEntityNotNullById(productRepository, productId);
+            }
+        }
+    }
+
+    private void checkSubjectAndGrade (List<Integer> configIds)
+    {
+        if (configIds != null && configIds.size() > 0)
+        {
+            for (Integer configId : configIds)
+            {
+                Asserts.assertEntityNotNullById(configRepository, configId);
+            }
+        }
+    }
+
+    private void checkRoles (List<Integer> roleIds)
+    {
+        if (roleIds != null && roleIds.size() > 0)
+        {
+            for (Integer roleId : roleIds)
+            {
+                Asserts.assertEntityNotNullById(roleRepository, roleId);
+            }
+        }
+    }
+
+    private void initUserPassword (UserModel user)
+    {
+        String initPassword = user.getPhone();
+        if (user.getPhone().length() > DEFAULT_PWD_LENGTH)
+        {
+            initPassword = user.getPhone().substring(user.getPhone().length() - DEFAULT_PWD_LENGTH);
+        }
+
+        user.setPassword(new BCryptPasswordEncoder().encode(initPassword));
+    }
+
 }
