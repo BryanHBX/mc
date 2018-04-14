@@ -1,30 +1,56 @@
+<style>
+    #schoolForm input {width: 100%;}
+    #schoolForm .bMap {position: relative;}
+    #schoolForm .bMap .map-warp{position: absolute;left:0;width:100%;height:400px;top:22px;display: none;}
+    #schoolForm .bMap input {width:100%;height:15px;line-height: 15px;border:1px solid #d7d7d7;}
+    #schoolForm svg {margin-top: 0;}
+    .tangram-suggestion-main{z-index: 9999; text-align:left;}
+</style>
+
 <h2 class="contentTitle">学校信息设置</h2>
 <div class="pageContent">
-    <form method="post" action="" class="pageForm required-validate"  novalidate="novalidate">
-        <div class="pageFormContent " layouth="87" style="overflow: auto;">
-            <div>
-                <dl>
-                    <dt>学校名称：</dt>
-                    <dd><input name="field1" type="text" class="textInput"></dd>
-                </dl>
-            </div>
-            <div>
-                <dl>
-                    <dt>学校地址：</dt>
-                    <dd><input name="field2" type="text" alt="提示信息" class="textInput" id="field2_5009"><label class="alt" for="field2_5009" style="width: 154px; top: 5px; left: 130px; opacity: 1;">提示信息</label></dd>
-                </dl>
-            </div>
-            <div>
-                <dl>
-                    <dt>联系电话：</dt>
-                    <dd><input class="required textInput" name="field3" type="text"></dd>
-                </dl>
-            </div>
+    <form id="schoolForm" method="post" action="" class="pageForm required-validate"  novalidate="novalidate">
+        <div class="pageFormContent nowrap" layouth="87" style="overflow: auto;">
+            <dl>
+                <dt>学校名称：</dt>
+                <dd><input name="field1" type="text" class="textInput"></dd>
+            </dl>
+            <dl>
+                <dt>学校地址：</dt>
+                <dd>
+                    <div class="bMap"></div>
+                </dd>
+            </dl>
+            <dl>
+                <dt>联系电话：</dt>
+                <dd><input class="required textInput" name="field3" type="text"></dd>
+            </dl>
         </div>
         <div class="formBar">
             <ul>
                 <li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
             </ul>
         </div>
+        <input type="hidden" name="province" id="province" />
+        <input type="hidden" name="city" id="city" />
+        <input type="hidden" name="lat" id="lat" />
+        <input type="hidden" name="lng" id="lng" />
     </form>
 </div>
+
+<script>
+    $(function(){
+        $(".bMap").bMap({
+            //address: local.name,  //默认地址，如果为空则通过解析默认坐标获取
+            //location:[116.331398,39.897445],  //默认坐标，如果为空则通过解析默认地址获取
+            name:"schoolAddress", //提交表单的NAME,默认为map
+            callback:function(address,point) //回调函数，返回地址数组与坐标
+            {
+                $("#city").val(address.city);
+                $("#province").val(address.province);
+                $("#lat").val(point.lat);
+                $("#lng").val(point.lng);
+            }
+        });
+    });
+</script>

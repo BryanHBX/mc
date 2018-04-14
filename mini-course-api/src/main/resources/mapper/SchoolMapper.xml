@@ -10,13 +10,17 @@
         <result property="schoolAddress" column="s_address"/>
         <result property="schoolContact" column="s_contact"/>
         <result property="schoolStatus" column="s_status"/>
+        <result property="city" column="s_city"/>
+        <result property="province" column="s_province"/>
+        <result property="lat" column="s_lat"/>
+        <result property="lng" column="s_lng"/>
         <result property="creationTime" column="s_createTime" />
         <result property="lastUpdateTime" column="s_lastUpdateTime" />
     </resultMap>
     
     <insert id="insert" parameterType="SchoolModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_school` (s_name, s_address, s_contact, s_status, s_createTime, s_lastUpdateTime)
-            VALUES(#{schoolName}, #{schoolAddress}, #{schoolContact}, #{schoolStatus}, #{creationTime}, #{lastUpdateTime})
+        INSERT INTO `t_school` (s_name, s_address, s_contact, s_status, s_createTime, s_province, s_city, s_lat, s_lng)
+            VALUES(#{schoolName}, #{schoolAddress}, #{schoolContact}, #{schoolStatus}, #{creationTime}, #{province}, #{city}, #{lat}, #{lng})
     </insert>
 
     <update id="update" parameterType="SchoolModel">
@@ -27,6 +31,10 @@
             <if test="schoolContact != null and schoolContact != ''">`s_contact` = #{schoolContact},</if>
             <if test="schoolStatus != null and schoolStatus > -1">`s_status` = #{schoolStatus},</if>
             <if test="lastUpdateTime != null">`s_lastUpdateTime` = #{lastUpdateTime},</if>
+            <if test="province != null and province != ''"> `s_province` = #{province},</if>
+            <if test="city != null and city != ''"> `s_city` = #{city},</if>
+            <if test="lat != null and lat > 0"> `s_lat` = #{lat},</if>
+            <if test="lng != null and lng > 0"> `s_lng` = #{lng},</if>
             `id` = `id`
         </set>
         WHERE id = #{id}
@@ -40,6 +48,8 @@
             <if test="schoolAddress != null and schoolAddress != ''"> AND `s_address` LIKE CONCAT('%',#{schoolAddress},'%')</if>
             <if test="schoolContact != null and schoolContact != ''"> AND `s_contact` LIKE CONCAT('%',#{schoolContact},'%')</if>
             <if test="schoolStatus != null and schoolStatus > -1"> AND `s_status` = #{schoolStatus}</if>
+            <if test="province != null and province != ''"> AND `s_province` = #{province}</if>
+            <if test="city != null and city != ''"> AND `s_city` = #{city}</if>
         </where>
     </select>
     

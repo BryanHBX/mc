@@ -25,6 +25,26 @@ public class SchoolModel extends BaseEntity
     private String schoolContact;
 
     /**
+     * 所在省份
+     */
+    private String province;
+
+    /**
+     * 所在城市
+     */
+    private String city;
+
+    /**
+     * 经度
+     */
+    private Double lat;
+
+    /**
+     * 纬度
+     */
+    private Double lng;
+
+    /**
      * 学校状态
      */
     private Integer schoolStatus;
