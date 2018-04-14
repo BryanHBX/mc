@@ -2,6 +2,7 @@ package org.edu.timelycourse.mc.web.controller;
 
 import com.google.common.reflect.TypeParameter;
 import com.google.common.reflect.TypeToken;
+import org.edu.timelycourse.mc.biz.model.SchoolProductModel;
 import org.edu.timelycourse.mc.biz.model.SystemConfigModel;
 import org.edu.timelycourse.mc.biz.model.SystemRoleModel;
 import org.edu.timelycourse.mc.biz.model.UserModel;
@@ -53,6 +54,21 @@ public abstract class AbstractController extends BaseController implements Error
         return remoteCall("member/" + memberId, new TypeToken<UserModel>() {}).getData();
     }
 
+    protected SchoolProductModel fetchProduct (Integer productId)
+    {
+        return remoteCall("product/" + productId, new TypeToken<SchoolProductModel>() {}).getData();
+    }
+
+    protected List<SchoolProductModel> fetchProducts ()
+    {
+        return remoteCall("product", new TypeToken<List<SchoolProductModel>>() {}).getData();
+    }
+
+    protected List<SchoolProductModel> fetchProductByType (Integer productType)
+    {
+        return remoteCall("product?productType=" + productType, new TypeToken<List<SchoolProductModel>>() {}).getData();
+    }
+
     protected SystemConfigModel fetchConfigByName (String configName)
     {
         return remoteCall("system/config?configName=" + configName, new TypeToken<SystemConfigModel>() {}).getData();
@@ -66,6 +82,11 @@ public abstract class AbstractController extends BaseController implements Error
     protected SystemConfigModel fetchConfigById (Integer configId)
     {
         return remoteCall("system/config/" + configId, new TypeToken<SystemConfigModel>() {}).getData();
+    }
+
+    protected List<SystemConfigModel> fetchConfigs ()
+    {
+        return remoteCall("system/config", new TypeToken<List<SystemConfigModel>>() {}).getData();
     }
 
     protected String getModulePath()

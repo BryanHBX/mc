@@ -40,8 +40,7 @@ public class SystemController extends AbstractController
             return getModulePage("system/pages/configListPage");
         }
 
-        model.addAttribute("configs", remoteCall("system/config",
-                new TypeToken<List<SystemConfigModel>>() {}).getData());
+        model.addAttribute("configs", fetchConfigs());
 
         return getModulePage("system/config");
     }

@@ -7,6 +7,7 @@
     <resultMap type="org.edu.timelycourse.mc.biz.model.InvoiceModel" id="result_invoice">
         <id property="id" column="id"/>  
         <result property="contractId" column="contract_id"/>
+        <result property="schoolId" column="school_id"/>
         <result property="invoiceNo" column="invoice_no"/>
         <result property="price" column="fee_amount"/>
         <result property="type" column="fee_type"/>
@@ -15,8 +16,8 @@
     </resultMap>
     
     <insert id="insert" parameterType="InvoiceModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_school_invoice` (contract_id, invoice_no, fee_amount, fee_type, creationTime)
-          VALUES (#{contractId}, #{invoiceNo}, #{price}, #{type}, #{creationTime})
+        INSERT INTO `t_school_invoice` (contract_id, school_id, invoice_no, fee_amount, fee_type, creationTime)
+          VALUES (#{contractId}, #{schoolId}, #{invoiceNo}, #{price}, #{type}, #{creationTime})
     </insert>
 
     <update id="update" parameterType="InvoiceModel">
@@ -37,6 +38,7 @@
         <where>
             1 = 1
             <if test="contractId != null and contractId > 0"> AND `contract_id` = ${contractId}</if>
+            <if test="schoolId != null and schoolId > 0"> AND `school_id` = ${schoolId}</if>
             <if test="invoiceNo != null and invoiceNo != ''"> AND `invoice_no` LIKE CONCAT('%',#{invoiceNo},'%')</if>
             <if test="type != null and type > -1"> AND `fee_type` = #{type}</if>
         </where>

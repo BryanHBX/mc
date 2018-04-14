@@ -19,6 +19,11 @@ public class InvoiceModel extends BaseEntity
     private Integer contractId;
 
     /**
+     * 学校ID
+     */
+    private Integer schoolId;
+
+    /**
      * 收据编号
      */
     private String invoiceNo;
@@ -48,7 +53,7 @@ public class InvoiceModel extends BaseEntity
     {
         return EPaymentType.hasValue(type) &&
                 ValidatorUtil.isFloatNumber(price) &&
-                EntityUtils.isValidEntityId(contractId) &&
+                EntityUtils.isValidEntityId(contractId, schoolId) &&
                 Strings.isNotEmpty(invoiceNo);
     }
 }

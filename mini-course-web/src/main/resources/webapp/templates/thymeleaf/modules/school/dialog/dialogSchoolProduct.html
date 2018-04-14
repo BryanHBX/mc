@@ -1,0 +1,67 @@
+<script>
+	$(function(){
+		$("#btnSaveProduct").unbind("click").bind("click", function(){
+			if (!$("#formProduct").valid()) {
+                return false;
+			}
+
+            var base = "product";
+            var jsonData = $("#formProduct").serializeJSON();
+            var isPatch = jsonData.id != "" && jsonData.id > 0;
+            var uri = isPatch ? (base + "/" + jsonData.id) : base;
+			var type = isPatch ? "PATCH" : "POST";
+
+            generic_ajax_op(uri, type, jsonData, null, (
+                function(result) {
+				    $.pdialog.closeCurrent();
+				    alertMsg.correct("课程 '" + result.data.productName + "' " + (isPatch ? "更新" : "添加") + "成功");
+                    reloadConfigNavTab();
+                }
+            ));
+		});
+	});
+</script>
+
+<style>
+	#formProduct span.error { left: 100px; }
+</style>
+
+<div xmlns:th="http://www.thymeleaf.org" class="pageContent">
+	<form id="formProduct" method="post" class="pageForm required-validate">
+		<div class="pageFormContent" layoutH="56">
+			<table cellspacing="10" cellpadding="10" class="dform">
+				<tr th:if="${parentId == null and types != null}">
+					<td>课程类别：</td>
+					<td>
+						<select class="combox required" name="productType" style="width: 160px"
+								th:if="${not #lists.isEmpty(types.children)}"
+								th:with="options=${types.children}">
+							<option th:each="option:${options}" th:value="${option.id}" th:text="${option.configDescription}">学生年段</option>
+						</select>
+					</td>
+				</tr>
+                <tr th:if="${parentId != null}">
+                    <td>课程大类：</td>
+                    <td><input name="rootName" type="text" size="30" th:value="${parent != null ? parent.configDescription : ''}" /></td>
+                </tr>
+				<tr>
+					<td>课程名称：</td>
+					<td><input name="productName" type="text" size="30" th:value="${config != null ? config.configName : ''}" class="required" /></td>
+				</tr>
+				<tr th:if="${parentId == null}">
+					<td>考勤课时：</td>
+					<td><input name="productPeriod" type="text" size="28" th:value="${parent != null ? parent.configDescription : ''}" class="required number" /></td>
+				</tr>
+			</table>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="button" id="btnSaveProduct">保存</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button class="close" type="button">取消</button></div></div></li>
+			</ul>
+		</div>
+		<input type="hidden" name="id" th:value="${config != null ? config.id : ''}" />
+        <input th:if="${parent != null}" name="parentId" th:value="${parent.id}" />
+	</form>
+<div>
+		

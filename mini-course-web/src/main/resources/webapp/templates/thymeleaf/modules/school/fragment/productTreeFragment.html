@@ -1,0 +1,15 @@
+<ul xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" layout:fragment="tree">
+    <li th:each="menuItem : ${menuItemsList}">
+
+        <a th:text="${menuItem.productName}"
+           th:href="@{'admin/system/settings?id=' + ${menuItem.id}}"
+           target="ajax"
+           th:tname="${menuItem.productName}"
+           th:tvalue="${menuItem.id}"
+           rel="productTableList">配置項</a>
+
+        <ul th:if="${not #lists.isEmpty(menuItem.children)}"
+            th:with="menuItemsList=${menuItem.children}"
+            layout:include="~{modules/admin/system/fragment/configTreeFragment::tree}"></ul>
+    </li>
+</ul>

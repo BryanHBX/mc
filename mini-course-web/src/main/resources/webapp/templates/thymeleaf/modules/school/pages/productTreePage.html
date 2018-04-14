@@ -1,0 +1,55 @@
+<div xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     xmlns:th="http://www.thymeleaf.org" layouth="0.5" class="treePanel" th:fragment="tree">
+
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li class="">
+                <a class="add" href="school/product/dialog" target="dialog" mask="true" width="400" height="250">
+                    <span>添加课程大类</span>
+                </a>
+            </li>
+            <li class="line">line</li>
+            <li class="">
+                <a class="delete" id="productBtnDel" href="javascript:void(0);">
+                    <span>删除课程</span>
+                </a>
+            </li>
+            <li class="line">line</li>
+            <li class="">
+                <a class="edit" id="productBtnEdit" href="javascript:void(0);">
+                    <span>修改课程</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <ul class="tree treeFolder expand" id="productTree">
+        <li th:each="product : ${products}">
+            <a th:text="${product.key.configDescription}"
+               th:href="@{'school/product?productType=' + ${product.key.id}}"
+               target="ajax"
+               th:tname="${product.key.configDescription}"
+               th:tvalue="${product.key.id}"
+               rel="productTableList">课程子类</a>
+            <ul th:if="${not #lists.isEmpty(product.value)}"
+                th:with="menuItemsList=${product.value}"
+                layout:include="~{modules/school/fragment/productTreeFragment::tree}"></ul>
+        </li>
+    </ul>
+
+    <!--
+    <ul class="tree treeFolder expand" id="productTree">
+        <li th:each="product : ${products}">
+            <a th:text="${product.productName}"
+               th:href="@{'school/product?productType=' + ${product.id}}"
+               target="ajax"
+               th:tname="${product.productName}"
+               th:tvalue="${product.id}"
+               rel="productTableList">课程子类</a>
+            <ul th:if="${not #lists.isEmpty(product.children)}"
+                th:with="menuItemsList=${product.children}"
+                layout:include="~{modules/school/fragment/productTreeFragment::tree}"></ul>
+        </li>
+    </ul>
+    -->
+</div>

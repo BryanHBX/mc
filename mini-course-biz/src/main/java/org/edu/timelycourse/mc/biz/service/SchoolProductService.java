@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.parser.Entity;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by x36zhao on 2017/3/17.
@@ -38,6 +39,16 @@ public class SchoolProductService extends BaseService<SchoolProductModel>
         this.productRepository = repository;
         this.schoolRepository = schoolRepository;
         this.systemConfigRepository = systemConfigRepository;
+    }
+
+    public List<SchoolProductModel> findByType (Integer courseType)
+    {
+        if (EntityUtils.isValidEntityId(courseType))
+        {
+            return productRepository.getByType(courseType);
+        }
+
+        throw new ServiceException(String.format("Invalid course type %d", courseType));
     }
 
     @Override
@@ -100,7 +111,6 @@ public class SchoolProductService extends BaseService<SchoolProductModel>
 
         throw new ServiceException(String.format("Invalid entity id (%d) for deletion", id));
     }
-
 
     @Override
     public SchoolProductModel update(SchoolProductModel entity)

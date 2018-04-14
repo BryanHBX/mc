@@ -25,15 +25,27 @@ public class SchoolProductController extends BaseController
     @Autowired
     private SchoolProductService productService;
 
+    @ModelAttribute("product")
+    public SchoolProductModel getModel()
+    {
+        return new SchoolProductModel ();
+    }
+
+
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all products or by given query")
-    public ResponseData getProducts()
+    public ResponseData getProducts(@ModelAttribute("product") SchoolProductModel model)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter getProducts");
 
         try
         {
+            if (model.getProductType() != null)
+            {
+                return ResponseData.success(productService.findByType(model.getProductType()));
+            }
+
             return ResponseData.success(productService.getAll());
         }
         catch (ServiceException ex)

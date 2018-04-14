@@ -32,6 +32,10 @@
         </where>
 	</select>
 
+    <select id="getByType" parameterType="java.lang.Integer" resultMap="result_product">
+        SELECT * FROM `t_school_product` WHERE `p_type` = #{typeId} AND `p_parent` IS NULL
+    </select>
+
     <select id="getChildren" parameterType="java.lang.Integer" resultMap="result_product">
         SELECT * FROM `t_school_product` WHERE `p_parent` = #{parentId}
     </select>
