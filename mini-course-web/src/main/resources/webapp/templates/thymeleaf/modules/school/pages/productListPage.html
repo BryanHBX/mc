@@ -13,8 +13,8 @@
         <table class="table" width="100%" layoutH="35" rel="productBox">
             <thead>
                 <tr>
-                    <th width="120">课程大类</th>
-                    <th width="120">课程子类</th>
+                    <th >课程大类</th>
+                    <th >课程子类</th>
                     <th width="56">编辑</th>
                 </tr>
             </thead>
@@ -27,7 +27,7 @@
                     <td align="center">
                         <a title="删除" target="ajaxToDo" callback="onProductDeleteSuccess" type="DELETE"
                            th:title="'确定要删除\'' + ${entity.productName} + '\' 课程子类么?'"
-                           th:href="'product/' + ${entity.id}" class="btnDel">删除</a>
+                           th:href="'product/' + ${entity.id}" class="btnDel" >删除</a>
 
                         <a title="编辑" target="dialog" mask="true" width="350" height="240"
                            th:href="'school/product/dialog?id=' + ${entity.id} + '&pid=' + ${product.id}" class="btnEdit">编辑</a>

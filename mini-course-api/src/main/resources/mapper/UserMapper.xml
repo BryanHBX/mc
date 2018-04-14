@@ -21,8 +21,13 @@
         <result property="lastLoginTime" column="u_lastLoginTime"/>
         <result property="creationTime" column="u_creationTime"/>
         <result property="lastUpdateTime" column="u_lastUpdateTime" />
+
+        <collection property="authorities" column="id" javaType="java.util.ArrayList"
+                    ofType="org.edu.timelycourse.mc.biz.model.UserRoleModel"
+                    select="org.edu.timelycourse.mc.biz.repository.UserRoleRepository.getByUserId"
+        />
     </resultMap>
-    
+
     <insert id="insert" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `t_member` (u_identity, u_name, u_pwd, u_phone, u_wxid, u_type, u_role, school_id, u_status, u_creationTime, u_lastUpdateTime, u_course, u_grade, u_subject)
             VALUES(#{userIdentity}, #{userName}, #{password}, #{phone}, #{wxId}, #{type}, #{role}, #{schoolId}, #{status}, #{creationTime}, #{creationTime}, #{coursesId}, #{gradesId}, #{subjectsId})
@@ -62,9 +67,9 @@
             <if test="type != null and type > -1"> AND `u_type` = #{type}</if>
             <if test="role != null and role > -1"> AND `u_role` = #{role}</if>
             <if test="schoolId != null and schoolId > -1"> AND `school_id` = #{schoolId}</if>
-            <if test="coursesId != null and coursesId != ''"> AND `u_course` = #{coursesId},</if>
-            <if test="gradesId != null and gradesId != ''"> AND `u_grade` = #{gradesId},</if>
-            <if test="subjectsId != null and subjectsId != ''"> AND `u_subject` = #{subjectsId},</if>
+            <if test="coursesId != null and coursesId != ''"> AND `u_course` = #{coursesId}</if>
+            <if test="gradesId != null and gradesId != ''"> AND `u_grade` = #{gradesId}</if>
+            <if test="subjectsId != null and subjectsId != ''"> AND `u_subject` = #{subjectsId}</if>
         </where>
     </select>
 

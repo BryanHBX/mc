@@ -68,7 +68,7 @@ public class UserModel extends BaseEntity
     /**
      * 用户权限描述
      */
-    private String roles;
+    private String rolesDesc;
     private List<Integer> roleIds;
 
     /**

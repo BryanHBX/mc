@@ -3,9 +3,8 @@ package org.edu.timelycourse.mc.biz.service;
 import org.edu.timelycourse.mc.biz.enums.EUserRole;
 import org.edu.timelycourse.mc.biz.enums.EUserStatus;
 import org.edu.timelycourse.mc.biz.enums.EUserType;
-import org.edu.timelycourse.mc.biz.model.SystemRoleModel;
-import org.edu.timelycourse.mc.biz.model.UserModel;
-import org.edu.timelycourse.mc.biz.model.UserRoleModel;
+import org.edu.timelycourse.mc.biz.model.*;
+import org.edu.timelycourse.mc.biz.paging.PagingBean;
 import org.edu.timelycourse.mc.biz.repository.*;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
@@ -18,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.Date;
 import java.util.List;
 
@@ -140,6 +140,109 @@ public class UserService extends BaseService<UserModel>
                 entity.getPhone(),
                 entity.getUserIdentity()
         ));
+    }
+
+    @Override
+    public UserModel get(Integer id)
+    {
+        UserModel user = super.get(id);
+        enrichUserInfo(user);
+        return user;
+    }
+
+    @Override
+    public PagingBean<UserModel> findByPage(UserModel entity, Integer pageNum, Integer pageSize)
+    {
+        PagingBean<UserModel> users = super.findByPage(entity, pageNum, pageSize);
+        if (users.getItems() != null)
+        {
+            for (UserModel user : users.getItems())
+            {
+                enrichUserInfo(user);
+            }
+        }
+        return users;
+    }
+
+    private void enrichUserInfo (UserModel user)
+    {
+        user.setGradesDesc(getConfigTextByIds(user.getGradesId()));
+        user.setSubjectsDesc(getConfigTextByIds(user.getSubjectsId()));
+        user.setCoursesDesc(getProductTextByIds(user.getCoursesId()));
+        user.setRolesDesc(getRoleTexts(user.getAuthorities()));
+    }
+
+    private String getRoleTexts (final List<UserRoleModel> roles)
+    {
+        if (roles != null && roles.size() > 0)
+        {
+            StringBuilder builder = new StringBuilder();
+            for (UserRoleModel role : roles)
+            {
+                SystemRoleModel roleModel = roleRepository.getByAlias(role.getRole());
+                if (roleModel != null)
+                {
+                    builder.append(roleModel.getRoleName());
+                    builder.append(",");
+                }
+            }
+
+            if (builder.length() > 0)
+            {
+                builder.deleteCharAt(builder.length() - 1);
+            }
+
+            return builder.toString();
+        }
+        return null;
+    }
+
+    private String getProductTextByIds (String ids)
+    {
+        StringBuilder builder = new StringBuilder();
+        if (ids != null)
+        {
+            String[] idSlices = ids.split(",");
+            for (String id : idSlices)
+            {
+                SchoolProductModel model = productRepository.get(Integer.valueOf(id));
+                if (model != null)
+                {
+                    builder.append(model.getProductName());
+                    builder.append(",");
+                }
+            }
+
+            if (builder.length() > 0)
+            {
+                builder.deleteCharAt(builder.length() - 1);
+            }
+        }
+        return builder.toString();
+    }
+
+    private String getConfigTextByIds (String ids)
+    {
+        StringBuilder builder = new StringBuilder();
+        if (ids != null)
+        {
+            String[] idSlices = ids.split(",");
+            for (String id : idSlices)
+            {
+                SystemConfigModel model = configRepository.get(Integer.valueOf(id));
+                if (model != null)
+                {
+                    builder.append(model.getConfigDescription());
+                    builder.append(",");
+                }
+            }
+
+            if (builder.length() > 0)
+            {
+                builder.deleteCharAt(builder.length() - 1);
+            }
+        }
+        return builder.toString();
     }
 
     private boolean isUserEntityValid (final UserModel entity)

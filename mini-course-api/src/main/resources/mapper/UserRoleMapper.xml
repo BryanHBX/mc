@@ -39,7 +39,7 @@
         </where>
     </select>
 
-    <select id="getByUserId" parameterType="java.lang.String" resultMap="result_userRole">
+    <select id="getByUserId" parameterType="java.lang.Integer" resultMap="result_userRole">
         SELECT * FROM `t_member_role` WHERE u_id = #{uid}
     </select>
 
