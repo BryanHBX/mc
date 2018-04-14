@@ -92,6 +92,19 @@
     background: url("../images/icons/menu/finance/icon-contract.png") no-repeat left 3px;
 }
 
+.icon-schoolInfo,
+.tree div.icon-schoolInfo,
+.tabsPage .tabsPageHeader li span.icon-schoolInfo,
+.accordion .accordionHeader h2 span.icon-schoolInfo {
+    background: url("../images/icons/menu/school/icon-info2.png") no-repeat left 3px;
+}
+
+.icon-schoolProduct,
+.tree div.icon-schoolProduct,
+.tabsPage .tabsPageHeader li span.icon-schoolProduct,
+.accordion .accordionHeader h2 span.icon-schoolProduct {
+    background: url("../images/icons/menu/school/icon-product.png") no-repeat left 3px;
+}
 
 .icon-financeInvoice,
 .tree div.icon-financeInvoice,
