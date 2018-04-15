@@ -7,17 +7,17 @@ import org.edu.timelycourse.mc.biz.model.*;
 import org.edu.timelycourse.mc.biz.paging.PagingBean;
 import org.edu.timelycourse.mc.biz.repository.*;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
+import org.edu.timelycourse.mc.biz.utils.PasswordUtil;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.swing.text.html.parser.Entity;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -63,13 +63,22 @@ public class UserService extends BaseService<UserModel>
         entity.setType(EUserType.INSTITUTION.code());
         entity.setRole(EUserRole.EMPLOYEE.code());
 
+        // check input
         if (!entity.isValidInput())
         {
             throw new ServiceException(String.format("Invalid user entity %s", entity));
         }
 
+        // check roles
+        if (entity.getRoleIds() == null || entity.getRoleIds().size() == 0)
+        {
+            throw new ServiceException(String.format("Role must be assigned to user: %s", entity));
+        }
+
+        // check school
         Asserts.assertEntityNotNullById(schoolInfoRepository, entity.getSchoolId());
 
+        // check id card, mobile and wx id
         boolean exists  = (userRepository.getByEntity(new UserModel(
                 entity.getUserIdentity(), entity.getPhone(), entity.getWxId())) != null);
 
@@ -82,7 +91,6 @@ public class UserService extends BaseService<UserModel>
             entity.setGradesId(StringUtil.join(entity.getGradeIds()));
 
             initUserPassword(entity);
-            //entity.setPassword(new BCryptPasswordEncoder().encode(entity.getPhone()));
             entity.setCreationTime(new Date());
 
             repository.insert(entity);
@@ -93,7 +101,8 @@ public class UserService extends BaseService<UserModel>
             return entity;
         }
 
-        throw new ServiceException(String.format("User already exists with - [phone:%s, identity: %s, wxId: %s]",
+        throw new ServiceException(String.format(
+                "User already exists with - [phone:%s, identity: %s, wxId: %s]",
                 entity.getPhone(), entity.getUserIdentity(), entity.getWxId()
         ));
     }
@@ -101,45 +110,104 @@ public class UserService extends BaseService<UserModel>
     @Override
     public UserModel update(UserModel entity)
     {
-        Asserts.assertEntityNotNullById(schoolInfoRepository, entity.getSchoolId());
-
-        if (!isUserEntityValid(entity))
+        if (!entity.isValidInput() && !EntityUtils.isValidEntityId(entity.getId()) &&
+                !StringUtil.isNotEmpty(entity.getUserIdentity(), entity.getPhone(), entity.getWxId()))
         {
             throw new ServiceException(String.format("Invalid user entity %s", entity));
         }
 
-        boolean valid = true;
-        if (StringUtil.isNotEmpty(entity.getUserIdentity()))
+        // check user existence in db
+        UserModel entityInDb = (UserModel) Asserts.assertEntityNotNullById(repository, entity.getId());
+
+        // check school id if any change in the request
+        if (entityInDb.getSchoolId() != entity.getSchoolId())
         {
-            UserModel user = userRepository.getByUserId(entity.getUserIdentity());
-            if (user != null && !user.getId().equals(entity.getId()))
+            throw new ServiceException(String.format(
+                    "It's not allowed to change school from %d to %d",
+                    entityInDb.getSchoolId(), entity.getSchoolId()
+            ));
+        }
+
+        entity.setSchoolId(entityInDb.getSchoolId());
+        entity.setAuthorities(entityInDb.getAuthorities());
+
+        // check id card, mobile and wx id
+        UserModel userByCriteria  = userRepository.getByEntity(new UserModel(
+                entity.getUserIdentity(), entity.getPhone(), entity.getWxId()));
+
+        if (userByCriteria != null && !userByCriteria.getId().equals(entity.getId()))
+        {
+            throw new ServiceException(String.format(
+                    "User already exists with - [phone:%s, identity: %s, wxId: %s]",
+                    entity.getPhone(), entity.getUserIdentity(), entity.getWxId()
+            ));
+        }
+
+        // update role
+        updateUserRole(entity);
+
+        entity.setSubjectsId(StringUtil.join(entity.getSubjectIds()));
+        entity.setCoursesId(StringUtil.join(entity.getCourseIds()));
+        entity.setGradesId(StringUtil.join(entity.getGradeIds()));
+
+        entity.setLastUpdateTime(new Date());
+        repository.update(entity);
+        return entity;
+    }
+
+    private void updateUserRole (UserModel entity)
+    {
+        // check user roles
+        if (entity.getRoleIds() == null || entity.getRoleIds().size() == 0)
+        {
+            throw new ServiceException(String.format("Role must be assigned to user: %s", entity));
+        }
+
+        for (Integer roleId : entity.getRoleIds())
+        {
+            SystemRoleModel systemRole = (SystemRoleModel) Asserts.assertEntityNotNullById(roleRepository, roleId);
+            boolean exists = false;
+            for (UserRoleModel userRole : entity.getAuthorities())
             {
-                valid = false;
+                if (userRole.getRole().equals(systemRole.getRoleAlias()))
+                {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists)
+            {
+                userRoleRepository.insert(new UserRoleModel(entity.getId(), systemRole.getRoleAlias()));
             }
         }
 
-        if (valid && StringUtil.isNotEmpty(entity.getPhone()))
+        for (UserRoleModel userRole : entity.getAuthorities())
         {
-            UserModel user = userRepository.getByUserPhone(entity.getPhone());
-            if (user != null && !user.getId().equals(entity.getId()))
+            boolean exists = false;
+            for (Integer roleId : entity.getRoleIds())
             {
-                valid = false;
+                SystemRoleModel systemRole = (SystemRoleModel) Asserts.assertEntityNotNullById(roleRepository, roleId);
+                if (systemRole.getRoleAlias().equals(userRole.getRole()))
+                {
+                    exists = true;
+                    break;
+                }
+            }
+
+            if (!exists)
+            {
+                userRoleRepository.delete(userRole.getId());
             }
         }
 
-        if (valid)
-        {
-            entity.setLastUpdateTime(new Date());
-            //initUserPassword(entity);
-            //entity.setPassword(new BCryptPasswordEncoder().encode(entity.getPassword()));
-            return super.update(entity);
-        }
+        // update roles
 
-        throw new ServiceException(String.format(
-                "UserModel with ( phone - %s, identity - %s ) already exists",
-                entity.getPhone(),
-                entity.getUserIdentity()
-        ));
+        entity.getAuthorities().stream().filter(s -> entity.getRoleIds().contains(s.getId()));
+
+        for (UserRoleModel roleModel : entity.getAuthorities())
+        {
+
+        }
     }
 
     @Override
@@ -148,6 +216,40 @@ public class UserService extends BaseService<UserModel>
         UserModel user = super.get(id);
         enrichUserInfo(user);
         return user;
+    }
+
+    public Integer resetPassword (Integer userId, String password)
+    {
+        if (EntityUtils.isValidEntityId(userId))
+        {
+            if (StringUtil.isNotEmpty(password))
+            {
+                UserModel user = (UserModel) Asserts.assertEntityNotNullById(repository, userId);
+                user.setPassword(PasswordUtil.encode(password));
+                return repository.update(user);
+            }
+
+            throw new ServiceException("Password cannot be empty");
+        }
+
+        throw new ServiceException(String.format("Invalid user id: %d", userId));
+    }
+
+    public Integer resetStatus (Integer userId, Integer userStatus)
+    {
+        if (EntityUtils.isValidEntityId(userId))
+        {
+            if (EUserStatus.hasValue(userStatus))
+            {
+                UserModel user = (UserModel) Asserts.assertEntityNotNullById(repository, userId);
+                user.setStatus(userStatus);
+                return repository.update(user);
+            }
+
+            throw new ServiceException(String.format("Invalid user status: %d", userStatus));
+        }
+
+        throw new ServiceException(String.format("Invalid user id: %d", userId));
     }
 
     @Override
@@ -169,21 +271,23 @@ public class UserService extends BaseService<UserModel>
         user.setGradesDesc(getConfigTextByIds(user.getGradesId()));
         user.setSubjectsDesc(getConfigTextByIds(user.getSubjectsId()));
         user.setCoursesDesc(getProductTextByIds(user.getCoursesId()));
-        user.setRolesDesc(getRoleTexts(user.getAuthorities()));
+        enrichUserRoleInfo(user);
     }
 
-    private String getRoleTexts (final List<UserRoleModel> roles)
+    private void enrichUserRoleInfo (UserModel user)
     {
-        if (roles != null && roles.size() > 0)
+        if (user.getAuthorities() != null && user.getAuthorities().size() > 0)
         {
+            List<Integer> roleIds = new ArrayList<>();
             StringBuilder builder = new StringBuilder();
-            for (UserRoleModel role : roles)
+            for (UserRoleModel role : user.getAuthorities())
             {
                 SystemRoleModel roleModel = roleRepository.getByAlias(role.getRole());
                 if (roleModel != null)
                 {
                     builder.append(roleModel.getRoleName());
                     builder.append(",");
+                    roleIds.add(roleModel.getId());
                 }
             }
 
@@ -192,9 +296,9 @@ public class UserService extends BaseService<UserModel>
                 builder.deleteCharAt(builder.length() - 1);
             }
 
-            return builder.toString();
+            user.setRolesDesc(builder.toString());
+            user.setRoleIds(roleIds);
         }
-        return null;
     }
 
     private String getProductTextByIds (String ids)
@@ -243,13 +347,6 @@ public class UserService extends BaseService<UserModel>
             }
         }
         return builder.toString();
-    }
-
-    private boolean isUserEntityValid (final UserModel entity)
-    {
-        return EUserStatus.hasValue(entity.getStatus()) &&
-                EUserRole.hasValue(entity.getStatus()) &&
-                EUserType.hasValue(entity.getType());
     }
 
     public UserModel findByUserIdentity (String userIdentity)
@@ -348,7 +445,6 @@ public class UserService extends BaseService<UserModel>
             initPassword = user.getPhone().substring(user.getPhone().length() - DEFAULT_PWD_LENGTH);
         }
 
-        user.setPassword(new BCryptPasswordEncoder().encode(initPassword));
+        user.setPassword(PasswordUtil.encode(initPassword));
     }
-
 }

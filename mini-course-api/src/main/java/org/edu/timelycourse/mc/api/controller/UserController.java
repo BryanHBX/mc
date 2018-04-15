@@ -2,14 +2,11 @@ package org.edu.timelycourse.mc.api.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.logging.log4j.util.Strings;
 import org.edu.timelycourse.mc.biz.model.UserModel;
 import org.edu.timelycourse.mc.biz.service.UserService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
-import org.edu.timelycourse.mc.common.utils.StringUtil;
-import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,16 +43,6 @@ public class UserController extends BaseController
 
         try
         {
-            /*
-            if (model != null && (StringUtil.isNotEmpty(model.getPhone()) ||
-                    StringUtil.isNotEmpty(model.getUserIdentity())))
-            {
-                return ValidatorUtil.isMobile(model.getPhone()) ?
-                        ResponseData.success(userService.findByUserPhone(model.getPhone())) :
-                        ResponseData.success(userService.findByUserIdentity(model.getUserIdentity()));
-            }
-            */
-
             return ResponseData.success(userService.findByPage(model, pageNum, pageSize));
         }
         catch (ServiceException ex)
@@ -134,6 +121,45 @@ public class UserController extends BaseController
             user.setId(userId);
 
             return ResponseData.success(this.userService.update(user));
+        }
+        catch (ServiceException ex)
+        {
+            return ResponseData.failure(ex.getMessage());
+        }
+    }
+
+
+    @RequestMapping(path="/password/{userId}", method= RequestMethod.PATCH)
+    @ApiOperation(value = "Reset user password")
+    public ResponseData resetUserPassword(
+            @PathVariable(required = true) Integer userId,
+            @RequestParam(name="pwd", required = true) String password)
+    {
+        if (LOGGER.isDebugEnabled())
+            LOGGER.debug("Enter resetUserPassword - [userId: {}]", userId);
+
+        try
+        {
+            return ResponseData.success(userService.resetPassword(userId, password));
+        }
+        catch (ServiceException ex)
+        {
+            return ResponseData.failure(ex.getMessage());
+        }
+    }
+
+    @RequestMapping(path="/stat/{userId}", method= RequestMethod.PATCH)
+    @ApiOperation(value = "Reset user status")
+    public ResponseData resetUserStatus(
+            @PathVariable(required = true) Integer userId,
+            @RequestParam(name="status", required = true) Integer userStatus)
+    {
+        if (LOGGER.isDebugEnabled())
+            LOGGER.debug("Enter resetUserPassword - [userId: {}, userStatus: {}]", userId, userStatus);
+
+        try
+        {
+            return ResponseData.success(userService.resetStatus(userId, userStatus));
         }
         catch (ServiceException ex)
         {

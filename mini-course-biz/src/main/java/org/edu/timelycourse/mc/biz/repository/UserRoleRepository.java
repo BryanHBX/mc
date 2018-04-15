@@ -5,12 +5,14 @@ import org.edu.timelycourse.mc.biz.model.UserRoleModel;
 import org.edu.timelycourse.mc.biz.repository.BaseRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * Created by x36zhao on 2017/3/17.
  */
 @Component
 public interface UserRoleRepository extends BaseRepository<UserRoleModel>
 {
-    UserRoleModel getByUserId (@Param("uid") Integer id);
+    List<UserRoleModel> getByUserId (@Param("uid") Integer id);
     Integer deleteByUserId (@Param("uid") Integer userId);
 }

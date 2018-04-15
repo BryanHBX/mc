@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.ToString;
 import org.edu.timelycourse.mc.biz.enums.EUserRole;
 import org.edu.timelycourse.mc.biz.enums.EUserType;
+import org.edu.timelycourse.mc.biz.repository.UserRoleRepository;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
 
@@ -17,7 +18,7 @@ import java.util.*;
  */
 @Data
 @ToString(exclude = "id")
-@JsonIgnoreProperties(value = { "id", "password" })
+@JsonIgnoreProperties(value = { "password" })
 public class UserModel extends BaseEntity
 {
     /**
@@ -77,6 +78,14 @@ public class UserModel extends BaseEntity
     private String gradesId;
     private String gradesDesc;
     private List<Integer> gradeIds;
+    public List<Integer> getGradeIds()
+    {
+        if (gradeIds == null || gradeIds.size() == 0)
+        {
+            gradeIds = fromJoinedString(gradesId);
+        }
+        return gradeIds;
+    }
 
     /**
      * 所授课程
@@ -84,6 +93,14 @@ public class UserModel extends BaseEntity
     private String coursesId;
     private String coursesDesc;
     private List<Integer> courseIds;
+    public List<Integer> getCourseIds()
+    {
+        if (courseIds == null || courseIds.size() == 0)
+        {
+            courseIds = fromJoinedString(coursesId);
+        }
+        return courseIds;
+    }
 
     /**
      * 所授科目
@@ -91,6 +108,29 @@ public class UserModel extends BaseEntity
     private String subjectsId;
     private String subjectsDesc;
     private List<Integer> subjectIds;
+    public List<Integer> getSubjectIds()
+    {
+        if (subjectIds == null || subjectIds.size() == 0)
+        {
+            subjectIds = fromJoinedString(subjectsId);
+        }
+
+        return subjectIds;
+    }
+
+    private List<Integer> fromJoinedString (String str)
+    {
+        List<Integer> result = new ArrayList<>();
+        if (str != null)
+        {
+            String[] idSlices = str.split(",");
+            for (String id : idSlices)
+            {
+                result.add(Integer.valueOf(id));
+            }
+        }
+        return result;
+    }
 
     private Date creationTime;
     private Date lastUpdateTime;
@@ -145,7 +185,8 @@ public class UserModel extends BaseEntity
     {
         return EUserRole.hasValue(this.status) &&
                 EUserType.hasValue(this.type) && EUserRole.hasValue(this.role) &&
-                EntityUtils.isValidEntityId(this.schoolId) && StringUtil.isNotEmpty(this.phone);
+                EntityUtils.isValidEntityId(this.schoolId) &&
+                StringUtil.isNotEmpty(this.phone);
     }
 
     @JsonIgnore

@@ -36,22 +36,23 @@
 			<table cellspacing="10" cellpadding="10" class="dform">
                 <tr>
                     <td>微信号：</td>
-                    <td><input name="wxId" type="text" size="15" th:value="${parent != null ? parent.configDescription : ''}" class="required" /></td>
+                    <td><input name="wxId" type="text" size="15" th:value="${member != null ? member.wxId : ''}" class="required" /></td>
 					<td align="right">姓名：</td>
-					<td><input name="userName" type="text" size="15" th:value="${parent != null ? parent.configDescription : ''}" class="required" /></td>
+					<td><input name="userName" type="text" size="15" th:value="${member != null ? member.userName : ''}" class="required" /></td>
                 </tr>
 				<tr>
 					<td align="left">手机号：</td>
-					<td><input name="phone" type="text" size="15" th:value="${parent != null ? parent.configDescription : ''}" class="required mobile" /></td>
+					<td><input name="phone" type="text" size="15" th:value="${member != null ? member.phone : ''}" class="required mobile" /></td>
 					<td align="right">身份证号：</td>
-					<td><input name="userIdentity" type="text" size="15" th:value="${config != null ? config.configName : ''}" class="required idCard" /></td>
+					<td><input name="userIdentity" type="text" size="15" th:value="${member != null ? member.userIdentity : ''}" class="required idCard" /></td>
 				</tr>
 				<tr>
 					<td>角色：</td>
 					<td colspan="3">
                         <ul>
                             <li th:each="role,roleStat:${roles}">
-                                <input type="checkbox" name="roleIds[]" th:if="${role.roleVisible == 1}" th:value="${role.id}" /> <span th:if="${role.roleVisible == 1}" th:text="${role.roleName}" />
+                                <input type="checkbox" name="roleIds[]" th:if="${role.roleVisible == 1}" th:value="${role.id}"
+									   th:checked="${member != null and not #lists.isEmpty(member.roleIds) and #lists.contains(member.roleIds, role.id)}"/> <span th:if="${role.roleVisible == 1}" th:text="${role.roleName}" />
                             </li>
                         </ul>
                     </td>
@@ -61,7 +62,8 @@
 					<td colspan="3">
 						<ul>
 							<li th:each="type,typeStat:${types}">
-								<input type="checkbox" name="courseIds[]" th:value="${type.id}" /> <span th:text="${type.productName}" />
+								<input type="checkbox" name="courseIds[]" th:value="${type.id}"
+									   th:checked="${member != null and not #lists.isEmpty(member.courseIds) and #lists.contains(member.courseIds, type.id)}"/> <span th:text="${type.productName}" />
 							</li>
 						</ul>
 					</td>
@@ -71,7 +73,8 @@
 					<td colspan="3" th:if="${not #lists.isEmpty(grades.children)}" th:with="options=${grades.children}">
                         <ul>
                             <li th:each="opt,optStat:${options}">
-                                <input type="checkbox" name="gradeIds[]" th:value="${opt.id}" /> <span th:text="${opt.configDescription}" />
+                                <input type="checkbox" name="gradeIds[]" th:value="${opt.id}"
+									   th:checked="${member != null and not #lists.isEmpty(member.gradeIds) and #lists.contains(member.gradeIds, opt.id)}"/> <span th:text="${opt.configDescription}" />
                             </li>
                         </ul>
 					</td>
@@ -81,7 +84,8 @@
                     <td colspan="3" th:if="${not #lists.isEmpty(subjects.children)}" th:with="options=${subjects.children}">
                         <ul>
                             <li th:each="opt,optStat:${options}">
-                                <input type="checkbox" name="subjectIds[]" th:value="${opt.id}" /> <span th:text="${opt.configDescription}" />
+                                <input type="checkbox" name="subjectIds[]" th:value="${opt.id}"
+									   th:checked="${member != null and not #lists.isEmpty(member.subjectIds) and #lists.contains(member.subjectIds, opt.id)}"/> <span th:text="${opt.configDescription}" />
                             </li>
                         </ul>
                     </td>
