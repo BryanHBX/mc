@@ -44,7 +44,7 @@
     </insert>
 	
     <update id="update" parameterType="SystemConfigModel">
-        UPDATE `t_sys_config` SET
+        UPDATE `t_sys_config`
         <set>
             <if test="configName != null and configName != ''">`c_name` = #{configName},</if>
             <if test="configDescription != null and configDescription != ''">`c_desc` = #{configDescription},</if>

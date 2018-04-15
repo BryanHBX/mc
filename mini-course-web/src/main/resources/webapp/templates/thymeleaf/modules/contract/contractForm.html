@@ -1,168 +1,178 @@
 <style>
     #contractForm .textInput {width: 155px;}
-    #contractForm span.error {left: 130px;}
+    #contractForm td, #contractFormContent dd {position: relative}
+    #contractFormContent span.error {left: auto; right: 0px; top: 0;}
+    #contractFormContent td span.error {left: auto; right: 0px;position: absolute;z-index: 9999;}
+    #contractFormContent dl {width: 300px; margin-bottom: 6px;}
+    #contractFormContent dd {width: 160px;}
+    #contractFormContent dt {text-align: right;}
+    #contractFormContent th, #contractFormContent td {text-align: center}
 </style>
 <h2 class="contentTitle">合同录入</h2>
 <div xmlns:th="http://www.thymeleaf.org" class="pageContent">
     <form method="post" action="" class="pageForm required-validate" id="contractForm" novalidate="novalidate">
-        <div class="pageFormContent " layouth="87" style="overflow: auto;">
-            <fieldset>
-                <legend>合同信息</legend>
-                <dl>
-                    <dt>绑定微信号：</dt>
-                    <dd><input name="student[wxId]" type="text" class="textInput required"></dd>
-                </dl>
-                <dl>
-                    <dt>合同编号：</dt>
-                    <dd><input name="contractNo" type="text" class="textInput required"></dd>
-                </dl>
-                <dl>
-                    <dt>咨询师：</dt>
-                    <dd><input name="consultantId" type="text" class="required textInput"></dd>
-                </dl>
-                <dl>
-                    <dt>报名类型：</dt>
-                    <dd>
-                        <select class="combox" name="enrollType" style="width: 160px">
-                            <option value="1">新报</option>
-                            <option value="2">续保</option>
-                        </select>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt>学生姓名：</dt>
-                    <dd><input name="student[name]" type="text" class="textInput required"></dd>
-                </dl>
-                <dl>
-                    <dt>学生年段：</dt>
-                    <dd>
-                        <select class="combox required" name="levelId" style="width: 160px"
-                                ref="r_subLevel" refUrl="system/config/{value}" callIfEmpty="false"
-                                data="data" group="children" optName="configDescription" optVal="id"
-                                th:if="${not #lists.isEmpty(level.children)}"
-                                th:with="options=${level.children}">
-                            <option value="">请选择</option>
-                            <option th:each="option:${options}" th:value="${option.id}" th:text="${option.configDescription}">学生年段</option>
-                        </select>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt>细分年段：</dt>
-                    <dd>
-                        <select class="combox required" name="subLevelId" style="width: 160px" id="r_subLevel">
-                            <option value="">请选择</option>
-                        </select>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt>课程名称：</dt>
-                    <dd>
-                        <select class="combox required" name="courseId" style="width: 160px"
-                                ref="r_subCourse" refUrl="system/config/{value}" callIfEmpty="false"
-                                data="data" group="children" optName="configDescription" optVal="id"
-                                th:if="${not #lists.isEmpty(course.children)}"
-                                th:with="options=${course.children}">
-                            <option value="">请选择</option>
-                            <option th:each="option:${options}" th:value="${option.id}" th:text="${option.configDescription}">课程名称</option>
-                        </select>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt>课程子类：</dt>
-                    <dd>
-                        <select class="combox required" name="subCourseId" style="width: 160px" id="r_subCourse">
-                            <option value="">请选择</option>
-                        </select>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt>报名课时：</dt>
-                    <dd><input name="enrollPeriod" type="text" class="textInput required"></dd>
-                </dl>
-                <dl>
-                    <dt>赠送课时：</dt>
-                    <dd><input name="freePeriod" type="text" class="textInput"></dd>
-                </dl>
-                <dl>
-                    <dt></dt>
-                    <dd></dd>
-                </dl>
-                <dl>
-                    <dt>签约总价：</dt>
-                    <dd><input name="contractPrice" type="text" class="textInput required"></dd>
-                </dl>
-                <dl>
-                    <dt>优惠：</dt>
-                    <dd><input name="discountPrice" type="text" class="textInput"></dd>
-                </dl>
-                <dl>
-                    <dt>实收金额：</dt>
-                    <dd><input name="totalPrice" type="text" class="textInput required"></dd>
-                </dl>
-                <dl>
-                    <dt>联系人姓名：</dt>
-                    <dd><input name="student[contactName]" type="text" class="textInput"></dd>
-                </dl>
-                <dl>
-                    <dt>联系人关系：</dt>
-                    <dd>
-                        <select class="combox" style="width: 160px" name="student[contactRelationType]">
-                            <option value="1">父亲</option>
-                            <option value="2">母亲</option>
-                            <option value="3">爷爷</option>
-                            <option value="4">奶奶</option>
-                            <option value="5">本人</option>
-                            <option value="6">其他</option>
-                        </select>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt>联系方式：</dt>
-                    <dd><input name="student[contactPhone]" type="text" class="textInput"></dd>
-                </dl>
-                <dl>
-                    <dt>其他备注方式：</dt>
-                    <dd><input name="student[meto]" type="text" alt="如学校信息/家庭地址等" class="textInput"></dd>
-                </dl>
-                </table>
-            </fieldset>
-            <fieldset>
-                <legend>收据信息</legend>
-                <div style="max-height: 200px; overflow: auto;" id="cform">
-                    <table class="list nowrap itemDetail" addButton="添加收据" rowNumWidth="30">
-                        <thead>
-                            <tr>
-                                <th type="text" width="" name="invoices[][invoiceNo]" fieldClass="required">收据编号</th>
-                                <th type="text" width="" name="invoices[][price]" defaultVal="0.00" size="12" fieldClass="number required">支付金额</th>
-                                <th type="enum" width="80" name="invoices[][type]" enum="现金:1,转账:2,微信:3,支付宝:4,其他:5">支付方式</th>
-                                <th type="del" width="60" align="center">操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="unitBox">
-                                <td><input type="text" name="invoices[][invoiceNo]" value="" size="12" class="required" maxlength="10"></td>
-                                <td><input type="text" name="invoices[][price]" value="0.00" size="12" class="required number textInput"></td>
-                                <td>
-                                    <select class="combox" style="width: 80px" name="invoices[][type]">
-                                        <option value="1">现金</option>
-                                        <option value="2">转账</option>
-                                        <option value="3">微信</option>
-                                        <option value="4">支付宝</option>
-                                        <option value="5">其他</option>
-                                    </select>
-                                </td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </fieldset>
-            <div class="divider"></div>
-            <dl>
-                <dt>签约日期：</dt>
-                <input type="text" name="contractDate" class="date textInput required valid" />
-                <a class="inputDateButton" href="javascript:;">选择</a>
-            </dl>
+        <div class="pageFormContent" id="contractFormContent" layouth="87" style="overflow: auto;">
+            <div style="float:left; width: 630px">
+                <fieldset>
+                    <legend>合同信息</legend>
+                    <dl>
+                        <dt>绑定微信号：</dt>
+                        <dd><input name="student[wxId]" type="text" class="textInput required"></dd>
+                    </dl>
+                    <dl>
+                        <dt>合同编号：</dt>
+                        <dd><input name="contractNo" type="text" class="textInput required"></dd>
+                    </dl>
+                    <dl>
+                        <dt>咨询师：</dt>
+                        <dd><input name="consultantId" type="text" class="required textInput"></dd>
+                    </dl>
+                    <dl>
+                        <dt>报名类型：</dt>
+                        <dd>
+                            <select class="combox" name="enrollType" style="width: 160px">
+                                <option value="1">新报</option>
+                                <option value="2">续保</option>
+                            </select>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>学生姓名：</dt>
+                        <dd><input name="student[name]" type="text" class="textInput required"></dd>
+                    </dl>
+                    <dl>
+                        <dt>学生年段：</dt>
+                        <dd>
+                            <select class="combox" name="levelId" style="width: 160px"
+                                    ref="r_subLevel" refUrl="system/config/{value}" callIfEmpty="false"
+                                    data="data" group="children" optName="configDescription" optVal="id"
+                                    th:if="${not #lists.isEmpty(level.children)}"
+                                    th:with="options=${level.children}">
+                                <option value="">请选择</option>
+                                <option th:each="option:${options}" th:value="${option.id}" th:text="${option.configDescription}">学生年段</option>
+                            </select>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>细分年段：</dt>
+                        <dd>
+                            <select class="combox" name="subLevelId" style="width: 160px" id="r_subLevel">
+                                <option value="">请选择</option>
+                            </select>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>课程名称：</dt>
+                        <dd>
+                            <select class="combox" name="courseId" style="width: 160px"
+                                    ref="r_subCourse" refUrl="system/config/{value}" callIfEmpty="false"
+                                    data="data" group="children" optName="configDescription" optVal="id"
+                                    th:if="${not #lists.isEmpty(course.children)}"
+                                    th:with="options=${course.children}">
+                                <option value="">请选择</option>
+                                <option th:each="option:${options}" th:value="${option.id}" th:text="${option.configDescription}">课程名称</option>
+                            </select>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>课程子类：</dt>
+                        <dd>
+                            <select class="combox" name="subCourseId" style="width: 160px" id="r_subCourse">
+                                <option value="">请选择</option>
+                            </select>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>报名课时：</dt>
+                        <dd><input name="enrollPeriod" type="text" class="textInput required"></dd>
+                    </dl>
+                    <dl>
+                        <dt>赠送课时：</dt>
+                        <dd><input name="freePeriod" type="text" class="textInput"></dd>
+                    </dl>
+                    <dl>
+                        <dt></dt>
+                        <dd></dd>
+                    </dl>
+                    <dl>
+                        <dt>签约总价：</dt>
+                        <dd><input name="contractPrice" type="text" class="textInput required"></dd>
+                    </dl>
+                    <dl>
+                        <dt>优惠：</dt>
+                        <dd><input name="discountPrice" type="text" class="textInput"></dd>
+                    </dl>
+                    <dl>
+                        <dt>实收金额：</dt>
+                        <dd><input name="totalPrice" type="text" class="textInput required"></dd>
+                    </dl>
+                    <dl>
+                        <dt>联系人姓名：</dt>
+                        <dd><input name="student[contactName]" type="text" class="textInput"></dd>
+                    </dl>
+                    <dl>
+                        <dt>联系人关系：</dt>
+                        <dd>
+                            <select class="combox" style="width: 160px" name="student[contactRelationType]">
+                                <option value="1">父亲</option>
+                                <option value="2">母亲</option>
+                                <option value="3">爷爷</option>
+                                <option value="4">奶奶</option>
+                                <option value="5">本人</option>
+                                <option value="6">其他</option>
+                            </select>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>联系方式：</dt>
+                        <dd><input name="student[contactPhone]" type="text" class="textInput"></dd>
+                    </dl>
+                    <dl>
+                        <dt>其他备注方式：</dt>
+                        <dd><input name="student[meto]" type="text" alt="如学校信息/家庭地址等" class="textInput"></dd>
+                    </dl>
+                    <dl>
+                        <dt>签约日期：</dt>
+                        <dd>
+                            <input type="text" name="contractDate" class="date textInput required" />
+                        </dd>
+                    </dl>
+                </fieldset>
+            </div>
+            <div style="margin-left: 640px;">
+                <fieldset>
+                    <legend>收据信息</legend>
+                    <div style="overflow: auto;" id="cform">
+                        <table class="list nowrap itemDetail" width="100%" addButton="添加收据" rowNumWidth="30">
+                            <thead>
+                                <tr>
+                                    <th type="text" width="" name="invoices[][invoiceNo]" fieldClass="required">收据编号</th>
+                                    <th type="text" width="" name="invoices[][price]" defaultVal="0.00" size="12" fieldClass="number required">支付金额</th>
+                                    <th type="enum" width="120" name="invoices[][type]" enum="现金:1,转账:2,微信:3,支付宝:4,其他:5">支付方式</th>
+                                    <th type="del" width="60" align="center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="unitBox">
+                                    <td><input type="text" name="invoices[][invoiceNo]" value="" size="12" class="required" maxlength="10"></td>
+                                    <td><input type="text" name="invoices[][price]" value="0.00" size="12" class="required number textInput"></td>
+                                    <td>
+                                        <select class="combox" style="width: 120px" name="invoices[][type]">
+                                            <option value="1">现金</option>
+                                            <option value="2">转账</option>
+                                            <option value="3">微信</option>
+                                            <option value="4">支付宝</option>
+                                            <option value="5">其他</option>
+                                        </select>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+            <div style="clean: both"></div>
         </div>
         <div class="formBar">
             <ul>

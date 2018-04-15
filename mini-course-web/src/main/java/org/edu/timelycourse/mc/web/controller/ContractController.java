@@ -19,7 +19,7 @@ public class ContractController extends AbstractController
     public String showContractForm (Model model)
     {
         model.addAttribute("level",
-                (EBuiltInConfig.C_STUDENT_LEVEL.name()));
+                fetchConfigByName(EBuiltInConfig.C_STUDENT_LEVEL.name()));
 
         model.addAttribute("course",
                 fetchConfigByName(EBuiltInConfig.C_COURSE_TYPE.name()));
