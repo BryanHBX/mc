@@ -129,11 +129,11 @@ public class UserController extends BaseController
     }
 
 
-    @RequestMapping(path="/password/{userId}", method= RequestMethod.PATCH)
+    @RequestMapping(path="/password/{userId}", method= RequestMethod.POST)
     @ApiOperation(value = "Reset user password")
     public ResponseData resetUserPassword(
             @PathVariable(required = true) Integer userId,
-            @RequestParam(name="pwd", required = true) String password)
+            @RequestBody String password)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter resetUserPassword - [userId: {}]", userId);

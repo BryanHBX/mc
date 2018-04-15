@@ -107,7 +107,7 @@ public class SchoolController extends AbstractController
     }
 
     @RequestMapping("/member/dialog")
-    public String showSchoolMemberDialog (
+    public String showSchoolMemberFormDialog (
             Model model, @RequestParam(required = false, value = "id")  Integer memberId)
     {
         if (EntityUtils.isValidEntityId(memberId))
@@ -123,6 +123,15 @@ public class SchoolController extends AbstractController
 
         return getModulePage("dialog/dialogSchoolMember");
     }
+
+    @RequestMapping("/member/pwd")
+    public String showSchoolMemberResetPasswordDialog (
+            Model model, @RequestParam(required = true, value = "id")  Integer memberId)
+    {
+        model.addAttribute("id", memberId);
+        return getModulePage("dialog/dialogResetPassword");
+    }
+
 
     @RequestMapping("/consult")
     public String showSchoolConsult ()

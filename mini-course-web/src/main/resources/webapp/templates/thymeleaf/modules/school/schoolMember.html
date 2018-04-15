@@ -43,6 +43,7 @@
                 <th>所授课程</th>
                 <th>其他描述</th>
                 <th>角色</th>
+                <th>状态</th>
                 <th width="60">密码重置</th>
                 <th width="50">编辑</th>
                 <th width="50">解绑</th>
@@ -52,24 +53,27 @@
             <div th:if="${pagingBean != null and pagingBean.items != null}">
                 <tr th:each="item: ${pagingBean.items}">
                     <td th:text="${item.userName}"></td>
-                    <td th:text="${item.userIdentity}"></td>
-                    <td th:text="${item.phone}"></td>
+                    <td align="center" th:text="${item.userIdentity}"></td>
+                    <td align="center" th:text="${item.phone}"></td>
                     <td th:text="${item.wxId}"></td>
-                    <td th:text="${item.coursesDesc}"></td>
-                    <td th:text="${item.gradesDesc} + ',' + ${item.subjectsDesc}"></td>
-                    <td th:text="${item.rolesDesc}"></td>
+                    <td align="center" th:text="${item.coursesDesc}"></td>
+                    <td align="center" th:text="${item.gradesDesc} + ',' + ${item.subjectsDesc}"></td>
+                    <td align="center" th:text="${item.rolesDesc}"></td>
+                    <td align="center" th:text="${item.status eq 0 ? '停用' : '启用'}" th:style="'color: ' + ${item.status eq 0 ? '#ccc' : 'green'}"></td>
                     <td align="center">
-                        <a title="重置" target="dialog" mask="true" width="350" height="240"
-                           th:href="'school/product/dialog?id=' + ${item.id} + '&pid=' + ${item.id}" class="btnView" style="float: none">编辑</a>
+                        <a th:if="${item.status ne 0}" th:title="'密码重置 - ' + ${item.userName}" target="dialog" mask="true" width="350" height="200"
+                           th:href="'school/member/pwd?id=' + ${item.id} " class="btnView" style="float: none">编辑</a>
+                        <span th:if="${item.status eq 0}">---</span>
                     </td>
                     <td align="center">
-                        <a title="编辑" target="dialog" mask="true" width="585" height="450"
+                        <a th:if="${item.status ne 0}" title="编辑" target="dialog" mask="true" width="585" height="450"
                            th:href="'school/member/dialog?id=' + ${item.id}" class="btnEdit" style="float: none">编辑</a>
+                        <span th:if="${item.status eq 0}">---</span>
                     </td>
                     <td align="center">
-                        <a title="解绑" target="ajaxToDo" callback="onUserUnbindSuccess" type="DELETE"
-                           th:title="'确定要解绑用户\'' + ${item.userName} + '\' 么?'"
-                           th:href="'product/' + ${item.id}" class="btnInfo" style="float: none">删除</a>
+                        <a title="解绑" target="ajaxToDo" callback="onUserStatChangeSuccess" type="PATCH"
+                           th:title="'确定要' + ${item.status eq 0 ? '启用' : '解绑'} + ' \'' + ${item.userName} + '\' 用户么?'"
+                           th:href="'member/stat/' + ${item.id} + '?status=' + ${item.status eq 0 ? '1' : '0'}" th:class="${item.status eq 0 ? 'btnSelect' : 'btnDel'}" style="float: none">删除</a>
                     </td>
                 </tr>
             </div>
@@ -97,3 +101,9 @@
              th:currentPage="${pagingBean ne null ? pagingBean.pageNumber : 1}"></div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function onUserStatChangeSuccess() {
+        navTab.reload(null, {});
+    }
+</script>

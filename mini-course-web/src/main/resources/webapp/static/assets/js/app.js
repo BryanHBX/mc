@@ -9,7 +9,7 @@
  * @author Zhao.Xiang
  *
  **/
-function generic_ajax_op(url,type,json_data,send_handler,success_handler,error_handler,global,asyn){
+function generic_ajax_op(url,type,json_data,send_handler,success_handler,error_handler,content_type,global,asyn){
     var _url = openApiContextPath + "/" + url;
     var _asyn = asyn && 1;
     var _global = global && true;
@@ -24,7 +24,7 @@ function generic_ajax_op(url,type,json_data,send_handler,success_handler,error_h
         global: _global ? true : false,
         data: JSON.stringify(_data),
         dataType: "json",
-        contentType: "application/json; charset=utf-8",
+        contentType: content_type || "application/json; charset=utf-8",
         beforeSend: function() {
             showLoading();
             if(send_handler != undefined && typeof(send_handler) == "function" ){
