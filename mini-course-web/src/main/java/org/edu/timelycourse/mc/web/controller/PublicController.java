@@ -32,7 +32,7 @@ public class PublicController extends AbstractController
     public String showLogin()
     {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth instanceof AnonymousAuthenticationToken ? "public/login" : getModulePage("forward:/");
+        return auth instanceof AnonymousAuthenticationToken ? getModulePage("public/login") : "forward:/";
     }
 
     @RequestMapping("/loginDialog")

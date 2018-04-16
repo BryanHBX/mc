@@ -72,7 +72,7 @@ public class AuthorizationFilter extends OncePerRequestFilter
         {
             // for normal page refresh
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth instanceof AnonymousAuthenticationToken)
+            if (auth == null || auth instanceof AnonymousAuthenticationToken)
             {
                 // do nothing in case not logon
             }
