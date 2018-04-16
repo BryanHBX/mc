@@ -1,6 +1,7 @@
 package org.edu.timelycourse.mc.web;
 
 import org.edu.timelycourse.mc.biz.BizConfig;
+import org.edu.timelycourse.mc.biz.security.JwtTokenUtil;
 import org.edu.timelycourse.mc.common.CommonConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -20,7 +21,7 @@ import org.springframework.context.annotation.ComponentScan;
         DataSourceTransactionManagerAutoConfiguration.class,
         HibernateJpaAutoConfiguration.class
 })
-//@ComponentScan(basePackageClasses = { CommonConfig.class })
+//@ComponentScan(basePackageClasses = { JwtTokenUtil.class })
 public class WebApplication extends SpringBootServletInitializer
 {
 

@@ -39,6 +39,7 @@ public class JwtCustomUserDeserializer extends JsonDeserializer
                         .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()))
                         .collect(Collectors.toList())
         );
+
         return result;
     }
 

@@ -1,13 +1,16 @@
 package org.edu.timelycourse.mc.web.config;
 
 import org.edu.timelycourse.mc.common.security.RefererRedirectionAuthenticationSuccessHandler;
+import org.edu.timelycourse.mc.web.filter.AuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Created by x36zhao on 2017/3/3.
@@ -17,6 +20,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
+    @Value("${jwt.header}")
+    private String tokenHeader;
+
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.expiration}")
+    private Long expiration;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
@@ -28,6 +40,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
             .anyRequest().authenticated().and()
             .formLogin().successHandler(new RefererRedirectionAuthenticationSuccessHandler())
             .loginPage("/login").permitAll();
+
+        // add filter
+        http.addFilterBefore(new AuthorizationFilter(tokenHeader, secret, expiration),
+                UsernamePasswordAuthenticationFilter.class
+        );
+
         //.and()
         //    .logout().logoutSuccessUrl("/logout").permitAll();
 

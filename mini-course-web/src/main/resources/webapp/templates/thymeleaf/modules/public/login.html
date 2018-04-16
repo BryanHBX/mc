@@ -103,6 +103,8 @@
             generic_ajax_op("auth", "POST", $("#loginForm").serializeJSON(), null, (
                 function(result) {
                     alertMsg.correct("登录成功");
+                    sessionStorage.setItem("token", result.data.token);
+                    window.location.href = "/?token=" + result.data.token;
                 }
             ));
         });

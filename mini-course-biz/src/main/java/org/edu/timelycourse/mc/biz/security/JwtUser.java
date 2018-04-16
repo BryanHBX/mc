@@ -3,6 +3,7 @@ package org.edu.timelycourse.mc.biz.security;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -22,6 +23,10 @@ public class JwtUser implements UserDetails
     private String idCard;
     private String phone;
     private String userName;
+
+    @Setter
+    @Getter
+    private String token;
 
     private Collection<? extends GrantedAuthority> authorities;
 

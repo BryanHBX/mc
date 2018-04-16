@@ -118,6 +118,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 "/swagger-resources",
                 "/v2/**", "/error"
             );
+
+        web.ignoring().antMatchers(HttpMethod.OPTIONS);
     }
 
     @Bean

@@ -9,13 +9,13 @@
         <div class="toggleCollapse"><h2 class="icon-navigation">主菜单</h2><div>收缩</div></div>
         <div class="accordion" fillSpace="sidebar">
 
-            <div th:include="~{decorator/fragments/menus/menu-contract}" />
-            <div th:include="~{decorator/fragments/menus/menu-academic}" />
-            <div th:include="~{decorator/fragments/menus/menu-finance}" />
-            <div th:include="~{decorator/fragments/menus/menu-school}" />
+            <div th:include="~{decorator/fragments/menus/menu-contract}" sec:authorize="hasAnyRole('ROLE_CONSULTANT','ROLE_ADMINISTRATOR')" />
+            <div th:include="~{decorator/fragments/menus/menu-academic}" sec:authorize="hasAnyRole('ROLE_ACADEMIC_DEAN','ROLE_ADMINISTRATOR')" />
+            <div th:include="~{decorator/fragments/menus/menu-finance}" sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR','ROLE_TREASURER')" />
+            <div th:include="~{decorator/fragments/menus/menu-school}" sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR')" />
+            <div th:include="~{decorator/fragments/menus/menu-admin-user}" sec:authorize="hasAnyRole('ROLE_SUPERUSER')" />
 
-            <div th:include="~{decorator/fragments/menus/menu-admin-user}" />
-            <div th:include="~{decorator/fragments/menus/menu-admin-settings}" />
+            <div th:include="~{decorator/fragments/menus/menu-admin-settings}" sec:authorize="hasRole('ROLE_SUPERUSER')" />
 
         </div>
     </div>

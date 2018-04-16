@@ -31,6 +31,14 @@ public class JwtTokenUtil implements Serializable
 
     private Clock clock = DefaultClock.INSTANCE;
 
+    public JwtTokenUtil () {}
+
+    public JwtTokenUtil (String secret, Long expiration)
+    {
+        this.secret = secret;
+        this.expiration = expiration;
+    }
+
     public Boolean validateToken(String token, final UserDetails userDetails)
     {
         final JwtUser user = (JwtUser) userDetails;
@@ -68,7 +76,7 @@ public class JwtTokenUtil implements Serializable
                 .compact();
     }
 
-    private Boolean isTokenExpired(String token)
+    public Boolean isTokenExpired(String token)
     {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(clock.now());
@@ -113,7 +121,9 @@ public class JwtTokenUtil implements Serializable
         try
         {
             String claim = getClaimFromToken(token, Claims::getSubject);
-            return new ObjectMapper().readValue(claim, JwtUser.class);
+            JwtUser jwtUser = new ObjectMapper().readValue(claim, JwtUser.class);
+            jwtUser.setToken(token);
+            return jwtUser;
         }
         catch (Exception ex)
         {

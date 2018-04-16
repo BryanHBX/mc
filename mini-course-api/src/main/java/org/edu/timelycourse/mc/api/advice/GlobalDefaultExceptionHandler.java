@@ -13,6 +13,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  * Created by Marco on 2018/3/31.
  */
 @ControllerAdvice
-public class GlobalDefaultExceptionHandler extends BaseController
+public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandler
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
 
