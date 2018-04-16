@@ -2,11 +2,11 @@ package org.edu.timelycourse.mc.biz.filter;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import org.edu.timelycourse.mc.biz.security.JwtTokenUtil;
+import org.edu.timelycourse.mc.biz.security.JwtUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -49,14 +49,14 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter
 
         final String requestHeader = request.getHeader(this.tokenHeader);
 
-        String username = null;
+        JwtUser userClaims = null;
         String authToken = null;
         if (requestHeader != null && requestHeader.startsWith(TOKEN_REQUEST_HEADER))
         {
             authToken = requestHeader.substring(TOKEN_REQUEST_HEADER.length());
             try
             {
-                username = jwtTokenUtil.getUsernameFromToken(authToken);
+                userClaims = jwtTokenUtil.getUserDetailsFromToken(authToken);
             }
             catch (IllegalArgumentException e)
             {
@@ -73,19 +73,25 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter
         }
 
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug("checking authentication for user '{}'", username);
+        {
+            LOGGER.debug("checking authentication for user '{}'", userClaims.getPhone());
+        }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null)
+        if (userClaims != null && SecurityContextHolder.getContext().getAuthentication() == null)
         {
             if (LOGGER.isDebugEnabled())
-                LOGGER.debug("security context was null, so authorizating user");
+            {
+                LOGGER.debug("security context was null, so authorizing user");
+            }
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            JwtUser userDetails = (JwtUser) userDetailsService.loadUserByUsername(userClaims.getPhone());
             if (jwtTokenUtil.validateToken(authToken, userDetails))
             {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                LOGGER.info("authorizated user '{}', setting security context", username);
+                LOGGER.info("authorized user '{}', setting security context", userClaims);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

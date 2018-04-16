@@ -1,6 +1,7 @@
 package org.edu.timelycourse.mc.biz.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,31 +12,42 @@ import java.util.Collection;
  * Created by x36zhao on 2018/4/9.
  */
 @Getter
+@JsonDeserialize(using = JwtCustomUserDeserializer.class)
 public class JwtUser implements UserDetails
 {
-    private Integer id;
-    private String userName;
+    private Integer sid;
+    private Integer uid;
     private String password;
-    private String userId;
+
+    private String idCard;
     private String phone;
+    private String userName;
 
-    private final Collection<? extends GrantedAuthority> authorities;
+    private Collection<? extends GrantedAuthority> authorities;
 
-    public JwtUser ( Integer id, String username, String password, String userId, String phone,
+    public JwtUser () {}
+
+    public JwtUser ( Integer userId, Integer schoolId, String username, String idCard, String phone,
                      Collection<? extends GrantedAuthority> authorities)
     {
-        this.id = id;
+        this(userId, schoolId, username, null, idCard, phone, authorities);
+    }
+
+    public JwtUser ( Integer userId, Integer schoolId, String username, String password, String idCard, String phone,
+                     Collection<? extends GrantedAuthority> authorities)
+    {
+        this.uid = userId;
+        this.sid = schoolId;
         this.userName = username;
         this.password = password;
-        this.userId = userId;
+        this.idCard = idCard;
         this.phone = phone;
         this.authorities = authorities;
     }
 
-    @JsonIgnore
     public Integer getId()
     {
-        return id;
+        return uid;
     }
 
     @JsonIgnore

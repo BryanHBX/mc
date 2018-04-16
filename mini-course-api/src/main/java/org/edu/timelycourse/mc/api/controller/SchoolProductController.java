@@ -34,7 +34,8 @@ public class SchoolProductController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all products or by given query")
-    public ResponseData getProducts(@ModelAttribute("product") SchoolProductModel model)
+    public ResponseData getProducts(@ModelAttribute("product") SchoolProductModel model,
+                                    @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter getProducts");
@@ -56,7 +57,8 @@ public class SchoolProductController extends BaseController
 
     @RequestMapping(path="/{productId}", method= RequestMethod.GET)
     @ApiOperation(value = "Get product by given id")
-    public ResponseData getProductById(@PathVariable(required = true) Integer productId)
+    public ResponseData getProductById(@PathVariable(required = true) Integer productId,
+                                       @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter getProductById - [productId: {}]", productId);
@@ -73,7 +75,8 @@ public class SchoolProductController extends BaseController
 
     @RequestMapping(path="/{productId}", method= RequestMethod.DELETE)
     @ApiOperation(value = "Delete product by given id")
-    public ResponseData deleteProductById (@PathVariable(required = true) Integer productId)
+    public ResponseData deleteProductById (@PathVariable(required = true) Integer productId,
+                                           @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter deleteProductById - [productId: {}]", productId);
@@ -91,7 +94,8 @@ public class SchoolProductController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add product by given entity")
-    public ResponseData addProduct (@RequestBody SchoolProductModel model)
+    public ResponseData addProduct (@RequestBody SchoolProductModel model,
+                                    @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter addProduct - [model: %s]", model);
@@ -108,9 +112,9 @@ public class SchoolProductController extends BaseController
 
     @RequestMapping(path="/{productId}", method= RequestMethod.PATCH)
     @ApiOperation(value = "Update product with respect to the specified id")
-    public ResponseData updateProduct (
-            @PathVariable(required = true) Integer productId,
-            @RequestBody SchoolProductModel model)
+    public ResponseData updateProduct (@PathVariable(required = true) Integer productId,
+                                       @RequestBody SchoolProductModel model,
+                                       @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter updateProduct - [productId: {}, model: {}]", productId, model);

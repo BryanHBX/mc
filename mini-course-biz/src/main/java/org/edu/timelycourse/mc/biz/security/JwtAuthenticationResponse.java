@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.biz.security;
 
+import lombok.Data;
 import lombok.Getter;
 
 import java.io.Serializable;

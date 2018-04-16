@@ -10,6 +10,7 @@ import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -33,16 +34,17 @@ public class UserController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all users or by given query")
-    public ResponseData getUser(
-            @RequestParam(name="pageNum", required = false) Integer pageNum,
-            @RequestParam(name="pageSize", required = false) Integer pageSize,
-            @ModelAttribute("member") UserModel model)
+    public ResponseData getUser(@RequestParam(name="pageNum", required = false) Integer pageNum,
+                                @RequestParam(name="pageSize", required = false) Integer pageSize,
+                                @ModelAttribute("member") UserModel model,
+                                @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter getUser - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
 
         try
         {
+            //SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             return ResponseData.success(userService.findByPage(model, pageNum, pageSize));
         }
         catch (ServiceException ex)
@@ -53,7 +55,8 @@ public class UserController extends BaseController
 
     @RequestMapping(path="/{userId}", method= RequestMethod.GET)
     @ApiOperation(value = "Get user by given id")
-    public ResponseData getUserById(@PathVariable(required = true) Integer userId)
+    public ResponseData getUserById(@PathVariable(required = true) Integer userId,
+                                    @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter getUserById - [userId: %d]", userId));
@@ -70,7 +73,8 @@ public class UserController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add user by given entity")
-    public ResponseData addUser (@RequestBody UserModel user)
+    public ResponseData addUser (@RequestBody UserModel user,
+                                 @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter addUser - [user: %s]", user));
@@ -87,8 +91,8 @@ public class UserController extends BaseController
 
     @RequestMapping(path="/{userId}", method= RequestMethod.DELETE)
     @ApiOperation(value = "Delete user by given id")
-    public ResponseData deleteUserById (
-            @PathVariable(required = true) Integer userId)
+    public ResponseData deleteUserById (@PathVariable(required = true) Integer userId,
+                                        @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter deleteUserById - [userId: %d]", userId));
@@ -106,9 +110,9 @@ public class UserController extends BaseController
 
     @RequestMapping(path="/{userId}", method= RequestMethod.PATCH)
     @ApiOperation(value = "Update user with respect to the specified id")
-    public ResponseData updateUser (
-            @PathVariable(required = true) Integer userId,
-            @RequestBody UserModel user)
+    public ResponseData updateUser (@PathVariable(required = true) Integer userId,
+                                    @RequestBody UserModel user,
+                                    @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter updateUser - [userId: %d, user: %s]", userId, user));
@@ -131,9 +135,9 @@ public class UserController extends BaseController
 
     @RequestMapping(path="/password/{userId}", method= RequestMethod.POST)
     @ApiOperation(value = "Reset user password")
-    public ResponseData resetUserPassword(
-            @PathVariable(required = true) Integer userId,
-            @RequestBody String password)
+    public ResponseData resetUserPassword(@PathVariable(required = true) Integer userId,
+                                          @RequestBody String password,
+                                          @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter resetUserPassword - [userId: {}]", userId);
@@ -150,9 +154,9 @@ public class UserController extends BaseController
 
     @RequestMapping(path="/stat/{userId}", method= RequestMethod.PATCH)
     @ApiOperation(value = "Reset user status")
-    public ResponseData resetUserStatus(
-            @PathVariable(required = true) Integer userId,
-            @RequestParam(name="status", required = true) Integer userStatus)
+    public ResponseData resetUserStatus(@PathVariable(required = true) Integer userId,
+                                        @RequestParam(name="status", required = true) Integer userStatus,
+                                        @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter resetUserPassword - [userId: {}, userStatus: {}]", userId, userStatus);

@@ -33,10 +33,10 @@ public class SchoolController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all schools or by given query")
-    public ResponseData getSchools(
-            @RequestParam(name="pageNum", required = false) Integer pageNum,
-            @RequestParam(name="pageSize", required = false) Integer pageSize,
-            @ModelAttribute("school") SchoolModel model)
+    public ResponseData getSchools(@RequestParam(name="pageNum", required = false) Integer pageNum,
+                                   @RequestParam(name="pageSize", required = false) Integer pageSize,
+                                   @ModelAttribute("school") SchoolModel model,
+                                   @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter getSchools - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
@@ -53,7 +53,8 @@ public class SchoolController extends BaseController
 
     @RequestMapping(path="/{id}", method= RequestMethod.GET)
     @ApiOperation(value = "Get school by given id")
-    public ResponseData getSchool(@PathVariable(required = true) Integer id)
+    public ResponseData getSchool(@PathVariable(required = true) Integer id,
+                                  @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter getSchool - [schoolId : {}]", id);
@@ -71,7 +72,8 @@ public class SchoolController extends BaseController
 
     @RequestMapping(path="/{id}", method= RequestMethod.DELETE)
     @ApiOperation(value = "Delete school by given id")
-    public ResponseData deleteSchool(@PathVariable(required = true) Integer id)
+    public ResponseData deleteSchool(@PathVariable(required = true) Integer id,
+                                     @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter deleteSchool - [schoolId: {}]", id);
@@ -89,7 +91,8 @@ public class SchoolController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add school by given entity")
-    public ResponseData addSchool(@RequestBody SchoolModel model)
+    public ResponseData addSchool(@RequestBody SchoolModel model,
+                                  @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter addSchool - [schoolInfo: {}]", model);
@@ -106,9 +109,9 @@ public class SchoolController extends BaseController
 
     @RequestMapping(path="/{id}", method= RequestMethod.PATCH)
     @ApiOperation(value = "Update school with respect to the specified id")
-    public ResponseData updateSchool(
-            @PathVariable(required = true) Integer id,
-            @RequestBody SchoolModel model)
+    public ResponseData updateSchool(@PathVariable(required = true) Integer id,
+                                     @RequestBody SchoolModel model,
+                                     @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter updateSchool - [id: {}, schoolInfo: {}]", id, model);

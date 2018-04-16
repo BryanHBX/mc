@@ -1,5 +1,7 @@
 package org.edu.timelycourse.mc.biz.security;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Clock;
 import io.jsonwebtoken.Jwts;
@@ -7,6 +9,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +20,7 @@ import java.util.function.Function;
 /**
  * Created by x36zhao on 2018/4/9.
  */
+@Component
 public class JwtTokenUtil implements Serializable
 {
     @Value("${jwt.secret}")
@@ -27,19 +31,26 @@ public class JwtTokenUtil implements Serializable
 
     private Clock clock = DefaultClock.INSTANCE;
 
-    public Boolean validateToken(String token, UserDetails userDetails)
+    public Boolean validateToken(String token, final UserDetails userDetails)
     {
-        JwtUser user = (JwtUser) userDetails;
-        final String username = getUsernameFromToken(token);
-        final Date created = getIssuedAtDateFromToken(token);
+        final JwtUser user = (JwtUser) userDetails;
+        final JwtUser claims = getUserDetailsFromToken(token);
+        //final Date created = getIssuedAtDateFromToken(token);
         //final Date expiration = getExpirationDateFromToken(token);
-        return username.equals(user.getUsername()) && !isTokenExpired(token);
+        return user.getPhone().equals(claims.getPhone()) && !isTokenExpired(token);
     }
 
-    public String generateToken(UserDetails userDetails)
+    public String generateToken(JwtUser userDetails)
     {
         Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userDetails.getUsername());
+        try
+        {
+            return doGenerateToken(claims, new ObjectMapper().writeValueAsString(userDetails));
+        }
+        catch (JsonProcessingException ex)
+        {
+            throw new RuntimeException(String.format("Failed to convert user details %s to json string", userDetails));
+        }
     }
 
     public String refreshToken(String token)
@@ -95,6 +106,20 @@ public class JwtTokenUtil implements Serializable
     public String getUsernameFromToken(String token)
     {
         return getClaimFromToken(token, Claims::getSubject);
+    }
+
+    public JwtUser getUserDetailsFromToken (String token)
+    {
+        try
+        {
+            String claim = getClaimFromToken(token, Claims::getSubject);
+            return new ObjectMapper().readValue(claim, JwtUser.class);
+        }
+        catch (Exception ex)
+        {
+            throw new RuntimeException(String.format(
+                    "Failed to get user details from token: %s", token), ex);
+        }
     }
 
     private String doGenerateToken(Map<String, Object> claims, String subject)

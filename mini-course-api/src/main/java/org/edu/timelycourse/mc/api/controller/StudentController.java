@@ -33,10 +33,10 @@ public class StudentController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all students or by given query")
-    public ResponseData getStudent(
-            @RequestParam(name="pageNum", required = false) Integer pageNum,
-            @RequestParam(name="pageSize", required = false) Integer pageSize,
-            @ModelAttribute("student") StudentModel model)
+    public ResponseData getStudent(@RequestParam(name="pageNum", required = false) Integer pageNum,
+                                   @RequestParam(name="pageSize", required = false) Integer pageSize,
+                                   @ModelAttribute("student") StudentModel model,
+                                   @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter getStudent - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
@@ -53,7 +53,8 @@ public class StudentController extends BaseController
 
     @RequestMapping(path="/{studentId}", method= RequestMethod.GET)
     @ApiOperation(value = "Get student by given id")
-    public ResponseData getStudentById(@PathVariable(required = true) Integer studentId)
+    public ResponseData getStudentById(@PathVariable(required = true) Integer studentId,
+                                       @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter getStudentById - [studentId: %d]", studentId));
@@ -70,7 +71,8 @@ public class StudentController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add student by given entity")
-    public ResponseData addStudent (@RequestBody StudentModel model)
+    public ResponseData addStudent (@RequestBody StudentModel model,
+                                    @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter addStudent - [model: %s]", model));
@@ -87,7 +89,8 @@ public class StudentController extends BaseController
 
     @RequestMapping(path="/{studentId}", method= RequestMethod.DELETE)
     @ApiOperation(value = "Delete student by given id")
-    public ResponseData deleteStudentById (@PathVariable(required = true) Integer studentId)
+    public ResponseData deleteStudentById (@PathVariable(required = true) Integer studentId,
+                                           @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter deleteStudentById - [studentId: %d]", studentId));
@@ -105,9 +108,9 @@ public class StudentController extends BaseController
 
     @RequestMapping(path="/{studentId}", method= RequestMethod.PATCH)
     @ApiOperation(value = "Update student with respect to the specified id")
-    public ResponseData updateStudent (
-            @PathVariable(required = true) Integer studentId,
-            @RequestBody StudentModel model)
+    public ResponseData updateStudent (@PathVariable(required = true) Integer studentId,
+                                       @RequestBody StudentModel model,
+                                       @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter updateStudent - [contractId: %d, model: %s]", studentId, model));

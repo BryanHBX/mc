@@ -33,10 +33,10 @@ public class ContractController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all contracts or by given query")
-    public ResponseData getContract(
-            @RequestParam(name="pageNum", required = false) Integer pageNum,
-            @RequestParam(name="pageSize", required = false) Integer pageSize,
-            @ModelAttribute("contract") ContractModel model)
+    public ResponseData getContract(@RequestParam(name="pageNum", required = false) Integer pageNum,
+                                    @RequestParam(name="pageSize", required = false) Integer pageSize,
+                                    @ModelAttribute("contract") ContractModel model,
+                                    @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter getContract - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
@@ -53,7 +53,8 @@ public class ContractController extends BaseController
 
     @RequestMapping(path="/{contractId}", method= RequestMethod.GET)
     @ApiOperation(value = "Get contract by given id")
-    public ResponseData getContractById(@PathVariable(required = true) Integer contractId)
+    public ResponseData getContractById(@PathVariable(required = true) Integer contractId,
+                                        @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter getContractById - [contractId: {}]", contractId);
@@ -70,7 +71,8 @@ public class ContractController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add contract by given entity")
-    public ResponseData addContract (@RequestBody ContractModel model)
+    public ResponseData addContract (@RequestBody ContractModel model,
+                                     @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter addContract - [model: {}]", model);
@@ -87,7 +89,8 @@ public class ContractController extends BaseController
 
     @RequestMapping(path="/{contractId}", method= RequestMethod.DELETE)
     @ApiOperation(value = "Delete contract by given id")
-    public ResponseData deleteContractById (@PathVariable(required = true) Integer contractId)
+    public ResponseData deleteContractById (@PathVariable(required = true) Integer contractId,
+                                            @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter deleteContractById - [contractId: {}]", contractId);
@@ -105,9 +108,9 @@ public class ContractController extends BaseController
 
     @RequestMapping(path="/{contractId}", method= RequestMethod.PATCH)
     @ApiOperation(value = "Update contract with respect to the specified id")
-    public ResponseData updateContract (
-            @PathVariable(required = true) Integer contractId,
-            @RequestBody ContractModel model)
+    public ResponseData updateContract (@PathVariable(required = true) Integer contractId,
+                                        @RequestBody ContractModel model,
+                                        @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter updateContract - [contractId: {}, model: {}]", contractId, model);

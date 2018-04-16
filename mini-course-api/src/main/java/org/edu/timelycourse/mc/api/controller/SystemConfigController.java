@@ -12,6 +12,7 @@ import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -29,8 +30,8 @@ public class SystemConfigController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all configs or by given config name")
-    public ResponseData getConfigs(
-            @RequestParam(required = false) String configName)
+    public ResponseData getConfigs(@RequestParam(required = false) String configName,
+                                   @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter getConfigs - [configName: %s]", configName));
@@ -52,8 +53,8 @@ public class SystemConfigController extends BaseController
 
     @RequestMapping(path="/{configId}", method= RequestMethod.GET)
     @ApiOperation(value = "Get config by given id")
-    public ResponseData getConfigById(
-            @PathVariable(required = true) Integer configId)
+    public ResponseData getConfigById(@PathVariable(required = true) Integer configId,
+                                      @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter getConfigById - [configId: %d]", configId));
@@ -70,8 +71,9 @@ public class SystemConfigController extends BaseController
 
     @RequestMapping(path="/{configId}", method= RequestMethod.DELETE)
     @ApiOperation(value = "Delete config by given config id")
-    public ResponseData deleteConfigById (
-            @PathVariable(required = true) Integer configId)
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    public ResponseData deleteConfigById (@PathVariable(required = true) Integer configId,
+                                          @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter deleteConfigByName - [configId: %d]", configId));
@@ -89,8 +91,9 @@ public class SystemConfigController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add config by given config entity")
-    public ResponseData addConfig (
-            @RequestBody SystemConfigModel systemConfig)
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    public ResponseData addConfig (@RequestBody SystemConfigModel systemConfig,
+                                   @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter addConfig - [systemConfig: %s]", systemConfig));
@@ -107,9 +110,10 @@ public class SystemConfigController extends BaseController
 
     @RequestMapping(path="/{configId}", method= RequestMethod.PATCH)
     @ApiOperation(value = "Update config with respect to the specified id")
-    public ResponseData updateConfig (
-            @PathVariable(required = true) Integer configId,
-            @RequestBody SystemConfigModel systemConfig)
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    public ResponseData updateConfig (@PathVariable(required = true) Integer configId,
+                                      @RequestBody SystemConfigModel systemConfig,
+                                      @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter updateConfig - [configId: %d, systemConfig: %s]", configId, systemConfig));

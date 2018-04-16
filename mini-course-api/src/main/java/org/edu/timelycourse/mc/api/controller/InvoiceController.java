@@ -33,10 +33,10 @@ public class InvoiceController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all invoices or by given query")
-    public ResponseData getInvoice(
-            @RequestParam(name="pageNum", required = false) Integer pageNum,
-            @RequestParam(name="pageSize", required = false) Integer pageSize,
-            @ModelAttribute("invoice") InvoiceModel model)
+    public ResponseData getInvoice(@RequestParam(name="pageNum", required = false) Integer pageNum,
+                                   @RequestParam(name="pageSize", required = false) Integer pageSize,
+                                   @ModelAttribute("invoice") InvoiceModel model,
+                                   @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter getInvoice - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
@@ -53,7 +53,8 @@ public class InvoiceController extends BaseController
 
     @RequestMapping(path="/{invoiceId}", method= RequestMethod.GET)
     @ApiOperation(value = "Get contract by given id")
-    public ResponseData getInvoiceById(@PathVariable(required = true) Integer invoiceId)
+    public ResponseData getInvoiceById(@PathVariable(required = true) Integer invoiceId,
+                                       @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter getInvoiceById - [invoiceId: %d]", invoiceId));
@@ -70,7 +71,8 @@ public class InvoiceController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add invoice by given entity")
-    public ResponseData addInvoice (@RequestBody InvoiceModel model)
+    public ResponseData addInvoice (@RequestBody InvoiceModel model,
+                                    @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter addInvoice - [model: %s]", model));
@@ -87,7 +89,8 @@ public class InvoiceController extends BaseController
 
     @RequestMapping(path="/{invoiceId}", method= RequestMethod.DELETE)
     @ApiOperation(value = "Delete invoice by given id")
-    public ResponseData deleteContractById (@PathVariable(required = true) Integer invoiceId)
+    public ResponseData deleteContractById (@PathVariable(required = true) Integer invoiceId,
+                                            @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter deleteContractById - [invoiceId: %d]", invoiceId));
@@ -105,9 +108,9 @@ public class InvoiceController extends BaseController
 
     @RequestMapping(path="/{invoiceId}", method= RequestMethod.PATCH)
     @ApiOperation(value = "Update invoice with respect to the specified id")
-    public ResponseData updateInvoice (
-            @PathVariable(required = true) Integer invoiceId,
-            @RequestBody InvoiceModel model)
+    public ResponseData updateInvoice (@PathVariable(required = true) Integer invoiceId,
+                                       @RequestBody InvoiceModel model,
+                                       @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter updateInvoice - [invoiceId: %d, model: %s]", invoiceId, model));
