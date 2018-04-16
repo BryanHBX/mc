@@ -244,7 +244,9 @@ var DWZ = {
                         alertMsg.error(json[DWZ.keys.message] || DWZ.msg("sessionTimout"), {okCall:function(){
 							DWZ.loadLogin();
 						}});
-                    }
+                    } else {
+                        DWZ.ajaxError(error);
+					}
 				}, //DWZ.ajaxError,
 				statusCode: {
 					503: function(xhr, ajaxOptions, thrownError) {
