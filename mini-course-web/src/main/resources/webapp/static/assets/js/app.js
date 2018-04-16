@@ -9,7 +9,8 @@
  * @author Zhao.Xiang
  *
  **/
-function generic_ajax_op(url,type,json_data,send_handler,success_handler,error_handler,content_type,global,asyn){
+function generic_ajax_op(url,type,json_data,send_handler,success_handler,error_handler,content_type,global,asyn) {
+    var _header = (url != "auth" ? {"Authorization": "Bearer " + sessionStorage.getItem("token")}: {});
     var _url = openApiContextPath + "/" + url;
     var _asyn = asyn && 1;
     var _global = global && true;
@@ -24,6 +25,7 @@ function generic_ajax_op(url,type,json_data,send_handler,success_handler,error_h
         global: _global ? true : false,
         data: JSON.stringify(_data),
         dataType: "json",
+        headers: _header,
         contentType: content_type || "application/json; charset=utf-8",
         beforeSend: function() {
             showLoading();
@@ -45,10 +47,10 @@ function generic_ajax_op(url,type,json_data,send_handler,success_handler,error_h
                 }
             }
         },
-        error: function() {
+        error: function(e) {
             showLoading(false);
             if(error_handler != undefined && typeof(error_handler) == "function"){
-                error_handler();
+                error_handler(e);
             }
         }
     });

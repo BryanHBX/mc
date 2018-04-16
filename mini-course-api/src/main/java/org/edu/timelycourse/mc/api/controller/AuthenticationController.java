@@ -25,7 +25,7 @@ import java.util.Objects;
  * Created by x36zhao on 2018/4/3.
  */
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/${api.version}/auth")
 @Api(tags = { "平台认证API" })
 public class AuthenticationController extends BaseController
 {

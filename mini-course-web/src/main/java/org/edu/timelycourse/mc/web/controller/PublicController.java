@@ -20,9 +20,15 @@ public class PublicController extends AbstractController
     }
 
     @RequestMapping("/login")
-    public String showLoginPage(HttpServletRequest request, Model model)
+    public String showLogin()
     {
-        return getModulePage("index");
+        return getModulePage("public/login");
+    }
+
+    @RequestMapping("/loginDialog")
+    public String showLoginDialog(HttpServletRequest request, Model model)
+    {
+        return getModulePage("public/dialog/dialogLogin");
 //        model.addAttribute(Constants.REDIRECT_URL_PARAMETER, request.getHeader("Referer"));
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //        return auth instanceof AnonymousAuthenticationToken ? getModulePage("logon") : getModulePage("index");

@@ -2,6 +2,7 @@ package org.edu.timelycourse.mc.common.entity;
 
 import lombok.Data;
 import org.edu.timelycourse.mc.common.enums.ResultCode;
+import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @Data
 public class ResponseData<T> implements Serializable
 {
+    private int statusCode;
     private boolean success;
     private T data;
     private String error;
@@ -27,6 +29,7 @@ public class ResponseData<T> implements Serializable
         ResponseData<T> result = new ResponseData<T>();
         result.setData(data);
         result.setSuccess(true);
+        result.setStatusCode(HttpStatus.OK.value());
         return result;
     }
 
@@ -44,10 +47,11 @@ public class ResponseData<T> implements Serializable
         return result;
     }
 
-    public static ResponseData failure (String message)
+    public static ResponseData failure (int statusCode, String message)
     {
         ResponseData result = new ResponseData();
         result.setSuccess(false);
+        result.setStatusCode(statusCode);
         result.setError(message);
         return result;
     }

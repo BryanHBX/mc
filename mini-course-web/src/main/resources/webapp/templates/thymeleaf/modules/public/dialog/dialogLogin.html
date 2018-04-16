@@ -1,0 +1,46 @@
+<script>
+	$(function(){
+		$("#btnLogin").unbind("click").bind("click", function(){
+			if (!$("#formLogin").valid()) {
+                return false;
+			}
+
+            generic_ajax_op("auth", "POST", $("#formLogin").serializeJSON(), null, (
+                function(result) {
+				    alertMsg.correct("登录成功");
+                    sessionStorage.setItem("token", result.token);
+                    navTab.reload(null, {});
+                }
+            ));
+		});
+	});
+</script>
+
+<style>
+	#formLogin span.error { left: auto; right: 11px; }
+</style>
+
+<div xmlns:th="http://www.thymeleaf.org" class="pageContent">
+	<form id="formLogin" method="post" class="pageForm required-validate">
+		<div class="pageFormContent" layoutH="56">
+			<table cellspacing="10" cellpadding="10" class="dform">
+                <tr>
+                    <td>手机号：</td>
+                    <td><input name="username" type="text" size="30" alt="请输入您的手机号码" class="required mobile"/></td>
+                </tr>
+				<tr>
+					<td>密码：</td>
+					<td><input name="password" type="password" size="30" class="required" /></td>
+				</tr>
+
+			</table>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="button" id="btnLogin">登录</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button class="close" type="button">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+<div>
+		

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping("/contract")
 public class ContractController extends AbstractController
@@ -16,13 +18,13 @@ public class ContractController extends AbstractController
     private static final Logger LOGGER = LoggerFactory.getLogger(ContractController.class);
 
     @RequestMapping("/form")
-    public String showContractForm (Model model)
+    public String showContractForm (Model model, HttpServletRequest request)
     {
         model.addAttribute("level",
-                fetchConfigByName(EBuiltInConfig.C_STUDENT_LEVEL.name()));
+                fetchConfigByName(request, EBuiltInConfig.C_STUDENT_LEVEL.name()));
 
         model.addAttribute("course",
-                fetchConfigByName(EBuiltInConfig.C_COURSE_TYPE.name()));
+                fetchConfigByName(request, EBuiltInConfig.C_COURSE_TYPE.name()));
 
         return getModulePage("contractForm");
     }

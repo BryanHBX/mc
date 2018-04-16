@@ -1,4 +1,4 @@
-package org.edu.timelycourse.mc.web.security;
+package org.edu.timelycourse.mc.web.config;
 
 import org.edu.timelycourse.mc.common.security.RefererRedirectionAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +24,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 
         http
             .authorizeRequests()
-            .antMatchers("/assets/**", "/plugins/**", "/**").permitAll()
+            .antMatchers("/assets/**", "/plugins/**").permitAll()
             .anyRequest().authenticated().and()
             .formLogin().successHandler(new RefererRedirectionAuthenticationSuccessHandler())
-            .loginPage("/login").permitAll().and()
-            .logout()
-            .logoutSuccessUrl("/").permitAll();
+            .loginPage("/login").permitAll();
+        //.and()
+        //    .logout().logoutSuccessUrl("/logout").permitAll();
 
         //http.httpBasic();
         //http.headers().frameOptions().sameOrigin();

@@ -28,7 +28,7 @@ var DWZ = {
 	},
 	
 	pageInfo: {pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderDirection"},
-	statusCode: {ok:200, error:300, timeout:301},
+	statusCode: {ok:200, error:300, timeout:301, unauthorized: 401, forbidden: 403, server: 500},
 	keys: {statusCode:"statusCode", message:"message"},
 	ui:{
 		sbar:true,
@@ -39,6 +39,8 @@ var DWZ = {
 	_set:{
 		loginUrl:"", //session timeout
 		loginTitle:"", //if loginTitle open a login dialog
+        loginDialogWidth: 360,
+        loginDialogHeight: 180,
 		debug:false
 	},
 	msg:function(key, args){
@@ -60,7 +62,11 @@ var DWZ = {
 	},
 	loadLogin:function(){
 		if ($.pdialog && DWZ._set.loginTitle) {
-			$.pdialog.open(DWZ._set.loginUrl, "login", DWZ._set.loginTitle, {mask:true,width:520,height:260});
+			$.pdialog.open(DWZ._set.loginUrl, "login", DWZ._set.loginTitle, {
+				mask:true,
+				width:DWZ._set.loginDialogWidth || 520,
+				height:DWZ._set.loginDialogHeight || 260
+			});
 		} else {
 			window.location = DWZ._set.loginUrl;
 		}
@@ -118,7 +124,7 @@ var DWZ = {
 	ajaxDone:function(json){
 		if(json[DWZ.keys.statusCode] == DWZ.statusCode.error) {
 			if(json[DWZ.keys.message] && alertMsg) alertMsg.error(json[DWZ.keys.message]);
-		} else if (json[DWZ.keys.statusCode] == DWZ.statusCode.timeout) {
+		} else if (json[DWZ.keys.statusCode] == DWZ.statusCode.timeout || json[DWZ.keys.statusCode] == DWZ.statusCode.unauthorized) {
 			if(alertMsg) alertMsg.error(json[DWZ.keys.message] || DWZ.msg("sessionTimout"), {okCall:DWZ.loadLogin});
 			else DWZ.loadLogin();
 		} else if (json[DWZ.keys.statusCode] == DWZ.statusCode.ok){
@@ -198,11 +204,14 @@ var DWZ = {
 			var $this = $(this);
 
 			$this.trigger(DWZ.eventType.pageClear);
-			
+
+            var _header = (!op.url.endsWith("/auth") ? {"Authorization": "Bearer " + sessionStorage.getItem("token")}: {});
+
 			$.ajax({
 				type: op.type || 'GET',
 				url: op.url,
 				data: op.data,
+				headers: _header,
 				cache: false,
 				success: function(response){
 					var json = DWZ.jsonEval(response);
@@ -218,7 +227,7 @@ var DWZ = {
 					}
 
 
-					if (json[DWZ.keys.statusCode]==DWZ.statusCode.timeout){
+					if (json[DWZ.keys.statusCode]==DWZ.statusCode.timeout || json[DWZ.keys.statusCode]==DWZ.statusCode.unauthorized){
 						if ($.pdialog) $.pdialog.checkCloseCurrent(json);
 						if (navTab) navTab.checkCloseCurrent(json);
 
@@ -228,7 +237,15 @@ var DWZ = {
 					}
 					
 				},
-				error: DWZ.ajaxError,
+				error: function(error) {
+                    if (error.status==DWZ.statusCode.unauthorized) {
+                        if ($.pdialog) $.pdialog.checkCloseCurrent(json);
+                        if (navTab) navTab.checkCloseCurrent(json);
+                        alertMsg.error(json[DWZ.keys.message] || DWZ.msg("sessionTimout"), {okCall:function(){
+							DWZ.loadLogin();
+						}});
+                    }
+				}, //DWZ.ajaxError,
 				statusCode: {
 					503: function(xhr, ajaxOptions, thrownError) {
 						alert(DWZ.msg("statusCode_503") || thrownError);

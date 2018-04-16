@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -30,36 +31,36 @@ public class SystemController extends AbstractController
     }
 
     @RequestMapping("/system/settings")
-    public String showSystemSettings (
-            Model model,
-            @RequestParam(required = false, value = "id") Integer configId)
+    public String showSystemSettings (Model model,
+                                      @RequestParam(required = false, value = "id") Integer configId,
+                                      HttpServletRequest request)
     {
         if (configId != null && configId > 0)
         {
-            model.addAttribute("config", fetchConfigById(configId));
+            model.addAttribute("config", fetchConfigById(request, configId));
             return getModulePage("system/pages/configListPage");
         }
 
-        model.addAttribute("configs", fetchConfigs());
+        model.addAttribute("configs", fetchConfigs(request));
 
         return getModulePage("system/config");
     }
 
     @RequestMapping("/system/settings/dialog")
-    public String showSystemSettingDialog (
-            Model model,
-            @RequestParam(required = false, value = "id")  Integer configId,
-            @RequestParam(required = false, value = "pid") Integer parentId)
+    public String showSystemSettingDialog (Model model,
+                                           @RequestParam(required = false, value = "id")  Integer configId,
+                                           @RequestParam(required = false, value = "pid") Integer parentId,
+                                           HttpServletRequest request)
     {
         if (configId != null && configId > 0)
         {
-            model.addAttribute("config", fetchConfigById(configId));
+            model.addAttribute("config", fetchConfigById(request, configId));
         }
 
         if (parentId != null && parentId > 0)
         {
             model.addAttribute("parentId", parentId);
-            model.addAttribute("parent", fetchConfigById(parentId));
+            model.addAttribute("parent", fetchConfigById(request, parentId));
         }
 
         return getModulePage("system/dialog/dialogConfigField");

@@ -72,7 +72,7 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter
             LOGGER.warn("couldn't find bearer string, will ignore the header");
         }
 
-        if (LOGGER.isDebugEnabled())
+        if (LOGGER.isDebugEnabled() && userClaims != null)
         {
             LOGGER.debug("checking authentication for user '{}'", userClaims.getPhone());
         }

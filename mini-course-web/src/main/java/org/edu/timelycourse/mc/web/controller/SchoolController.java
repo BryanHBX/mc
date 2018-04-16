@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.swing.text.html.parser.Entity;
 import java.util.HashMap;
 import java.util.List;
@@ -28,34 +29,35 @@ public class SchoolController extends AbstractController
     private static final Logger LOGGER = LoggerFactory.getLogger(SchoolController.class);
 
     @RequestMapping("/info")
-    public String showSchoolInfo (Model model)
+    public String showSchoolInfo (Model model, HttpServletRequest request)
     {
-        model.addAttribute("school", fetchSchool());
+        model.addAttribute("school", fetchSchool(request));
         return getModulePage("schoolInfo");
     }
 
     @RequestMapping("/product")
-    public String showSchoolProduct (
-            Model model, @RequestParam(required = false, value = "id") Integer productId)
+    public String showSchoolProduct (Model model,
+                                     @RequestParam(required = false, value = "id") Integer productId,
+                                     HttpServletRequest request)
     {
         if (productId != null)
         {
             if (EntityUtils.isValidEntityId(productId))
             {
-                model.addAttribute("product", fetchProduct(productId));
+                model.addAttribute("product", fetchProduct(request, productId));
             }
 
             return getModulePage("pages/productListPage");
         }
         else
         {
-            SystemConfigModel courseType = fetchConfigByName(EBuiltInConfig.C_COURSE_TYPE.name());
+            SystemConfigModel courseType = fetchConfigByName(request, EBuiltInConfig.C_COURSE_TYPE.name());
             if (courseType != null && courseType.getChildren() != null)
             {
                 Map<SystemConfigModel, List<SchoolProductModel>> products = new HashMap<>();
                 for (SystemConfigModel subType : courseType.getChildren())
                 {
-                    products.put(subType, fetchProductByType(subType.getId()));
+                    products.put(subType, fetchProductByType(request, subType.getId()));
                 }
 
                 model.addAttribute("products", products);
@@ -66,67 +68,68 @@ public class SchoolController extends AbstractController
     }
 
     @RequestMapping("/product/dialog")
-    public String showSchoolProductDialog (
-            Model model,
-            @RequestParam(required = false, value = "id")  Integer id,
-            @RequestParam(required = false, value = "pid") Integer parentId)
+    public String showSchoolProductDialog (Model model,
+                                           @RequestParam(required = false, value = "id")  Integer id,
+                                           @RequestParam(required = false, value = "pid") Integer parentId,
+                                           HttpServletRequest request)
     {
         if (EntityUtils.isValidEntityId(id))
         {
-            model.addAttribute("product", fetchProduct(id));
+            model.addAttribute("product", fetchProduct(request, id));
         }
 
         if (EntityUtils.isValidEntityId(parentId))
         {
             model.addAttribute("parentId", parentId);
-            model.addAttribute("parent", fetchProduct(parentId));
+            model.addAttribute("parent", fetchProduct(request, parentId));
         }
         else
         {
-            model.addAttribute("types", fetchConfigByName(EBuiltInConfig.C_COURSE_TYPE.name()));
+            model.addAttribute("types", fetchConfigByName(request, EBuiltInConfig.C_COURSE_TYPE.name()));
         }
 
         return getModulePage("dialog/dialogSchoolProduct");
     }
 
     @RequestMapping("/member")
-    public String showSchoolMember (
-            Model model,
-            @RequestParam(required = false) Integer pageNum,
-            @RequestParam(required = false) Integer numPerPage,
-            @RequestParam(required = false) String userName)
+    public String showSchoolMember (Model model,
+                                    @RequestParam(required = false) Integer pageNum,
+                                    @RequestParam(required = false) Integer numPerPage,
+                                    @RequestParam(required = false) String userName,
+                                    HttpServletRequest request)
     {
         // TODO
         UserModel member = new UserModel();
         member.setSchoolId(1);
         member.setUserName(userName);
 
-        model.addAttribute("pagingBean", fetchMembers(pageNum, numPerPage, member));
+        model.addAttribute("pagingBean", fetchMembers(request, pageNum, numPerPage, member));
         model.addAttribute("search", member);
         return getModulePage("schoolMember");
     }
 
     @RequestMapping("/member/dialog")
-    public String showSchoolMemberFormDialog (
-            Model model, @RequestParam(required = false, value = "id")  Integer memberId)
+    public String showSchoolMemberFormDialog (Model model,
+                                              @RequestParam(required = false, value = "id")  Integer memberId,
+                                              HttpServletRequest request)
     {
         if (EntityUtils.isValidEntityId(memberId))
         {
-            model.addAttribute("member", fetchMemberById(memberId));
+            model.addAttribute("member", fetchMemberById(request, memberId));
         }
 
         // TODO: fetch the types owned to the school only
-        model.addAttribute("types", fetchProducts());
-        model.addAttribute("grades", fetchConfigByName(EBuiltInConfig.C_GRADE.name()));
-        model.addAttribute("subjects", fetchConfigByName(EBuiltInConfig.C_SUBJECT.name()));
-        model.addAttribute("roles", fetchSystemRoles());
+        model.addAttribute("types", fetchProducts(request));
+        model.addAttribute("grades", fetchConfigByName(request, EBuiltInConfig.C_GRADE.name()));
+        model.addAttribute("subjects", fetchConfigByName(request, EBuiltInConfig.C_SUBJECT.name()));
+        model.addAttribute("roles", fetchSystemRoles(request));
 
         return getModulePage("dialog/dialogSchoolMember");
     }
 
     @RequestMapping("/member/pwd")
-    public String showSchoolMemberResetPasswordDialog (
-            Model model, @RequestParam(required = true, value = "id")  Integer memberId)
+    public String showSchoolMemberResetPasswordDialog (Model model,
+                                                       @RequestParam(required = true, value = "id")  Integer memberId)
     {
         model.addAttribute("id", memberId);
         return getModulePage("dialog/dialogResetPassword");

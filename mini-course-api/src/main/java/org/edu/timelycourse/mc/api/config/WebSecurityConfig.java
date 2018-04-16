@@ -64,13 +64,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
         http
             .authorizeRequests()
             .antMatchers(
-                    "/auth/**",
+                    "/api/**/auth/**",
                     "/swagger-ui.html",
                     "/swagger-resources",
                     "/v2/**",
                     "/webjars/**",
                     "/images/**",
-                    "/configuration/**").permitAll()
+                    "/configuration/ui").permitAll()
             .anyRequest().authenticated();
 
         /*.and()
@@ -112,7 +112,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 "/**/*.html",
                 "/**/*.css",
                 "/**/*.js",
-                "/webjars/**"
+                "/**/*.png",
+                "/webjars/**",
+                "/configuration/**",
+                "/swagger-resources",
+                "/v2/**", "/error"
             );
     }
 
