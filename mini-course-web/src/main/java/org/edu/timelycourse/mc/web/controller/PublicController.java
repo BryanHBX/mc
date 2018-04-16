@@ -5,7 +5,10 @@ import org.edu.timelycourse.mc.biz.security.JwtAuthenticationRequest;
 import org.edu.timelycourse.mc.biz.security.JwtUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +31,8 @@ public class PublicController extends AbstractController
     @RequestMapping("/login")
     public String showLogin()
     {
-        return getModulePage("public/login");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth instanceof AnonymousAuthenticationToken ? "public/login" : getModulePage("forward:/");
     }
 
     @RequestMapping("/loginDialog")
