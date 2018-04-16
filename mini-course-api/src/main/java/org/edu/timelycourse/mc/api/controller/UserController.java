@@ -5,12 +5,13 @@ import io.swagger.annotations.ApiOperation;
 import org.edu.timelycourse.mc.biz.model.UserModel;
 import org.edu.timelycourse.mc.biz.service.UserService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
+import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
-import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -39,18 +40,15 @@ public class UserController extends BaseController
                                 @ModelAttribute("member") UserModel model,
                                 @RequestHeader(name = "Authorization") String auth)
     {
-        if (LOGGER.isDebugEnabled())
-            LOGGER.debug("Enter getUser - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
+        // set using the school id in the claim from JWT token
+        model.setSchoolId(SecurityContextHelper.getPrincipal().getSid());
 
-        try
+        if (LOGGER.isDebugEnabled())
         {
-            //SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            return ResponseData.success(userService.findByPage(model, pageNum, pageSize));
+            LOGGER.debug("Enter getUser - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+
+        return ResponseData.success(userService.findByPage(model, pageNum, pageSize));
     }
 
     @RequestMapping(path="/{userId}", method= RequestMethod.GET)
@@ -59,115 +57,90 @@ public class UserController extends BaseController
                                     @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug(String.format("Enter getUserById - [userId: %d]", userId));
+        }
 
-        try
+        UserModel entity = (UserModel) Asserts.assertEntityNotNullById(userService, userId);
+        if (!entity.getSchoolId().equals(SecurityContextHelper.getPrincipal().getSid()))
         {
-            return ResponseData.success(Asserts.assertEntityNotNullById(userService, userId));
+            throw new AccessDeniedException("No permission to get the user info");
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+
+        return ResponseData.success(entity);
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add user by given entity")
-    public ResponseData addUser (@RequestBody UserModel user,
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR')")
+    public ResponseData addUser (@RequestBody UserModel model,
                                  @RequestHeader(name = "Authorization") String auth)
     {
+        // set using the school id in the claim from JWT token
+        model.setSchoolId(SecurityContextHelper.getPrincipal().getSid());
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter addUser - [user: %s]", user));
-
-        try
         {
-            return ResponseData.success(userService.add(user));
+            LOGGER.debug(String.format("Enter addUser - [user: %s]", model));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(userService.add(model));
     }
 
     @RequestMapping(path="/{userId}", method= RequestMethod.DELETE)
     @ApiOperation(value = "Delete user by given id")
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR')")
     public ResponseData deleteUserById (@PathVariable(required = true) Integer userId,
                                         @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug(String.format("Enter deleteUserById - [userId: %d]", userId));
-
-        try
-        {
-            Asserts.assertEntityNotNullById(userService, userId);
-            return ResponseData.success(userService.delete(userId));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        Asserts.assertEntityNotNullById(userService, userId);
+        return ResponseData.success(userService.delete(userId));
     }
 
     @RequestMapping(path="/{userId}", method= RequestMethod.PATCH)
     @ApiOperation(value = "Update user with respect to the specified id")
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR')")
     public ResponseData updateUser (@PathVariable(required = true) Integer userId,
                                     @RequestBody UserModel user,
                                     @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug(String.format("Enter updateUser - [userId: %d, user: %s]", userId, user));
-
-        try
-        {
-            Asserts.assertEntityNotNullById(userService, userId);
-
-            // in order to avoid overwritten id in the payload
-            user.setId(userId);
-
-            return ResponseData.success(this.userService.update(user));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        // in order to avoid overwritten id in the payload
+        Asserts.assertEntityNotNullById(userService, userId);
+        return ResponseData.success(this.userService.update(user));
     }
 
 
     @RequestMapping(path="/password/{userId}", method= RequestMethod.POST)
     @ApiOperation(value = "Reset user password")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR')")
     public ResponseData resetUserPassword(@PathVariable(required = true) Integer userId,
                                           @RequestBody String password,
                                           @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter resetUserPassword - [userId: {}]", userId);
-
-        try
-        {
-            return ResponseData.success(userService.resetPassword(userId, password));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(userService.resetPassword(userId, password));
     }
 
     @RequestMapping(path="/stat/{userId}", method= RequestMethod.PATCH)
     @ApiOperation(value = "Reset user status")
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR')")
     public ResponseData resetUserStatus(@PathVariable(required = true) Integer userId,
                                         @RequestParam(name="status", required = true) Integer userStatus,
                                         @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter resetUserPassword - [userId: {}, userStatus: {}]", userId, userStatus);
-
-        try
-        {
-            return ResponseData.success(userService.resetStatus(userId, userStatus));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(userService.resetStatus(userId, userStatus));
     }
 }

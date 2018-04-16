@@ -1,6 +1,5 @@
 package org.edu.timelycourse.mc.api.controller;
 
-import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.util.Strings;
@@ -34,21 +33,15 @@ public class SystemConfigController extends BaseController
                                    @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug(String.format("Enter getConfigs - [configName: %s]", configName));
-
-        try
-        {
-            if (Strings.isNotEmpty(configName))
-            {
-                return ResponseData.success(assertEntityNotNullByName(configName));
-            }
-
-            return ResponseData.success(sysConfigService.getAll());
         }
-        catch (ServiceException ex)
+
+        if (Strings.isNotEmpty(configName))
         {
-            return ResponseData.failure(ex.getMessage());
+            return ResponseData.success(assertEntityNotNullByName(configName));
         }
+        return ResponseData.success(sysConfigService.getAll());
     }
 
     @RequestMapping(path="/{configId}", method= RequestMethod.GET)
@@ -57,16 +50,10 @@ public class SystemConfigController extends BaseController
                                       @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug(String.format("Enter getConfigById - [configId: %d]", configId));
-
-        try
-        {
-            return ResponseData.success(Asserts.assertEntityNotNullById(sysConfigService, configId));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(Asserts.assertEntityNotNullById(sysConfigService, configId));
     }
 
     @RequestMapping(path="/{configId}", method= RequestMethod.DELETE)
@@ -76,17 +63,11 @@ public class SystemConfigController extends BaseController
                                           @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug(String.format("Enter deleteConfigByName - [configId: %d]", configId));
-
-        try
-        {
-            Asserts.assertEntityNotNullById(sysConfigService, configId);
-            return ResponseData.success(sysConfigService.delete(configId));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        Asserts.assertEntityNotNullById(sysConfigService, configId);
+        return ResponseData.success(sysConfigService.delete(configId));
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
@@ -96,40 +77,27 @@ public class SystemConfigController extends BaseController
                                    @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug(String.format("Enter addConfig - [systemConfig: %s]", systemConfig));
-
-        try
-        {
-            return ResponseData.success(sysConfigService.add(systemConfig));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(sysConfigService.add(systemConfig));
     }
 
     @RequestMapping(path="/{configId}", method= RequestMethod.PATCH)
     @ApiOperation(value = "Update config with respect to the specified id")
     @PreAuthorize("hasRole('ROLE_SUPERUSER')")
     public ResponseData updateConfig (@PathVariable(required = true) Integer configId,
-                                      @RequestBody SystemConfigModel systemConfig,
+                                      @RequestBody SystemConfigModel model,
                                       @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter updateConfig - [configId: %d, systemConfig: %s]", configId, systemConfig));
-
-        try
         {
-            Asserts.assertEntityNotNullById(sysConfigService, configId);
-            // in order to avoid overwritten id in request body
-            systemConfig.setId(configId);
-
-            return ResponseData.success(this.sysConfigService.update(systemConfig));
+            LOGGER.debug(String.format("Enter updateConfig - [configId: %d, model: %s]", configId, model));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        // in order to avoid overwritten id in request body
+        model.setId(configId);
+        Asserts.assertEntityNotNullById(sysConfigService, configId);
+        return ResponseData.success(this.sysConfigService.update(model));
     }
 
     private SystemConfigModel assertEntityNotNullByName (String configName)

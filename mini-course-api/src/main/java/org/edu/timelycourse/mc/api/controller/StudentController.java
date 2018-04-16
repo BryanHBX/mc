@@ -6,10 +6,10 @@ import org.edu.timelycourse.mc.biz.model.StudentModel;
 import org.edu.timelycourse.mc.biz.service.StudentService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
-import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/${api.version}/student")
 @Api(tags = { "学生信息API" })
+@PreAuthorize("hasAnyRole('ROLE_CONSULTANT','ROLE_ADMINISTRATOR')")
 public class StudentController extends BaseController
 {
     private static Logger LOGGER = LoggerFactory.getLogger(StudentController.class);
@@ -39,16 +40,10 @@ public class StudentController extends BaseController
                                    @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter getStudent - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
-
-        try
-        {
-            return ResponseData.success(studentService.findByPage(model, pageNum, pageSize));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(studentService.findByPage(model, pageNum, pageSize));
     }
 
     @RequestMapping(path="/{studentId}", method= RequestMethod.GET)
@@ -57,16 +52,10 @@ public class StudentController extends BaseController
                                        @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug(String.format("Enter getStudentById - [studentId: %d]", studentId));
-
-        try
-        {
-            return ResponseData.success(Asserts.assertEntityNotNullById(studentService, studentId));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(Asserts.assertEntityNotNullById(studentService, studentId));
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
@@ -75,16 +64,10 @@ public class StudentController extends BaseController
                                     @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug(String.format("Enter addStudent - [model: %s]", model));
-
-        try
-        {
-            return ResponseData.success(studentService.add(model));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(studentService.add(model));
     }
 
     @RequestMapping(path="/{studentId}", method= RequestMethod.DELETE)
@@ -93,17 +76,11 @@ public class StudentController extends BaseController
                                            @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug(String.format("Enter deleteStudentById - [studentId: %d]", studentId));
-
-        try
-        {
-            Asserts.assertEntityNotNullById(studentService, studentId);
-            return ResponseData.success(studentService.delete(studentId));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        Asserts.assertEntityNotNullById(studentService, studentId);
+        return ResponseData.success(studentService.delete(studentId));
     }
 
     @RequestMapping(path="/{studentId}", method= RequestMethod.PATCH)
@@ -113,20 +90,12 @@ public class StudentController extends BaseController
                                        @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug(String.format("Enter updateStudent - [contractId: %d, model: %s]", studentId, model));
-
-        try
-        {
-            Asserts.assertEntityNotNullById(studentService, studentId);
-
-            // in order to avoid overwritten id in the payload
-            model.setId(studentId);
-
-            return ResponseData.success(studentService.update(model));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        // in order to avoid overwritten id in the payload
+        model.setId(studentId);
+        Asserts.assertEntityNotNullById(studentService, studentId);
+        return ResponseData.success(studentService.update(model));
     }
 }

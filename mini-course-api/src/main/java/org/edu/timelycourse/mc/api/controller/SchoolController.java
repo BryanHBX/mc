@@ -6,7 +6,6 @@ import org.edu.timelycourse.mc.biz.model.SchoolModel;
 import org.edu.timelycourse.mc.biz.service.SchoolService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
-import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,16 +38,11 @@ public class SchoolController extends BaseController
                                    @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter getSchools - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
+        }
 
-        try
-        {
-            return ResponseData.success(schoolService.findByPage(model, pageNum, pageSize));
-        }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(schoolService.findByPage(model, pageNum, pageSize));
     }
 
     @RequestMapping(path="/{id}", method= RequestMethod.GET)
@@ -57,17 +51,10 @@ public class SchoolController extends BaseController
                                   @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter getSchool - [schoolId : {}]", id);
-
-        try
-        {
-            SchoolModel entity = (SchoolModel) Asserts.assertEntityNotNullById(schoolService, id);
-            return ResponseData.success(entity);
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(Asserts.assertEntityNotNullById(schoolService, id));
     }
 
     @RequestMapping(path="/{id}", method= RequestMethod.DELETE)
@@ -76,17 +63,11 @@ public class SchoolController extends BaseController
                                      @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter deleteSchool - [schoolId: {}]", id);
-
-        try
-        {
-            Asserts.assertEntityNotNullById(schoolService, id);
-            return ResponseData.success(schoolService.delete(id));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        Asserts.assertEntityNotNullById(schoolService, id);
+        return ResponseData.success(schoolService.delete(id));
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
@@ -95,16 +76,10 @@ public class SchoolController extends BaseController
                                   @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter addSchool - [schoolInfo: {}]", model);
-
-        try
-        {
-            return ResponseData.success(schoolService.add(model));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(schoolService.add(model));
     }
 
     @RequestMapping(path="/{id}", method= RequestMethod.PATCH)
@@ -114,19 +89,11 @@ public class SchoolController extends BaseController
                                      @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter updateSchool - [id: {}, schoolInfo: {}]", id, model);
-
-        try
-        {
-            SchoolModel entity = (SchoolModel) Asserts.assertEntityNotNullById(schoolService, id);
-
-            model.setId(id);
-            model.setCreationTime(entity.getCreationTime());
-            return ResponseData.success(this.schoolService.update(model));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        model.setId(id);
+        Asserts.assertEntityNotNullById(schoolService, id);
+        return ResponseData.success(this.schoolService.update(model));
     }
 }

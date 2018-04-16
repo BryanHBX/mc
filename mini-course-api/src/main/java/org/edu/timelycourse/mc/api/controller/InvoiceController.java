@@ -6,10 +6,10 @@ import org.edu.timelycourse.mc.biz.model.InvoiceModel;
 import org.edu.timelycourse.mc.biz.service.InvoiceService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
-import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -33,100 +33,73 @@ public class InvoiceController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all invoices or by given query")
+    @PreAuthorize("hasAnyRole('ROLE_TREASURER','ROLE_ADMINISTRATOR')")
     public ResponseData getInvoice(@RequestParam(name="pageNum", required = false) Integer pageNum,
                                    @RequestParam(name="pageSize", required = false) Integer pageSize,
                                    @ModelAttribute("invoice") InvoiceModel model,
                                    @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter getInvoice - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
-
-        try
-        {
-            return ResponseData.success(invoiceService.findByPage(model, pageNum, pageSize));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(invoiceService.findByPage(model, pageNum, pageSize));
     }
 
     @RequestMapping(path="/{invoiceId}", method= RequestMethod.GET)
     @ApiOperation(value = "Get contract by given id")
+    @PreAuthorize("hasAnyRole('ROLE_TREASURER','ROLE_ADMINISTRATOR')")
     public ResponseData getInvoiceById(@PathVariable(required = true) Integer invoiceId,
                                        @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug(String.format("Enter getInvoiceById - [invoiceId: %d]", invoiceId));
-
-        try
-        {
-            return ResponseData.success(Asserts.assertEntityNotNullById(invoiceService, invoiceId));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(Asserts.assertEntityNotNullById(invoiceService, invoiceId));
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add invoice by given entity")
+    @PreAuthorize("hasAnyRole('ROLE_TREASURER','ROLE_ADMINISTRATOR', 'ROLE_CONSULTANT')")
     public ResponseData addInvoice (@RequestBody InvoiceModel model,
                                     @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug(String.format("Enter addInvoice - [model: %s]", model));
-
-        try
-        {
-            return ResponseData.success(invoiceService.add(model));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(invoiceService.add(model));
     }
 
     @RequestMapping(path="/{invoiceId}", method= RequestMethod.DELETE)
     @ApiOperation(value = "Delete invoice by given id")
+    @PreAuthorize("hasAnyRole('ROLE_TREASURER','ROLE_ADMINISTRATOR')")
     public ResponseData deleteContractById (@PathVariable(required = true) Integer invoiceId,
                                             @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug(String.format("Enter deleteContractById - [invoiceId: %d]", invoiceId));
-
-        try
-        {
-            Asserts.assertEntityNotNullById(invoiceService, invoiceId);
-            return ResponseData.success(invoiceService.delete(invoiceId));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        Asserts.assertEntityNotNullById(invoiceService, invoiceId);
+        return ResponseData.success(invoiceService.delete(invoiceId));
     }
 
     @RequestMapping(path="/{invoiceId}", method= RequestMethod.PATCH)
     @ApiOperation(value = "Update invoice with respect to the specified id")
+    @PreAuthorize("hasAnyRole('ROLE_TREASURER','ROLE_ADMINISTRATOR')")
     public ResponseData updateInvoice (@PathVariable(required = true) Integer invoiceId,
                                        @RequestBody InvoiceModel model,
                                        @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug(String.format("Enter updateInvoice - [invoiceId: %d, model: %s]", invoiceId, model));
-
-        try
-        {
-            Asserts.assertEntityNotNullById(invoiceService, invoiceId);
-
-            // in order to avoid overwritten id in the payload
-            model.setId(invoiceId);
-
-            return ResponseData.success(this.invoiceService.update(model));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        // in order to avoid overwritten id in the payload
+        model.setId(invoiceId);
+        Asserts.assertEntityNotNullById(invoiceService, invoiceId);
+        return ResponseData.success(this.invoiceService.update(model));
     }
 }

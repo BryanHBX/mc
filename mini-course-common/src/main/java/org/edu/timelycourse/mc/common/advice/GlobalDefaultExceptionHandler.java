@@ -1,20 +1,20 @@
-package org.edu.timelycourse.mc.web.handler;
+package org.edu.timelycourse.mc.common.advice;
 
 import org.edu.timelycourse.mc.common.constants.Constants;
 import org.edu.timelycourse.mc.common.controller.BaseController;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
-import org.edu.timelycourse.mc.common.exception.NoPermissionAccessPageException;
+import org.edu.timelycourse.mc.common.exception.AuthenticationException;
+import org.edu.timelycourse.mc.common.exception.NoPermissionException;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.security.access.AccessDeniedException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * Created by Marco on 2018/3/31.
@@ -42,7 +42,16 @@ public class GlobalDefaultExceptionHandler extends BaseController
         return ResponseData.failure(ex.getMessage());
     }
 
-    @ExceptionHandler(NoPermissionAccessPageException.class)
+    @ExceptionHandler(AuthenticationException.class)
+    @org.springframework.web.bind.annotation.ResponseBody
+    @ResponseStatus( HttpStatus.UNAUTHORIZED)
+    public ResponseData handleAuthenticationException(HttpServletRequest req, Exception ex)
+    {
+        LOGGER.error("Authentication fails when requesting API - " + req.getRequestURI());
+        return ResponseData.failure(ex.getMessage());
+    }
+
+    @ExceptionHandler(NoPermissionException.class)
     public String handleNoPermissionAccessPageException(HttpServletRequest req, Exception ex)
     {
         LOGGER.error("No permission when accessing pages - " + req.getRequestURI());

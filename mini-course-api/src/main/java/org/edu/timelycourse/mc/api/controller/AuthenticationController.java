@@ -12,12 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,20 +45,13 @@ public class AuthenticationController extends BaseController
     @ApiOperation(value = "User authentication")
     public ResponseData auth(@RequestBody JwtAuthenticationRequest authenticationRequest)
     {
-        try
-        {
-            authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
-            // Reload password post-security so we can generate the token
-            final JwtUser userDetails = (JwtUser) userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-            final String token = jwtTokenUtil.generateToken(userDetails);
+        // Reload password post-security so we can generate the token
+        final JwtUser userDetails = (JwtUser) userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+        final String token = jwtTokenUtil.generateToken(userDetails);
 
-            return ResponseData.success(new JwtAuthenticationResponse(token));
-        }
-        catch (AuthenticationException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(new JwtAuthenticationResponse(token));
     }
 
     /**

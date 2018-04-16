@@ -6,10 +6,10 @@ import org.edu.timelycourse.mc.biz.model.ContractModel;
 import org.edu.timelycourse.mc.biz.service.ContractService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
-import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/${api.version}/contract")
 @Api(tags = { "合同信息API" })
+@PreAuthorize("hasAnyRole('ROLE_CONSULTANT','ROLE_ADMINISTRATOR','ROLE_TREASURER')")
 public class ContractController extends BaseController
 {
     private static Logger LOGGER = LoggerFactory.getLogger(ContractController.class);
@@ -39,16 +40,10 @@ public class ContractController extends BaseController
                                     @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter getContract - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
-
-        try
-        {
-            return ResponseData.success(contractService.getAll());
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(contractService.getAll());
     }
 
     @RequestMapping(path="/{contractId}", method= RequestMethod.GET)
@@ -57,16 +52,10 @@ public class ContractController extends BaseController
                                         @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter getContractById - [contractId: {}]", contractId);
-
-        try
-        {
-            return ResponseData.success(Asserts.assertEntityNotNullById(contractService, contractId));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(Asserts.assertEntityNotNullById(contractService, contractId));
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
@@ -75,16 +64,10 @@ public class ContractController extends BaseController
                                      @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter addContract - [model: {}]", model);
-
-        try
-        {
-            return ResponseData.success(contractService.add(model));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(contractService.add(model));
     }
 
     @RequestMapping(path="/{contractId}", method= RequestMethod.DELETE)
@@ -93,17 +76,11 @@ public class ContractController extends BaseController
                                             @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter deleteContractById - [contractId: {}]", contractId);
-
-        try
-        {
-            Asserts.assertEntityNotNullById(contractService, contractId);
-            return ResponseData.success(contractService.delete(contractId));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        Asserts.assertEntityNotNullById(contractService, contractId);
+        return ResponseData.success(contractService.delete(contractId));
     }
 
     @RequestMapping(path="/{contractId}", method= RequestMethod.PATCH)
@@ -113,20 +90,12 @@ public class ContractController extends BaseController
                                         @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter updateContract - [contractId: {}, model: {}]", contractId, model);
-
-        try
-        {
-            Asserts.assertEntityNotNullById(contractService, contractId);
-
-            // in order to avoid overwritten id in the payload
-            model.setId(contractId);
-
-            return ResponseData.success(this.contractService.update(model));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        // in order to avoid overwritten id in the payload
+        model.setId(contractId);
+        Asserts.assertEntityNotNullById(contractService, contractId);
+        return ResponseData.success(this.contractService.update(model));
     }
 }

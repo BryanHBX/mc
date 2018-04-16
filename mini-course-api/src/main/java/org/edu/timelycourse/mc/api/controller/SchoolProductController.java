@@ -6,7 +6,6 @@ import org.edu.timelycourse.mc.biz.model.SchoolProductModel;
 import org.edu.timelycourse.mc.biz.service.SchoolProductService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
-import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,21 +37,11 @@ public class SchoolProductController extends BaseController
                                     @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter getProducts");
-
-        try
-        {
-            if (model.getProductType() != null)
-            {
-                return ResponseData.success(productService.findByType(model.getProductType()));
-            }
-
-            return ResponseData.success(productService.getAll());
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(model.getProductType() != null ?
+                productService.findByType(model.getProductType()) : productService.getAll());
     }
 
     @RequestMapping(path="/{productId}", method= RequestMethod.GET)
@@ -61,16 +50,10 @@ public class SchoolProductController extends BaseController
                                        @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter getProductById - [productId: {}]", productId);
-
-        try
-        {
-            return ResponseData.success(Asserts.assertEntityNotNullById(productService, productId));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(Asserts.assertEntityNotNullById(productService, productId));
     }
 
     @RequestMapping(path="/{productId}", method= RequestMethod.DELETE)
@@ -79,17 +62,11 @@ public class SchoolProductController extends BaseController
                                            @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter deleteProductById - [productId: {}]", productId);
-
-        try
-        {
-            Asserts.assertEntityNotNullById(productService, productId);
-            return ResponseData.success(productService.delete(productId));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        Asserts.assertEntityNotNullById(productService, productId);
+        return ResponseData.success(productService.delete(productId));
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
@@ -98,16 +75,11 @@ public class SchoolProductController extends BaseController
                                     @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter addProduct - [model: %s]", model);
+        }
 
-        try
-        {
-            return ResponseData.success(productService.add(model));
-        }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(productService.add(model));
     }
 
     @RequestMapping(path="/{productId}", method= RequestMethod.PATCH)
@@ -117,20 +89,12 @@ public class SchoolProductController extends BaseController
                                        @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter updateProduct - [productId: {}, model: {}]", productId, model);
-
-        try
-        {
-            Asserts.assertEntityNotNullById(productService, productId);
-
-            // in order to avoid overwritten id in request body
-            model.setId(productId);
-
-            return ResponseData.success(this.productService.update(model));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        // in order to avoid overwritten id in request body
+        model.setId(productId);
+        Asserts.assertEntityNotNullById(productService, productId);
+        return ResponseData.success(this.productService.update(model));
     }
 }

@@ -2,13 +2,10 @@ package org.edu.timelycourse.mc.api.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.edu.timelycourse.mc.biz.enums.EAuthorityName;
-import org.edu.timelycourse.mc.biz.enums.EUserRole;
 import org.edu.timelycourse.mc.biz.model.SystemRoleModel;
 import org.edu.timelycourse.mc.biz.service.SystemRoleService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
-import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,21 +32,15 @@ public class SystemRoleController extends BaseController
                                  @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter getRoles - [roleAlias: {}]", roleAlias);
-
-        try
-        {
-            if (StringUtil.isNotEmpty(roleAlias))
-            {
-                return ResponseData.success(roleService.findByAlias(roleAlias));
-            }
-
-            return ResponseData.success(roleService.getAll());
         }
-        catch (ServiceException ex)
+
+        if (StringUtil.isNotEmpty(roleAlias))
         {
-            return ResponseData.failure(ex.getMessage());
+            return ResponseData.success(roleService.findByAlias(roleAlias));
         }
+        return ResponseData.success(roleService.getAll());
     }
 
     @RequestMapping(path="/{roleId}", method= RequestMethod.GET)
@@ -58,16 +49,10 @@ public class SystemRoleController extends BaseController
                                     @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter getRoleById - [roleId: {}]", roleId);
-
-        try
-        {
-            return ResponseData.success(Asserts.assertEntityNotNullById(roleService, roleId));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(Asserts.assertEntityNotNullById(roleService, roleId));
     }
 
     @RequestMapping(path="/{roleId}", method= RequestMethod.DELETE)
@@ -77,17 +62,12 @@ public class SystemRoleController extends BaseController
                                         @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter deleteRoleById - [roleId: {}]", roleId);
+        }
 
-        try
-        {
-            Asserts.assertEntityNotNullById(roleService, roleId);
-            return ResponseData.success(roleService.delete(roleId));
-        }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        Asserts.assertEntityNotNullById(roleService, roleId);
+        return ResponseData.success(roleService.delete(roleId));
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
@@ -97,16 +77,10 @@ public class SystemRoleController extends BaseController
                                  @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter addRole - [model: {}]", model);
-
-        try
-        {
-            return ResponseData.success(roleService.add(model));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+        return ResponseData.success(roleService.add(model));
     }
 
     @RequestMapping(path="/{roleId}", method= RequestMethod.PATCH)
@@ -116,19 +90,13 @@ public class SystemRoleController extends BaseController
                                     @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("Enter updateRole - [roleId: {}, model: {}]", roleId, model);
-
-        try
-        {
-            Asserts.assertEntityNotNullById(roleService, roleId);
-
-            // in order to avoid overwritten id in request body
-            model.setId(roleId);
-            return ResponseData.success(this.roleService.update(model));
         }
-        catch (ServiceException ex)
-        {
-            return ResponseData.failure(ex.getMessage());
-        }
+
+        // in order to avoid overwritten id in request body
+        model.setId(roleId);
+        Asserts.assertEntityNotNullById(roleService, roleId);
+        return ResponseData.success(this.roleService.update(model));
     }
 }
