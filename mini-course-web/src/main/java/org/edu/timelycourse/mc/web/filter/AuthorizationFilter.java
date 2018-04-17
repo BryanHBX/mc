@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.web.filter;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.edu.timelycourse.mc.biz.security.JwtTokenUtil;
 import org.edu.timelycourse.mc.biz.security.JwtUser;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
@@ -45,46 +46,55 @@ public class AuthorizationFilter extends OncePerRequestFilter
             LOGGER.debug("processing authentication for '{}'", request.getRequestURL());
         }
 
-        String authToken = getToken(request);
-        JwtUser userClaims = null;
-        if (authToken != null)
+        try
         {
-            userClaims = jwtTokenUtil.getUserDetailsFromToken(authToken);
-        }
+            String authToken = getToken(request);
+            JwtUser userClaims = null;
+            if (authToken != null)
+            {
+                userClaims = jwtTokenUtil.getUserDetailsFromToken(authToken);
+            }
 
-        if (userClaims != null)
-        {
-            if (!jwtTokenUtil.isTokenExpired(authToken))
+            if (userClaims != null)
             {
-                LOGGER.info("authorized user '{}', setting security context", userClaims);
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userClaims, null, userClaims.getAuthorities());
+                if (!jwtTokenUtil.isTokenExpired(authToken))
+                {
+                    LOGGER.info("authorized user '{}', setting security context", userClaims);
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(userClaims, null, userClaims.getAuthorities());
 
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-            else
-            {
-                SecurityContextHolder.clearContext();
-            }
-        }
-        else
-        {
-            // for normal page refresh
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth == null || auth instanceof AnonymousAuthenticationToken)
-            {
-                // do nothing in case not logon
-            }
-            else
-            {
-                JwtUser jwtUser = SecurityContextHelper.getPrincipal();
-                if (jwtTokenUtil.isTokenExpired(jwtUser.getToken()))
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+                else
                 {
                     SecurityContextHolder.clearContext();
                 }
             }
+            else
+            {
+                // for normal page refresh
+                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                if (auth == null || auth instanceof AnonymousAuthenticationToken)
+                {
+                    // do nothing in case not logon
+                }
+                else
+                {
+                    JwtUser jwtUser = SecurityContextHelper.getPrincipal();
+                    if (jwtTokenUtil.isTokenExpired(jwtUser.getToken()))
+                    {
+                        SecurityContextHolder.getContext().setAuthentication(null);
+                    }
+                }
+            }
         }
+        catch (ExpiredJwtException ex)
+        {
+            LOGGER.warn("Expired JWT token", ex);
+            SecurityContextHolder.getContext().setAuthentication(null);
+        }
+
 
         chain.doFilter(request, response);
     }

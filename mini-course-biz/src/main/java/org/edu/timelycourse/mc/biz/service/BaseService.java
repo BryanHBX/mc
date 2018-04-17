@@ -85,7 +85,7 @@ public abstract class BaseService<T extends BaseEntity>
         return this.repository.getAll();
     }
 
-    public PagingBean<T> findByPage (final T entity, Integer pageNum, Integer pageSize)
+    public PagingBean<T> findByPage (T entity, Integer pageNum, Integer pageSize)
     {
         try
         {

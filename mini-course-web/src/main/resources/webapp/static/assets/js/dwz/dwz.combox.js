@@ -34,8 +34,10 @@
             return;
 		}
 
-		$.ajax({
-			type:'GET', dataType:"json", url:event.data.refUrl.replace("{value}", encodeURIComponent(event.data.$this.val())), cache: false,
+        var _header = sessionStorage.getItem("token") != undefined ? {"Authorization": "Bearer " + sessionStorage.getItem("token")}: {};
+
+        $.ajax({
+			type:'GET', dataType:"json", url:event.data.refUrl.replace("{value}", encodeURIComponent(event.data.$this.val())), cache: false, headers: _header,
 			data:{},
 			success: function(json){
 				_comboxRefresh($ref, event.data.$this, event.data.$this.attr("data") ? json[event.data.$this.attr("data")] : json);
@@ -157,7 +159,8 @@
 
 				var width = $this.css("width");
 
-				var cid = $this.attr("id") || Math.round(Math.random()*10000000);
+				//$this.attr("id") ||
+				var cid = Math.round(Math.random()*10000000);
 				var select = '<div class="combox" ' + (width ? 'style="width:' + width + '"' : '') + '><div id="combox_'+ cid +'" class="select"' + (ref?' ref="' + ref + '"' : '') + '>';
 				select += '<a '+ (width ? 'style="width:' + (parseInt(width) - 28) + 'px"' : '') +  + ' href="javascript:" name="' + name +'" value="' + value + '" default-value="'+resetValue+'">' + label +'</a></div></div>';
 				var options = '<ul ' + (width ? 'style="width:' + (parseInt(width) - 28) + 'px"' : '') + 'class="comboxop" id="op_combox_'+ cid +'">';

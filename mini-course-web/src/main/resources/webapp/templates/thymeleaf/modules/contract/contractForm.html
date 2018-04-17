@@ -18,7 +18,11 @@
                     <legend>合同信息</legend>
                     <dl>
                         <dt>绑定微信号：</dt>
-                        <dd><input name="student[wxId]" type="text" class="textInput required"></dd>
+                        <dd>
+                            <input id="stu_wxId" name="student[wxId]" type="text" class="textInput required"
+                                   postField="wxId" suggestUrl="student" suggestFields="name,wxId" lookupGroup="stu">
+                            <input id="stu_id" type="hidden" name="student[id]" clean="true"/>
+                        </dd>
                     </dl>
                     <dl>
                         <dt>合同编号：</dt>
@@ -26,7 +30,11 @@
                     </dl>
                     <dl>
                         <dt>咨询师：</dt>
-                        <dd><input name="consultantId" type="text" class="required textInput"></dd>
+                        <dd>
+                            <input id="cg_id" name="consultantId" type="hidden" clean="true" />
+                            <input id="cg_userName" name="userName" type="text" class="required textInput"
+                                   postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="cg" clean="true"/>
+                        </dd>
                     </dl>
                     <dl>
                         <dt>报名类型：</dt>
@@ -39,13 +47,13 @@
                     </dl>
                     <dl>
                         <dt>学生姓名：</dt>
-                        <dd><input name="student[name]" type="text" class="textInput required"></dd>
+                        <dd><input id="stu_name" name="student[name]" type="text" class="textInput required" clean="true"></dd>
                     </dl>
                     <dl>
                         <dt>学生年段：</dt>
                         <dd>
-                            <select class="combox" name="levelId" style="width: 160px"
-                                    ref="r_subLevel" refUrl="system/config/{value}" callIfEmpty="false"
+                            <select id="stu_levelId" class="combox" name="levelId" style="width: 160px"
+                                    ref="stu_subLevelId" refUrl="system/config/{value}" callIfEmpty="false"
                                     data="data" group="children" optName="configDescription" optVal="id"
                                     th:if="${not #lists.isEmpty(level.children)}"
                                     th:with="options=${level.children}">
@@ -57,7 +65,7 @@
                     <dl>
                         <dt>细分年段：</dt>
                         <dd>
-                            <select class="combox" name="subLevelId" style="width: 160px" id="r_subLevel">
+                            <select id="stu_subLevelId" class="combox" name="subLevelId" style="width: 160px">
                                 <option value="">请选择</option>
                             </select>
                         </dd>
@@ -65,8 +73,8 @@
                     <dl>
                         <dt>课程名称：</dt>
                         <dd>
-                            <select class="combox" name="courseId" style="width: 160px"
-                                    ref="r_subCourse" refUrl="system/config/{value}" callIfEmpty="false"
+                            <select id="stu_courseId"  class="combox" name="courseId" style="width: 160px"
+                                    ref="stu_subCourseId" refUrl="system/config/{value}" callIfEmpty="false"
                                     data="data" group="children" optName="configDescription" optVal="id"
                                     th:if="${not #lists.isEmpty(course.children)}"
                                     th:with="options=${course.children}">
@@ -78,18 +86,18 @@
                     <dl>
                         <dt>课程子类：</dt>
                         <dd>
-                            <select class="combox" name="subCourseId" style="width: 160px" id="r_subCourse">
+                            <select class="combox" name="subCourseId" style="width: 160px" id="stu_subCourseId">
                                 <option value="">请选择</option>
                             </select>
                         </dd>
                     </dl>
                     <dl>
                         <dt>报名课时：</dt>
-                        <dd><input name="enrollPeriod" type="text" class="textInput required"></dd>
+                        <dd><input name="enrollPeriod" type="text" class="textInput required number"></dd>
                     </dl>
                     <dl>
                         <dt>赠送课时：</dt>
-                        <dd><input name="freePeriod" type="text" class="textInput"></dd>
+                        <dd><input name="freePeriod" type="text" class="textInput number"></dd>
                     </dl>
                     <dl>
                         <dt></dt>
@@ -97,24 +105,24 @@
                     </dl>
                     <dl>
                         <dt>签约总价：</dt>
-                        <dd><input name="contractPrice" type="text" class="textInput required"></dd>
+                        <dd><input name="contractPrice" type="text" class="textInput required number"></dd>
                     </dl>
                     <dl>
                         <dt>优惠：</dt>
-                        <dd><input name="discountPrice" type="text" class="textInput"></dd>
+                        <dd><input name="discountPrice" type="text" class="textInput number"></dd>
                     </dl>
                     <dl>
                         <dt>实收金额：</dt>
-                        <dd><input name="totalPrice" type="text" class="textInput required"></dd>
+                        <dd><input name="totalPrice" type="text" class="textInput required number"></dd>
                     </dl>
                     <dl>
                         <dt>联系人姓名：</dt>
-                        <dd><input name="student[contactName]" type="text" class="textInput"></dd>
+                        <dd><input id="stu_contactName" clean="true" name="student[contactName]" type="text" class="textInput"></dd>
                     </dl>
                     <dl>
                         <dt>联系人关系：</dt>
                         <dd>
-                            <select class="combox" style="width: 160px" name="student[contactRelationType]">
+                            <select id="stu_contactRelationType" clean="true" class="combox" style="width: 160px" name="student[contactRelationType]">
                                 <option value="1">父亲</option>
                                 <option value="2">母亲</option>
                                 <option value="3">爷爷</option>
@@ -126,11 +134,11 @@
                     </dl>
                     <dl>
                         <dt>联系方式：</dt>
-                        <dd><input name="student[contactPhone]" type="text" class="textInput"></dd>
+                        <dd><input id="stu_contactPhone" clean="true" name="student[contactPhone]" type="text" class="textInput"></dd>
                     </dl>
                     <dl>
                         <dt>其他备注方式：</dt>
-                        <dd><input name="student[meto]" type="text" alt="如学校信息/家庭地址等" class="textInput"></dd>
+                        <dd><input id="stu_meto" name="student[meto]" clean="true" type="text" alt="如学校信息/家庭地址等" class="textInput"></dd>
                     </dl>
                     <dl>
                         <dt>签约日期：</dt>

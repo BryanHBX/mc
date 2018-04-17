@@ -51,6 +51,8 @@ function generic_ajax_op(url,type,json_data,send_handler,success_handler,error_h
             showLoading(false);
             if(error_handler != undefined && typeof(error_handler) == "function"){
                 error_handler(e);
+            } else {
+                alertMsg.error(e.status == 0 ? "目标服务器已停止工作, 请稍后再试" : e.statusText);
             }
         }
     });

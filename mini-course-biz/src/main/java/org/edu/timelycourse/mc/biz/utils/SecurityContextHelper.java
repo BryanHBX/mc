@@ -82,4 +82,9 @@ public final class SecurityContextHelper
 
         throw new ServiceException(String.format("Illegal principal which should be JwtUser: %s", principal));
     }
+
+    public static Integer getSchoolIdFromPrincipal ()
+    {
+        return isSuperRootUser() ? null : getPrincipal().getSid();
+    }
 }

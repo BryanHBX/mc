@@ -8,6 +8,7 @@ import org.edu.timelycourse.mc.biz.paging.PagingBean;
 import org.edu.timelycourse.mc.biz.repository.*;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.biz.utils.PasswordUtil;
+import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
@@ -58,8 +59,10 @@ public class UserService extends BaseService<UserModel>
     @Override
     public UserModel add (UserModel entity)
     {
-        // TODO replace using real code
         entity.setStatus(EUserStatus.ENABLED.code());
+        entity.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+
+        // TODO
         entity.setType(EUserType.INSTITUTION.code());
         entity.setRole(EUserRole.EMPLOYEE.code());
 
@@ -255,6 +258,7 @@ public class UserService extends BaseService<UserModel>
     @Override
     public PagingBean<UserModel> findByPage(UserModel entity, Integer pageNum, Integer pageSize)
     {
+        entity.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
         PagingBean<UserModel> users = super.findByPage(entity, pageNum, pageSize);
         if (users.getItems() != null)
         {

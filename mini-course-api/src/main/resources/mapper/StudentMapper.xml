@@ -70,7 +70,7 @@
             <if test="schoolId != null and schoolId > -1"> AND `school_id` = #{schoolId}</if>
             <if test="subLevelId != null and subLevelId > -1"> AND `cfg_subLevel` = #{subLevelId}</if>
             <if test="courseId != null and courseId > -1"> AND `cfg_course` = #{courseId}</if>
-            <if test="subCourseId != null and subCourseId > -1"> AND cfg_subCourse` = #{subCourseId}</if>
+            <if test="subCourseId != null and subCourseId > -1"> AND `cfg_subCourse` = #{subCourseId}</if>
         </where>
     </select>
     

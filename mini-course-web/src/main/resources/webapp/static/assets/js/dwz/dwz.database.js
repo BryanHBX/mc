@@ -5,7 +5,7 @@
 	var _lookup = {currentGroup:"", suffix:"", $target:null, pk:"id"};
 	var _util = {
 		_lookupPrefix: function(key){
-			var strDot = _lookup.currentGroup ? "." : "";
+			var strDot = _lookup.currentGroup ? "_" : "";
 			return _lookup.currentGroup + strDot + key + _lookup.suffix;
 		},
 		lookupPk: function(key){
@@ -22,16 +22,40 @@
 			// $box.trigger('bringBackSuggestDone', args);
 			$box.find(":input").each(function(){
 				var $input = $(this), inputName = $input.attr("name");
-				
+				var inputId = $input.attr("id");
+				var clean = $input.attr("clean");
+
 				for (var key in args) {
 					var name = (_lookup.pk == key) ? _util.lookupPk(key) : _util.lookupField(key);
-
-					if (name == inputName) {
-						$input.val(args[key]);
-						break;
+					if (inputId == name || name == inputName) {
+						if (args[key] || (args[key] == "" && clean != undefined)) {
+                            $input.val(args[key]);
+                            break;
+                        }
 					}
 				}
 			});
+
+            $box.find("select").each(function(){
+                var $select = $(this), selectName = $select.attr("name");
+                var selectId = $select.attr("id");
+                var clean = $select.attr("clean");
+
+                for (var key in args) {
+                    var name = (_lookup.pk == key) ? _util.lookupPk(key) : _util.lookupField(key);
+                    if (selectId == name || name == selectName) {
+                        if (args[key] || (args[key] == "" && clean != undefined)) {
+                            $select.val(args[key]).trigger("change");
+
+                            var opCombox = $("#op_" + $($select.parent()).attr("id"));
+                            opCombox.find("a").removeClass("selected");
+                            var selectedText = opCombox.find("a[value=" + args[key] + "]").addClass("selected").text();
+                            $($select.parent()).find("a").text(selectedText);
+                            break;
+                        }
+                    }
+                }
+            });
 		},
 		bringBack: function(args){
 			$.bringBackSuggest(args);
@@ -129,26 +153,33 @@
 						alertMsg.error($input.attr("warn") || DWZ.msg("alertSelectMsg"));
 						return false;
 					}
-					
+
+					if (openApiContextPath) {
+						url = openApiContextPath + "/" + url;
+					}
+
 					var postData = {};
 					postData[$input.attr("postField")||"inputValue"] = $input.val();
 
+                    var _header = sessionStorage.getItem("token") != undefined ? {"Authorization": "Bearer " + sessionStorage.getItem("token")}: {};
 					$.ajax({
 						global:false,
-						type:'POST', dataType:"json", url:url, cache: false,
+						type:'GET', dataType:"json", url:url, cache: false, headers: _header,
 						data: postData,
 						success: function(response){
 							if (!response) return;
 							var html = '';
 
+							response = response.data.items || response.data;
 							$.each(response, function(i){
 								var liAttr = '', liLabel = '';
 								
 								for (var i=0; i<suggestFields.length; i++){
 									var str = this[suggestFields[i]];
 									if (str) {
-										if (liLabel) liLabel += '-';
-										liLabel += str;
+										//if (liLabel) liLabel += ' - ';
+										if (liLabel) liLabel += "<span style='float: right;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width: 80px;'>";
+										liLabel = liLabel + str + (liLabel.endsWith(">") ? "</span>" : "");
 									}
 								}
 								for (var key in this) {
@@ -163,7 +194,7 @@
 								_select($(this));
 							});
 							if ($lis.size() == 1 && event.keyCode != DWZ.keyCode.BACKSPACE) {
-								_select($lis.eq(0));
+								//_select($lis.eq(0));
 							} else if ($lis.size() == 0){
 								var jsonStr = "";
 								for (var i=0; i<suggestFields.length; i++){
@@ -198,6 +229,7 @@
 				
 				$input.focus(_show).click(false).keyup(function(event){
 					var $items = $(op.suggest$).find("li");
+					console.log(event.keyCode);
 					switch(event.keyCode){
 						case DWZ.keyCode.ESC:
 						case DWZ.keyCode.TAB:
@@ -215,8 +247,8 @@
 							else selectedIndex++;
 							break;
 						case DWZ.keyCode.UP:
-							if (selectedIndex < 0) selectedIndex = $items.size()-1;
-							else selectedIndex--;
+							//if (selectedIndex < 0) selectedIndex = $items.size()-1;
+							//else selectedIndex--;
 							break;
 						default:
 							_show(event);

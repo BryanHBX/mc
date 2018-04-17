@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -125,7 +126,7 @@ public class JwtTokenUtil implements Serializable
             jwtUser.setToken(token);
             return jwtUser;
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
             throw new RuntimeException(String.format(
                     "Failed to get user details from token: %s", token), ex);

@@ -1,10 +1,12 @@
 package org.edu.timelycourse.mc.biz.service;
 
 import org.edu.timelycourse.mc.biz.model.StudentModel;
+import org.edu.timelycourse.mc.biz.paging.PagingBean;
 import org.edu.timelycourse.mc.biz.repository.SchoolRepository;
 import org.edu.timelycourse.mc.biz.repository.StudentRepository;
 import org.edu.timelycourse.mc.biz.repository.SystemConfigRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
+import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.slf4j.Logger;
@@ -38,8 +40,16 @@ public class StudentService extends BaseService<StudentModel>
     }
 
     @Override
+    public PagingBean<StudentModel> findByPage(StudentModel entity, Integer pageNum, Integer pageSize)
+    {
+        entity.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+        return super.findByPage(entity, pageNum, pageSize);
+    }
+
+    @Override
     public StudentModel add (StudentModel entity)
     {
+        entity.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
         if (entity.isValidInput())
         {
             // check if school exists
