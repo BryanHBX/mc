@@ -7,6 +7,7 @@ import org.edu.timelycourse.mc.biz.repository.SchoolProductRepository;
 import org.edu.timelycourse.mc.biz.repository.SchoolRepository;
 import org.edu.timelycourse.mc.biz.repository.SystemConfigRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
+import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.slf4j.Logger;
@@ -45,15 +46,23 @@ public class SchoolProductService extends BaseService<SchoolProductModel>
     {
         if (EntityUtils.isValidEntityId(courseType))
         {
-            return productRepository.getByType(courseType);
+            return productRepository.getByType(courseType, SecurityContextHelper.getSchoolIdFromPrincipal());
         }
 
         throw new ServiceException(String.format("Invalid course type %d", courseType));
     }
 
     @Override
+    public List<SchoolProductModel> getAll()
+    {
+        return productRepository.getBySchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+    }
+
+    @Override
     public SchoolProductModel add(SchoolProductModel entity)
     {
+        entity.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+
         if (entity.isValidInput())
         {
             // check if school entity exists
@@ -95,7 +104,11 @@ public class SchoolProductService extends BaseService<SchoolProductModel>
     {
         if (EntityUtils.isValidEntityId(id))
         {
+            // check if entity exists with given id
             SchoolProductModel entity = (SchoolProductModel) Asserts.assertEntityNotNullById(repository, id);
+
+            // check permission
+            SecurityContextHelper.validatePermission(entity.getSchoolId(), null);
 
             // remove all children
             if (entity.getChildren() != null)
@@ -121,9 +134,12 @@ public class SchoolProductService extends BaseService<SchoolProductModel>
             SchoolProductModel entityInDb = (SchoolProductModel) Asserts.assertEntityNotNullById(
                     repository, entity.getId());
 
+            // check permission
+            SecurityContextHelper.validatePermission(entityInDb.getSchoolId(), null);
+
             // replace using the school id from entityInDb
             // cause it's not allowed overwritten over payload during update
-            entity.setSchoolId(entity.getSchoolId());
+            entity.setSchoolId(entityInDb.getSchoolId());
 
             // check if any change with respect to its parent
             if (entity.getParentId() != entityInDb.getParentId())

@@ -6,6 +6,7 @@ import org.edu.timelycourse.mc.biz.model.SchoolProductModel;
 import org.edu.timelycourse.mc.biz.model.SystemConfigModel;
 import org.edu.timelycourse.mc.biz.model.SystemRoleModel;
 import org.edu.timelycourse.mc.biz.model.UserModel;
+import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,13 +99,12 @@ public class SchoolController extends AbstractController
                                     @RequestParam(required = false) String userName,
                                     HttpServletRequest request)
     {
-        // TODO
-        UserModel member = new UserModel();
-        member.setSchoolId(1);
-        member.setUserName(userName);
+        UserModel criteria = new UserModel();
+        criteria.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+        criteria.setUserName(userName);
 
-        model.addAttribute("pagingBean", fetchMembers(request, pageNum, numPerPage, member));
-        model.addAttribute("search", member);
+        model.addAttribute("pagingBean", fetchMembers(request, pageNum, numPerPage, criteria));
+        model.addAttribute("search", criteria);
         return getModulePage("schoolMember");
     }
 
@@ -118,7 +118,6 @@ public class SchoolController extends AbstractController
             model.addAttribute("member", fetchMemberById(request, memberId));
         }
 
-        // TODO: fetch the types owned to the school only
         model.addAttribute("types", fetchProducts(request));
         model.addAttribute("grades", fetchConfigByName(request, EBuiltInConfig.C_GRADE.name()));
         model.addAttribute("subjects", fetchConfigByName(request, EBuiltInConfig.C_SUBJECT.name()));

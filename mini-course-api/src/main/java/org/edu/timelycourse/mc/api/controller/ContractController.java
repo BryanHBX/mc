@@ -5,12 +5,15 @@ import io.swagger.annotations.ApiOperation;
 import org.edu.timelycourse.mc.biz.model.ContractModel;
 import org.edu.timelycourse.mc.biz.service.ContractService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
+import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Security;
 
 /**
  * Created by x36zhao on 2018/4/3.
@@ -43,7 +46,9 @@ public class ContractController extends BaseController
         {
             LOGGER.debug("Enter getContract - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
         }
-        return ResponseData.success(contractService.getAll());
+
+        model.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+        return ResponseData.success(contractService.findByPage(model, pageNum, pageSize));
     }
 
     @RequestMapping(path="/{contractId}", method= RequestMethod.GET)

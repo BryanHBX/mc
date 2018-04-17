@@ -1,13 +1,14 @@
 package org.edu.timelycourse.mc.web.controller;
 
-import com.google.common.reflect.TypeToken;
 import org.edu.timelycourse.mc.biz.enums.EBuiltInConfig;
-import org.edu.timelycourse.mc.biz.model.SystemConfigModel;
+import org.edu.timelycourse.mc.biz.model.ContractModel;
+import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,8 +31,17 @@ public class ContractController extends AbstractController
     }
 
     @RequestMapping("/list")
-    public String showContractList ()
+    public String showContractList (Model model,
+                                    @RequestParam(required = false) Integer pageNum,
+                                    @RequestParam(required = false) Integer numPerPage,
+                                    HttpServletRequest request)
     {
+        ContractModel criteria = new ContractModel();
+        criteria.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+
+        model.addAttribute("pagingBean", fetchContracts(request, pageNum, numPerPage, criteria));
+        model.addAttribute("search", criteria);
+
         return getModulePage("contractList");
     }
 

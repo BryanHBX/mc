@@ -33,7 +33,7 @@
 	</select>
 
     <select id="getByType" parameterType="java.lang.Integer" resultMap="result_product">
-        SELECT * FROM `t_school_product` WHERE `p_type` = #{typeId} AND `p_parent` IS NULL
+        SELECT * FROM `t_school_product` WHERE `p_type` = #{typeId} AND `school_id` = #{sid} AND `p_parent` IS NULL
     </select>
 
     <select id="getChildren" parameterType="java.lang.Integer" resultMap="result_product">
@@ -56,16 +56,22 @@
             <if test="productType != null and productType > 0">`p_type` = #{productType},</if>
             <if test="productPeriod != null and productPeriod > 0">`p_period` = #{productPeriod},</if>
             <if test="parentId != null and parentId > 0">`p_parent` = #{parentId},</if>
-            <if test="schoolId != null and schoolId > 0">`school_id` = #{schoolId},</if>
+            <!--<if test="schoolId != null and schoolId > 0">`school_id` = #{schoolId},</if>-->
             <if test="lastUpdateTime != null">`p_lastUpdateTime` = #{lastUpdateTime},</if>
             `id` = `id`
         </set>
         WHERE id = #{id}
     </update>
-    
+
+    <!--
     <select id="getAll" resultMap="result_product">
 		SELECT * FROM `t_school_product` WHERE `p_parent` IS NULL
 	</select>
+    -->
+
+    <select id="getBySchoolId" resultMap="result_product">
+        SELECT * FROM `t_school_product` WHERE `school_id` = #{sid} AND `p_parent` IS NULL
+    </select>
     
     <update id="delete" parameterType="java.lang.Integer">
         DELETE FROM `t_school_product` WHERE `id` = #{id}

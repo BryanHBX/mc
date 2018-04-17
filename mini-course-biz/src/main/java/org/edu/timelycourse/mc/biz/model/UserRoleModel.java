@@ -31,4 +31,10 @@ public class UserRoleModel extends BaseEntity
     {
         return true;
     }
+
+    @Override
+    public String getUrlParams()
+    {
+        return null;
+    }
 }

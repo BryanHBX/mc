@@ -23,4 +23,10 @@ public class SystemRoleModel extends BaseEntity
         return StringUtil.isNotEmpty(roleName, roleAlias) &&
                 EVisible.hasValue(roleVisible);
     }
+
+    @Override
+    public String getUrlParams()
+    {
+        return null;
+    }
 }

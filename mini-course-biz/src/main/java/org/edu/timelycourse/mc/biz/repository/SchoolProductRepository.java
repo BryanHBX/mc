@@ -10,5 +10,7 @@ import java.util.List;
 public interface SchoolProductRepository extends BaseRepository<SchoolProductModel>
 {
     List<SchoolProductModel> getChildren (@Param("parentId") Integer parentId);
-    List<SchoolProductModel> getByType (@Param("typeId") Integer courseTypeId);
+    List<SchoolProductModel> getBySchoolId (@Param("sid") Integer schoolId);
+    List<SchoolProductModel> getByType (@Param("typeId") Integer courseTypeId,
+                                        @Param("sid") Integer schoolId);
 }

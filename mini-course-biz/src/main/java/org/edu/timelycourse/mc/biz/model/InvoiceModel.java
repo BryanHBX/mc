@@ -53,7 +53,13 @@ public class InvoiceModel extends BaseEntity
     {
         return EPaymentType.hasValue(type) &&
                 ValidatorUtil.isFloatNumber(price) &&
-                EntityUtils.isValidEntityId(contractId, schoolId) &&
+                EntityUtils.isValidEntityId(schoolId) &&
                 Strings.isNotEmpty(invoiceNo);
+    }
+
+    @Override
+    public String getUrlParams()
+    {
+        return null;
     }
 }

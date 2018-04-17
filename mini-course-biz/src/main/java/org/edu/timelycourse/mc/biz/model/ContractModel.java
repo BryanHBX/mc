@@ -129,6 +129,7 @@ public class ContractModel extends BaseEntity
         {
             for (InvoiceModel invoice : invoices)
             {
+                invoice.setSchoolId(schoolId);
                 valid = invoice.isValidInput();
                 if (!valid)
                 {
@@ -138,5 +139,16 @@ public class ContractModel extends BaseEntity
         }
 
         return valid;
+    }
+
+    @Override
+    public String getUrlParams()
+    {
+        StringBuilder builder = new StringBuilder();
+        appendParam(builder, "schoolId", schoolId);
+        appendParam(builder, "student.name", student != null ? student.getName() : null);
+        appendParam(builder, "consultantId", consultantId);
+        builder.deleteCharAt(builder.length() - 1);
+        return builder.toString();
     }
 }

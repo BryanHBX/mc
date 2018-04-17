@@ -85,6 +85,6 @@ public final class SecurityContextHelper
 
     public static Integer getSchoolIdFromPrincipal ()
     {
-        return isSuperRootUser() ? null : getPrincipal().getSid();
+        return getPrincipal().getSid();
     }
 }

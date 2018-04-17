@@ -4,8 +4,10 @@ import org.edu.timelycourse.mc.biz.model.ContractModel;
 import org.edu.timelycourse.mc.biz.model.InvoiceModel;
 import org.edu.timelycourse.mc.biz.model.StudentModel;
 import org.edu.timelycourse.mc.biz.model.UserModel;
+import org.edu.timelycourse.mc.biz.paging.PagingBean;
 import org.edu.timelycourse.mc.biz.repository.*;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
+import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.slf4j.Logger;
@@ -45,7 +47,7 @@ public class ContractService extends BaseService<ContractModel>
         this.contractRepository = repository;
     }
 
-    private StudentModel initStudentModelBeforeAdd (final ContractModel model)
+    private void initStudentModelBeforeAdd (ContractModel model)
     {
         StudentModel studentEntity = model.getStudent();
         if (studentEntity != null)
@@ -55,7 +57,8 @@ public class ContractService extends BaseService<ContractModel>
             studentEntity.setLevelId(model.getLevelId());
             studentEntity.setSubCourseId(model.getSubCourseId());
             studentEntity.setSubLevelId(model.getSubLevelId());
-            return studentEntity;
+            studentEntity.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+            return;
         }
 
         throw new ServiceException("Student model is not given in contract");
@@ -64,15 +67,18 @@ public class ContractService extends BaseService<ContractModel>
     @Override
     public ContractModel add(ContractModel model)
     {
+        initStudentModelBeforeAdd(model);
+        model.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+
         if (model.isValidInput())
         {
-            StudentModel studentEntity = initStudentModelBeforeAdd(model);
+            StudentModel studentEntity =  model.getStudent();
 
             // check if user exists
             UserModel consultant = (UserModel) Asserts.assertEntityNotNullById(userRepository, model.getConsultantId());
 
             // check if student exists in case selection from suggest lookup
-            if (EntityUtils.isValidEntityId(model.getStudentId()))
+            if (model.getStudentId() != null && EntityUtils.isValidEntityId(model.getStudentId()))
             {
                 studentEntity = (StudentModel) Asserts.assertEntityNotNullById(studentRepository, model.getStudentId());
             }
@@ -80,7 +86,6 @@ public class ContractService extends BaseService<ContractModel>
             {
                 // save student
                 studentRepository.insert(model.getStudent());
-                studentEntity = model.getStudent();
             }
 
             // check if same school id in place
@@ -113,6 +118,7 @@ public class ContractService extends BaseService<ContractModel>
             {
                 for (InvoiceModel invoice : model.getInvoices())
                 {
+                    invoice.setSchoolId(model.getSchoolId());
                     invoice.setCreationTime(new Date());
                     invoice.setContractId(model.getId());
                     invoiceRepository.insert(invoice);
@@ -131,7 +137,10 @@ public class ContractService extends BaseService<ContractModel>
         if (EntityUtils.isValidEntityId(id))
         {
             // check if entity exists
-            Asserts.assertEntityNotNullById(repository, id);
+            ContractModel contract = (ContractModel) Asserts.assertEntityNotNullById(repository, id);
+
+            // validate permission
+            SecurityContextHelper.validatePermission(contract.getSchoolId(), null);
 
             // delete invoices if have
             List<InvoiceModel> invoices = invoiceRepository.getByContractId(id);
@@ -156,6 +165,9 @@ public class ContractService extends BaseService<ContractModel>
         {
             // check if entity exists
             ContractModel entityInDb = (ContractModel) Asserts.assertEntityNotNullById(repository, entity.getId());
+
+            // validate permission
+            SecurityContextHelper.validatePermission(entityInDb.getSchoolId(), null);
 
             // check if school changed
             if (entity.getSchoolId() != null && !entity.getSchoolId().equals(entityInDb.getSchoolId()))
@@ -182,4 +194,10 @@ public class ContractService extends BaseService<ContractModel>
         throw new ServiceException(String.format("Invalid model data to update, %s", entity));
     }
 
+    @Override
+    public PagingBean<ContractModel> findByPage(ContractModel entity, Integer pageNum, Integer pageSize)
+    {
+        entity.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+        return super.findByPage(entity, pageNum, pageSize);
+    }
 }

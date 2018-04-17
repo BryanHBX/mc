@@ -75,4 +75,10 @@ public class SchoolModel extends BaseEntity
     {
         return StringUtil.isNotEmpty(schoolName);
     }
+
+    @Override
+    public String getUrlParams()
+    {
+        return null;
+    }
 }

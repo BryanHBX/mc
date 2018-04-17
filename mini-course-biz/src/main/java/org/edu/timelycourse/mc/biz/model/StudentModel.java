@@ -87,4 +87,10 @@ public class StudentModel extends BaseEntity
                 StringUtil.isNotEmpty(wxId, contactName, contactPhone, name) &&
                 EntityUtils.isValidEntityId(schoolId, levelId, subLevelId, courseId, subCourseId);
     }
+
+    @Override
+    public String getUrlParams()
+    {
+        return null;
+    }
 }

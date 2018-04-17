@@ -30,7 +30,7 @@
         )
         VALUES
         (
-          #{name}, #{wxId}, #{contactName}, #{contactRelationType}, #{contactPhone}, #{meto}, #{consultantId}, #{schoolId}
+          #{name}, #{wxId}, #{contactName}, #{contactRelationType}, #{contactPhone}, #{meto}, #{consultantId}, #{schoolId},
           #{levelId}, #{subLevelId}, #{courseId}, #{subCourseId}, #{creationTime}
         )
     </insert>

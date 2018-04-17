@@ -89,6 +89,14 @@ public abstract class AbstractController extends BaseController implements Error
                 new TypeToken<PagingBean<UserModel>>() {}).getData();
     }
 
+    protected PagingBean<ContractModel> fetchContracts (HttpServletRequest request, Integer pageNum, Integer pageSize, final ContractModel model)
+    {
+        return remoteCall(request, String.format("contract?pageNum=%d&pageSize=%d&%s",
+                pageNum != null ? pageNum : 1, pageSize != null ? pageSize : Constants.DEFAULT_PAGE_SIZE,
+                model.getUrlParams()),
+                new TypeToken<PagingBean<ContractModel>>() {}).getData();
+    }
+
     protected List<SchoolProductModel> fetchProducts (HttpServletRequest request)
     {
         return remoteCall(request,"product", new TypeToken<List<SchoolProductModel>>() {}).getData();

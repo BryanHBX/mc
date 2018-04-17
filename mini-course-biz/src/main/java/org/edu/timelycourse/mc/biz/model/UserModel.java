@@ -195,14 +195,7 @@ public class UserModel extends BaseEntity
         StringBuilder builder = new StringBuilder();
         appendParam(builder, "userName", userName);
         appendParam(builder, "schoolId", schoolId);
+        builder.deleteCharAt(builder.length() - 1);
         return builder.toString();
-    }
-
-    private void appendParam (StringBuilder builder, String paramName, Object paramValue)
-    {
-        if (paramValue != null)
-        {
-            builder.append(paramName + "=" + paramValue.toString() + "&");
-        }
     }
 }

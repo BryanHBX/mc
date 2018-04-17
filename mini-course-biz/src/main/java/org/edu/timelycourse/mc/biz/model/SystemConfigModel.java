@@ -59,4 +59,10 @@ public class SystemConfigModel extends BaseEntity
         return StringUtil.isNotEmpty(configName, configDescription) &&
                 (parentId == null || EntityUtils.isValidEntityId(parentId));
     }
+
+    @Override
+    public String getUrlParams()
+    {
+        return null;
+    }
 }

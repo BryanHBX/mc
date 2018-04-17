@@ -117,7 +117,7 @@
                     </dl>
                     <dl>
                         <dt>联系人姓名：</dt>
-                        <dd><input id="stu_contactName" clean="true" name="student[contactName]" type="text" class="textInput"></dd>
+                        <dd><input id="stu_contactName" clean="true" name="student[contactName]" type="text" class="textInput required"></dd>
                     </dl>
                     <dl>
                         <dt>联系人关系：</dt>
@@ -134,7 +134,7 @@
                     </dl>
                     <dl>
                         <dt>联系方式：</dt>
-                        <dd><input id="stu_contactPhone" clean="true" name="student[contactPhone]" type="text" class="textInput"></dd>
+                        <dd><input id="stu_contactPhone" clean="true" name="student[contactPhone]" type="text" class="textInput required mobile"></dd>
                     </dl>
                     <dl>
                         <dt>其他备注方式：</dt>
@@ -201,7 +201,7 @@
             generic_ajax_op("contract", "POST", $("#contractForm").serializeJSON(), null, (
                 function(result) {
                     alertMsg.correct("合同添加成功");
-                    reloadConfigNavTab();
+                    navTab.reload(null, {});
                 }
             ));
         });
