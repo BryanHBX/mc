@@ -291,11 +291,14 @@ function ajaxTodo(url, callback, type){
 	var $callback = callback || navTabAjaxDone;
 	var _type = type || "POST";
 	if (! $.isFunction($callback)) $callback = eval('(' + callback + ')');
+    var _header = (sessionStorage.getItem("token") != undefined ? {"Authorization": "Bearer " + sessionStorage.getItem("token")}: {});
+
 	$.ajax({
 		type:_type,
 		url:url,
 		dataType:"json",
 		cache: false,
+		headers: _header,
 		success: $callback,
 		error: DWZ.ajaxError
 	});
