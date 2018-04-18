@@ -13,11 +13,12 @@
         <result property="type" column="fee_type"/>
         <result property="creationTime" column="creationTime" />
         <result property="lastUpdateTime" column="updateTime" />
+        <result property="ownerId" column="owner_id" />
     </resultMap>
     
     <insert id="insert" parameterType="InvoiceModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_school_invoice` (contract_id, school_id, invoice_no, fee_amount, fee_type, creationTime)
-          VALUES (#{contractId}, #{schoolId}, #{invoiceNo}, #{price}, #{type}, #{creationTime})
+        INSERT INTO `t_school_invoice` (contract_id, school_id, invoice_no, fee_amount, fee_type, creationTime, owner_id)
+          VALUES (#{contractId}, #{schoolId}, #{invoiceNo}, #{price}, #{type}, #{creationTime}, #{ownerId})
     </insert>
 
     <update id="update" parameterType="InvoiceModel">
@@ -28,6 +29,7 @@
             <if test="price != null and price > 0">`fee_amount` = #{price},</if>
             <if test="type != null and type > -1">`fee_type` = #{type},</if>
             <if test="updateTime != null">`updateTime` = #{lastUpdateTime},</if>
+            <if test="ownerId != null and ownerId > 0">`owner_id` = #{ownerId},</if>
             `id` = `id`
         </set>
         WHERE id = #{id}
@@ -41,6 +43,7 @@
             <if test="schoolId != null and schoolId > 0"> AND `school_id` = ${schoolId}</if>
             <if test="invoiceNo != null and invoiceNo != ''"> AND `invoice_no` LIKE CONCAT('%',#{invoiceNo},'%')</if>
             <if test="type != null and type > -1"> AND `fee_type` = #{type}</if>
+            <if test="ownerId != null and ownerId > 0"> AND `owner_id` = #{ownerId}</if>
         </where>
     </select>
     

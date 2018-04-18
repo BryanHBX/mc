@@ -48,6 +48,11 @@ public class InvoiceModel extends BaseEntity
      */
     private Date lastUpdateTime;
 
+    /**
+     * 归属者
+     */
+    private Integer ownerId;
+
     @Override
     public boolean isValidInput ()
     {

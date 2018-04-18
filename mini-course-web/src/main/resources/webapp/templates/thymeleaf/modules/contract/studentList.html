@@ -1,4 +1,4 @@
-<form xmlns:th="http://www.thymeleaf.org" id="pagerForm" method="GET" action="contract/list">
+<form xmlns:th="http://www.thymeleaf.org" id="pagerForm" method="GET" action="contract/students">
     <input type="hidden" name="pageNum" th:value="${pagingBean ne null ? pagingBean.pageNumber : 1}" />
     <input type="hidden" name="numPerPage" th:value="${pagingBean ne null ? pagingBean.pageSize : 20}"  />
 </form>
@@ -8,16 +8,14 @@
 </style>
 
 <div class="pageHeader" xmlns:th="http://www.thymeleaf.org">
-    <form id="studentSearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="w_removeSelected.html" method="post">
+    <form id="studentSearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="contract/students" method="GET">
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
                     <label>学生姓名：</label>
-                    <input id="ss_name" name="student.name" type="text" class="textInput" postField="name"
-                           suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="ss" clean="true"
-                           th:value="${criteria != null and criteria.student ne null ? criteria.student.name : ''}"/>
-                    <input id="ss_id" type="hidden" name="student.id" clean="true"
-                           th:value="${criteria != null and criteria.student ne null ? criteria.student.id : ''}" />
+                    <input id="ss_name" name="name" type="text" class="textInput" postField="name"
+                           suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="ss"
+                           th:value="${criteria != null and criteria.name ne null ? criteria.name : ''}"/>
                 </li>
                 <li>
                     <label>学生类型：</label>
@@ -45,7 +43,7 @@
                 <li>
                     <label>咨询师：</label>
                     <input id="sg_id" name="consultantId" type="hidden" clean="true"
-                           th:value="${criteria != null ? criteria.consultantId : ''}"/>
+                           th:value="${criteria != null and criteria.consultantId ne null ? criteria.consultantId : ''}"/>
                     <input id="sg_userName" name="consultant.userName" type="text" class="textInput"
                            postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sg" clean="true"
                            th:value="${criteria != null and criteria.consultant ne null ? criteria.consultant.userName : ''}"/>
@@ -53,7 +51,7 @@
                 <li>
                     <label>学管师：</label>
                     <input id="sp_id" name="supervisorId" type="hidden" clean="true"
-                           th:value="${criteria != null ? criteria.supervisorId : ''}"/>
+                           th:value="${criteria != null and criteria.supervisorId ne null ? criteria.supervisorId : ''}"/>
                     <input id="sp_userName" name="supervisor.userName" type="text" class="textInput"
                            postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sp" clean="true"
                            th:value="${criteria != null and criteria.supervisor ne null ? criteria.supervisor.userName : ''}"/>
@@ -68,12 +66,12 @@
     </form>
 </div>
 
-<div class="pageContent">
+<div class="pageContent" xmlns:th="http://www.thymeleaf.org">
     <table class="table" width="100%" layoutH="110">
         <thead>
             <tr>
                 <th width="60">学生类型</th>
-                <th width="120">姓名</th>
+                <th width="100">姓名</th>
                 <th>微信号</th>
                 <th>年段</th>
                 <th>细分年段</th>
@@ -87,6 +85,24 @@
             </tr>
         </thead>
         <tbody>
+            <div th:if="${pagingBean != null and pagingBean.items != null}">
+                <tr th:each="item: ${pagingBean.items}">
+                    <td align="center"></td>
+                    <td align="center" th:text="${item.name}"></td>
+                    <td align="left" th:text="${item.wxId}"></td>
+                    <td align="center" th:text="${item.level ne null ? item.level.configDescription : '--'}"></td>
+                    <td align="center" th:text="${item.subLevel ne null ? item.subLevel.configDescription : '--'}"></td>
+                    <td align="center" th:text="${item.contactName}"></td>
+                    <td align="center" th:text="${item.contactRelationType}"></td>
+                    <td align="center" th:text="${item.contactPhone}"></td>
+                    <td align="center" th:text="${item.meto}"></td>
+                    <td align="center" th:text="${item.consultant ne null ? item.consultant.userName : '--'}"></td>
+                    <td align="center" th:text="${item.supervisor ne null ? item.supervisor.userName : '--'}"></td>
+                    <td align="center">
+                        <a href="javascript:void(0);" style="float: none; text-decoration: underline; color: #1465ff">变更微信号</a>
+                    </td>
+                </tr>
+            </div>
         </tbody>
     </table>
 

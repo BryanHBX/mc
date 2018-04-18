@@ -23,6 +23,19 @@
 
         <result property="supervisorId" column="supervisor_id" />
         <result property="status" column="s_status" />
+
+        <association property="consultant" column="consultant_id"
+                     select="org.edu.timelycourse.mc.biz.repository.UserRepository.get" />
+        <association property="supervisor" column="supervisor_id"
+                     select="org.edu.timelycourse.mc.biz.repository.UserRepository.get" />
+        <association property="level" column="cfg_level"
+                     select="org.edu.timelycourse.mc.biz.repository.SystemConfigRepository.get" />
+        <association property="subLevel" column="cfg_subLevel"
+                     select="org.edu.timelycourse.mc.biz.repository.SystemConfigRepository.get" />
+        <association property="course" column="cfg_course"
+                     select="org.edu.timelycourse.mc.biz.repository.SchoolProductRepository.get" />
+        <association property="subCourse" column="cfg_subCourse"
+                     select="org.edu.timelycourse.mc.biz.repository.SchoolProductRepository.get" />
     </resultMap>
     
     <insert id="insert" parameterType="StudentModel" useGeneratedKeys="true" keyProperty="id">

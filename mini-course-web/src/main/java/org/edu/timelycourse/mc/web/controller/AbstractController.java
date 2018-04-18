@@ -95,7 +95,7 @@ public abstract class AbstractController extends BaseController implements Error
                                                    Integer pageSize,
                                                    final StudentModel model)
     {
-        return remoteCall(request, String.format("member?pageNum=%d&pageSize=%d&%s",
+        return remoteCall(request, String.format("student?pageNum=%d&pageSize=%d&%s",
                 pageNum != null ? pageNum : 1, pageSize != null ? pageSize : Constants.DEFAULT_PAGE_SIZE,
                 model.getUrlParams()),
                 new TypeToken<PagingBean<StudentModel>>() {}).getData();

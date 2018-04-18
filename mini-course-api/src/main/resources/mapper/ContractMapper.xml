@@ -107,6 +107,7 @@
             <if test="contractStatus != null and contractStatus > -1"> AND `c_status` = #{contractStatus}</if>
             <if test="payStatus != null and payStatus > -1"> AND `c_paystatus` = #{payStatus}</if>
         </where>
+         ORDER BY `contract_date` DESC
     </select>
 
     <select id="getByEntity" parameterType="ContractModel" resultMap="result_contract">
@@ -128,6 +129,7 @@
             <if test="contractStatus != null and contractStatus > -1"> AND `c_status` = #{contractStatus}</if>
             <if test="payStatus != null and payStatus > -1"> AND `c_paystatus` = #{payStatus}</if>
         </where>
+         ORDER BY `contract_date` DESC
     </select>
 
     <select id="get" parameterType="java.lang.Integer" resultMap="result_contract">

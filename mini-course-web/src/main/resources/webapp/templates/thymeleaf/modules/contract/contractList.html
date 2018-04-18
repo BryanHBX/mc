@@ -88,7 +88,8 @@
                 <th>转退课时</th>
                 <th width="80">剩余课时</th>
                 <th width="60">课时记录</th>
-                <th width="60">补缴</th>
+                <th width="60">转课时</th>
+                <th width="60">退费</th>
                 <th>咨询师</th>
                 <th>学管师</th>
             </tr>
@@ -115,11 +116,16 @@
                         <a title="查看课时记录" target="dialog" mask="true" width="585" height="450" class="btnLook" href="" style="float: none">查看</a>
                     </td>
                     <td align="center">
-                        <a title="欠费补缴" th:if="${item.totalPrice - item.payTotal > 0}" target="dialog" mask="true" width="585" height="450" href=""
-                           style="float: none; text-decoration: underline; color: #ff9900">
-                            <span>补缴</span>
+                        <a title="转课时" target="dialog" mask="true" width="585" height="450" href=""
+                           style="float: none; text-decoration: underline; color: #1465ff">
+                            <span>转课时</span>
                         </a>
-                        <span th:if="${item.totalPrice - item.payTotal == 0}">--</span>
+                    </td>
+                    <td align="center">
+                        <a title="退费" target="dialog" mask="true" width="585" height="450" href=""
+                           style="float: none; text-decoration: underline; color: #1465ff">
+                            <span>退费</span>
+                        </a>
                     </td>
                     <td align="center" th:text="${item.consultant ne null ? item.consultant.userName : '--'}"></td>
                     <td align="center" th:text="${item.supervisor ne null ? item.supervisor.userName : '--'}"></td>

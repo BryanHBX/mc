@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-04-18 16:06:44
+Date: 2018-04-18 23:38:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -143,19 +143,20 @@ CREATE TABLE `t_school_invoice` (
   `fee_type` tinyint(4) DEFAULT NULL COMMENT '支付方式',
   `creationTime` datetime DEFAULT NULL,
   `updateTime` datetime DEFAULT NULL,
-  `recorder` int(4) DEFAULT NULL,
+  `recorder` int(4) DEFAULT NULL COMMENT '操作人员ID',
+  `owner_id` int(11) DEFAULT NULL COMMENT '归属者',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_school_invoice
 -- ----------------------------
-INSERT INTO `t_school_invoice` VALUES ('1', '1', '0', '124', '123', '1', '2018-04-10 22:50:53', null, null);
-INSERT INTO `t_school_invoice` VALUES ('2', '1', '0', '1241', '24', '3', '2018-04-10 22:50:53', null, null);
-INSERT INTO `t_school_invoice` VALUES ('3', '1', '0', '123', '231', '4', '2018-04-10 22:50:53', null, null);
-INSERT INTO `t_school_invoice` VALUES ('4', '2', '2', '1231', '12', '1', '2018-04-17 23:07:03', null, null);
-INSERT INTO `t_school_invoice` VALUES ('5', '3', '2', '2018041812', '7400', '2', '2018-04-18 12:43:36', null, null);
-INSERT INTO `t_school_invoice` VALUES ('6', '4', '2', '12311231', '4500', '3', '2018-04-18 14:57:12', null, null);
+INSERT INTO `t_school_invoice` VALUES ('1', '1', '0', '124', '123', '1', '2018-04-10 22:50:53', null, null, null);
+INSERT INTO `t_school_invoice` VALUES ('2', '1', '0', '1241', '24', '3', '2018-04-10 22:50:53', null, null, null);
+INSERT INTO `t_school_invoice` VALUES ('3', '1', '0', '123', '231', '4', '2018-04-10 22:50:53', null, null, null);
+INSERT INTO `t_school_invoice` VALUES ('4', '2', '2', '1231', '12', '1', '2018-04-17 23:07:03', null, null, null);
+INSERT INTO `t_school_invoice` VALUES ('5', '3', '2', '2018041812', '7400', '2', '2018-04-18 12:43:36', null, null, null);
+INSERT INTO `t_school_invoice` VALUES ('6', '4', '2', '12311231', '4500', '3', '2018-04-18 14:57:12', null, null, null);
 
 -- ----------------------------
 -- Table structure for `t_school_product`

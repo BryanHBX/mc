@@ -1,38 +1,61 @@
-<form id="pagerForm" method="post" action="w_removeSelected.html">
-    <input type="hidden" name="pageNum" value="1">
-    <input type="hidden" name="numPerPage" value="${model.numPerPage}">
-    <input type="hidden" name="orderField" value="${param.orderField}">
-    <input type="hidden" name="orderDirection" value="${param.orderDirection}">
-    <input type="hidden" name="keywords" value=""><input type="hidden" name="province" value="">
+<form xmlns:th="http://www.thymeleaf.org" id="pagerForm" method="GET" action="finance/contract">
+    <input type="hidden" name="pageNum" th:value="${pagingBean ne null ? pagingBean.pageNumber : 1}" />
+    <input type="hidden" name="numPerPage" th:value="${pagingBean ne null ? pagingBean.pageSize : 20}"  />
 </form>
-<div class="pageHeader">
-    <form id="mySearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="w_removeSelected.html" method="post">
+
+<style>
+    #fcSearchForm input { width: 100px; }
+</style>
+
+<div class="pageHeader" xmlns:th="http://www.thymeleaf.org">
+    <form id="fcSearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="finance/contract" method="GET">
         <div class="searchBar">
-            <ul class="searchContent">
-                <li>
-                    <label>学生姓名：</label>
-                    <input type="text" name="keywords" value="" style="width: 100px;" class="textInput">
-                </li>
-                <li>
-                    <label>咨询师：</label>
-                    <input type="text" name="keywords" value="" style="width: 100px;" class="textInput">
-                </li>
-                <li>
-                    <label>合同状态：</label>
-                    <select class="combox" name="province" style="display: none;">
-                        <option value="">所有</option>
-                        <option value="北京">执行中</option>
-                        <option value="上海">已结束</option>
-                    </select>
-                </li>
-                <li>
-                    <label>缴费状态：</label>
-                    <select class="combox" name="province" style="display: none;">
-                        <option value="">所有</option>
-                        <option value="广东">有欠费</option>
-                    </select>
-                </li>
-            </ul>
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        <label>学生姓名：</label>
+                        <input id="ss_name" name="student.name" type="text" class="textInput" postField="name"
+                               suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="ss" clean="true"
+                               th:value="${criteria != null and criteria.student ne null ? criteria.student.name : ''}"/>
+                        <input id="ss_id" type="hidden" name="student.id" clean="true"
+                               th:value="${criteria != null and criteria.student ne null ? criteria.student.id : ''}" />
+                    </td>
+                    <td>
+                        <label>咨询师：</label>
+                        <input id="sg_id" name="consultantId" type="hidden" clean="true"
+                               th:value="${criteria != null ? criteria.consultantId : ''}"/>
+                        <input id="sg_userName" name="consultant.userName" type="text" class="textInput"
+                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sg" clean="true"
+                               th:value="${criteria != null and criteria.consultant ne null ? criteria.consultant.userName : ''}"/>
+                    </td>
+                    <td>
+                        <label>学管师：</label>
+                        <input id="sp_id" name="supervisorId" type="hidden" clean="true"
+                               th:value="${criteria != null ? criteria.supervisorId : ''}"/>
+                        <input id="sp_userName" name="supervisor.userName" type="text" class="textInput"
+                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sp" clean="true"
+                               th:value="${criteria != null and criteria.supervisor ne null ? criteria.supervisor.userName : ''}"/>
+                    </td>
+                    <td>
+                        <label>合同状态：</label>
+                        <select class="combox" name="contractStatus" style="width: 100px;"
+                                th:value="${criteria != null and criteria.contractStatus ne null ? criteria.contractStatus : ''}">
+                            <option value="">所有</option>
+                            <option value="1" th:selected="${criteria != null and criteria.contractStatus eq 1}">执行中</option>
+                            <option value="0" th:selected="${criteria != null and criteria.contractStatus eq 0}">已结束</option>
+                        </select>
+                    </td>
+                    <td>
+                        <label>缴费状态：</label>
+                        <select class="combox" name="payStatus" style="width: 100px;"
+                                th:value="${criteria != null and criteria.payStatus ne null ? criteria.payStatus : ''}">
+                            <option value="">所有</option>
+                            <option value="1" th:selected="${criteria != null and criteria.payStatus eq 1}">有欠费</option>
+                            <option value="0" th:selected="${criteria != null and criteria.payStatus eq 0}">已结清</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
             <div class="subBar">
                 <ul>
                     <li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
@@ -41,94 +64,92 @@
         </div>
     </form>
 </div>
-<div class="pageContent j-resizeGrid">
-    <!--<div class="panelBar">
-        <ul class="toolBar">
-            <li class=""><a class="add" href="demo_page4.html" target="navTab"><span>添加</span></a></li>
-            <li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" href="demo/common/ajaxDone.html" class="delete"><span>批量删除默认方式</span></a></li>
-            <li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" posttype="string" href="demo/common/ajaxDone.html" class="delete"><span>批量删除逗号分隔</span></a></li>
-            <li class=""><a class="edit" href="demo_page4.html?uid={sid_user}" target="navTab" warn="请选择一个用户"><span>修改</span></a></li>
-            <li class="line">line</li>
-            <li><a class="icon" href="demo/common/dwz-team.xls" target="dwzExport" targettype="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span></a></li>
-            <li class=""><a class="icon" href="javascript:myExport('demo/common/dwz-team.xls')"><span>自定义导出</span></a></li>
-            <li><a title="选中id跳出DWZ页面打印?" target="selectedBlank" rel="ids" posttype="string" href="demo/common/ajaxDone.html" class="icon"><span>选中跳出DWZ</span></a></li>
-            <li><a target="selectedLoad" rel="ids" postType="string" href="demo_page1.html" class="icon"><span>批量Dialog Load逗号分隔</span></a></li>
-        </ul>
-    </div>-->
-    <div class="grid"><input id="sid_user" type="hidden" value="1">
-        <div class="gridHeader">
-            <div class="gridThead" style="position: relative; left: 0px;">
-                <table style="width:100%;">
-                    <thead>
-                        <tr>
-                            <th orderfield="accountNo" style="cursor: pointer;"><div class="gridCol" title="客户号">报名类型</div></th>
-                            <th orderfield="accountName" class="" style="cursor: pointer;"><div class="gridCol" title="客户名称">签约日期</div></th>
-                            <th orderfield="accountType" style="cursor: pointer;"><div class="gridCol" title="客户类型">合同编号</div></th>
-                            <th orderfield="accountCert" style="cursor: pointer;"><div class="gridCol" title="证件号码">姓名</div></th>
-                            <th orderfield="accountLevel" class="center" style="cursor: pointer;"><div class="gridCol" title="信用等级">年级</div></th>
-                            <th class="" style="cursor: default;"><div class="gridCol" title="所属行业">报名课程</div></th>
-                            <th style=""><div class="gridCol" title="建档日期">报名课时</div></th>
-                            <th style=""><div class="gridCol" title="操作">赠送课时</div></th>
-                            <th style=""><div class="gridCol" title="操作">签约总价</div></th>
-                            <th style=""><div class="gridCol" title="操作">实收金额</div></th>
-                            <th style=""><div class="gridCol" title="操作">实际单价</div></th>
-                            <th style=""><div class="gridCol" title="操作">已缴费</div></th>
-                            <th style=""><div class="gridCol" title="操作">欠费</div></th>
-                            <th style=""><div class="gridCol" title="操作">转退课时</div></th>
-                            <th style=""><div class="gridCol" title="操作">剩余课时</div></th>
-                            <th style=""><div class="gridCol" title="操作">课时记录</div></th>
-                            <th style=""><div class="gridCol" title="操作">转课时</div></th>
-                            <th style=""><div class="gridCol" title="操作">退费</div></th>
-                            <th style=""><div class="gridCol" title="操作">咨询师</div></th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-        <div class="gridScroller" layouth="110" style="width: 1211px; height: 98px; overflow: auto;">
-            <div class="gridTbody">
-                <table style="width:1180px;">
-                    <tbody>
 
-                    </tbody>
-                </table>
-            </div>
+<div class="pageContent" xmlns:th="http://www.thymeleaf.org">
+    <table class="table" width="100%" layoutH="110">
+        <thead>
+        <tr>
+            <th width="60">报名类型</th>
+            <th width="80">签约日期</th>
+            <th>合同编号</th>
+            <th>姓名</th>
+            <th>细分年段</th>
+            <th>报名课程</th>
+            <th width="80">报名课时</th>
+            <th width="80">赠送课时</th>
+            <th>签约总价</th>
+            <th>实收金额</th>
+            <th>实际单价</th>
+            <th>已缴费</th>
+            <th>欠费</th>
+            <th>转退课时</th>
+            <th width="80">剩余课时</th>
+            <th width="60">课时记录</th>
+            <th width="60">转课时</th>
+            <th width="60">退费</th>
+            <th>咨询师</th>
+            <th>学管师</th>
+        </tr>
+        </thead>
+        <tbody>
+        <div th:if="${pagingBean != null and pagingBean.items != null}">
+            <tr th:each="item: ${pagingBean.items}">
+                <td align="center" th:text="${item.enrollType eq 1 ? '新报' : (item.enrollType eq 2 ? '续保' : '--')}"></td>
+                <td align="center" th:text="${item.contractDate ne null ? #dates.format(item.contractDate, 'yyyy-MM-dd') : '--'}"></td>
+                <td align="center" th:text="${item.contractNo}"></td>
+                <td align="center" th:text="${item.student ne null ? item.student.name : '--'}"></td>
+                <td align="center" th:text="${item.subLevel ne null ? item.subLevel.configDescription : '--'}"></td>
+                <td align="center" th:text="${item.course ne null ? item.course.productName : '--'}"></td>
+                <td align="center" th:text="${item.enrollPeriod}"></td>
+                <td align="center" th:text="${item.freePeriod}"></td>
+                <td align="center" th:text="${item.contractPrice}"></td>
+                <td align="center" th:text="${item.totalPrice}"></td>
+                <td align="center" th:text="${#numbers.formatDecimal(item.totalPrice / item.enrollPeriod, 3, 2)}"></td>
+                <td align="center" th:text="${item.payTotal}"></td>
+                <td align="center" th:text="${item.totalPrice - item.payTotal > 0 ? ('-' + (item.totalPrice - item.payTotal)) : '--'}" th:style="${item.totalPrice - item.payTotal > 0 ? 'background-color: red;' : ''}"></td>
+                <td align="center" th:text="${item.enrollType}"></td>
+                <td align="center" th:text="${item.enrollType}"></td>
+                <td align="center">
+                    <a title="查看课时记录" target="dialog" mask="true" width="585" height="450" class="btnLook" href="" style="float: none">查看</a>
+                </td>
+                <td align="center">
+                    <a title="转课时" target="dialog" mask="true" width="585" height="450" href=""
+                       style="float: none; text-decoration: underline; color: #1465ff">
+                        <span>转课时</span>
+                    </a>
+                </td>
+                <td align="center">
+                    <a title="退费" target="dialog" mask="true" width="585" height="450" href=""
+                       style="float: none; text-decoration: underline; color: #1465ff">
+                        <span>退费</span>
+                    </a>
+                </td>
+                <td align="center" th:text="${item.consultant ne null ? item.consultant.userName : '--'}"></td>
+                <td align="center" th:text="${item.supervisor ne null ? item.supervisor.userName : '--'}"></td>
+            </tr>
         </div>
-        <div class="resizeMarker" style="height:300px; left:57px;display:none;"></div><div class="resizeProxy" style="height:300px; left:377px;display:none;"></div></div>
+        </tbody>
+    </table>
+
     <div class="panelBar">
         <div class="pages">
             <span>显示</span>
-            <div class="combox"><div id="combox_9181136" class="select"><a href="javascript:" name="numPerPage" value="20" default-value="20">20</a><select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})" style="display: none;">
-                <option value="20">20</option>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                <option value="1" th:selected="${pagingBean != null and pagingBean.pageSize eq 1}">1</option>
+                <option value="20" th:selected="${pagingBean != null and pagingBean.pageSize eq 20}">20</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
+                <option value="150">150</option>
                 <option value="200">200</option>
-            </select></div></div>
-            <span>条，共${totalCount}条</span>
+                <option value="250">250</option>
+            </select>
+            <span th:text="'条，共' + ${pagingBean ne null ? pagingBean.totalItems : 0} + '条'"></span>
         </div>
-
-        <div class="pagination" targettype="navTab" totalcount="200" numperpage="20" pagenumshown="10" currentpage="1">
-            <ul>
-                <li class="j-first disabled">
-                    <a class="first" href="javascript:;" style="display: none;"><span>首页</span></a>
-                    <span class="first"><span>首页</span></span>
-                </li>
-                <li class="j-prev disabled">
-                    <a class="previous" href="javascript:;" style="display: none;"><span>上一页</span></a>
-                    <span class="previous"><span>上一页</span></span>
-                </li>
-                <li class="selected j-num"><a href="javascript:;">1</a></li><li class="j-num"><a href="javascript:;">2</a></li><li class="j-num"><a href="javascript:;">3</a></li><li class="j-num"><a href="javascript:;">4</a></li><li class="j-num"><a href="javascript:;">5</a></li><li class="j-num"><a href="javascript:;">6</a></li><li class="j-num"><a href="javascript:;">7</a></li><li class="j-num"><a href="javascript:;">8</a></li><li class="j-num"><a href="javascript:;">9</a></li><li class="j-num"><a href="javascript:;">10</a></li>
-                <li class="j-next">
-                    <a class="next" href="javascript:;"><span>下一页</span></a>
-                    <span class="next" style="display: none;"><span>下一页</span></span>
-                </li>
-                <li class="j-last">
-                    <a class="last" href="javascript:;"><span>末页</span></a>
-                    <span class="last" style="display: none;"><span>末页</span></span>
-                </li>
-                <li class="jumpto"><input class="textInput" type="text" size="4" value="1"><input class="goto" type="button" value="确定"></li>
-            </ul>
+        <div class="pagination" targetType="navTab"
+             th:totalCount="${pagingBean ne null ? pagingBean.totalItems : 0}"
+             th:numPerPage="${pagingBean ne null ? pagingBean.pageSize : 20}"
+             pageNumShown="10"
+             th:currentPage="${pagingBean ne null ? pagingBean.pageNumber : 1}">
         </div>
-
     </div>
 </div>
