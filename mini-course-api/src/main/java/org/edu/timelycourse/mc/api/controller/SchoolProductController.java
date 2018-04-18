@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.edu.timelycourse.mc.biz.model.SchoolProductModel;
 import org.edu.timelycourse.mc.biz.service.SchoolProductService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
+import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,8 @@ public class SchoolProductController extends BaseController
         {
             LOGGER.debug("Enter getProducts");
         }
+
+        model.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
         return ResponseData.success(model.getProductType() != null ?
                 productService.findByType(model.getProductType()) : productService.getAll());
     }

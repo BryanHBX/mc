@@ -46,6 +46,11 @@ public class StudentModel extends BaseEntity
     private Integer consultantId;
 
     /**
+     * 学管师
+     */
+    private Integer supervisorId;
+
+    /**
      * 学生年段
      */
     private Integer levelId;
@@ -80,6 +85,11 @@ public class StudentModel extends BaseEntity
      */
     private Integer schoolId;
 
+    /**
+     * 学生状态
+     */
+    private Integer status;
+
     @Override
     public boolean isValidInput ()
     {
@@ -91,6 +101,14 @@ public class StudentModel extends BaseEntity
     @Override
     public String getUrlParams()
     {
-        return null;
+        StringBuilder builder = new StringBuilder();
+        appendParam(builder, "schoolId", schoolId);
+        appendParam(builder, "name", name);
+        appendParam(builder, "levelId", levelId);
+        appendParam(builder, "subLevelId", subLevelId);
+        appendParam(builder, "consultantId", consultantId);
+        appendParam(builder, "consultantId", supervisorId);
+        builder.deleteCharAt(builder.length() - 1);
+        return builder.toString();
     }
 }

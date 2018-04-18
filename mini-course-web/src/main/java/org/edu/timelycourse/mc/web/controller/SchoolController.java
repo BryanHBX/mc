@@ -52,6 +52,9 @@ public class SchoolController extends AbstractController
         }
         else
         {
+            model.addAttribute("products", fetchProducts(request));
+
+            /*
             SystemConfigModel courseType = fetchConfigByName(request, EBuiltInConfig.C_COURSE_TYPE.name());
             if (courseType != null && courseType.getChildren() != null)
             {
@@ -63,6 +66,7 @@ public class SchoolController extends AbstractController
 
                 model.addAttribute("products", products);
             }
+            */
         }
 
         return getModulePage("schoolProduct");

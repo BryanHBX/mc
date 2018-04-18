@@ -74,12 +74,10 @@
                         <dt>课程名称：</dt>
                         <dd>
                             <select id="stu_courseId"  class="combox" name="courseId" style="width: 160px"
-                                    ref="stu_subCourseId" refUrl="system/config/{value}" callIfEmpty="false"
-                                    data="data" group="children" optName="configDescription" optVal="id"
-                                    th:if="${not #lists.isEmpty(course.children)}"
-                                    th:with="options=${course.children}">
+                                    ref="stu_subCourseId" refUrl="product/{value}" callIfEmpty="false"
+                                    data="data" group="children" optName="productName" optVal="id">
                                 <option value="">请选择</option>
-                                <option th:each="option:${options}" th:value="${option.id}" th:text="${option.configDescription}">课程名称</option>
+                                <option th:each="option:${products}" th:value="${option.id}" th:text="${option.productName}">课程名称</option>
                             </select>
                         </dd>
                     </dl>

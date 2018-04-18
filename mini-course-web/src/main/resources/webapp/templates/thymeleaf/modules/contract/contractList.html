@@ -3,32 +3,55 @@
     <input type="hidden" name="numPerPage" th:value="${pagingBean ne null ? pagingBean.pageSize : 20}"  />
 </form>
 
-<div class="pageHeader">
+<style>
+    #contractSearchForm input { width: 100px; }
+</style>
+
+<div class="pageHeader" xmlns:th="http://www.thymeleaf.org">
     <form id="contractSearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="contract/list" method="GET">
         <div class="searchBar">
             <table class="searchContent">
                 <tr>
                     <td>
                         <label>学生姓名：</label>
-                        <input type="text" name="keywords" value="" style="width: 100px;" class="textInput">
+                        <input id="ss_name" name="student.name" type="text" class="textInput" postField="name"
+                               suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="ss" clean="true"
+                               th:value="${criteria != null and criteria.student ne null ? criteria.student.name : ''}"/>
+                        <input id="ss_id" type="hidden" name="student.id" clean="true"
+                               th:value="${criteria != null and criteria.student ne null ? criteria.student.id : ''}" />
                     </td>
                     <td>
                         <label>咨询师：</label>
-                        <input type="text" name="keywords" value="" style="width: 100px;" class="textInput">
+                        <input id="sg_id" name="consultantId" type="hidden" clean="true"
+                               th:value="${criteria != null ? criteria.consultantId : ''}"/>
+                        <input id="sg_userName" name="consultant.userName" type="text" class="textInput"
+                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sg" clean="true"
+                               th:value="${criteria != null and criteria.consultant ne null ? criteria.consultant.userName : ''}"/>
+                    </td>
+                    <td>
+                        <label>学管师：</label>
+                        <input id="sp_id" name="supervisorId" type="hidden" clean="true"
+                               th:value="${criteria != null ? criteria.supervisorId : ''}"/>
+                        <input id="sp_userName" name="supervisor.userName" type="text" class="textInput"
+                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sp" clean="true"
+                               th:value="${criteria != null and criteria.supervisor ne null ? criteria.supervisor.userName : ''}"/>
                     </td>
                     <td>
                         <label>合同状态：</label>
-                        <select class="combox" name="province" style="width: 100px;">
+                        <select class="combox" name="contractStatus" style="width: 100px;"
+                                th:value="${criteria != null and criteria.contractStatus ne null ? criteria.contractStatus : ''}">
                             <option value="">所有</option>
-                            <option value="北京">执行中</option>
-                            <option value="上海">已结束</option>
+                            <option value="1" th:selected="${criteria != null and criteria.contractStatus eq 1}">执行中</option>
+                            <option value="0" th:selected="${criteria != null and criteria.contractStatus eq 0}">已结束</option>
                         </select>
                     </td>
                     <td>
                         <label>缴费状态：</label>
-                        <select class="combox" name="province" style="width: 100px;">
+                        <select class="combox" name="payStatus" style="width: 100px;"
+                                th:value="${criteria != null and criteria.payStatus ne null ? criteria.payStatus : ''}">
                             <option value="">所有</option>
-                            <option value="广东">有欠费</option>
+                            <option value="1" th:selected="${criteria != null and criteria.payStatus eq 1}">有欠费</option>
+                            <option value="0" th:selected="${criteria != null and criteria.payStatus eq 0}">已结清</option>
                         </select>
                     </td>
                     <td>
@@ -53,7 +76,7 @@
                 <th width="80">签约日期</th>
                 <th>合同编号</th>
                 <th>姓名</th>
-                <th>年级</th>
+                <th>细分年段</th>
                 <th>报名课程</th>
                 <th width="80">报名课时</th>
                 <th width="80">赠送课时</th>
@@ -64,32 +87,42 @@
                 <th>欠费</th>
                 <th>转退课时</th>
                 <th width="80">剩余课时</th>
-                <th width="80">课时记录</th>
-                <th width="80">补缴</th>
+                <th width="60">课时记录</th>
+                <th width="60">补缴</th>
                 <th>咨询师</th>
+                <th>学管师</th>
             </tr>
         </thead>
         <tbody>
             <div th:if="${pagingBean != null and pagingBean.items != null}">
                 <tr th:each="item: ${pagingBean.items}">
-                    <td th:text="${item.enrollType}"></td>
-                    <td th:text="${item.contractDate}"></td>
-                    <td th:text="${item.contractNo}"></td>
-                    <td th:text="${item.student}"></td>
-                    <td th:text="${item.enrollType}"></td>
-                    <td th:text="${item.enrollType}"></td>
-                    <td th:text="${item.enrollType}"></td>
-                    <td th:text="${item.enrollType}"></td>
-                    <td th:text="${item.enrollType}"></td>
-                    <td th:text="${item.enrollType}"></td>
-                    <td th:text="${item.enrollType}"></td>
-                    <td th:text="${item.enrollType}"></td>
-                    <td th:text="${item.enrollType}"></td>
-                    <td th:text="${item.enrollType}"></td>
-                    <td th:text="${item.enrollType}"></td>
-                    <td th:text="${item.enrollType}"></td>
-                    <td th:text="${item.enrollType}"></td>
-                    <td th:text="${item.enrollType}"></td>
+                    <td align="center" th:text="${item.enrollType eq 1 ? '新报' : (item.enrollType eq 2 ? '续保' : '--')}"></td>
+                    <td align="center" th:text="${item.contractDate ne null ? #dates.format(item.contractDate, 'yyyy-MM-dd') : '--'}"></td>
+                    <td align="center" th:text="${item.contractNo}"></td>
+                    <td align="center" th:text="${item.student ne null ? item.student.name : '--'}"></td>
+                    <td align="center" th:text="${item.subLevel ne null ? item.subLevel.configDescription : '--'}"></td>
+                    <td align="center" th:text="${item.course ne null ? item.course.productName : '--'}"></td>
+                    <td align="center" th:text="${item.enrollPeriod}"></td>
+                    <td align="center" th:text="${item.freePeriod}"></td>
+                    <td align="center" th:text="${item.contractPrice}"></td>
+                    <td align="center" th:text="${item.totalPrice}"></td>
+                    <td align="center" th:text="${#numbers.formatDecimal(item.totalPrice / item.enrollPeriod, 3, 2)}"></td>
+                    <td align="center" th:text="${item.payTotal}"></td>
+                    <td align="center" th:text="${item.totalPrice - item.payTotal > 0 ? ('-' + (item.totalPrice - item.payTotal)) : '--'}" th:style="${item.totalPrice - item.payTotal > 0 ? 'background-color: red;' : ''}"></td>
+                    <td align="center" th:text="${item.enrollType}"></td>
+                    <td align="center" th:text="${item.enrollType}"></td>
+                    <td align="center">
+                        <a title="查看课时记录" target="dialog" mask="true" width="585" height="450" class="btnLook" href="" style="float: none">查看</a>
+                    </td>
+                    <td align="center">
+                        <a title="欠费补缴" th:if="${item.totalPrice - item.payTotal > 0}" target="dialog" mask="true" width="585" height="450" href=""
+                           style="float: none; text-decoration: underline; color: #ff9900">
+                            <span>补缴</span>
+                        </a>
+                        <span th:if="${item.totalPrice - item.payTotal == 0}">--</span>
+                    </td>
+                    <td align="center" th:text="${item.consultant ne null ? item.consultant.userName : '--'}"></td>
+                    <td align="center" th:text="${item.supervisor ne null ? item.supervisor.userName : '--'}"></td>
                 </tr>
             </div>
         </tbody>
@@ -113,6 +146,7 @@
              th:totalCount="${pagingBean ne null ? pagingBean.totalItems : 0}"
              th:numPerPage="${pagingBean ne null ? pagingBean.pageSize : 20}"
              pageNumShown="10"
-             th:currentPage="${pagingBean ne null ? pagingBean.pageNumber : 1}"></div>
+             th:currentPage="${pagingBean ne null ? pagingBean.pageNumber : 1}">
+        </div>
     </div>
 </div>

@@ -1,24 +1,30 @@
-<form id="pagerForm" method="post" action="w_removeSelected.html">
-    <input type="hidden" name="pageNum" value="1">
-    <input type="hidden" name="numPerPage" value="${model.numPerPage}">
-    <input type="hidden" name="orderField" value="${param.orderField}">
-    <input type="hidden" name="orderDirection" value="${param.orderDirection}">
-    <input type="hidden" name="keywords" value=""><input type="hidden" name="province" value="">
+<form xmlns:th="http://www.thymeleaf.org" id="pagerForm" method="GET" action="contract/list">
+    <input type="hidden" name="pageNum" th:value="${pagingBean ne null ? pagingBean.pageNumber : 1}" />
+    <input type="hidden" name="numPerPage" th:value="${pagingBean ne null ? pagingBean.pageSize : 20}"  />
 </form>
-<div class="pageHeader">
-    <form id="mySearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="w_removeSelected.html" method="post">
+
+<style>
+    #studentSearchForm input { width: 100px; }
+</style>
+
+<div class="pageHeader" xmlns:th="http://www.thymeleaf.org">
+    <form id="studentSearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="w_removeSelected.html" method="post">
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
                     <label>学生姓名：</label>
-                    <input type="text" name="keywords" value="" style="width: 100px;" class="textInput">
+                    <input id="ss_name" name="student.name" type="text" class="textInput" postField="name"
+                           suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="ss" clean="true"
+                           th:value="${criteria != null and criteria.student ne null ? criteria.student.name : ''}"/>
+                    <input id="ss_id" type="hidden" name="student.id" clean="true"
+                           th:value="${criteria != null and criteria.student ne null ? criteria.student.id : ''}" />
                 </li>
                 <li>
                     <label>学生类型：</label>
                     <select class="combox" name="province" style="width:100px;">
                         <option value="">所有</option>
-                        <option value="北京">执行中</option>
-                        <option value="上海">已结束</option>
+                        <option value="1">在读生</option>
+                        <option value="0">老生</option>
                     </select>
                 </li>
                 <li>
@@ -38,7 +44,19 @@
                 </li>
                 <li>
                     <label>咨询师：</label>
-                    <input type="text" name="keywords" value="" style="width: 100px;" class="textInput">
+                    <input id="sg_id" name="consultantId" type="hidden" clean="true"
+                           th:value="${criteria != null ? criteria.consultantId : ''}"/>
+                    <input id="sg_userName" name="consultant.userName" type="text" class="textInput"
+                           postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sg" clean="true"
+                           th:value="${criteria != null and criteria.consultant ne null ? criteria.consultant.userName : ''}"/>
+                </li>
+                <li>
+                    <label>学管师：</label>
+                    <input id="sp_id" name="supervisorId" type="hidden" clean="true"
+                           th:value="${criteria != null ? criteria.supervisorId : ''}"/>
+                    <input id="sp_userName" name="supervisor.userName" type="text" class="textInput"
+                           postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sp" clean="true"
+                           th:value="${criteria != null and criteria.supervisor ne null ? criteria.supervisor.userName : ''}"/>
                 </li>
             </ul>
             <div class="subBar">
@@ -64,6 +82,7 @@
                 <th width="120">联系方式</th>
                 <th>其他备注信息</th>
                 <th>咨询师</th>
+                <th>学管师</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -75,15 +94,21 @@
         <div class="pages">
             <span>显示</span>
             <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
-                <option value="20">20</option>
+                <option value="1" th:selected="${pagingBean != null and pagingBean.pageSize eq 1}">1</option>
+                <option value="20" th:selected="${pagingBean != null and pagingBean.pageSize eq 20}">20</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
                 <option value="150">150</option>
                 <option value="200">200</option>
                 <option value="250">250</option>
             </select>
-            <span>条，共${totalCount}条</span>
+            <span th:text="'条，共' + ${pagingBean ne null ? pagingBean.totalItems : 0} + '条'"></span>
         </div>
-        <div class="pagination" targetType="navTab" totalCount="200" numPerPage="20" pageNumShown="10" currentPage="1"></div>
+        <div class="pagination" targetType="navTab"
+             th:totalCount="${pagingBean ne null ? pagingBean.totalItems : 0}"
+             th:numPerPage="${pagingBean ne null ? pagingBean.pageSize : 20}"
+             pageNumShown="10"
+             th:currentPage="${pagingBean ne null ? pagingBean.pageNumber : 1}">
+        </div>
     </div>
 </div>

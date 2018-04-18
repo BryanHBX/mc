@@ -194,7 +194,7 @@
 								_select($(this));
 							});
 							if ($lis.size() == 1 && event.keyCode != DWZ.keyCode.BACKSPACE) {
-								//_select($lis.eq(0));
+								_select($lis.eq(0));
 							} else if ($lis.size() == 0){
 								var jsonStr = "";
 								for (var i=0; i<suggestFields.length; i++){

@@ -64,9 +64,6 @@ public class SchoolProductModel extends BaseEntity
     @Override
     public boolean isValidInput ()
     {
-        // TODO Replace using real school ID
-        this.schoolId = 1;
-
         return EntityUtils.isValidEntityId(schoolId) &&
                 StringUtil.isNotEmpty(productName) &&
                 (parentId == null ?

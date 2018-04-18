@@ -2,6 +2,8 @@ package org.edu.timelycourse.mc.biz.model;
 
 import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
+import org.edu.timelycourse.mc.biz.enums.EContractDebtStatus;
+import org.edu.timelycourse.mc.biz.enums.EContractStatus;
 import org.edu.timelycourse.mc.biz.enums.EEnrollmentType;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
@@ -21,6 +23,13 @@ public class ContractModel extends BaseEntity
      * 咨询师ID
      */
     private Integer consultantId;
+    private UserModel consultant;
+
+    /**
+     * 学管师
+     */
+    private Integer supervisorId;
+    private UserModel supervisor;
 
     /**
      * 报名类型
@@ -31,26 +40,34 @@ public class ContractModel extends BaseEntity
      * 学生ID
      */
     private Integer studentId;
+    /**
+     * 学生信息
+     */
+    private StudentModel student;
 
     /**
      * 学生年段
      */
     private Integer levelId;
+    private SystemConfigModel level;
 
     /**
      * 细分年段
      */
     private Integer subLevelId;
+    private SystemConfigModel subLevel;
 
     /**
      * 课程名称
      */
     private Integer courseId;
+    private SchoolProductModel course;
 
     /**
      * 课程子类
      */
     private Integer subCourseId;
+    private SchoolProductModel subCourse;
 
     /**
      * 报名课时
@@ -93,14 +110,35 @@ public class ContractModel extends BaseEntity
     private Date lastUpdateTime;
 
     /**
-     * 学生信息
-     */
-    private StudentModel student;
-
-    /**
      * 收据列表
      */
     private List<InvoiceModel> invoices;
+
+    /**
+     * 合同状态
+     */
+    private Integer contractStatus;
+
+    /**
+     * 缴费状态
+     */
+    private Integer payStatus;
+
+    /**
+     * 获取已缴费金额
+     */
+    public double getPayTotal ()
+    {
+        double total = 0;
+        if (invoices != null)
+        {
+            for (InvoiceModel invoice : invoices)
+            {
+                total += invoice.getPrice();
+            }
+        }
+        return total;
+    }
 
     /**
      * 学校ID
@@ -119,8 +157,8 @@ public class ContractModel extends BaseEntity
     public boolean isValidInput ()
     {
         boolean valid =
-                EEnrollmentType.hasValue(enrollType) &&
-                Strings.isNotEmpty(contractNo) &&
+                EEnrollmentType.hasValue(enrollType) && EContractStatus.hasValue(contractStatus) &&
+                Strings.isNotEmpty(contractNo) && EContractDebtStatus.hasValue(payStatus) &&
                 ValidatorUtil.isFloatNumber(contractPrice, totalPrice) &&
                 EntityUtils.isValidEntityId(consultantId, levelId, subLevelId, courseId, subCourseId, schoolId) &&
                 student.isValidInput() && contractDate != null;
@@ -146,8 +184,10 @@ public class ContractModel extends BaseEntity
     {
         StringBuilder builder = new StringBuilder();
         appendParam(builder, "schoolId", schoolId);
-        appendParam(builder, "student.name", student != null ? student.getName() : null);
+        appendParam(builder, "studentId", student != null ? student.getId() : null);
         appendParam(builder, "consultantId", consultantId);
+        appendParam(builder, "contractStatus", contractStatus);
+        appendParam(builder, "payStatus", payStatus);
         builder.deleteCharAt(builder.length() - 1);
         return builder.toString();
     }

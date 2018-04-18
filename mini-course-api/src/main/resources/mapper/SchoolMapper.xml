@@ -10,6 +10,8 @@
         <result property="schoolAddress" column="s_address"/>
         <result property="schoolContact" column="s_contact"/>
         <result property="schoolStatus" column="s_status"/>
+        <result property="parentId" column="s_parentId"/>
+        <result property="supervisorFlag" column="s_supervisorflag"/>
         <result property="city" column="s_city"/>
         <result property="province" column="s_province"/>
         <result property="lat" column="s_lat"/>
@@ -19,8 +21,16 @@
     </resultMap>
     
     <insert id="insert" parameterType="SchoolModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_school` (s_name, s_address, s_contact, s_status, s_createTime, s_province, s_city, s_lat, s_lng)
-            VALUES(#{schoolName}, #{schoolAddress}, #{schoolContact}, #{schoolStatus}, #{creationTime}, #{province}, #{city}, #{lat}, #{lng})
+        INSERT INTO `t_school`
+        (
+          s_name, s_address, s_contact, s_status, s_createTime,
+          s_province, s_city, s_lat, s_lng, s_parentId, s_supervisorflag
+        )
+        VALUES
+        (
+          #{schoolName}, #{schoolAddress}, #{schoolContact}, #{schoolStatus}, #{creationTime},
+          #{province}, #{city}, #{lat}, #{lng}, #{parentId}, #{supervisorFlag}
+        )
     </insert>
 
     <update id="update" parameterType="SchoolModel">

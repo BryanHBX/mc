@@ -52,7 +52,7 @@
         <tbody>
             <div th:if="${pagingBean != null and pagingBean.items != null}">
                 <tr th:each="item: ${pagingBean.items}">
-                    <td th:text="${item.userName}"></td>
+                    <td align="center" th:text="${item.userName}"></td>
                     <td align="center" th:text="${item.userIdentity}"></td>
                     <td align="center" th:text="${item.phone}"></td>
                     <td th:text="${item.wxId}"></td>

@@ -12,10 +12,8 @@ import org.edu.timelycourse.mc.common.reflect.ParameterizedTypeReferenceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -81,7 +79,10 @@ public abstract class AbstractController extends BaseController implements Error
         return remoteCall(request,"product/" + productId, new TypeToken<SchoolProductModel>() {}).getData();
     }
 
-    protected PagingBean<UserModel> fetchMembers (HttpServletRequest request, Integer pageNum, Integer pageSize, final UserModel model)
+    protected PagingBean<UserModel> fetchMembers (HttpServletRequest request,
+                                                  Integer pageNum,
+                                                  Integer pageSize,
+                                                  final UserModel model)
     {
         return remoteCall(request, String.format("member?pageNum=%d&pageSize=%d&%s",
                 pageNum != null ? pageNum : 1, pageSize != null ? pageSize : Constants.DEFAULT_PAGE_SIZE,
@@ -89,7 +90,21 @@ public abstract class AbstractController extends BaseController implements Error
                 new TypeToken<PagingBean<UserModel>>() {}).getData();
     }
 
-    protected PagingBean<ContractModel> fetchContracts (HttpServletRequest request, Integer pageNum, Integer pageSize, final ContractModel model)
+    protected PagingBean<StudentModel> fetchStudents (HttpServletRequest request,
+                                                   Integer pageNum,
+                                                   Integer pageSize,
+                                                   final StudentModel model)
+    {
+        return remoteCall(request, String.format("member?pageNum=%d&pageSize=%d&%s",
+                pageNum != null ? pageNum : 1, pageSize != null ? pageSize : Constants.DEFAULT_PAGE_SIZE,
+                model.getUrlParams()),
+                new TypeToken<PagingBean<StudentModel>>() {}).getData();
+    }
+
+    protected PagingBean<ContractModel> fetchContracts (HttpServletRequest request,
+                                                        Integer pageNum,
+                                                        Integer pageSize,
+                                                        final ContractModel model)
     {
         return remoteCall(request, String.format("contract?pageNum=%d&pageSize=%d&%s",
                 pageNum != null ? pageNum : 1, pageSize != null ? pageSize : Constants.DEFAULT_PAGE_SIZE,
@@ -131,6 +146,12 @@ public abstract class AbstractController extends BaseController implements Error
     {
         return getMyModulePath() != null ? String.format("%s/%s", MODULE_PATH, getMyModulePath()) : MODULE_PATH;
     }
+
+    @ModelAttribute("contract")
+    protected ContractModel getContractModel () { return new ContractModel(); }
+
+    @ModelAttribute("student")
+    protected StudentModel getStudentModel () { return new StudentModel(); }
 
     protected abstract String getMyModulePath();
 

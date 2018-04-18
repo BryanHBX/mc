@@ -1,5 +1,7 @@
 package org.edu.timelycourse.mc.biz.service;
 
+import org.edu.timelycourse.mc.biz.enums.EContractDebtStatus;
+import org.edu.timelycourse.mc.biz.enums.EContractStatus;
 import org.edu.timelycourse.mc.biz.model.ContractModel;
 import org.edu.timelycourse.mc.biz.model.InvoiceModel;
 import org.edu.timelycourse.mc.biz.model.StudentModel;
@@ -64,11 +66,20 @@ public class ContractService extends BaseService<ContractModel>
         throw new ServiceException("Student model is not given in contract");
     }
 
+    private void initContract (ContractModel model)
+    {
+        model.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+        model.setPayStatus(model.getPayTotal() < model.getTotalPrice() ?
+                EContractDebtStatus.ARREARAGE.code() : EContractDebtStatus.DONE.code());
+
+        initStudentModelBeforeAdd(model);
+    }
+
     @Override
     public ContractModel add(ContractModel model)
     {
-        initStudentModelBeforeAdd(model);
-        model.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+        initContract(model);
+        model.setContractStatus(EContractStatus.ONGOING.code());
 
         if (model.isValidInput())
         {

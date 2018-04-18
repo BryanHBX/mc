@@ -23,6 +23,7 @@
         </ul>
     </div>
 
+    <!--
     <ul class="tree treeFolder expand" id="productTree">
         <li th:each="product : ${products}">
             <a th:text="${product.key.configDescription}"
@@ -34,12 +35,12 @@
                 layout:include="~{modules/school/fragment/productTreeFragment::tree}"></ul>
         </li>
     </ul>
+    -->
 
-    <!--
     <ul class="tree treeFolder expand" id="productTree">
         <li th:each="product : ${products}">
             <a th:text="${product.productName}"
-               th:href="@{'school/product?productType=' + ${product.id}}"
+               th:href="@{'school/product?id=' + ${product.id}}"
                target="ajax"
                th:tname="${product.productName}"
                th:tvalue="${product.id}"
@@ -49,5 +50,5 @@
                 layout:include="~{modules/school/fragment/productTreeFragment::tree}"></ul>
         </li>
     </ul>
-    -->
+
 </div>

@@ -319,7 +319,7 @@ var navTab = {
 					}
 					
 					$panel.ajaxUrl({
-						type:"POST", url:url, data:op.data, callback:function(response){
+						type:options.method, url:url, data:op.data, callback:function(response){
 							navTab._loadUrlCallback($panel);
 							if ($.isFunction(op.callback)) op.callback(response);
 						}

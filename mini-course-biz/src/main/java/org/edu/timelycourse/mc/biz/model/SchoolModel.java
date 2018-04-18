@@ -56,6 +56,16 @@ public class SchoolModel extends BaseEntity
     private Date creationTime;
 
     /**
+     * 父校区ID
+     */
+    private Integer parentId;
+
+    /**
+     * 支持学管师
+     */
+    private Integer supervisorFlag;
+
+    /**
      * 更新时间
      */
     private Date lastUpdateTime;
