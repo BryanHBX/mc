@@ -4,7 +4,7 @@
 </form>
 
 <style>
-    #fcSearchForm input { width: 100px; }
+    #fcSearchForm input { width: 80px; }
 </style>
 
 <div class="pageHeader" xmlns:th="http://www.thymeleaf.org">
@@ -14,27 +14,27 @@
                 <tr>
                     <td>
                         <label>学生姓名：</label>
+                        <input id="ss_id" type="hidden" name="student.id" clean="true"
+                               th:value="${criteria != null and criteria.student ne null ? criteria.student.id : ''}" />
                         <input id="ss_name" name="student.name" type="text" class="textInput" postField="name"
                                suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="ss" clean="true"
                                th:value="${criteria != null and criteria.student ne null ? criteria.student.name : ''}"/>
-                        <input id="ss_id" type="hidden" name="student.id" clean="true"
-                               th:value="${criteria != null and criteria.student ne null ? criteria.student.id : ''}" />
                     </td>
                     <td>
                         <label>咨询师：</label>
-                        <input id="sg_id" name="consultantId" type="hidden" clean="true"
-                               th:value="${criteria != null ? criteria.consultantId : ''}"/>
-                        <input id="sg_userName" name="consultant.userName" type="text" class="textInput"
+                        <input id="sg_id" name="consultant.id" type="hidden" clean="true"
+                               th:value="${criteria != null and criteria.consultant ne null ? criteria.consultant.id : ''}"/>
+                        <input id="sg_userName" name="consultant.name" type="text" class="textInput"
                                postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sg" clean="true"
-                               th:value="${criteria != null and criteria.consultant ne null ? criteria.consultant.userName : ''}"/>
+                               th:value="${criteria != null and criteria.consultant ne null ? criteria.consultant.name : ''}"/>
                     </td>
                     <td>
                         <label>学管师：</label>
-                        <input id="sp_id" name="supervisorId" type="hidden" clean="true"
-                               th:value="${criteria != null ? criteria.supervisorId : ''}"/>
-                        <input id="sp_userName" name="supervisor.userName" type="text" class="textInput"
+                        <input id="sp_id" name="supervisor.id" type="hidden" clean="true"
+                               th:value="${criteria != null and criteria.supervisor ne null ? criteria.supervisor.id : ''}"/>
+                        <input id="sp_userName" name="supervisor.name" type="text" class="textInput"
                                postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sp" clean="true"
-                               th:value="${criteria != null and criteria.supervisor ne null ? criteria.supervisor.userName : ''}"/>
+                               th:value="${criteria != null and criteria.supervisor ne null ? criteria.supervisor.name : ''}"/>
                     </td>
                     <td>
                         <label>合同状态：</label>
@@ -69,7 +69,7 @@
     <table class="table" width="100%" layoutH="110">
         <thead>
         <tr>
-            <th width="60">报名类型</th>
+            <th width="80">报名类型</th>
             <th width="80">签约日期</th>
             <th>合同编号</th>
             <th>姓名</th>
@@ -94,21 +94,22 @@
         <tbody>
         <div th:if="${pagingBean != null and pagingBean.items != null}">
             <tr th:each="item: ${pagingBean.items}">
-                <td align="center" th:text="${item.enrollType eq 1 ? '新报' : (item.enrollType eq 2 ? '续保' : '--')}"></td>
+                <td align="center" th:text="${item.enrollType ne null ? item.enrollType.name : '--'}"></td>
                 <td align="center" th:text="${item.contractDate ne null ? #dates.format(item.contractDate, 'yyyy-MM-dd') : '--'}"></td>
                 <td align="center" th:text="${item.contractNo}"></td>
                 <td align="center" th:text="${item.student ne null ? item.student.name : '--'}"></td>
-                <td align="center" th:text="${item.subLevel ne null ? item.subLevel.configDescription : '--'}"></td>
-                <td align="center" th:text="${item.course ne null ? item.course.productName : '--'}"></td>
+                <td align="center" th:text="${item.gradeSub ne null ? item.gradeSub.name : '--'}"></td>
+                <td align="center" th:text="${item.course ne null ? item.course.name : '--'}"></td>
                 <td align="center" th:text="${item.enrollPeriod}"></td>
                 <td align="center" th:text="${item.freePeriod}"></td>
                 <td align="center" th:text="${item.contractPrice}"></td>
                 <td align="center" th:text="${item.totalPrice}"></td>
                 <td align="center" th:text="${#numbers.formatDecimal(item.totalPrice / item.enrollPeriod, 3, 2)}"></td>
-                <td align="center" th:text="${item.payTotal}"></td>
-                <td align="center" th:text="${item.totalPrice - item.payTotal > 0 ? ('-' + (item.totalPrice - item.payTotal)) : '--'}" th:style="${item.totalPrice - item.payTotal > 0 ? 'background-color: red;' : ''}"></td>
-                <td align="center" th:text="${item.enrollType}"></td>
-                <td align="center" th:text="${item.enrollType}"></td>
+                <td align="center" th:text="${item.paid}"></td>
+                <td align="center" th:text="${item.totalPrice - item.paid > 0 ? ('-' + (item.totalPrice - item.paid)) : '--'}"
+                    th:style="${item.totalPrice - item.paid > 0 ? 'background-color: red;' : ''}"></td>
+                <td align="center" ></td>
+                <td align="center" ></td>
                 <td align="center">
                     <a title="查看课时记录" target="dialog" mask="true" width="585" height="450" class="btnLook" href="" style="float: none">查看</a>
                 </td>
@@ -124,8 +125,8 @@
                         <span>退费</span>
                     </a>
                 </td>
-                <td align="center" th:text="${item.consultant ne null ? item.consultant.userName : '--'}"></td>
-                <td align="center" th:text="${item.supervisor ne null ? item.supervisor.userName : '--'}"></td>
+                <td align="center" th:text="${item.consultant ne null ? item.consultant.name : '--'}"></td>
+                <td align="center" th:text="${item.supervisor ne null ? item.supervisor.name : '--'}"></td>
             </tr>
         </div>
         </tbody>

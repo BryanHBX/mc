@@ -1,14 +1,14 @@
-<form xmlns:th="http://www.thymeleaf.org" id="pagerForm" method="GET" action="finance/contract">
+<form xmlns:th="http://www.thymeleaf.org" id="pagerForm" method="GET" action="finance/invoice">
     <input type="hidden" name="pageNum" th:value="${pagingBean ne null ? pagingBean.pageNumber : 1}" />
     <input type="hidden" name="numPerPage" th:value="${pagingBean ne null ? pagingBean.pageSize : 20}"  />
 </form>
 
 <style>
-    #invoiceSearchForm input { width: 100px; }
+    #invoiceSearchForm input { width: 80px; }
 </style>
 
-<div class="pageHeader">
-    <form id="invoiceSearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="w_removeSelected.html" method="post">
+<div class="pageHeader" xmlns:th="http://www.thymeleaf.org">
+    <form id="invoiceSearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="finance/invoice" method="GET">
         <div class="searchBar">
             <table class="searchContent">
                 <tr>
@@ -71,80 +71,83 @@
         </div>
     </form>
 </div>
-<div class="pageContent j-resizeGrid">
+
+<div class="pageContent" xmlns:th="http://www.thymeleaf.org">
+    <table class="table" width="100%" layoutH="110">
+        <thead>
+        <tr>
+            <th width="60">报名类型</th>
+            <th width="80">缴费日期</th>
+            <th>姓名</th>
+            <th>细分年段</th>
+            <th>报名课程</th>
+            <th>缴费金额</th>
+            <th>收据号</th>
+            <th>支付方式</th>
+            <th>咨询师</th>
+            <th>学管师</th>
+        </tr>
+        </thead>
+        <tbody>
+        <div th:if="${pagingBean != null and pagingBean.items != null}">
+            <tr th:each="item: ${pagingBean.items}">
+                <td align="center" th:text="${item.enrollType ne null ? item.enrollType.name : '--'}"></td>
+                <td align="center" th:text="${item.contractDate ne null ? #dates.format(item.contractDate, 'yyyy-MM-dd') : '--'}"></td>
+                <td align="center" th:text="${item.contractNo}"></td>
+                <td align="center" th:text="${item.student ne null ? item.student.name : '--'}"></td>
+                <td align="center" th:text="${item.gradeSub ne null ? item.gradeSub.name : '--'}"></td>
+                <td align="center" th:text="${item.course ne null ? item.course.name : '--'}"></td>
+                <td align="center" th:text="${item.enrollPeriod}"></td>
+                <td align="center" th:text="${item.freePeriod}"></td>
+                <td align="center" th:text="${item.contractPrice}"></td>
+                <td align="center" th:text="${item.totalPrice}"></td>
+                <td align="center" th:text="${#numbers.formatDecimal(item.totalPrice / item.enrollPeriod, 3, 2)}"></td>
+                <td align="center" th:text="${item.paid}"></td>
+                <td align="center" th:text="${item.totalPrice - item.paid > 0 ? ('-' + (item.totalPrice - item.paid)) : '--'}"
+                    th:style="${item.totalPrice - item.paid > 0 ? 'background-color: red;' : ''}"></td>
+                <td align="center" ></td>
+                <td align="center" ></td>
+                <td align="center">
+                    <a title="查看课时记录" target="dialog" mask="true" width="585" height="450" class="btnLook" href="" style="float: none">查看</a>
+                </td>
+                <td align="center">
+                    <a title="转课时" target="dialog" mask="true" width="585" height="450" href=""
+                       style="float: none; text-decoration: underline; color: #1465ff">
+                        <span>转课时</span>
+                    </a>
+                </td>
+                <td align="center">
+                    <a title="退费" target="dialog" mask="true" width="585" height="450" href=""
+                       style="float: none; text-decoration: underline; color: #1465ff">
+                        <span>退费</span>
+                    </a>
+                </td>
+                <td align="center" th:text="${item.consultant ne null ? item.consultant.name : '--'}"></td>
+                <td align="center" th:text="${item.supervisor ne null ? item.supervisor.name : '--'}"></td>
+            </tr>
+        </div>
+        </tbody>
+    </table>
+
     <div class="panelBar">
-        <ul class="toolBar">
-            <li>
-                <a class="icon" href="demo/common/dwz-team.xls" target="dwzExport" targettype="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span></a>
-            </li>
-        </ul>
-    </div>
-    <div class="grid"><input id="sid_user" type="hidden" name="1">
-        <div class="gridHeader">
-            <div class="gridThead" style="position: relative; left: 0px;">
-                <table style="width:100%;">
-                    <thead>
-                        <tr>
-                            <th orderfield="accountNo" style="cursor: pointer;"><div class="gridCol" title="客户号">报名类型</div></th>
-                            <th orderfield="accountName" class="" style="cursor: pointer;"><div class="gridCol" title="客户名称">缴费日期</div></th>
-                            <th orderfield="accountType" style="cursor: pointer;"><div class="gridCol" title="客户类型">姓名</div></th>
-                            <th orderfield="accountCert" style="cursor: pointer;"><div class="gridCol" title="证件号码">年级</div></th>
-                            <th orderfield="accountLevel" class="center" style="cursor: pointer;"><div class="gridCol" title="信用等级">报名课程</div></th>
-                            <th class="" style="cursor: default;"><div class="gridCol" title="所属行业">缴费金额</div></th>
-                            <th style=""><div class="gridCol" title="建档日期">收据号</div></th>
-                            <th style=""><div class="gridCol" title="操作">支付方式</div></th>
-                            <th style=""><div class="gridCol" title="操作">咨询师</div></th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.name})">
+                <option value="1" th:selected="${pagingBean != null and pagingBean.pageSize eq 1}">1</option>
+                <option value="20" th:selected="${pagingBean != null and pagingBean.pageSize eq 20}">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+                <option value="250">250</option>
+            </select>
+            <span th:text="'条，共' + ${pagingBean ne null ? pagingBean.totalItems : 0} + '条'"></span>
         </div>
-        <div class="gridScroller" layouth="110" style="width: 1211px; height: 98px; overflow: auto;">
-            <div class="gridTbody">
-                <table style="width:1180px;">
-                    <tbody>
-
-                    </tbody>
-                </table>
-            </div>
+        <div class="pagination" targetType="navTab"
+             th:totalCount="${pagingBean ne null ? pagingBean.totalItems : 0}"
+             th:numPerPage="${pagingBean ne null ? pagingBean.pageSize : 20}"
+             pageNumShown="10"
+             th:currentPage="${pagingBean ne null ? pagingBean.pageNumber : 1}">
         </div>
-        <div class="resizeMarker" style="height:300px; left:57px;display:none;"></div><div class="resizeProxy" style="height:300px; left:377px;display:none;"></div></div>
-            <div class="panelBar">
-                <div class="pages">
-                    <span>总收入: 288800.00</span>
-                    <span>总退费: 3000.00</span>
-                    <span>显示</span>
-                    <div class="combox"><div id="combox_9181136" class="select"><a href="javascript:" name="numPerPage" name="20" default-name="20">20</a><select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.name})" style="display: none;">
-                        <option value="20">20</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                        <option value="200">200</option>
-                    </select></div></div>
-                    <span>条，共${totalCount}条</span>
-                </div>
-
-        <div class="pagination" targettype="navTab" totalcount="200" numperpage="20" pagenumshown="10" currentpage="1">
-            <ul>
-                <li class="j-first disabled">
-                    <a class="first" href="javascript:;" style="display: none;"><span>首页</span></a>
-                    <span class="first"><span>首页</span></span>
-                </li>
-                <li class="j-prev disabled">
-                    <a class="previous" href="javascript:;" style="display: none;"><span>上一页</span></a>
-                    <span class="previous"><span>上一页</span></span>
-                </li>
-                <li class="selected j-num"><a href="javascript:;">1</a></li><li class="j-num"><a href="javascript:;">2</a></li><li class="j-num"><a href="javascript:;">3</a></li><li class="j-num"><a href="javascript:;">4</a></li><li class="j-num"><a href="javascript:;">5</a></li><li class="j-num"><a href="javascript:;">6</a></li><li class="j-num"><a href="javascript:;">7</a></li><li class="j-num"><a href="javascript:;">8</a></li><li class="j-num"><a href="javascript:;">9</a></li><li class="j-num"><a href="javascript:;">10</a></li>
-                <li class="j-next">
-                    <a class="next" href="javascript:;"><span>下一页</span></a>
-                    <span class="next" style="display: none;"><span>下一页</span></span>
-                </li>
-                <li class="j-last">
-                    <a class="last" href="javascript:;"><span>末页</span></a>
-                    <span class="last" style="display: none;"><span>末页</span></span>
-                </li>
-                <li class="jumpto"><input class="textInput" type="text" size="4" name="1"><input class="goto" type="button" name="确定"></li>
-            </ul>
-        </div>
-
     </div>
 </div>

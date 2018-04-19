@@ -185,17 +185,10 @@ public class ContractModel extends BaseModel
     @Override
     public String getUrlParams()
     {
-        StringBuilder builder = new StringBuilder();
-        appendParam(builder, "schoolId", schoolId);
-        appendParam(builder, "studentId", student != null ? student.getId() : null);
-        appendParam(builder, "consultantId", consultantId);
-        appendParam(builder, "contractStatus", contractStatus);
-        appendParam(builder, "payStatus", payStatus);
-        builder.deleteCharAt(builder.length() - 1);
-        return builder.toString();
+        return null;
     }
 
-    public static ContractModel from (ContractDTO dto)
+    public static ContractModel from (final ContractDTO dto)
     {
         ContractModel model = new ContractModel();
         BeanUtils.copyProperties(dto, model, "course", "student", "enrollType", "consultant", "supervisor");

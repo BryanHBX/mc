@@ -20,7 +20,7 @@ public class ContractDTO extends BaseDTO
     /**
      * 学校ID
      */
-    private Integer schoolId;
+    //private Integer schoolId;
 
     /**
      * 报名类型
@@ -142,18 +142,23 @@ public class ContractDTO extends BaseDTO
     {
         try
         {
-            ContractDTO dto = new ContractDTO();
-            BeanUtils.copyProperties(model, dto, "course", "student", "enrollType", "consultant", "supervisor");
-            dto.setEnrollType(new NamedOptionProperty(model.getEnrollType(), EEnrollmentType.getLabel(model.getEnrollType())));
-            dto.setConsultant(NamedOptionProperty.from(model.getConsultantId(), model.getConsultant(), "userName"));
-            dto.setGrade(NamedOptionProperty.from(model.getLevelId(), model.getLevel(), "configDescription"));
-            dto.setGradeSub(NamedOptionProperty.from(model.getSubLevelId(), model.getSubLevel(), "configDescription"));
-            dto.setCourse(NamedOptionProperty.from(model.getCourseId(), model.getCourse(), "productName"));
-            dto.setCourseSub(NamedOptionProperty.from(model.getSubCourseId(), model.getSubCourse(), "productName"));
-            dto.setStudent(NamedOptionProperty.from(model.getStudentId(), model.getStudent(), "name"));
-            dto.setSupervisor(NamedOptionProperty.from(model.getSupervisorId(), model.getSupervisor(), "userName"));
-            dto.setPaid(model.getPayTotal());
-            return dto;
+            if (model != null)
+            {
+                ContractDTO dto = new ContractDTO();
+                BeanUtils.copyProperties(model, dto, "course", "student", "enrollType", "consultant", "supervisor");
+                dto.setEnrollType(new NamedOptionProperty(model.getEnrollType(), EEnrollmentType.getLabel(model.getEnrollType())));
+                dto.setConsultant(NamedOptionProperty.from(model.getConsultantId(), model.getConsultant(), "userName"));
+                dto.setGrade(NamedOptionProperty.from(model.getLevelId(), model.getLevel(), "configDescription"));
+                dto.setGradeSub(NamedOptionProperty.from(model.getSubLevelId(), model.getSubLevel(), "configDescription"));
+                dto.setCourse(NamedOptionProperty.from(model.getCourseId(), model.getCourse(), "productName"));
+                dto.setCourseSub(NamedOptionProperty.from(model.getSubCourseId(), model.getSubCourse(), "productName"));
+                dto.setStudent(NamedOptionProperty.from(model.getStudentId(), model.getStudent(), "name"));
+                dto.setSupervisor(NamedOptionProperty.from(model.getSupervisorId(), model.getSupervisor(), "userName"));
+                dto.setPaid(model.getPayTotal());
+                return dto;
+            }
+
+            return null;
         }
         catch (Exception ex)
         {

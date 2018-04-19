@@ -2,9 +2,12 @@ package org.edu.timelycourse.mc.biz.model;
 
 import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
+import org.edu.timelycourse.mc.biz.dto.InvoiceDTO;
 import org.edu.timelycourse.mc.biz.enums.EPaymentType;
+import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
+import org.springframework.beans.BeanUtils;
 
 import java.util.Date;
 
@@ -65,5 +68,13 @@ public class InvoiceModel extends BaseModel
     public String getUrlParams()
     {
         return null;
+    }
+
+    public static InvoiceModel from (final InvoiceDTO dto)
+    {
+        InvoiceModel model = new InvoiceModel();
+        BeanUtils.copyProperties(dto, model);
+        model.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+        return model;
     }
 }
