@@ -2,6 +2,7 @@ package org.edu.timelycourse.mc.web.controller;
 
 import com.google.common.reflect.TypeParameter;
 import com.google.common.reflect.TypeToken;
+import org.edu.timelycourse.mc.biz.dto.ContractDTO;
 import org.edu.timelycourse.mc.biz.model.*;
 import org.edu.timelycourse.mc.biz.paging.PagingBean;
 import org.edu.timelycourse.mc.common.constants.Constants;
@@ -101,15 +102,15 @@ public abstract class AbstractController extends BaseController implements Error
                 new TypeToken<PagingBean<StudentModel>>() {}).getData();
     }
 
-    protected PagingBean<ContractModel> fetchContracts (HttpServletRequest request,
-                                                        Integer pageNum,
-                                                        Integer pageSize,
-                                                        final ContractModel model)
+    protected PagingBean<ContractDTO> fetchContracts (HttpServletRequest request,
+                                                      Integer pageNum,
+                                                      Integer pageSize,
+                                                      final ContractModel model)
     {
         return remoteCall(request, String.format("contract?pageNum=%d&pageSize=%d&%s",
                 pageNum != null ? pageNum : 1, pageSize != null ? pageSize : Constants.DEFAULT_PAGE_SIZE,
                 model.getUrlParams()),
-                new TypeToken<PagingBean<ContractModel>>() {}).getData();
+                new TypeToken<PagingBean<ContractDTO>>() {}).getData();
     }
 
     protected List<SchoolProductModel> fetchProducts (HttpServletRequest request)

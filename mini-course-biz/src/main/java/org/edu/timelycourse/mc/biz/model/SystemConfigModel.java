@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Data
 @ToString(exclude = "id")
-public class SystemConfigModel extends BaseEntity
+public class SystemConfigModel extends BaseModel
 {
     /**
      * 配置项ID

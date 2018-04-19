@@ -1,6 +1,5 @@
 package org.edu.timelycourse.mc.biz.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
 import org.edu.timelycourse.mc.biz.enums.EVisible;
@@ -11,7 +10,7 @@ import org.edu.timelycourse.mc.common.utils.StringUtil;
  */
 @Data
 @ToString(exclude = "id")
-public class SystemRoleModel extends BaseEntity
+public class SystemRoleModel extends BaseModel
 {
     private String roleName;
     private String roleAlias;

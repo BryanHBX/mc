@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class ContractModel extends BaseEntity
+public class ContractModel extends BaseModel
 {
     /**
      * 合同编号

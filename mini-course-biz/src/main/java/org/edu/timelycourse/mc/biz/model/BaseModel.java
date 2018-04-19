@@ -14,7 +14,7 @@ import java.io.Serializable;
  * Created by Marco on 2018/3/31.
  */
 @Getter
-public abstract class BaseEntity implements Serializable
+public abstract class BaseModel implements Serializable
 {
     private static final long serialVersionUID = -2488885189931569213L;
 

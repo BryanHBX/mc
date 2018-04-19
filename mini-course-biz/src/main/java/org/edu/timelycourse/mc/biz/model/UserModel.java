@@ -6,11 +6,9 @@ import lombok.Data;
 import lombok.ToString;
 import org.edu.timelycourse.mc.biz.enums.EUserRole;
 import org.edu.timelycourse.mc.biz.enums.EUserType;
-import org.edu.timelycourse.mc.biz.repository.UserRoleRepository;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -19,7 +17,7 @@ import java.util.*;
 @Data
 @ToString(exclude = "id")
 @JsonIgnoreProperties(value = { "password" })
-public class UserModel extends BaseEntity
+public class UserModel extends BaseModel
 {
     /**
      * 身份证

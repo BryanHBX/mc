@@ -8,7 +8,7 @@ import org.edu.timelycourse.mc.common.utils.StringUtil;
 import java.util.Date;
 
 @Data
-public class StudentModel extends BaseEntity
+public class StudentModel extends BaseModel
 {
     /**
      * 学生姓名

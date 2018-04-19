@@ -14,6 +14,10 @@
         <result property="creationTime" column="creationTime" />
         <result property="lastUpdateTime" column="updateTime" />
         <result property="ownerId" column="owner_id" />
+
+        <!--
+        <association property="contract" column="contract_id"
+                     select="org.edu.timelycourse.mc.biz.repository.ContractRepository.get" />-->
     </resultMap>
     
     <insert id="insert" parameterType="InvoiceModel" useGeneratedKeys="true" keyProperty="id">
@@ -29,6 +33,7 @@
             <if test="price != null and price > 0">`fee_amount` = #{price},</if>
             <if test="type != null and type > -1">`fee_type` = #{type},</if>
             <if test="updateTime != null">`updateTime` = #{lastUpdateTime},</if>
+            <if test="creationTime != null">`creationTime` = #{creationTime},</if>
             <if test="ownerId != null and ownerId > 0">`owner_id` = #{ownerId},</if>
             `id` = `id`
         </set>
@@ -44,7 +49,9 @@
             <if test="invoiceNo != null and invoiceNo != ''"> AND `invoice_no` LIKE CONCAT('%',#{invoiceNo},'%')</if>
             <if test="type != null and type > -1"> AND `fee_type` = #{type}</if>
             <if test="ownerId != null and ownerId > 0"> AND `owner_id` = #{ownerId}</if>
+            <if test="creationTime != null"> AND `creationTime` = #{creationTime}</if>
         </where>
+        ORDER BY `creationTime` DESC
     </select>
     
     <select id="get" parameterType="java.lang.Integer" resultMap="result_invoice">

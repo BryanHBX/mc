@@ -3,7 +3,6 @@ package org.edu.timelycourse.mc.biz.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
-import org.edu.timelycourse.mc.biz.model.BaseEntity;
 
 /**
  * Created by Marco on 2018/3/31.
@@ -11,7 +10,7 @@ import org.edu.timelycourse.mc.biz.model.BaseEntity;
 @Data
 @ToString(exclude = "id")
 @JsonIgnoreProperties(value= { "id", "userId" } )
-public class UserRoleModel extends BaseEntity
+public class UserRoleModel extends BaseModel
 {
     private int userId;
     private String role;

@@ -1,4 +1,4 @@
-package org.edu.timelycourse.mc.biz.vo;
+package org.edu.timelycourse.mc.biz.dto;
 
 import lombok.Data;
 import org.dozer.DozerBeanMapper;
@@ -7,14 +7,14 @@ import org.edu.timelycourse.mc.biz.model.SystemConfigModel;
 import java.io.Serializable;
 
 @Data
-public class SystemConfigVO implements Serializable
+public class SystemConfigDTO implements Serializable
 {
     private Integer id;
     private String configName;
     private String configDescription;
 
-    public static SystemConfigVO from (final SystemConfigModel entity)
+    public static SystemConfigDTO from (final SystemConfigModel entity)
     {
-        return new DozerBeanMapper().map(entity, SystemConfigVO.class);
+        return new DozerBeanMapper().map(entity, SystemConfigDTO.class);
     }
 }

@@ -1,44 +1,68 @@
-<form id="pagerForm" method="post" action="w_removeSelected.html">
-    <input type="hidden" name="pageNum" value="1">
-    <input type="hidden" name="numPerPage" value="${model.numPerPage}">
-    <input type="hidden" name="orderField" value="${param.orderField}">
-    <input type="hidden" name="orderDirection" value="${param.orderDirection}">
-    <input type="hidden" name="keywords" value=""><input type="hidden" name="province" value="">
+<form xmlns:th="http://www.thymeleaf.org" id="pagerForm" method="GET" action="finance/contract">
+    <input type="hidden" name="pageNum" th:value="${pagingBean ne null ? pagingBean.pageNumber : 1}" />
+    <input type="hidden" name="numPerPage" th:value="${pagingBean ne null ? pagingBean.pageSize : 20}"  />
 </form>
+
+<style>
+    #invoiceSearchForm input { width: 100px; }
+</style>
+
 <div class="pageHeader">
-    <form id="mySearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="w_removeSelected.html" method="post">
+    <form id="invoiceSearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="w_removeSelected.html" method="post">
         <div class="searchBar">
-            <ul class="searchContent">
-                <li style="width: 300px;">
-                    <label>缴费日期：</label>
-                    <input type="text" name="startDate" class="date textInput readonly valid" readonly="true"> -
-                    <input type="text" name="endData" class="date textInput readonly valid" readonly="true">
-                </li>
-                <li>
-                    <label>咨询师：</label>
-                    <input type="text" name="keywords" value="" style="width: 100px;" class="textInput">
-                </li>
-                <li>
-                    <label>报名类型：</label>
-                    <select class="combox" name="province" style="display: none;">
-                        <option value="">所有</option>
-                        <option value="北京">新报</option>
-                        <option value="上海">续报</option>
-                        <option value="上海">退费</option>
-                    </select>
-                </li>
-                <li>
-                    <label>支付方式：</label>
-                    <select class="combox" name="province" style="display: none;">
-                        <option value="">所有</option>
-                        <option value="广东">现金</option>
-                        <option value="广东">转账</option>
-                        <option value="广东">微信</option>
-                        <option value="广东">支付宝</option>
-                        <option value="广东">其他</option>
-                    </select>
-                </li>
-            </ul>
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        <label>缴费日期：</label>
+                        <input type="text" name="startDate" class="date textInput" > -
+                        <input type="text" name="endData" class="date textInput">
+                    </td>
+                    <td>
+                        <label>报名类型：</label>
+                        <select class="combox" name="contractStatus" style="width: 100px;"
+                                th:value="${criteria != null and criteria.contractStatus ne null ? criteria.contractStatus : ''}">
+                            <option value="">所有</option>
+                            <option value="1" th:selected="${criteria != null and criteria.contractStatus eq 1}">新报</option>
+                            <option value="0" th:selected="${criteria != null and criteria.contractStatus eq 0}">续报</option>
+                            <option value="2" th:selected="${criteria != null and criteria.contractStatus eq 0}">退费</option>
+                        </select>
+                    </td>
+                    <td>
+                        <label>学生姓名：</label>
+                        <input id="ss_name" name="student.name" type="text" class="textInput" postField="name"
+                               suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="ss" clean="true"
+                               th:value="${criteria != null and criteria.student ne null ? criteria.student.name : ''}"/>
+                        <input id="ss_id" type="hidden" name="student.id" clean="true"
+                               th:value="${criteria != null and criteria.student ne null ? criteria.student.id : ''}" />
+                    </td>
+                    <td>
+                        <label>咨询师：</label>
+                        <input id="sg_id" name="consultantId" type="hidden" clean="true"
+                               th:value="${criteria != null ? criteria.consultantId : ''}"/>
+                        <input id="sg_userName" name="consultant.userName" type="text" class="textInput"
+                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sg" clean="true"
+                               th:value="${criteria != null and criteria.consultant ne null ? criteria.consultant.userName : ''}"/>
+                    </td>
+                    <td>
+                        <label>学管师：</label>
+                        <input id="sp_id" name="supervisorId" type="hidden" clean="true"
+                               th:value="${criteria != null ? criteria.supervisorId : ''}"/>
+                        <input id="sp_userName" name="supervisor.userName" type="text" class="textInput"
+                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sp" clean="true"
+                               th:value="${criteria != null and criteria.supervisor ne null ? criteria.supervisor.userName : ''}"/>
+                    </td>
+                    <td>
+                        <label>支付方式：</label>
+                        <select class="combox" style="width: 120px" >
+                            <option value="1">现金</option>
+                            <option value="2">转账</option>
+                            <option value="3">微信</option>
+                            <option value="4">支付宝</option>
+                            <option value="5">其他</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
             <div class="subBar">
                 <ul>
                     <li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>

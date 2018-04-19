@@ -2,7 +2,9 @@ package org.edu.timelycourse.mc.api.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.edu.timelycourse.mc.biz.dto.ContractDTO;
 import org.edu.timelycourse.mc.biz.model.ContractModel;
+import org.edu.timelycourse.mc.biz.paging.PagingBean;
 import org.edu.timelycourse.mc.biz.service.ContractService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
@@ -48,7 +50,7 @@ public class ContractController extends BaseController
         }
 
         model.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
-        return ResponseData.success(contractService.findByPage(model, pageNum, pageSize));
+        return ResponseData.success(ContractDTO.from(contractService.findByPage(model, pageNum, pageSize)));
     }
 
     @RequestMapping(path="/{contractId}", method= RequestMethod.GET)

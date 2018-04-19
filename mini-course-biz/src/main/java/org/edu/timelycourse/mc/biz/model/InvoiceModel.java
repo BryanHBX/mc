@@ -3,20 +3,19 @@ package org.edu.timelycourse.mc.biz.model;
 import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
 import org.edu.timelycourse.mc.biz.enums.EPaymentType;
-import org.edu.timelycourse.mc.biz.model.BaseEntity;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
 
-import javax.xml.validation.Validator;
 import java.util.Date;
 
 @Data
-public class InvoiceModel extends BaseEntity
+public class InvoiceModel extends BaseModel
 {
     /**
      * 合同ID
      */
     private Integer contractId;
+    private ContractModel contract;
 
     /**
      * 学校ID

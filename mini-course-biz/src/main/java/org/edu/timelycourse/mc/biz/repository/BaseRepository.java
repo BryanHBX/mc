@@ -1,11 +1,11 @@
 package org.edu.timelycourse.mc.biz.repository;
 
 import com.github.pagehelper.Page;
-import org.edu.timelycourse.mc.biz.model.BaseEntity;
+import org.edu.timelycourse.mc.biz.model.BaseModel;
 
 import java.util.List;
 
-public interface BaseRepository<T extends BaseEntity>
+public interface BaseRepository<T extends BaseModel>
 {
     T get(Integer id);
     Integer insert(final T entity);

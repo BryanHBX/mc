@@ -65,6 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
             .authorizeRequests()
             .antMatchers(
                     "/api/**/auth/**",
+                    "/druid/**",
                     "/swagger-ui.html",
                     "/swagger-resources",
                     "/v2/**",

@@ -5,12 +5,11 @@ import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
 import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.Date;
 import java.util.List;
 
 @Data
-public class SchoolProductModel extends BaseEntity
+public class SchoolProductModel extends BaseModel
 {
     /**
      * 课程名称

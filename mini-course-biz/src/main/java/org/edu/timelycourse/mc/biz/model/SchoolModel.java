@@ -1,14 +1,12 @@
 package org.edu.timelycourse.mc.biz.model;
 
 import lombok.Data;
-import org.edu.timelycourse.mc.biz.enums.EUserStatus;
-import org.edu.timelycourse.mc.biz.model.BaseEntity;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
 
 import java.util.Date;
 
 @Data
-public class SchoolModel extends BaseEntity
+public class SchoolModel extends BaseModel
 {
     /**
      * 学校名

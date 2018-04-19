@@ -37,6 +37,18 @@ public enum EEnrollmentType
         return name;
     }
 
+    public static String getLabel (Integer code)
+    {
+        for (EEnrollmentType item : EEnrollmentType.values())
+        {
+            if (item.code().equals(code))
+            {
+                return item.label();
+            }
+        }
+        return null;
+    }
+
     public static Integer getCode(String name)
     {
         for (EEnrollmentType item : EEnrollmentType.values())

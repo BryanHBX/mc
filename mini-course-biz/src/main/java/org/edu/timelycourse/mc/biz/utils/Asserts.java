@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.biz.utils;
 
-import org.edu.timelycourse.mc.biz.model.BaseEntity;
+import org.edu.timelycourse.mc.biz.model.BaseModel;
 import org.edu.timelycourse.mc.biz.repository.BaseRepository;
 import org.edu.timelycourse.mc.biz.service.BaseService;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
@@ -13,7 +13,7 @@ public final class Asserts
 {
     private static Logger LOGGER = LoggerFactory.getLogger(Asserts.class);
 
-    public static BaseEntity assertEntityNotNullById (BaseService service, Integer entityId)
+    public static BaseModel assertEntityNotNullById (BaseService service, Integer entityId)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format(
@@ -22,7 +22,7 @@ public final class Asserts
         return assertEntityNotNull(service.get(entityId));
     }
 
-    public static BaseEntity assertEntityNotNullById (BaseRepository repository, Integer entityId)
+    public static BaseModel assertEntityNotNullById (BaseRepository repository, Integer entityId)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format(
@@ -41,7 +41,7 @@ public final class Asserts
         throw new RuntimeException("Empty list of entities");
     }
 
-    private static BaseEntity assertEntityNotNull (BaseEntity entity)
+    private static BaseModel assertEntityNotNull (BaseModel entity)
     {
         if (entity != null)
         {
