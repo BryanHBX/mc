@@ -144,7 +144,7 @@ function parseDate(val,format) {
 		while ((format.charAt(i_format)==c) && (i_format < format.length)) {
 			token += format.charAt(i_format++);
 		}
-		// Extract contents of value based on format token
+		// Extract contents of name based on format token
 		if (token=="yyyy" || token=="yy" || token=="y") {
 			if (token=="yyyy") { x=4;y=4; }
 			if (token=="yy")   { x=2;y=2; }
@@ -220,7 +220,7 @@ function parseDate(val,format) {
 			else {i_val+=token.length;}
 		}
 	}
-	// If there are any trailing characters left in the value, it doesn't match
+	// If there are any trailing characters left in the name, it doesn't match
 	if (i_val != val.length) { return 0; }
 	// Is date valid for month?
 	if (month==2) {
@@ -232,7 +232,7 @@ function parseDate(val,format) {
 	if ((month==4)||(month==6)||(month==9)||(month==11)) {
 		if (date > 30) { return 0; }
 	}
-	// Correct hours value
+	// Correct hours name
 	if (hh<12 && ampm=="PM") { hh=hh-0+12; }
 	else if (hh>11 && ampm=="AM") { hh-=12; }
 	return new Date(year,month-1,date,hh,mm,ss);

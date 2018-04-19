@@ -82,7 +82,7 @@
 		},
 		pagerForm: function(options){
 			var op = $.extend({pagerForm$:"#pagerForm", parentBox:document}, options);
-			var frag = '<input type="hidden" name="#name#" value="#value#" />';
+			var frag = '<input type="hidden" name="#name#" name="#name#" />';
 			return this.each(function(){
 				var $searchForm = $(this), $pagerForm = $(op.pagerForm$, op.parentBox);
 				var actionUrl = $pagerForm.attr("action").replaceAll("#rel#", $searchForm.attr("action"));
@@ -91,7 +91,7 @@
 					var $input = $(this), name = $input.attr("name");
 					if (name && (!$input.is(":checkbox,:radio") || $input.is(":checked"))){
 						if ($pagerForm.find(":input[name='"+name+"']").length == 0) {
-							var inputFrag = frag.replaceAll("#name#", name).replaceAll("#value#", $input.val());
+							var inputFrag = frag.replaceAll("#name#", name).replaceAll("#name#", $input.val());
 							$pagerForm.append(inputFrag);
 						}
 					}

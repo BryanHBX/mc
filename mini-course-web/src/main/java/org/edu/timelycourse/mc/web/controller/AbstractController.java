@@ -82,65 +82,65 @@ public abstract class AbstractController extends BaseController implements Error
 
     protected PagingBean<UserModel> fetchMembers (HttpServletRequest request,
                                                   Integer pageNum,
-                                                  Integer pageSize,
-                                                  final UserModel model)
+                                                  Integer pageSize)
     {
         return remoteCall(request, String.format("member?pageNum=%d&pageSize=%d&%s",
                 pageNum != null ? pageNum : 1, pageSize != null ? pageSize : Constants.DEFAULT_PAGE_SIZE,
-                model.getUrlParams()),
-                new TypeToken<PagingBean<UserModel>>() {}).getData();
+                request.getQueryString()), new TypeToken<PagingBean<UserModel>>() {}).getData();
     }
 
     protected PagingBean<StudentModel> fetchStudents (HttpServletRequest request,
                                                    Integer pageNum,
-                                                   Integer pageSize,
-                                                   final StudentModel model)
+                                                   Integer pageSize)
     {
         return remoteCall(request, String.format("student?pageNum=%d&pageSize=%d&%s",
                 pageNum != null ? pageNum : 1, pageSize != null ? pageSize : Constants.DEFAULT_PAGE_SIZE,
-                model.getUrlParams()),
-                new TypeToken<PagingBean<StudentModel>>() {}).getData();
+                request.getQueryString()), new TypeToken<PagingBean<StudentModel>>() {}).getData();
     }
 
     protected PagingBean<ContractDTO> fetchContracts (HttpServletRequest request,
                                                       Integer pageNum,
-                                                      Integer pageSize,
-                                                      final ContractModel model)
+                                                      Integer pageSize)
     {
         return remoteCall(request, String.format("contract?pageNum=%d&pageSize=%d&%s",
                 pageNum != null ? pageNum : 1, pageSize != null ? pageSize : Constants.DEFAULT_PAGE_SIZE,
-                model.getUrlParams()),
-                new TypeToken<PagingBean<ContractDTO>>() {}).getData();
+                request.getQueryString()), new TypeToken<PagingBean<ContractDTO>>() {}).getData();
     }
 
     protected List<SchoolProductModel> fetchProducts (HttpServletRequest request)
     {
-        return remoteCall(request,"product", new TypeToken<List<SchoolProductModel>>() {}).getData();
+        return remoteCall(request,"product",
+                new TypeToken<List<SchoolProductModel>>() {}).getData();
     }
 
     protected List<SchoolProductModel> fetchProductByType (HttpServletRequest request, Integer productType)
     {
-        return remoteCall(request,"product?productType=" + productType, new TypeToken<List<SchoolProductModel>>() {}).getData();
+        return remoteCall(request,"product?productType=" + productType,
+                new TypeToken<List<SchoolProductModel>>() {}).getData();
     }
 
     protected SystemConfigModel fetchConfigByName (HttpServletRequest request, String configName)
     {
-        return remoteCall(request,"system/config?configName=" + configName, new TypeToken<SystemConfigModel>() {}).getData();
+        return remoteCall(request,"system/config?configName=" + configName,
+                new TypeToken<SystemConfigModel>() {}).getData();
     }
 
     protected List<SystemRoleModel> fetchSystemRoles (HttpServletRequest request)
     {
-        return remoteCall(request,"system/role", new TypeToken<List<SystemRoleModel>>() {}).getData();
+        return remoteCall(request,"system/role",
+                new TypeToken<List<SystemRoleModel>>() {}).getData();
     }
 
     protected SystemConfigModel fetchConfigById (HttpServletRequest request, Integer configId)
     {
-        return remoteCall(request,"system/config/" + configId, new TypeToken<SystemConfigModel>() {}).getData();
+        return remoteCall(request,"system/config/" + configId,
+                new TypeToken<SystemConfigModel>() {}).getData();
     }
 
     protected List<SystemConfigModel> fetchConfigs (HttpServletRequest request)
     {
-        return remoteCall(request,"system/config", new TypeToken<List<SystemConfigModel>>() {}).getData();
+        return remoteCall(request,"system/config",
+                new TypeToken<List<SystemConfigModel>>() {}).getData();
     }
 
     protected String getModulePath()
@@ -148,8 +148,8 @@ public abstract class AbstractController extends BaseController implements Error
         return getMyModulePath() != null ? String.format("%s/%s", MODULE_PATH, getMyModulePath()) : MODULE_PATH;
     }
 
-    @ModelAttribute("contract")
-    protected ContractModel getContractModel () { return new ContractModel(); }
+    @ModelAttribute("contractDTO")
+    protected ContractDTO getContractDTOModel () { return new ContractDTO(); }
 
     @ModelAttribute("student")
     protected StudentModel getStudentModel () { return new StudentModel(); }

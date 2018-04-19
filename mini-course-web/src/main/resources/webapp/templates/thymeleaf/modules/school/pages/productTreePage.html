@@ -26,12 +26,12 @@
     <!--
     <ul class="tree treeFolder expand" id="productTree">
         <li th:each="product : ${products}">
-            <a th:text="${product.key.configDescription}"
+            <a th:text="${product.id.configDescription}"
                th:href="@{'school/product?id=-1'}"
                target="ajax"
                rel="productTableList">课程子类</a>
-            <ul th:if="${not #lists.isEmpty(product.value)}"
-                th:with="menuItemsList=${product.value}"
+            <ul th:if="${not #lists.isEmpty(product.name)}"
+                th:with="menuItemsList=${product.name}"
                 layout:include="~{modules/school/fragment/productTreeFragment::tree}"></ul>
         </li>
     </ul>

@@ -3,9 +3,8 @@ package org.edu.timelycourse.mc.biz.dto;
 import lombok.Data;
 import org.edu.timelycourse.mc.biz.enums.EEnrollmentType;
 import org.edu.timelycourse.mc.biz.model.ContractModel;
-import org.edu.timelycourse.mc.biz.model.InvoiceModel;
 import org.edu.timelycourse.mc.biz.paging.PagingBean;
-import org.edu.timelycourse.mc.biz.utils.OptionProperty;
+import org.edu.timelycourse.mc.biz.utils.NamedOptionProperty;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
@@ -19,9 +18,14 @@ import java.util.List;
 public class ContractDTO extends BaseDTO
 {
     /**
+     * 学校ID
+     */
+    private Integer schoolId;
+
+    /**
      * 报名类型
      */
-    private OptionProperty<Integer, String> typeOpt;
+    private NamedOptionProperty enrollType;
 
     /**
      * 签约日期
@@ -39,29 +43,24 @@ public class ContractDTO extends BaseDTO
     private String contractNo;
 
     /**
-     *学生姓名
-     */
-    private String studentName;
-
-    /**
      * 学生年段
      */
-    private OptionProperty<Integer, String> gradeOpt;
+    private NamedOptionProperty grade;
 
     /**
      * 细分年段
      */
-    private OptionProperty<Integer, String> gradeSubLevelOpt;
+    private NamedOptionProperty gradeSub;
 
     /**
      * 课程名称
      */
-    private OptionProperty<Integer, String> courseOpt;
+    private NamedOptionProperty course;
 
     /**
      * 课程子类
      */
-    private OptionProperty<Integer, String> courseSubLevelOpt;
+    private NamedOptionProperty courseSub;
 
     /**
      * 报名课时
@@ -91,22 +90,12 @@ public class ContractDTO extends BaseDTO
     /**
      * 咨询师
      */
-    private OptionProperty<Integer, String> consultantOpt;
+    private NamedOptionProperty consultant;
 
     /**
      * 学管师
      */
-    private OptionProperty<Integer, String> supervisorOpt;
-
-    /**
-     * 合同ID
-     */
-    private Integer id;
-
-    /**
-     * 学校ID
-     */
-    private Integer schoolId;
+    private NamedOptionProperty supervisor;
 
     /**
      * 支付金额
@@ -116,7 +105,17 @@ public class ContractDTO extends BaseDTO
     /**
      * 学生
      */
-    private OptionProperty<Integer, String> studentOpt;
+    private NamedOptionProperty student;
+
+    /**
+     * 合同状态
+     */
+    private Integer contractStatus;
+
+    /**
+     * 缴费状态
+     */
+    private Integer payStatus;
 
     public static List<ContractDTO> from (List<ContractModel> models)
     {
@@ -143,18 +142,18 @@ public class ContractDTO extends BaseDTO
     {
         try
         {
-            ContractDTO vo = new ContractDTO();
-            BeanUtils.copyProperties(model, vo);
-            vo.setTypeOpt(new OptionProperty<>(model.getEnrollType(), EEnrollmentType.getLabel(model.getEnrollType())));
-            vo.setConsultantOpt(OptionProperty.from(model.getConsultantId(), model.getConsultant(), "userName"));
-            vo.setGradeOpt(OptionProperty.from(model.getLevelId(), model.getLevel(), "configDescription"));
-            vo.setGradeSubLevelOpt(OptionProperty.from(model.getSubLevelId(), model.getSubLevel(), "configDescription"));
-            vo.setCourseOpt(OptionProperty.from(model.getCourseId(), model.getCourse(), "productName"));
-            vo.setCourseSubLevelOpt(OptionProperty.from(model.getSubCourseId(), model.getSubCourse(), "productName"));
-            vo.setStudentOpt(OptionProperty.from(model.getStudentId(), model.getStudent(), "name"));
-            vo.setSupervisorOpt(OptionProperty.from(model.getSupervisorId(), model.getSupervisor(), "userName"));
-            vo.setPaid(model.getPayTotal());
-            return vo;
+            ContractDTO dto = new ContractDTO();
+            BeanUtils.copyProperties(model, dto, "course", "student", "enrollType", "consultant", "supervisor");
+            dto.setEnrollType(new NamedOptionProperty(model.getEnrollType(), EEnrollmentType.getLabel(model.getEnrollType())));
+            dto.setConsultant(NamedOptionProperty.from(model.getConsultantId(), model.getConsultant(), "userName"));
+            dto.setGrade(NamedOptionProperty.from(model.getLevelId(), model.getLevel(), "configDescription"));
+            dto.setGradeSub(NamedOptionProperty.from(model.getSubLevelId(), model.getSubLevel(), "configDescription"));
+            dto.setCourse(NamedOptionProperty.from(model.getCourseId(), model.getCourse(), "productName"));
+            dto.setCourseSub(NamedOptionProperty.from(model.getSubCourseId(), model.getSubCourse(), "productName"));
+            dto.setStudent(NamedOptionProperty.from(model.getStudentId(), model.getStudent(), "name"));
+            dto.setSupervisor(NamedOptionProperty.from(model.getSupervisorId(), model.getSupervisor(), "userName"));
+            dto.setPaid(model.getPayTotal());
+            return dto;
         }
         catch (Exception ex)
         {

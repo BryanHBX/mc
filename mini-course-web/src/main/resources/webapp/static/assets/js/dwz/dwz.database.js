@@ -49,7 +49,7 @@
 
                             var opCombox = $("#op_" + $($select.parent()).attr("id"));
                             opCombox.find("a").removeClass("selected");
-                            var selectedText = opCombox.find("a[value=" + args[key] + "]").addClass("selected").text();
+                            var selectedText = opCombox.find("a[name=" + args[key] + "]").addClass("selected").text();
                             $($select.parent()).find("a").text(selectedText);
                             break;
                         }
@@ -323,7 +323,7 @@
 				if (addButTxt) {
 					var $addBut = $('<div class="button"><div class="buttonContent"><button type="button">'+addButTxt+'</button></div></div>').insertBefore($table).find("button");
 					var $rowNum = $('<input type="text" name="dwz_rowNum" class="textInput" style="margin:2px;' +
-						($table.attr("rowNumWidth") ? "width:" + $table.attr("rowNumWidth")+ "px": "") + '" value="1" />').insertBefore($table);
+						($table.attr("rowNumWidth") ? "width:" + $table.attr("rowNumWidth")+ "px": "") + '" name="1" />').insertBefore($table);
 					
 					var trTm = "";
 					$addBut.click(function(){
@@ -423,11 +423,11 @@
 						}
 						break;
 					case 'date':
-						html = '<input type="text" name="'+field.name+'" value="'+field.defaultVal+'" class="date '+field.fieldClass+'" dateFmt="'+field.patternDate+'" size="'+field.size+'"/>'
+						html = '<input type="text" name="'+field.name+'" name="'+field.defaultVal+'" class="date '+field.fieldClass+'" dateFmt="'+field.patternDate+'" size="'+field.size+'"/>'
 							+'<a class="inputDateButton" href="javascript:void(0)">选择</a>';
 						break;
 					default:
-						html = '<input type="'+field.type+'" name="'+field.name+'" value="'+field.defaultVal+'" size="'+field.size+'" class="'+field.fieldClass+'" '+attrFrag+'/>';
+						html = '<input type="'+field.type+'" name="'+field.name+'" name="'+field.defaultVal+'" size="'+field.size+'" class="'+field.fieldClass+'" '+attrFrag+'/>';
 						break;
 				}
 				return '<td>'+html+'</td>';
@@ -515,7 +515,7 @@
 
 					var html = '';
 					$.each(data, function(index){
-						html += '<input type="hidden" name="'+this.name+'" value="'+this.value+'">'
+						html += '<input type="hidden" name="'+this.name+'" name="'+this.value+'">'
 					});
 					html = '<form method="post" target="_blank" action="'+$this.attr('href')+'">'+html+'</form>'
 					var $form = $(html).appendTo('body');

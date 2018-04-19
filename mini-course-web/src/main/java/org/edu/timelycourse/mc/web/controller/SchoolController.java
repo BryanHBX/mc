@@ -107,7 +107,7 @@ public class SchoolController extends AbstractController
         criteria.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
         criteria.setUserName(userName);
 
-        model.addAttribute("pagingBean", fetchMembers(request, pageNum, numPerPage, criteria));
+        model.addAttribute("pagingBean", fetchMembers(request, pageNum, numPerPage));
         model.addAttribute("search", criteria);
         return getModulePage("schoolMember");
     }

@@ -14,27 +14,27 @@
                 <tr>
                     <td>
                         <label>学生姓名：</label>
+                        <input id="ss_id" type="hidden" name="student.id" clean="true"
+                               th:value="${criteria != null and criteria.student ne null ? criteria.student.id : ''}" />
                         <input id="ss_name" name="student.name" type="text" class="textInput" postField="name"
                                suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="ss" clean="true"
                                th:value="${criteria != null and criteria.student ne null ? criteria.student.name : ''}"/>
-                        <input id="ss_id" type="hidden" name="student.id" clean="true"
-                               th:value="${criteria != null and criteria.student ne null ? criteria.student.id : ''}" />
                     </td>
                     <td>
                         <label>咨询师：</label>
-                        <input id="sg_id" name="consultantId" type="hidden" clean="true"
-                               th:value="${criteria != null ? criteria.consultantId : ''}"/>
-                        <input id="sg_userName" name="consultant.userName" type="text" class="textInput"
+                        <input id="sg_id" name="consultant.id" type="hidden" clean="true"
+                               th:value="${criteria != null and criteria.consultant ne null ? criteria.consultant.id : ''}"/>
+                        <input id="sg_userName" name="consultant.name" type="text" class="textInput"
                                postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sg" clean="true"
-                               th:value="${criteria != null and criteria.consultant ne null ? criteria.consultant.userName : ''}"/>
+                               th:value="${criteria != null and criteria.consultant ne null ? criteria.consultant.name : ''}"/>
                     </td>
                     <td>
                         <label>学管师：</label>
-                        <input id="sp_id" name="supervisorId" type="hidden" clean="true"
-                               th:value="${criteria != null ? criteria.supervisorId : ''}"/>
-                        <input id="sp_userName" name="supervisor.userName" type="text" class="textInput"
+                        <input id="sp_id" name="supervisor.id" type="hidden" clean="true"
+                               th:value="${criteria != null and criteria.supervisor ne null ? criteria.supervisor.id : ''}"/>
+                        <input id="sp_userName" name="supervisor.name" type="text" class="textInput"
                                postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sp" clean="true"
-                               th:value="${criteria != null and criteria.supervisor ne null ? criteria.supervisor.userName : ''}"/>
+                               th:value="${criteria != null and criteria.supervisor ne null ? criteria.supervisor.name : ''}"/>
                     </td>
                     <td>
                         <label>合同状态：</label>
@@ -56,7 +56,7 @@
                     </td>
                     <td>
                         <label>剩余课时≤：</label>
-                        <input type="text" name="keywords" value="" style="width: 100px;" class="textInput">
+                        <input type="text" name="keywords" style="width: 100px;" class="textInput">
                     </td>
             </table>
             <div class="subBar">
@@ -97,12 +97,12 @@
         <tbody>
             <div th:if="${pagingBean != null and pagingBean.items != null}">
                 <tr th:each="item: ${pagingBean.items}">
-                    <td align="center" th:text="${item.typeOpt ne null ? item.typeOpt.value : '--'}"></td>
+                    <td align="center" th:text="${item.enrollType ne null ? item.enrollType.name : '--'}"></td>
                     <td align="center" th:text="${item.contractDate ne null ? #dates.format(item.contractDate, 'yyyy-MM-dd') : '--'}"></td>
                     <td align="center" th:text="${item.contractNo}"></td>
-                    <td align="center" th:text="${item.studentOpt ne null ? item.studentOpt.value : '--'}"></td>
-                    <td align="center" th:text="${item.gradeSubLevelOpt ne null ? item.gradeSubLevelOpt.value : '--'}"></td>
-                    <td align="center" th:text="${item.courseOpt ne null ? item.courseOpt.value : '--'}"></td>
+                    <td align="center" th:text="${item.student ne null ? item.student.name : '--'}"></td>
+                    <td align="center" th:text="${item.gradeSub ne null ? item.gradeSub.name : '--'}"></td>
+                    <td align="center" th:text="${item.course ne null ? item.course.name : '--'}"></td>
                     <td align="center" th:text="${item.enrollPeriod}"></td>
                     <td align="center" th:text="${item.freePeriod}"></td>
                     <td align="center" th:text="${item.contractPrice}"></td>
@@ -128,8 +128,8 @@
                             <span>退费</span>
                         </a>
                     </td>
-                    <td align="center" th:text="${item.consultantOpt ne null ? item.consultantOpt.value : '--'}"></td>
-                    <td align="center" th:text="${item.supervisorOpt ne null ? item.supervisorOpt.value : '--'}"></td>
+                    <td align="center" th:text="${item.consultant ne null ? item.consultant.name : '--'}"></td>
+                    <td align="center" th:text="${item.supervisor ne null ? item.supervisor.name : '--'}"></td>
                 </tr>
             </div>
         </tbody>

@@ -27,7 +27,7 @@
     $form = this; // NOTE: the set of matched elements is most likely a form, but it could also be a group of inputs
     opts = f.setupOpts(options); // calculate values for options {parseNumbers, parseBoolens, parseNulls, ...} with defaults
 
-    // Use native `serializeArray` function to get an array of {name, value} objects.
+    // Use native `serializeArray` function to get an array of {name, name} objects.
     formAsArray = $form.serializeArray();
     f.readCheckboxUncheckedValues(formAsArray, opts, $form); // add objects to the array from unchecked checkboxes if needed
 
@@ -35,11 +35,11 @@
     serializedObject = {};
     $.each(formAsArray, function (i, obj) {
       name  = obj.name; // original input name
-      value = obj.value; // input value
+      value = obj.value; // input name
       _obj = f.extractTypeAndNameWithNoType(name);
       nameWithNoType = _obj.nameWithNoType; // input name with no type (i.e. "foo:string" => "foo")
       type = _obj.type; // type defined from the input name in :type colon notation
-      if (!type) type = f.attrFromInputWithName($form, name, 'data-value-type');
+      if (!type) type = f.attrFromInputWithName($form, name, 'data-name-type');
       f.validateType(name, type, opts); // make sure that the type is one of the valid types if defined
 
       if (type !== 'skip') { // ignore inputs with type 'skip'
@@ -60,7 +60,7 @@
   $.serializeJSON = {
 
     defaultOptions: {
-      checkboxUncheckedValue: undefined, // to include that value for unchecked checkboxes (instead of ignoring them)
+      checkboxUncheckedValue: undefined, // to include that name for unchecked checkboxes (instead of ignoring them)
 
       parseNumbers: false, // convert values like "1", "-2.33" to 1, -2.33
       parseBooleans: false, // convert "true", "false" to true, false
@@ -68,7 +68,7 @@
       parseAll: false, // all of the above
       parseWithFunction: null, // to use custom parser, a function like: function(val){ return parsed_val; }
 
-      skipFalsyValuesForTypes: [], // skip serialization of falsy values for listed value types
+      skipFalsyValuesForTypes: [], // skip serialization of falsy values for listed name types
       skipFalsyValuesForFields: [], // skip serialization of falsy values for listed field names
 
       customTypes: {}, // override defaultTypes
@@ -83,7 +83,7 @@
         "skip":    null // skip is a special type that makes it easy to ignore elements
       },
 
-      useIntKeysAsArrayIndex: false // name="foo[2]" value="v" => {foo: [null, null, "v"]}, instead of {foo: ["2": "v"]}
+      useIntKeysAsArrayIndex: false // name="foo[2]" name="v" => {foo: [null, null, "v"]}, instead of {foo: ["2": "v"]}
     },
 
     // Merge option defaults into the options
@@ -102,7 +102,7 @@
         }
       }
 
-      // Helper to get the default value for this option if none is specified by the user
+      // Helper to get the default name for this option if none is specified by the user
       optWithDefault = function(key) { return (options[key] !== false) && (options[key] !== '') && (options[key] || defaultOptions[key]); };
 
       // Return computed options (opts to be used in the rest of the script)
@@ -123,11 +123,11 @@
       };
     },
 
-    // Given a string, apply the type or the relevant "parse" options, to return the parsed value
+    // Given a string, apply the type or the relevant "parse" options, to return the parsed name
     parseValue: function(valStr, inputName, type, opts) {
       var f, parsedVal;
       f = $.serializeJSON;
-      parsedVal = valStr; // if no parsing is needed, the returned value will be the same
+      parsedVal = valStr; // if no parsing is needed, the returned name will be the same
 
       if (opts.typeFunctions && type && opts.typeFunctions[type]) { // use a type if available
         parsedVal = opts.typeFunctions[type](valStr);
@@ -159,8 +159,8 @@
 
     // Fill the formAsArray object with values for the unchecked checkbox inputs,
     // using the same format as the jquery.serializeArray function.
-    // The value of the unchecked values is determined from the opts.checkboxUncheckedValue
-    // and/or the data-unchecked-value attribute of the inputs.
+    // The name of the unchecked values is determined from the opts.checkboxUncheckedValue
+    // and/or the data-unchecked-name attribute of the inputs.
     readCheckboxUncheckedValues: function (formAsArray, opts, $form) {
       var selector, $uncheckedCheckboxes, $el, uncheckedValue, f, name;
       if (opts == null) { opts = {}; }
@@ -171,7 +171,7 @@
       $uncheckedCheckboxes.each(function (i, el) {
         // Check data attr first, then the option
         $el = $(el);
-        uncheckedValue = $el.attr('data-unchecked-value');
+        uncheckedValue = $el.attr('data-unchecked-name');
         if (uncheckedValue == null) {
           uncheckedValue = opts.checkboxUncheckedValue;
         }
@@ -201,14 +201,14 @@
     },
 
 
-    // Check if this input should be skipped when it has a falsy value,
+    // Check if this input should be skipped when it has a falsy name,
     // depending on the options to skip values by name or type, and the data-skip-falsy attribute.
     shouldSkipFalsy: function($form, name, nameWithNoType, type, opts) {
       var f = $.serializeJSON;
       
       var skipFromDataAttr = f.attrFromInputWithName($form, name, 'data-skip-falsy');
       if (skipFromDataAttr != null) {
-        return skipFromDataAttr !== 'false'; // any value is true, except if explicitly using 'false' 
+        return skipFromDataAttr !== 'false'; // any name is true, except if explicitly using 'false' 
       }
 
       var optForFields = opts.skipFalsyValuesForFields;
@@ -231,7 +231,7 @@
       var escapedName, selector, $input, attrValue;
       escapedName = name.replace(/(:|\.|\[|\]|\s)/g,'\\$1'); // every non-standard character need to be escaped by \\
       selector = '[name="' + escapedName + '"]';
-      $input = $form.find(selector).add($form.filter(selector)); // NOTE: this returns only the first $input element if multiple are matched with the same name (i.e. an "array[]"). So, arrays with different element types specified through the data-value-type attr is not supported.
+      $input = $form.find(selector).add($form.filter(selector)); // NOTE: this returns only the first $input element if multiple are matched with the same name (i.e. an "array[]"). So, arrays with different element types specified through the data-name-type attr is not supported.
       return $input.attr(attrName);
     },
 
@@ -265,7 +265,7 @@
       return keys;
     },
 
-    // Set a value in an object or array, using multiple keys to set in a nested object or array:
+    // Set a name in an object or array, using multiple keys to set in a nested object or array:
     //
     // deepSet(obj, ['foo'], v)               // obj['foo'] = v
     // deepSet(obj, ['foo', 'inn'], v)        // obj['foo']['inn'] = v // Create the inner obj['foo'] object, if needed
@@ -291,7 +291,7 @@
 
       key = keys[0];
 
-      // Only one key, then it's not a deepSet, just assign the value.
+      // Only one id, then it's not a deepSet, just assign the name.
       if (keys.length === 1) {
         if (key === '') {
           o.push(value); // '' is used to push values into the array (assume o is an array)
@@ -304,13 +304,13 @@
         nextKey = keys[1];
 
         // '' is used to push values into the array,
-        // with nextKey, set the value into the same object, in object[nextKey].
+        // with nextKey, set the name into the same object, in object[nextKey].
         // Covers the case of ['', 'foo'] and ['', 'var'] to push the object {foo, var}, and the case of nested arrays.
         if (key === '') {
           lastIdx = o.length - 1; // asume o is array
           lastVal = o[lastIdx];
           if (f.isObject(lastVal) && (f.isUndefined(lastVal[nextKey]) || keys.length > 2)) { // if nextKey is not present in the last object element, or there are more keys to deep set
-            key = lastIdx; // then set the new value in the same object element
+            key = lastIdx; // then set the new name in the same object element
           } else {
             key = lastIdx + 1; // otherwise, point to set the next index in the array
           }

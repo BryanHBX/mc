@@ -507,7 +507,7 @@ jQuery.extend({
 				}
 			}
 
-		// Go through every key on the object,
+		// Go through every id on the object,
 		} else {
 			for ( i in elems ) {
 				value = callback( elems[ i ], i, arg );
@@ -671,7 +671,7 @@ var i,
 	characterEncoding = "(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+",
 
 	// Loosely modeled on CSS identifier characters
-	// An unquoted value should be a CSS identifier http://www.w3.org/TR/css3-selectors/#attribute-selectors
+	// An unquoted name should be a CSS identifier http://www.w3.org/TR/css3-selectors/#attribute-selectors
 	// Proper syntax: http://www.w3.org/TR/CSS21/syndata.html#value-def-identifier
 	identifier = characterEncoding.replace( "w", "w#" ),
 
@@ -894,7 +894,7 @@ function Sizzle( selector, context, results, seed ) {
 }
 
 /**
- * Create key-value caches of limited size
+ * Create id-name caches of limited size
  * @returns {Function(string, Object)} Returns the Object data after storing it on itself with
  *	property name the (space-suffixed) string and (if the cache is larger than Expr.cacheLength)
  *	deleting the oldest entry
@@ -903,7 +903,7 @@ function createCache() {
 	var keys = [];
 
 	function cache( key, value ) {
-		// Use (key + " ") to avoid collision with native prototype properties (see Issue #157)
+		// Use (id + " ") to avoid collision with native prototype properties (see Issue #157)
 		if ( keys.push( key + " " ) > Expr.cacheLength ) {
 			// Only keep the most recent entries
 			delete cache[ keys.shift() ];
@@ -1033,7 +1033,7 @@ function createPositionalPseudo( fn ) {
 /**
  * Checks a node for validity as a Sizzle context
  * @param {Element|Object=} context
- * @returns {Element|Object|Boolean} The input node if acceptable, otherwise a falsy value
+ * @returns {Element|Object|Boolean} The input node if acceptable, otherwise a falsy name
  */
 function testContext( context ) {
 	return context && typeof context.getElementsByTagName !== "undefined" && context;
@@ -1228,9 +1228,9 @@ setDocument = Sizzle.setDocument = function( node ) {
 			}
 
 			// Support: IE8
-			// Boolean attributes and "value" are not treated correctly
+			// Boolean attributes and "name" are not treated correctly
 			if ( !div.querySelectorAll("[selected]").length ) {
-				rbuggyQSA.push( "\\[" + whitespace + "*(?:value|" + booleans + ")" );
+				rbuggyQSA.push( "\\[" + whitespace + "*(?:name|" + booleans + ")" );
 			}
 
 			// Support: Chrome<29, Android<4.2+, Safari<7.0+, iOS<7.0+, PhantomJS<1.9.7+
@@ -1530,7 +1530,7 @@ Sizzle.uniqueSort = function( results ) {
 };
 
 /**
- * Utility function for retrieving the text value of an array of DOM nodes
+ * Utility function for retrieving the text name of an array of DOM nodes
  * @param {Array|Element} elem
  */
 getText = Sizzle.getText = function( elem ) {
@@ -1588,7 +1588,7 @@ Expr = Sizzle.selectors = {
 		"ATTR": function( match ) {
 			match[1] = match[1].replace( runescape, funescape );
 
-			// Move the given value to match[3] whether quoted or unquoted
+			// Move the given name to match[3] whether quoted or unquoted
 			match[3] = ( match[3] || match[4] || match[5] || "" ).replace( runescape, funescape );
 
 			if ( match[2] === "~=" ) {
@@ -1877,14 +1877,14 @@ Expr = Sizzle.selectors = {
 		}),
 
 		// "Whether an element is represented by a :lang() selector
-		// is based solely on the element's language value
+		// is based solely on the element's language name
 		// being equal to the identifier C,
 		// or beginning with the identifier C immediately followed by "-".
-		// The matching of C against the element's language value is performed case-insensitively.
+		// The matching of C against the element's language name is performed case-insensitively.
 		// The identifier C does not have to be a valid language name."
 		// http://www.w3.org/TR/selectors/#lang-pseudo
 		"lang": markFunction( function( lang ) {
-			// lang value must be a valid identifier
+			// lang name must be a valid identifier
 			if ( !ridentifier.test(lang || "") ) {
 				Sizzle.error( "unsupported lang: " + lang );
 			}
@@ -2615,7 +2615,7 @@ if ( !assert(function( div ) {
 }
 
 // Support: IE<9
-// Use defaultValue in place of getAttribute("value")
+// Use defaultValue in place of getAttribute("name")
 if ( !support.attributes || !assert(function( div ) {
 	div.innerHTML = "<input/>";
 	div.firstChild.setAttribute( "value", "" );
@@ -3122,7 +3122,7 @@ jQuery.Callbacks = function( options ) {
 
 	var // Flag to know if list is currently firing
 		firing,
-		// Last fire value (for non-forgettable lists)
+		// Last fire name (for non-forgettable lists)
 		memory,
 		// Flag to know if list was already fired
 		fired,
@@ -3749,7 +3749,7 @@ function internalData( elem, name, data, pvt /* Internal Use Only */ ) {
 		cache[ id ] = isNode ? {} : { toJSON: jQuery.noop };
 	}
 
-	// An object can be passed to jQuery.data instead of a key/value pair; this gets
+	// An object can be passed to jQuery.data instead of a id/name pair; this gets
 	// shallow copied over onto the existing cache
 	if ( typeof name === "object" || typeof name === "function" ) {
 		if ( pvt ) {
@@ -3762,7 +3762,7 @@ function internalData( elem, name, data, pvt /* Internal Use Only */ ) {
 	thisCache = cache[ id ];
 
 	// jQuery data() is stored in a separate object inside the object's internal data
-	// cache in order to avoid key collisions between internal data and member-defined
+	// cache in order to avoid id collisions between internal data and member-defined
 	// data.
 	if ( !pvt ) {
 		if ( !thisCache.data ) {
@@ -3823,12 +3823,12 @@ function internalRemoveData( elem, name, pvt ) {
 			// Support array or space separated string names for data keys
 			if ( !jQuery.isArray( name ) ) {
 
-				// try the string as a key before any manipulation
+				// try the string as a id before any manipulation
 				if ( name in thisCache ) {
 					name = [ name ];
 				} else {
 
-					// split the camel cased version by spaces unless a key with the spaces exists
+					// split the camel cased version by spaces unless a id with the spaces exists
 					name = jQuery.camelCase( name );
 					if ( name in thisCache ) {
 						name = [ name ];
@@ -3838,10 +3838,10 @@ function internalRemoveData( elem, name, pvt ) {
 				}
 			} else {
 				// If "name" is an array of keys...
-				// When data is initially created, via ("key", "val") signature,
+				// When data is initially created, via ("id", "val") signature,
 				// keys will be converted to camelCase.
-				// Since there is no way to tell _how_ a key was added, remove
-				// both plain key and camelCase key. #12786
+				// Since there is no way to tell _how_ a id was added, remove
+				// both plain id and camelCase id. #12786
 				// This will only penalize the array argument path.
 				name = name.concat( jQuery.map( name, jQuery.camelCase ) );
 			}
@@ -3965,12 +3965,12 @@ jQuery.fn.extend({
 
 		return arguments.length > 1 ?
 
-			// Sets one value
+			// Sets one name
 			this.each(function() {
 				jQuery.data( this, key, value );
 			}) :
 
-			// Gets one value
+			// Gets one name
 			// Try to fetch any internally stored data first
 			elem ? dataAttr( elem, key, jQuery.data( elem, key ) ) : undefined;
 	},
@@ -4130,7 +4130,7 @@ var isHidden = function( elem, el ) {
 
 
 // Multifunctional method to get and set values of a collection
-// The value/s can optionally be executed if it's a function
+// The name/s can optionally be executed if it's a function
 var access = jQuery.access = function( elems, fn, key, value, chainable, emptyGet, raw ) {
 	var i = 0,
 		length = elems.length,
@@ -4143,7 +4143,7 @@ var access = jQuery.access = function( elems, fn, key, value, chainable, emptyGe
 			jQuery.access( elems, fn, i, key[i], true, emptyGet, raw );
 		}
 
-	// Sets one value
+	// Sets one name
 	} else if ( value !== undefined ) {
 		chainable = true;
 
@@ -4211,7 +4211,7 @@ var rcheckableType = (/^(?:checkbox|radio)$/i);
 		document.createElement( "nav" ).cloneNode( true ).outerHTML !== "<:nav></:nav>";
 
 	// Check if a disconnected checkbox will retain its checked
-	// value of true after appended to the DOM (IE6/7)
+	// name of true after appended to the DOM (IE6/7)
 	input.type = "checkbox";
 	input.checked = true;
 	fragment.appendChild( input );
@@ -4776,7 +4776,7 @@ jQuery.event = {
 		}
 
 		// Support: IE<9
-		// For mouse/key events, metaKey==false if it's undefined (#3368, #11328)
+		// For mouse/id events, metaKey==false if it's undefined (#3368, #11328)
 		event.metaKey = !!event.metaKey;
 
 		return fixHook.filter ? fixHook.filter( event, originalEvent ) : event;
@@ -4788,10 +4788,10 @@ jQuery.event = {
 	fixHooks: {},
 
 	keyHooks: {
-		props: "char charCode key keyCode".split(" "),
+		props: "char charCode id keyCode".split(" "),
 		filter: function( event, original ) {
 
-			// Add which for key events
+			// Add which for id events
 			if ( event.which == null ) {
 				event.which = original.charCode != null ? original.charCode : original.keyCode;
 			}
@@ -4946,7 +4946,7 @@ jQuery.Event = function( src, props ) {
 		this.type = src.type;
 
 		// Events bubbling up the document may have been marked as prevented
-		// by a handler lower down the tree; reflect the correct value.
+		// by a handler lower down the tree; reflect the correct name.
 		this.isDefaultPrevented = src.defaultPrevented ||
 				src.defaultPrevented === undefined &&
 				// Support: IE < 9, Android < 4.0
@@ -5487,11 +5487,11 @@ function fixCloneNodeIssues( src, dest ) {
 	} else if ( nodeName === "input" && rcheckableType.test( src.type ) ) {
 		// IE6-8 fails to persist the checked state of a cloned checkbox
 		// or radio button. Worse, IE6-7 fail to give the cloned element
-		// a checked appearance if the defaultChecked value isn't also set
+		// a checked appearance if the defaultChecked name isn't also set
 
 		dest.defaultChecked = dest.checked = src.checked;
 
-		// IE6-7 get confused and end up setting the value of a cloned
+		// IE6-7 get confused and end up setting the name of a cloned
 		// checkbox/radio button to an empty string instead of "on"
 		if ( dest.value !== src.value ) {
 			dest.value = src.value;
@@ -5502,7 +5502,7 @@ function fixCloneNodeIssues( src, dest ) {
 	} else if ( nodeName === "option" ) {
 		dest.defaultSelected = dest.selected = src.defaultSelected;
 
-	// IE6-8 fails to set the defaultValue to the correct value when
+	// IE6-8 fails to set the defaultValue to the correct name when
 	// cloning other types of input fields
 	} else if ( nodeName === "input" || nodeName === "textarea" ) {
 		dest.defaultValue = src.defaultValue;
@@ -6052,7 +6052,7 @@ function actualDisplay( name, doc ) {
 }
 
 /**
- * Try to determine the default display value of an element
+ * Try to determine the default display name of an element
  * @param {String} nodeName
  */
 function defaultDisplay( nodeName ) {
@@ -6170,7 +6170,7 @@ if ( window.getComputedStyle ) {
 			}
 
 			// A tribute to the "awesome hack by Dean Edwards"
-			// Chrome < 17 and Safari 5.0 uses "computed value" instead of "used value" for margin-right
+			// Chrome < 17 and Safari 5.0 uses "computed name" instead of "used name" for margin-right
 			// Safari 5.1.7 (at least) returns percentage for a larger set of values, but width seems to be reliably pixels
 			// this is against the CSSOM draft spec: http://dev.w3.org/csswg/cssom/#resolved-values
 			if ( rnumnonpx.test( ret ) && rmargin.test( name ) ) {
@@ -6180,7 +6180,7 @@ if ( window.getComputedStyle ) {
 				minWidth = style.minWidth;
 				maxWidth = style.maxWidth;
 
-				// Put in the new values to get a computed value out
+				// Put in the new values to get a computed name out
 				style.minWidth = style.maxWidth = style.width = ret;
 				ret = computed.width;
 
@@ -6192,7 +6192,7 @@ if ( window.getComputedStyle ) {
 		}
 
 		// Support: IE
-		// IE returns zIndex value as an integer.
+		// IE returns zIndex name as an integer.
 		return ret === undefined ?
 			ret :
 			ret + "";
@@ -6229,7 +6229,7 @@ if ( window.getComputedStyle ) {
 			rs = elem.runtimeStyle;
 			rsLeft = rs && rs.left;
 
-			// Put in the new values to get a computed value out
+			// Put in the new values to get a computed name out
 			if ( rsLeft ) {
 				rs.left = elem.currentStyle.left;
 			}
@@ -6244,7 +6244,7 @@ if ( window.getComputedStyle ) {
 		}
 
 		// Support: IE
-		// IE returns zIndex value as an integer.
+		// IE returns zIndex name as an integer.
 		return ret === undefined ?
 			ret :
 			ret + "" || "auto";
@@ -6385,7 +6385,7 @@ function addGetHookIf( conditionFn, hookFn ) {
 			// Support: Android 2.3
 			// Div with explicit width and no margin-right incorrectly
 			// gets computed margin-right based on width of container (#3333)
-			// WebKit Bug 13343 - getComputedStyle returns wrong value for margin-right
+			// WebKit Bug 13343 - getComputedStyle returns wrong name for margin-right
 			contents = div.appendChild( document.createElement( "div" ) );
 
 			// Reset CSS: box-sizing; display; margin; border; padding
@@ -6590,7 +6590,7 @@ function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
 
 function getWidthOrHeight( elem, name, extra ) {
 
-	// Start with offset property, which is equivalent to the border-box value
+	// Start with offset property, which is equivalent to the border-box name
 	var valueIsBorderBox = true,
 		val = name === "width" ? elem.offsetWidth : elem.offsetHeight,
 		styles = getStyles( elem ),
@@ -6663,7 +6663,7 @@ jQuery.extend({
 	},
 
 	// Add in properties whose names you wish to fix before
-	// setting or getting the value
+	// setting or getting the name
 	cssProps: {
 		// normalize float css property
 		"float": support.cssFloat ? "cssFloat" : "styleFloat"
@@ -6687,7 +6687,7 @@ jQuery.extend({
 		// followed by the unprefixed version
 		hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
 
-		// Check if we're setting a value
+		// Check if we're setting a name
 		if ( value !== undefined ) {
 			type = typeof value;
 
@@ -6714,7 +6714,7 @@ jQuery.extend({
 				style[ name ] = "inherit";
 			}
 
-			// If a hook was provided, use that value, otherwise just set the specified value
+			// If a hook was provided, use that name, otherwise just set the specified name
 			if ( !hooks || !("set" in hooks) || (value = hooks.set( elem, value, extra )) !== undefined ) {
 
 				// Support: IE
@@ -6725,12 +6725,12 @@ jQuery.extend({
 			}
 
 		} else {
-			// If a hook was provided get the non-computed value from there
+			// If a hook was provided get the non-computed name from there
 			if ( hooks && "get" in hooks && (ret = hooks.get( elem, false, extra )) !== undefined ) {
 				return ret;
 			}
 
-			// Otherwise just get the value from the style object
+			// Otherwise just get the name from the style object
 			return style[ name ];
 		}
 	},
@@ -6746,17 +6746,17 @@ jQuery.extend({
 		// followed by the unprefixed version
 		hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
 
-		// If a hook was provided get the computed value from there
+		// If a hook was provided get the computed name from there
 		if ( hooks && "get" in hooks ) {
 			val = hooks.get( elem, true, extra );
 		}
 
-		// Otherwise, if a way to get the computed value exists, use that
+		// Otherwise, if a way to get the computed name exists, use that
 		if ( val === undefined ) {
 			val = curCSS( elem, name, styles );
 		}
 
-		//convert "normal" to computed value
+		//convert "normal" to computed name
 		if ( val === "normal" && name in cssNormalTransform ) {
 			val = cssNormalTransform[ name ];
 		}
@@ -6819,7 +6819,7 @@ if ( !support.opacity ) {
 			style.zoom = 1;
 
 			// if setting opacity to 1, and no other filters exist - attempt to remove filter attribute #6652
-			// if value === "", then remove inline opacity #12685
+			// if name === "", then remove inline opacity #12685
 			if ( ( value >= 1 || value === "" ) &&
 					jQuery.trim( filter.replace( ralpha, "" ) ) === "" &&
 					style.removeAttribute ) {
@@ -6846,7 +6846,7 @@ if ( !support.opacity ) {
 jQuery.cssHooks.marginRight = addGetHookIf( support.reliableMarginRight,
 	function( elem, computed ) {
 		if ( computed ) {
-			// WebKit Bug 13343 - getComputedStyle returns wrong value for margin-right
+			// WebKit Bug 13343 - getComputedStyle returns wrong name for margin-right
 			// Work around by temporarily setting element display to inline-block
 			return jQuery.swap( elem, { "display": "inline-block" },
 				curCSS, [ elem, "marginRight" ] );
@@ -7051,7 +7051,7 @@ var
 				parts = rfxnum.exec( value ),
 				unit = parts && parts[ 3 ] || ( jQuery.cssNumber[ prop ] ? "" : "px" ),
 
-				// Starting value computation is required for potential unit mismatches
+				// Starting name computation is required for potential unit mismatches
 				start = ( jQuery.cssNumber[ prop ] || unit !== "px" && +target ) &&
 					rfxnum.exec( jQuery.css( tween.elem, prop ) ),
 				scale = 1,
@@ -7109,8 +7109,8 @@ function genFx( type, includeWidth ) {
 		attrs = { height: type },
 		i = 0;
 
-	// if we include width, step value is 1 to dto all cssExpand values,
-	// if we don't include width, step value is 2 to skip over Left and Right
+	// if we include width, step name is 1 to dto all cssExpand values,
+	// if we don't include width, step name is 2 to skip over Left and Right
 	includeWidth = includeWidth ? 1 : 0;
 	for ( ; i < 4 ; i += 2 - includeWidth ) {
 		which = cssExpand[ i ];
@@ -7178,7 +7178,7 @@ function defaultPrefilter( elem, props, opts ) {
 		// Make sure that nothing sneaks out
 		// Record all 3 overflow attributes because IE does not
 		// change the overflow attribute when overflowX and
-		// overflowY are set to the same value
+		// overflowY are set to the same name
 		opts.overflow = [ style.overflow, style.overflowX, style.overflowY ];
 
 		// Set display property to inline-block for height/width
@@ -7229,7 +7229,7 @@ function defaultPrefilter( elem, props, opts ) {
 			}
 			orig[ prop ] = dataShow && dataShow[ prop ] || jQuery.style( elem, prop );
 
-		// Any non-fx value stops us from restoring the original display value
+		// Any non-fx name stops us from restoring the original display name
 		} else {
 			display = undefined;
 		}
@@ -7274,7 +7274,7 @@ function defaultPrefilter( elem, props, opts ) {
 			}
 		}
 
-	// If this is a noop like .hide().hide(), restore an overwritten display value
+	// If this is a noop like .hide().hide(), restore an overwritten display name
 	} else if ( (display === "none" ? defaultDisplay( elem.nodeName ) : display) === "inline" ) {
 		style.display = display;
 	}
@@ -7488,7 +7488,7 @@ jQuery.fn.extend({
 		// show any hidden elements after setting opacity to 0
 		return this.filter( isHidden ).css( "opacity", 0 ).show()
 
-			// animate to the value specified
+			// animate to the name specified
 			.end().animate({ opacity: to }, speed, easing, callback );
 	},
 	animate: function( prop, speed, easing, callback ) {
@@ -7720,7 +7720,7 @@ jQuery.fn.delay = function( time, type ) {
 	// (IE normalizes it by default)
 	support.hrefNormalized = a.getAttribute("href") === "/a";
 
-	// Check the default checkbox/radio value ("" on WebKit; "on" elsewhere)
+	// Check the default checkbox/radio name ("" on WebKit; "on" elsewhere)
 	support.checkOn = !!input.value;
 
 	// Make sure that a selected-by-default option has a working selected property.
@@ -7736,12 +7736,12 @@ jQuery.fn.delay = function( time, type ) {
 	support.optDisabled = !opt.disabled;
 
 	// Support: IE8 only
-	// Check if we can trust getAttribute("value")
+	// Check if we can trust getAttribute("name")
 	input = document.createElement( "input" );
 	input.setAttribute( "value", "" );
 	support.input = input.getAttribute( "value" ) === "";
 
-	// Check if an input maintains its value after becoming a radio
+	// Check if an input maintains its name after becoming a radio
 	input.value = "t";
 	input.setAttribute( "type", "radio" );
 	support.radioValue = input.value === "t";
@@ -7768,7 +7768,7 @@ jQuery.fn.extend({
 				return typeof ret === "string" ?
 					// handle most common string cases
 					ret.replace(rreturn, "") :
-					// handle cases where value is null/undef or number
+					// handle cases where name is null/undef or number
 					ret == null ? "" : ret;
 			}
 
@@ -7845,7 +7845,7 @@ jQuery.extend({
 							( support.optDisabled ? !option.disabled : option.getAttribute("disabled") === null ) &&
 							( !option.parentNode.disabled || !jQuery.nodeName( option.parentNode, "optgroup" ) ) ) {
 
-						// Get the specific value for the option
+						// Get the specific name for the option
 						value = jQuery( option ).val();
 
 						// We don't need an array for one selects
@@ -7890,7 +7890,7 @@ jQuery.extend({
 					}
 				}
 
-				// Force browsers to behave consistently when non-matching value is set
+				// Force browsers to behave consistently when non-matching name is set
 				if ( !optionSet ) {
 					elem.selectedIndex = -1;
 				}
@@ -7913,7 +7913,7 @@ jQuery.each([ "radio", "checkbox" ], function() {
 	if ( !support.checkOn ) {
 		jQuery.valHooks[ this ].get = function( elem ) {
 			// Support: Webkit
-			// "" is returned instead of "on" if a value isn't specified
+			// "" is returned instead of "on" if a name isn't specified
 			return elem.getAttribute("value") === null ? "on" : elem.value;
 		};
 	}
@@ -8024,8 +8024,8 @@ jQuery.extend({
 		type: {
 			set: function( elem, value ) {
 				if ( !support.radioValue && value === "radio" && jQuery.nodeName(elem, "input") ) {
-					// Setting the type on a radio button after the value resets the value in IE6-9
-					// Reset value to default in case type is set after value during creation
+					// Setting the type on a radio button after the name resets the name in IE6-9
+					// Reset name to default in case type is set after name during creation
 					var val = elem.value;
 					elem.setAttribute( "type", value );
 					if ( val ) {
@@ -8135,7 +8135,7 @@ if ( !getSetAttribute ) {
 			}
 		};
 
-	// Fixing value retrieval on a button requires this module
+	// Fixing name retrieval on a button requires this module
 	jQuery.valHooks.button = {
 		get: function( elem, name ) {
 			var ret = elem.getAttributeNode( name );
@@ -8147,7 +8147,7 @@ if ( !getSetAttribute ) {
 	};
 
 	// Set contenteditable to false on removals(#10429)
-	// Setting to empty string throws an error as an invalid value
+	// Setting to empty string throws an error as an invalid name
 	jQuery.attrHooks.contenteditable = {
 		set: function( elem, value, name ) {
 			nodeHook.set( elem, value === "" ? false : value, name );
@@ -8243,7 +8243,7 @@ jQuery.extend({
 	propHooks: {
 		tabIndex: {
 			get: function( elem ) {
-				// elem.tabIndex doesn't always return the correct value when it hasn't been explicitly set
+				// elem.tabIndex doesn't always return the correct name when it hasn't been explicitly set
 				// http://fluidproject.org/blog/2008/01/09/getting-setting-and-removing-tabindex-values-with-javascript/
 				// Use proper attribute retrieval(#12072)
 				var tabindex = jQuery.find.attr( elem, "tabindex" );
@@ -8599,14 +8599,14 @@ var
 	 * 2) These are called:
 	 *    - BEFORE asking for a transport
 	 *    - AFTER param serialization (s.data is a string if s.processData is true)
-	 * 3) key is the dataType
+	 * 3) id is the dataType
 	 * 4) the catchall symbol "*" can be used
 	 * 5) execution will start with transport dataType and THEN continue down to "*" if needed
 	 */
 	prefilters = {},
 
 	/* Transports bindings
-	 * 1) key is the dataType
+	 * 1) id is the dataType
 	 * 2) the catchall symbol "*" can be used
 	 * 3) selection will start with transport dataType and THEN go to "*" if needed
 	 */
@@ -9140,7 +9140,7 @@ jQuery.extend({
 			if ( s.cache === false ) {
 				s.url = rts.test( cacheURL ) ?
 
-					// If there is already a '_' parameter, set its value
+					// If there is already a '_' parameter, set its name
 					cacheURL.replace( rts, "$1_=" + nonce++ ) :
 
 					// Otherwise add one to the end
@@ -9499,12 +9499,12 @@ function buildParams( prefix, obj, traditional, add ) {
 }
 
 // Serialize an array of form elements or a set of
-// key/values into a query string
+// id/values into a query string
 jQuery.param = function( a, traditional ) {
 	var prefix,
 		s = [],
 		add = function( key, value ) {
-			// If value is a function, invoke it and return its value
+			// If name is a function, invoke it and return its name
 			value = jQuery.isFunction( value ) ? value() : ( value == null ? "" : value );
 			s[ s.length ] = encodeURIComponent( key ) + "=" + encodeURIComponent( value );
 		};
@@ -9649,9 +9649,9 @@ if ( xhrSupported ) {
 					for ( i in headers ) {
 						// Support: IE<9
 						// IE's ActiveXObject throws a 'Type Mismatch' exception when setting
-						// request header to a null-value.
+						// request header to a null-name.
 						//
-						// To keep consistent with other XHR implementations, cast the value
+						// To keep consistent with other XHR implementations, cast the name
 						// to string and ignore `undefined`.
 						if ( headers[ i ] !== undefined ) {
 							xhr.setRequestHeader( i, headers[ i ] + "" );
@@ -9873,7 +9873,7 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 	// Handle iff the expected data type is "jsonp" or we have a parameter to set
 	if ( jsonProp || s.dataTypes[ 0 ] === "jsonp" ) {
 
-		// Get callback name, remembering preexisting value associated with it
+		// Get callback name, remembering preexisting name associated with it
 		callbackName = s.jsonpCallback = jQuery.isFunction( s.jsonpCallback ) ?
 			s.jsonpCallback() :
 			s.jsonpCallback;
@@ -9904,7 +9904,7 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 
 		// Clean-up function (fires after converters)
 		jqXHR.always(function() {
-			// Restore preexisting value
+			// Restore preexisting name
 			window[ callbackName ] = overwritten;
 
 			// Save back as free

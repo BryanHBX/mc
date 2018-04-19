@@ -1,9 +1,9 @@
 <form id="pagerForm" method="post" action="w_removeSelected.html">
-    <input type="hidden" name="pageNum" value="1">
-    <input type="hidden" name="numPerPage" value="${model.numPerPage}">
-    <input type="hidden" name="orderField" value="${param.orderField}">
-    <input type="hidden" name="orderDirection" value="${param.orderDirection}">
-    <input type="hidden" name="keywords" value=""><input type="hidden" name="province" value="">
+    <input type="hidden" name="pageNum" name="1">
+    <input type="hidden" name="numPerPage" name="${model.numPerPage}">
+    <input type="hidden" name="orderField" name="${param.orderField}">
+    <input type="hidden" name="orderDirection" name="${param.orderDirection}">
+    <input type="hidden" name="keywords" name=""><input type="hidden" name="province" name="">
 </form>
 <div class="pageHeader">
     <form id="mySearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="w_removeSelected.html" method="post">
@@ -31,7 +31,7 @@
             </li>
         </ul>
     </div>
-    <div class="grid"><input id="sid_user" type="hidden" value="1">
+    <div class="grid"><input id="sid_user" type="hidden" name="1">
         <div class="gridHeader">
             <div class="gridThead" style="position: relative; left: 0px;">
                 <table style="width:100%;">
@@ -73,7 +73,7 @@
                     <span>当前剩余课时价值: </span>
                     <span>统计区间内消耗课时价值: </span>
                     <span>显示</span>
-                    <div class="combox"><div id="combox_9181136" class="select"><a href="javascript:" name="numPerPage" value="20" default-value="20">20</a><select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})" style="display: none;">
+                    <div class="combox"><div id="combox_9181136" class="select"><a href="javascript:" name="numPerPage" name="20" default-name="20">20</a><select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.name})" style="display: none;">
                         <option value="20">20</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
@@ -101,7 +101,7 @@
                     <a class="last" href="javascript:;"><span>末页</span></a>
                     <span class="last" style="display: none;"><span>末页</span></span>
                 </li>
-                <li class="jumpto"><input class="textInput" type="text" size="4" value="1"><input class="goto" type="button" value="确定"></li>
+                <li class="jumpto"><input class="textInput" type="text" size="4" name="1"><input class="goto" type="button" name="确定"></li>
             </ul>
         </div>
 

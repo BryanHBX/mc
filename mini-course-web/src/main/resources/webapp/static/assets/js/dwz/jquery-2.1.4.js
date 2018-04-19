@@ -272,7 +272,7 @@ jQuery.extend({
 
 	isPlainObject: function( obj ) {
 		// Not plain objects:
-		// - Any object or value whose internal [[Class]] property is not "[object Object]"
+		// - Any object or name whose internal [[Class]] property is not "[object Object]"
 		// - DOM nodes
 		// - window
 		if ( jQuery.type( obj ) !== "object" || obj.nodeType || jQuery.isWindow( obj ) ) {
@@ -471,7 +471,7 @@ jQuery.extend({
 				}
 			}
 
-		// Go through every key on the object,
+		// Go through every id on the object,
 		} else {
 			for ( i in elems ) {
 				value = callback( elems[ i ], i, arg );
@@ -633,7 +633,7 @@ var i,
 	characterEncoding = "(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+",
 
 	// Loosely modeled on CSS identifier characters
-	// An unquoted value should be a CSS identifier http://www.w3.org/TR/css3-selectors/#attribute-selectors
+	// An unquoted name should be a CSS identifier http://www.w3.org/TR/css3-selectors/#attribute-selectors
 	// Proper syntax: http://www.w3.org/TR/CSS21/syndata.html#value-def-identifier
 	identifier = characterEncoding.replace( "w", "w#" ),
 
@@ -856,7 +856,7 @@ function Sizzle( selector, context, results, seed ) {
 }
 
 /**
- * Create key-value caches of limited size
+ * Create id-name caches of limited size
  * @returns {Function(string, Object)} Returns the Object data after storing it on itself with
  *	property name the (space-suffixed) string and (if the cache is larger than Expr.cacheLength)
  *	deleting the oldest entry
@@ -865,7 +865,7 @@ function createCache() {
 	var keys = [];
 
 	function cache( key, value ) {
-		// Use (key + " ") to avoid collision with native prototype properties (see Issue #157)
+		// Use (id + " ") to avoid collision with native prototype properties (see Issue #157)
 		if ( keys.push( key + " " ) > Expr.cacheLength ) {
 			// Only keep the most recent entries
 			delete cache[ keys.shift() ];
@@ -995,7 +995,7 @@ function createPositionalPseudo( fn ) {
 /**
  * Checks a node for validity as a Sizzle context
  * @param {Element|Object=} context
- * @returns {Element|Object|Boolean} The input node if acceptable, otherwise a falsy value
+ * @returns {Element|Object|Boolean} The input node if acceptable, otherwise a falsy name
  */
 function testContext( context ) {
 	return context && typeof context.getElementsByTagName !== "undefined" && context;
@@ -1190,9 +1190,9 @@ setDocument = Sizzle.setDocument = function( node ) {
 			}
 
 			// Support: IE8
-			// Boolean attributes and "value" are not treated correctly
+			// Boolean attributes and "name" are not treated correctly
 			if ( !div.querySelectorAll("[selected]").length ) {
-				rbuggyQSA.push( "\\[" + whitespace + "*(?:value|" + booleans + ")" );
+				rbuggyQSA.push( "\\[" + whitespace + "*(?:name|" + booleans + ")" );
 			}
 
 			// Support: Chrome<29, Android<4.2+, Safari<7.0+, iOS<7.0+, PhantomJS<1.9.7+
@@ -1492,7 +1492,7 @@ Sizzle.uniqueSort = function( results ) {
 };
 
 /**
- * Utility function for retrieving the text value of an array of DOM nodes
+ * Utility function for retrieving the text name of an array of DOM nodes
  * @param {Array|Element} elem
  */
 getText = Sizzle.getText = function( elem ) {
@@ -1550,7 +1550,7 @@ Expr = Sizzle.selectors = {
 		"ATTR": function( match ) {
 			match[1] = match[1].replace( runescape, funescape );
 
-			// Move the given value to match[3] whether quoted or unquoted
+			// Move the given name to match[3] whether quoted or unquoted
 			match[3] = ( match[3] || match[4] || match[5] || "" ).replace( runescape, funescape );
 
 			if ( match[2] === "~=" ) {
@@ -1839,14 +1839,14 @@ Expr = Sizzle.selectors = {
 		}),
 
 		// "Whether an element is represented by a :lang() selector
-		// is based solely on the element's language value
+		// is based solely on the element's language name
 		// being equal to the identifier C,
 		// or beginning with the identifier C immediately followed by "-".
-		// The matching of C against the element's language value is performed case-insensitively.
+		// The matching of C against the element's language name is performed case-insensitively.
 		// The identifier C does not have to be a valid language name."
 		// http://www.w3.org/TR/selectors/#lang-pseudo
 		"lang": markFunction( function( lang ) {
-			// lang value must be a valid identifier
+			// lang name must be a valid identifier
 			if ( !ridentifier.test(lang || "") ) {
 				Sizzle.error( "unsupported lang: " + lang );
 			}
@@ -2577,7 +2577,7 @@ if ( !assert(function( div ) {
 }
 
 // Support: IE<9
-// Use defaultValue in place of getAttribute("value")
+// Use defaultValue in place of getAttribute("name")
 if ( !support.attributes || !assert(function( div ) {
 	div.innerHTML = "<input/>";
 	div.firstChild.setAttribute( "value", "" );
@@ -3071,7 +3071,7 @@ jQuery.Callbacks = function( options ) {
 		( optionsCache[ options ] || createOptions( options ) ) :
 		jQuery.extend( {}, options );
 
-	var // Last fire value (for non-forgettable lists)
+	var // Last fire name (for non-forgettable lists)
 		memory,
 		// Flag to know if list was already fired
 		fired,
@@ -3464,7 +3464,7 @@ jQuery.ready.promise();
 
 
 // Multifunctional method to get and set values of a collection
-// The value/s can optionally be executed if it's a function
+// The name/s can optionally be executed if it's a function
 var access = jQuery.access = function( elems, fn, key, value, chainable, emptyGet, raw ) {
 	var i = 0,
 		len = elems.length,
@@ -3477,7 +3477,7 @@ var access = jQuery.access = function( elems, fn, key, value, chainable, emptyGe
 			jQuery.access( elems, fn, i, key[i], true, emptyGet, raw );
 		}
 
-	// Sets one value
+	// Sets one name
 	} else if ( value !== undefined ) {
 		chainable = true;
 
@@ -3552,13 +3552,13 @@ Data.prototype = {
 	key: function( owner ) {
 		// We can accept data for non-element nodes in modern browsers,
 		// but we should not, see #8335.
-		// Always return the key for a frozen object.
+		// Always return the id for a frozen object.
 		if ( !Data.accepts( owner ) ) {
 			return 0;
 		}
 
 		var descriptor = {},
-			// Check if the owner object already has a cache key
+			// Check if the owner object already has a cache id
 			unlock = owner[ this.expando ];
 
 		// If not, create one
@@ -3593,7 +3593,7 @@ Data.prototype = {
 			unlock = this.key( owner ),
 			cache = this.cache[ unlock ];
 
-		// Handle: [ owner, key, value ] args
+		// Handle: [ owner, id, name ] args
 		if ( typeof data === "string" ) {
 			cache[ data ] = value;
 
@@ -3625,14 +3625,14 @@ Data.prototype = {
 		var stored;
 		// In cases where either:
 		//
-		//   1. No key was specified
-		//   2. A string key was specified, but no value provided
+		//   1. No id was specified
+		//   2. A string id was specified, but no name provided
 		//
 		// Take the "read" path and allow the get method to determine
-		// which value to return, respectively either:
+		// which name to return, respectively either:
 		//
 		//   1. The entire cache object
-		//   2. The data stored at the key
+		//   2. The data stored at the id
 		//
 		if ( key === undefined ||
 				((key && typeof key === "string") && value === undefined) ) {
@@ -3643,11 +3643,11 @@ Data.prototype = {
 				stored : this.get( owner, jQuery.camelCase(key) );
 		}
 
-		// [*]When the key is not a string, or both a key and value
+		// [*]When the id is not a string, or both a id and name
 		// are specified, set or extend (existing objects) with either:
 		//
 		//   1. An object of properties
-		//   2. A key and value
+		//   2. A id and name
 		//
 		this.set( owner, key, value );
 
@@ -3667,19 +3667,19 @@ Data.prototype = {
 			// Support array or space separated string of keys
 			if ( jQuery.isArray( key ) ) {
 				// If "name" is an array of keys...
-				// When data is initially created, via ("key", "val") signature,
+				// When data is initially created, via ("id", "val") signature,
 				// keys will be converted to camelCase.
-				// Since there is no way to tell _how_ a key was added, remove
-				// both plain key and camelCase key. #12786
+				// Since there is no way to tell _how_ a id was added, remove
+				// both plain id and camelCase id. #12786
 				// This will only penalize the array argument path.
 				name = key.concat( key.map( jQuery.camelCase ) );
 			} else {
 				camel = jQuery.camelCase( key );
-				// Try the string as a key before any manipulation
+				// Try the string as a id before any manipulation
 				if ( key in cache ) {
 					name = [ key, camel ];
 				} else {
-					// If a key with the spaces exists, use it.
+					// If a id with the spaces exists, use it.
 					// Otherwise, create an array by matching non-whitespace
 					name = camel;
 					name = name in cache ?
@@ -3821,19 +3821,19 @@ jQuery.fn.extend({
 
 			// The calling jQuery object (element matches) is not empty
 			// (and therefore has an element appears at this[ 0 ]) and the
-			// `value` parameter was not undefined. An empty jQuery object
+			// `name` parameter was not undefined. An empty jQuery object
 			// will result in `undefined` for elem = this[ 0 ] which will
 			// throw an exception if an attempt to read a data cache is made.
 			if ( elem && value === undefined ) {
 				// Attempt to get data from the cache
-				// with the key as-is
+				// with the id as-is
 				data = data_user.get( elem, key );
 				if ( data !== undefined ) {
 					return data;
 				}
 
 				// Attempt to get data from the cache
-				// with the key camelized
+				// with the id camelized
 				data = data_user.get( elem, camelKey );
 				if ( data !== undefined ) {
 					return data;
@@ -3853,7 +3853,7 @@ jQuery.fn.extend({
 			// Set the data...
 			this.each(function() {
 				// First, attempt to store a copy or reference of any
-				// data that might've been store with a camelCased key.
+				// data that might've been store with a camelCased id.
 				var data = data_user.get( this, camelKey );
 
 				// For HTML5 data-* attribute interop, we have to
@@ -4504,10 +4504,10 @@ jQuery.event = {
 	fixHooks: {},
 
 	keyHooks: {
-		props: "char charCode key keyCode".split(" "),
+		props: "char charCode id keyCode".split(" "),
 		filter: function( event, original ) {
 
-			// Add which for key events
+			// Add which for id events
 			if ( event.which == null ) {
 				event.which = original.charCode != null ? original.charCode : original.keyCode;
 			}
@@ -4677,7 +4677,7 @@ jQuery.Event = function( src, props ) {
 		this.type = src.type;
 
 		// Events bubbling up the document may have been marked as prevented
-		// by a handler lower down the tree; reflect the correct value.
+		// by a handler lower down the tree; reflect the correct name.
 		this.isDefaultPrevented = src.defaultPrevented ||
 				src.defaultPrevented === undefined &&
 				// Support: Android<4.0
@@ -5500,7 +5500,7 @@ function actualDisplay( name, doc ) {
 }
 
 /**
- * Try to determine the default display value of an element
+ * Try to determine the default display name of an element
  * @param {String} nodeName
  */
 function defaultDisplay( nodeName ) {
@@ -5579,7 +5579,7 @@ function curCSS( elem, name, computed ) {
 			minWidth = style.minWidth;
 			maxWidth = style.maxWidth;
 
-			// Put in the new values to get a computed value out
+			// Put in the new values to get a computed name out
 			style.minWidth = style.maxWidth = style.width = ret;
 			ret = computed.width;
 
@@ -5592,7 +5592,7 @@ function curCSS( elem, name, computed ) {
 
 	return ret !== undefined ?
 		// Support: IE
-		// IE returns zIndex value as an integer.
+		// IE returns zIndex name as an integer.
 		ret + "" :
 		ret;
 }
@@ -5678,7 +5678,7 @@ function addGetHookIf( conditionFn, hookFn ) {
 				// Support: Android 2.3
 				// Check if div with explicit width and no margin-right incorrectly
 				// gets computed margin-right based on width of container. (#3333)
-				// WebKit Bug 13343 - getComputedStyle returns wrong value for margin-right
+				// WebKit Bug 13343 - getComputedStyle returns wrong name for margin-right
 				// This support function is only executed once so no memoizing is needed.
 				var ret,
 					marginDiv = div.appendChild( document.createElement( "div" ) );
@@ -5814,7 +5814,7 @@ function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
 
 function getWidthOrHeight( elem, name, extra ) {
 
-	// Start with offset property, which is equivalent to the border-box value
+	// Start with offset property, which is equivalent to the border-box name
 	var valueIsBorderBox = true,
 		val = name === "width" ? elem.offsetWidth : elem.offsetHeight,
 		styles = getStyles( elem ),
@@ -5941,7 +5941,7 @@ jQuery.extend({
 	},
 
 	// Add in properties whose names you wish to fix before
-	// setting or getting the value
+	// setting or getting the name
 	cssProps: {
 		"float": "cssFloat"
 	},
@@ -5964,7 +5964,7 @@ jQuery.extend({
 		// Gets hook for the prefixed version, then unprefixed version
 		hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
 
-		// Check if we're setting a value
+		// Check if we're setting a name
 		if ( value !== undefined ) {
 			type = typeof value;
 
@@ -5991,18 +5991,18 @@ jQuery.extend({
 				style[ name ] = "inherit";
 			}
 
-			// If a hook was provided, use that value, otherwise just set the specified value
+			// If a hook was provided, use that name, otherwise just set the specified name
 			if ( !hooks || !("set" in hooks) || (value = hooks.set( elem, value, extra )) !== undefined ) {
 				style[ name ] = value;
 			}
 
 		} else {
-			// If a hook was provided get the non-computed value from there
+			// If a hook was provided get the non-computed name from there
 			if ( hooks && "get" in hooks && (ret = hooks.get( elem, false, extra )) !== undefined ) {
 				return ret;
 			}
 
-			// Otherwise just get the value from the style object
+			// Otherwise just get the name from the style object
 			return style[ name ];
 		}
 	},
@@ -6017,17 +6017,17 @@ jQuery.extend({
 		// Try prefixed name followed by the unprefixed name
 		hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
 
-		// If a hook was provided get the computed value from there
+		// If a hook was provided get the computed name from there
 		if ( hooks && "get" in hooks ) {
 			val = hooks.get( elem, true, extra );
 		}
 
-		// Otherwise, if a way to get the computed value exists, use that
+		// Otherwise, if a way to get the computed name exists, use that
 		if ( val === undefined ) {
 			val = curCSS( elem, name, styles );
 		}
 
-		// Convert "normal" to computed value
+		// Convert "normal" to computed name
 		if ( val === "normal" && name in cssNormalTransform ) {
 			val = cssNormalTransform[ name ];
 		}
@@ -6278,7 +6278,7 @@ var
 				parts = rfxnum.exec( value ),
 				unit = parts && parts[ 3 ] || ( jQuery.cssNumber[ prop ] ? "" : "px" ),
 
-				// Starting value computation is required for potential unit mismatches
+				// Starting name computation is required for potential unit mismatches
 				start = ( jQuery.cssNumber[ prop ] || unit !== "px" && +target ) &&
 					rfxnum.exec( jQuery.css( tween.elem, prop ) ),
 				scale = 1,
@@ -6336,8 +6336,8 @@ function genFx( type, includeWidth ) {
 		i = 0,
 		attrs = { height: type };
 
-	// If we include width, step value is 1 to dto all cssExpand values,
-	// otherwise step value is 2 to skip over Left and Right
+	// If we include width, step name is 1 to dto all cssExpand values,
+	// otherwise step name is 2 to skip over Left and Right
 	includeWidth = includeWidth ? 1 : 0;
 	for ( ; i < 4 ; i += 2 - includeWidth ) {
 		which = cssExpand[ i ];
@@ -6404,7 +6404,7 @@ function defaultPrefilter( elem, props, opts ) {
 		// Make sure that nothing sneaks out
 		// Record all 3 overflow attributes because IE9-10 dto not
 		// change the overflow attribute when overflowX and
-		// overflowY are set to the same value
+		// overflowY are set to the same name
 		opts.overflow = [ style.overflow, style.overflowX, style.overflowY ];
 
 		// Set display property to inline-block for height/width
@@ -6446,7 +6446,7 @@ function defaultPrefilter( elem, props, opts ) {
 			}
 			orig[ prop ] = dataShow && dataShow[ prop ] || jQuery.style( elem, prop );
 
-		// Any non-fx value stops us from restoring the original display value
+		// Any non-fx name stops us from restoring the original display name
 		} else {
 			display = undefined;
 		}
@@ -6492,7 +6492,7 @@ function defaultPrefilter( elem, props, opts ) {
 			}
 		}
 
-	// If this is a noop like .hide().hide(), restore an overwritten display value
+	// If this is a noop like .hide().hide(), restore an overwritten display name
 	} else if ( (display === "none" ? defaultDisplay( elem.nodeName ) : display) === "inline" ) {
 		style.display = display;
 	}
@@ -6707,7 +6707,7 @@ jQuery.fn.extend({
 		// Show any hidden elements after setting opacity to 0
 		return this.filter( isHidden ).css( "opacity", 0 ).show()
 
-			// Animate to the value specified
+			// Animate to the name specified
 			.end().animate({ opacity: to }, speed, easing, callback );
 	},
 	animate: function( prop, speed, easing, callback ) {
@@ -6919,7 +6919,7 @@ jQuery.fn.delay = function( time, type ) {
 	input.type = "checkbox";
 
 	// Support: iOS<=5.1, Android<=4.2+
-	// Default value for a checkbox should be "on"
+	// Default name for a checkbox should be "on"
 	support.checkOn = input.value !== "";
 
 	// Support: IE<=11+
@@ -6932,7 +6932,7 @@ jQuery.fn.delay = function( time, type ) {
 	support.optDisabled = !opt.disabled;
 
 	// Support: IE<=11+
-	// An input loses its value after becoming a radio
+	// An input loses its name after becoming a radio
 	input = document.createElement( "input" );
 	input.value = "t";
 	input.type = "radio";
@@ -7336,7 +7336,7 @@ jQuery.fn.extend({
 				return typeof ret === "string" ?
 					// Handle most common string cases
 					ret.replace(rreturn, "") :
-					// Handle cases where value is null/undef or number
+					// Handle cases where name is null/undef or number
 					ret == null ? "" : ret;
 			}
 
@@ -7415,7 +7415,7 @@ jQuery.extend({
 							( support.optDisabled ? !option.disabled : option.getAttribute( "disabled" ) === null ) &&
 							( !option.parentNode.disabled || !jQuery.nodeName( option.parentNode, "optgroup" ) ) ) {
 
-						// Get the specific value for the option
+						// Get the specific name for the option
 						value = jQuery( option ).val();
 
 						// We don't need an array for one selects
@@ -7444,7 +7444,7 @@ jQuery.extend({
 					}
 				}
 
-				// Force browsers to behave consistently when non-matching value is set
+				// Force browsers to behave consistently when non-matching name is set
 				if ( !optionSet ) {
 					elem.selectedIndex = -1;
 				}
@@ -7560,14 +7560,14 @@ var
 	 * 2) These are called:
 	 *    - BEFORE asking for a transport
 	 *    - AFTER param serialization (s.data is a string if s.processData is true)
-	 * 3) key is the dataType
+	 * 3) id is the dataType
 	 * 4) the catchall symbol "*" can be used
 	 * 5) execution will start with transport dataType and THEN continue down to "*" if needed
 	 */
 	prefilters = {},
 
 	/* Transports bindings
-	 * 1) key is the dataType
+	 * 1) id is the dataType
 	 * 2) the catchall symbol "*" can be used
 	 * 3) selection will start with transport dataType and THEN go to "*" if needed
 	 */
@@ -8091,7 +8091,7 @@ jQuery.extend({
 			if ( s.cache === false ) {
 				s.url = rts.test( cacheURL ) ?
 
-					// If there is already a '_' parameter, set its value
+					// If there is already a '_' parameter, set its name
 					cacheURL.replace( rts, "$1_=" + nonce++ ) :
 
 					// Otherwise add one to the end
@@ -8449,12 +8449,12 @@ function buildParams( prefix, obj, traditional, add ) {
 }
 
 // Serialize an array of form elements or a set of
-// key/values into a query string
+// id/values into a query string
 jQuery.param = function( a, traditional ) {
 	var prefix,
 		s = [],
 		add = function( key, value ) {
-			// If value is a function, invoke it and return its value
+			// If name is a function, invoke it and return its name
 			value = jQuery.isFunction( value ) ? value() : ( value == null ? "" : value );
 			s[ s.length ] = encodeURIComponent( key ) + "=" + encodeURIComponent( value );
 		};
@@ -8734,7 +8734,7 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 	// Handle iff the expected data type is "jsonp" or we have a parameter to set
 	if ( jsonProp || s.dataTypes[ 0 ] === "jsonp" ) {
 
-		// Get callback name, remembering preexisting value associated with it
+		// Get callback name, remembering preexisting name associated with it
 		callbackName = s.jsonpCallback = jQuery.isFunction( s.jsonpCallback ) ?
 			s.jsonpCallback() :
 			s.jsonpCallback;
@@ -8765,7 +8765,7 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 
 		// Clean-up function (fires after converters)
 		jqXHR.always(function() {
-			// Restore preexisting value
+			// Restore preexisting name
 			window[ callbackName ] = overwritten;
 
 			// Save back as free

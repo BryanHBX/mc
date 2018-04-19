@@ -2,11 +2,14 @@ package org.edu.timelycourse.mc.biz.model;
 
 import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
+import org.edu.timelycourse.mc.biz.dto.ContractDTO;
 import org.edu.timelycourse.mc.biz.enums.EContractDebtStatus;
 import org.edu.timelycourse.mc.biz.enums.EContractStatus;
 import org.edu.timelycourse.mc.biz.enums.EEnrollmentType;
+import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
+import org.springframework.beans.BeanUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -190,5 +193,16 @@ public class ContractModel extends BaseModel
         appendParam(builder, "payStatus", payStatus);
         builder.deleteCharAt(builder.length() - 1);
         return builder.toString();
+    }
+
+    public static ContractModel from (ContractDTO dto)
+    {
+        ContractModel model = new ContractModel();
+        BeanUtils.copyProperties(dto, model, "course", "student", "enrollType", "consultant", "supervisor");
+        model.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+        model.setStudentId(dto.getStudent() != null ? dto.getStudent().getId() : null);
+        model.setConsultantId(dto.getConsultant() != null ? dto.getConsultant().getId() : null);
+        model.setSupervisorId(dto.getSupervisor() != null ? dto.getSupervisor().getId() : null);
+        return model;
     }
 }

@@ -31,26 +31,26 @@ public class ContractController extends BaseController
     @Autowired
     private ContractService contractService;
 
-    @ModelAttribute("contract")
-    public ContractModel getModel()
+    @ModelAttribute("contractDTO")
+    public ContractDTO getContractDTOModel()
     {
-        return new ContractModel ();
+        return new ContractDTO ();
     }
 
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all contracts or by given query")
     public ResponseData getContract(@RequestParam(name="pageNum", required = false) Integer pageNum,
                                     @RequestParam(name="pageSize", required = false) Integer pageSize,
-                                    @ModelAttribute("contract") ContractModel model,
+                                    @ModelAttribute("contractDTO") ContractDTO criteria,
                                     @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
         {
-            LOGGER.debug("Enter getContract - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
+            LOGGER.debug("Enter getContract - [pageNum: {}, pageSize: {}, contract: {}]", pageNum, pageSize, criteria);
         }
 
-        model.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
-        return ResponseData.success(ContractDTO.from(contractService.findByPage(model, pageNum, pageSize)));
+        return ResponseData.success(ContractDTO.from(contractService.findByPage(
+                ContractModel.from(criteria), pageNum, pageSize)));
     }
 
     @RequestMapping(path="/{contractId}", method= RequestMethod.GET)

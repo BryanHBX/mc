@@ -184,7 +184,7 @@
 			var tname = $input.attr("tname"), tvalue = $input.attr("tvalue");
 			var attrs = "text='"+$input.text()+"' ";
 			if (tname) attrs += "name='"+tname+"' ";
-			if (tvalue) attrs += "value='"+tvalue+"' ";
+			if (tvalue) attrs += "name='"+tvalue+"' ";
 			
 			ckbox.append("<input type='checkbox' style='display:none;' " + attrs + "/>").click(function(){
 				var cked = ckbox.hasClass("checked");

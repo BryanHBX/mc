@@ -2,6 +2,7 @@ package org.edu.timelycourse.mc.web.config;
 
 import org.edu.timelycourse.mc.common.security.RefererRedirectionAuthenticationSuccessHandler;
 import org.edu.timelycourse.mc.web.filter.AuthorizationFilter;
+import org.edu.timelycourse.mc.web.security.AuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     @Value("${jwt.expiration}")
     private Long expiration;
 
+    @Autowired
+    private AuthenticationEntryPoint unauthorizedHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
@@ -45,6 +49,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
         http.addFilterBefore(new AuthorizationFilter(tokenHeader, secret, expiration),
                 UsernamePasswordAuthenticationFilter.class
         );
+
+        // add unauthorized handler
+        //http
+        //    .exceptionHandling()
+        //    .authenticationEntryPoint(unauthorizedHandler);
 
         //.and()
         //    .logout().logoutSuccessUrl("/logout").permitAll();

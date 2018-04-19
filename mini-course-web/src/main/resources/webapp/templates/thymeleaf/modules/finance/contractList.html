@@ -134,7 +134,7 @@
     <div class="panelBar">
         <div class="pages">
             <span>显示</span>
-            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.name})">
                 <option value="1" th:selected="${pagingBean != null and pagingBean.pageSize eq 1}">1</option>
                 <option value="20" th:selected="${pagingBean != null and pagingBean.pageSize eq 20}">20</option>
                 <option value="50">50</option>
