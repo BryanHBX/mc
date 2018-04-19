@@ -452,9 +452,9 @@ var DWZ = {
 /** 
  * You can use this map like this:
  * var myMap = new Map();
- * myMap.put("id","name");
- * var id = myMap.get("id");
- * myMap.remove("id");
+ * myMap.put("key","value");
+ * var key = myMap.get("key");
+ * myMap.remove("key");
  */
 function Map(){
 

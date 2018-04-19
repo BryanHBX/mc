@@ -51,7 +51,7 @@ function iframeCallback(form, callback){
 		$iframe = $('<iframe id="callbackframe" name="callbackframe" src="about:blank" style="display:none"></iframe>').appendTo('body');
 	}
 	if(!form.ajax) {
-		$form.append('<input type="hidden" name="ajax" name="1" />');
+		$form.append('<input type="hidden" name="ajax" value="1" />');
 	}
 	form.target = 'callbackframe';
 

@@ -46,8 +46,8 @@ public class AuthorizationFilter extends OncePerRequestFilter
             LOGGER.debug("processing authentication for '{}'", request.getRequestURL());
         }
 
-//        try
-//        {
+        try
+        {
             String authToken = getToken(request);
             JwtUser userClaims = null;
             if (authToken != null)
@@ -88,13 +88,12 @@ public class AuthorizationFilter extends OncePerRequestFilter
                     }
                 }
             }
-//        }
-//        catch (ExpiredJwtException ex)
-//        {
-//            LOGGER.warn("Expired JWT token", ex);
-//            SecurityContextHolder.getContext().setAuthentication(null);
-//        }
-
+        }
+        catch (ExpiredJwtException ex)
+        {
+            LOGGER.warn("Expired JWT token", ex);
+            SecurityContextHolder.getContext().setAuthentication(null);
+        }
 
         chain.doFilter(request, response);
     }

@@ -37,7 +37,7 @@
         var _header = sessionStorage.getItem("token") != undefined ? {"Authorization": "Bearer " + sessionStorage.getItem("token")}: {};
 
         $.ajax({
-			type:'GET', dataType:"json", url:event.data.refUrl.replace("{name}", encodeURIComponent(event.data.$this.val())), cache: false, headers: _header,
+			type:'GET', dataType:"json", url:event.data.refUrl.replace("{value}", encodeURIComponent(event.data.$this.val())), cache: false, headers: _header,
 			data:{},
 			success: function(json){
 				_comboxRefresh($ref, event.data.$this, event.data.$this.attr("data") ? json[event.data.$this.attr("data")] : json);
@@ -72,8 +72,8 @@
 
 	var _comboxReset = function($select){
 		var $box = $select.parents('div.select:first'),
-			defaultValue = $box.find('>a').attr('default-name');
-		$('#op_'+$box.attr('id')).find('>li a[name="'+defaultValue+'"]').trigger('click');
+			defaultValue = $box.find('>a').attr('default-value');
+		$('#op_'+$box.attr('id')).find('>li a[value="'+defaultValue+'"]').trigger('click');
 	};
 					
 	$.extend($.fn, {
@@ -147,7 +147,7 @@
 
 				var name = $this.attr("name");
 				var value= $this.attr("value") || $this.val();
-				var label = $('option[name="' + value + '"]',$this).text();
+				var label = $('option[value="' + value + '"]',$this).text();
 				var ref = $this.attr("ref");
 				var refUrl = $this.attr('refUrl') || '';
 
@@ -155,18 +155,18 @@
 					refUrl = openApiContextPath + "/" + refUrl;
 				}
 
-				var resetValue = $this.attr('reset-name') !== undefined ? $this.attr('reset-name') : value
+				var resetValue = $this.attr('reset-value') !== undefined ? $this.attr('reset-value') : value
 
 				var width = $this.css("width");
 
 				//$this.attr("id") ||
 				var cid = Math.round(Math.random()*10000000);
 				var select = '<div class="combox" ' + (width ? 'style="width:' + width + '"' : '') + '><div id="combox_'+ cid +'" class="select"' + (ref?' ref="' + ref + '"' : '') + '>';
-				select += '<a '+ (width ? 'style="width:' + (parseInt(width) - 28) + 'px"' : '') +  + ' href="javascript:" name="' + name +'" name="' + value + '" default-name="'+resetValue+'">' + label +'</a></div></div>';
+				select += '<a '+ (width ? 'style="width:' + (parseInt(width) - 28) + 'px"' : '') +  + ' href="javascript:" name="' + name +'" value="' + value + '" default-value="'+resetValue+'">' + label +'</a></div></div>';
 				var options = '<ul ' + (width ? 'style="width:' + (parseInt(width) - 28) + 'px"' : '') + 'class="comboxop" id="op_combox_'+ cid +'">';
 				$("option", $this).each(function(){
 					var option = $(this);
-					options +="<li><a " + (width ? "style='display:block; width:" + (parseInt(width) - 30) + "px'" : '') + " class=\""+ ((value||option[0].text) && value==option[0].value?"selected":"") +"\" href=\"#\" name=\"" + option[0].value + "\">" + option[0].text + "</a></li>";
+					options +="<li><a " + (width ? "style='display:block; width:" + (parseInt(width) - 30) + "px'" : '') + " class=\""+ ((value||option[0].text) && value==option[0].value?"selected":"") +"\" href=\"#\" value=\"" + option[0].value + "\">" + option[0].text + "</a></li>";
 				});
 				options +="</ul>";
 				

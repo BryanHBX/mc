@@ -53,7 +53,7 @@
                         <dt>学生年段：</dt>
                         <dd>
                             <select id="stu_levelId" class="combox" name="levelId" style="width: 160px"
-                                    ref="stu_subLevelId" refUrl="system/config/{name}" callIfEmpty="false"
+                                    ref="stu_subLevelId" refUrl="system/config/{value}" callIfEmpty="false"
                                     data="data" group="children" optName="configDescription" optVal="id"
                                     th:if="${not #lists.isEmpty(level.children)}"
                                     th:with="options=${level.children}">
@@ -74,7 +74,7 @@
                         <dt>课程名称：</dt>
                         <dd>
                             <select id="stu_courseId"  class="combox" name="courseId" style="width: 160px"
-                                    ref="stu_subCourseId" refUrl="product/{name}" callIfEmpty="false"
+                                    ref="stu_subCourseId" refUrl="product/{value}" callIfEmpty="false"
                                     data="data" group="children" optName="productName" optVal="id">
                                 <option value="">请选择</option>
                                 <option th:each="option:${products}" th:value="${option.id}" th:text="${option.productName}">课程名称</option>
@@ -161,8 +161,8 @@
                             </thead>
                             <tbody>
                                 <tr class="unitBox">
-                                    <td><input type="text" name="invoices[][invoiceNo]" name="" size="12" class="required" maxlength="10"></td>
-                                    <td><input type="text" name="invoices[][price]" name="0.00" size="12" class="required number textInput"></td>
+                                    <td><input type="text" name="invoices[][invoiceNo]" value="" size="12" class="required" maxlength="10"></td>
+                                    <td><input type="text" name="invoices[][price]" value="0.00" size="12" class="required number textInput"></td>
                                     <td>
                                         <select class="combox" style="width: 120px" name="invoices[][type]">
                                             <option value="1">现金</option>
