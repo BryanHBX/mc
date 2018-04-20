@@ -2,10 +2,13 @@ package org.edu.timelycourse.mc.api.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.edu.timelycourse.mc.beans.criteria.StudentCriteria;
+import org.edu.timelycourse.mc.beans.dto.StudentDTO;
 import org.edu.timelycourse.mc.beans.model.StudentModel;
 import org.edu.timelycourse.mc.biz.service.StudentService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.beans.entity.ResponseData;
+import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,24 +29,27 @@ public class StudentController extends BaseController
     @Autowired
     private StudentService studentService;
 
-    @ModelAttribute("student")
-    public StudentModel getModel()
+    @ModelAttribute("criteria")
+    public StudentCriteria getModel()
     {
-        return new StudentModel ();
+        return new StudentCriteria ();
     }
 
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all students or by given query")
     public ResponseData getStudent(@RequestParam(name="pageNum", required = false) Integer pageNum,
                                    @RequestParam(name="pageSize", required = false) Integer pageSize,
-                                   @ModelAttribute("student") StudentModel model,
+                                   @ModelAttribute("criteria") StudentCriteria criteria,
                                    @RequestHeader(name = "Authorization") String auth)
     {
+        criteria.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+
         if (LOGGER.isDebugEnabled())
         {
-            LOGGER.debug("Enter getStudent - [pageNum: {}, pageSize: {}, schoolInfo: {}]", pageNum, pageSize, model);
+            LOGGER.debug("Enter getStudent - [pageNum: {}, pageSize: {}, criteria: {}]", pageNum, pageSize, criteria);
         }
-        return ResponseData.success(studentService.findByPage(model, pageNum, pageSize));
+
+        return ResponseData.success(StudentDTO.from(studentService.findByCriteria(criteria, pageNum, pageSize)));
     }
 
     @RequestMapping(path="/{studentId}", method= RequestMethod.GET)

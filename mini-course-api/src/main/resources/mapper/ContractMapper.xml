@@ -120,7 +120,7 @@
             <if test="consultantName != null and consultantName != ''">
                 AND `consult_id` IN (SELECT `id` FROM `t_member` WHERE `u_name` LIKE CONCAT('%',#{consultantName},'%'))
             </if>
-            <if test="consultantName != null and consultantName != ''">
+            <if test="supervisorName != null and supervisorName != ''">
                 AND `supervisor_id` IN (SELECT `id` FROM `t_member` WHERE `u_name` LIKE CONCAT('%',#{supervisorName},'%'))
             </if>
             <if test="enrollType != null and enrollType > -1"> AND `contract_type` = #{enrollType}</if>

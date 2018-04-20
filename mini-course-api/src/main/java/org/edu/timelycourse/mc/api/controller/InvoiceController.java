@@ -2,7 +2,7 @@ package org.edu.timelycourse.mc.api.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.edu.timelycourse.mc.beans.criteria.InvoiceCriteria;
+import org.edu.timelycourse.mc.beans.criteria.ContractInvoiceCriteria;
 import org.edu.timelycourse.mc.beans.dto.InvoiceDTO;
 import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
 import org.edu.timelycourse.mc.biz.service.InvoiceService;
@@ -28,9 +28,9 @@ public class InvoiceController extends BaseController
     private InvoiceService invoiceService;
 
     @ModelAttribute("criteria")
-    public InvoiceCriteria getCriteria()
+    public ContractInvoiceCriteria getCriteria()
     {
-        return new InvoiceCriteria();
+        return new ContractInvoiceCriteria();
     }
 
     @RequestMapping(path="", method= RequestMethod.GET)
@@ -38,7 +38,7 @@ public class InvoiceController extends BaseController
     @PreAuthorize("hasAnyRole('ROLE_TREASURER','ROLE_ADMINISTRATOR')")
     public ResponseData getInvoice(@RequestParam(name="pageNum", required = false) Integer pageNum,
                                    @RequestParam(name="pageSize", required = false) Integer pageSize,
-                                   @ModelAttribute("criteria") InvoiceCriteria criteria,
+                                   @ModelAttribute("criteria") ContractInvoiceCriteria criteria,
                                    @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())

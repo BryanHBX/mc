@@ -40,12 +40,13 @@ public class ContractController extends BaseController
                                     @ModelAttribute("criteria") ContractCriteria criteria,
                                     @RequestHeader(name = "Authorization") String auth)
     {
+        criteria.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+
         if (LOGGER.isDebugEnabled())
         {
             LOGGER.debug("Enter getContract - [pageNum: {}, pageSize: {}, criteria: {}]", pageNum, pageSize, criteria);
         }
 
-        criteria.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
         return ResponseData.success(ContractDTO.from(
                 contractService.findByCriteria(criteria, pageNum, pageSize)));
 

@@ -3,6 +3,7 @@ package org.edu.timelycourse.mc.web.controller;
 import com.google.common.reflect.TypeParameter;
 import com.google.common.reflect.TypeToken;
 import org.edu.timelycourse.mc.beans.dto.ContractDTO;
+import org.edu.timelycourse.mc.beans.dto.StudentDTO;
 import org.edu.timelycourse.mc.beans.model.*;
 import org.edu.timelycourse.mc.beans.paging.PagingBean;
 import org.edu.timelycourse.mc.common.constants.Constants;
@@ -88,13 +89,13 @@ public abstract class AbstractController extends BaseController implements Error
                 request.getQueryString()), new TypeToken<PagingBean<UserModel>>() {}).getData();
     }
 
-    protected PagingBean<StudentModel> fetchStudents (HttpServletRequest request,
-                                                   Integer pageNum,
-                                                   Integer pageSize)
+    protected PagingBean<StudentDTO> fetchStudents (HttpServletRequest request,
+                                                    Integer pageNum,
+                                                    Integer pageSize)
     {
         return remoteCall(request, String.format("student?pageNum=%d&pageSize=%d&%s",
                 pageNum != null ? pageNum : 1, pageSize != null ? pageSize : Constants.DEFAULT_PAGE_SIZE,
-                request.getQueryString()), new TypeToken<PagingBean<StudentModel>>() {}).getData();
+                request.getQueryString()), new TypeToken<PagingBean<StudentDTO>>() {}).getData();
     }
 
     protected PagingBean<ContractDTO> fetchContracts (HttpServletRequest request,
@@ -147,9 +148,6 @@ public abstract class AbstractController extends BaseController implements Error
     {
         return getMyModulePath() != null ? String.format("%s/%s", MODULE_PATH, getMyModulePath()) : MODULE_PATH;
     }
-
-    @ModelAttribute("contractDTO")
-    protected ContractDTO getContractDTOModel () { return new ContractDTO(); }
 
     @ModelAttribute("student")
     protected StudentModel getStudentModel () { return new StudentModel(); }

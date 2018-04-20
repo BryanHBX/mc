@@ -93,14 +93,25 @@ public class AuthorizationFilter extends OncePerRequestFilter
                 }
             }
         }
-        catch (ExpiredJwtException | AccessDeniedException ex)
+        catch (ExpiredJwtException ex)
+        {
+            LOGGER.warn("Expired JWT token and session is timeout", ex);
+            SecurityContextHolder.getContext().setAuthentication(null);
+            if (isAjaxRequest(request))
+            {
+                response.getOutputStream().write(restResponseBytes(
+                        ResponseData.failure(HttpStatus.UNAUTHORIZED.value(), "Session is timeout")));
+                return;
+            }
+        }
+        catch (AccessDeniedException ex)
         {
             LOGGER.warn("Access is denied", ex);
             SecurityContextHolder.getContext().setAuthentication(null);
             if (isAjaxRequest(request))
             {
                 response.getOutputStream().write(restResponseBytes(
-                        ResponseData.failure(HttpStatus.FORBIDDEN.value(), "Unauthorized")));
+                        ResponseData.failure(HttpStatus.FORBIDDEN.value(), "Access is denied")));
                 return;
             }
         }

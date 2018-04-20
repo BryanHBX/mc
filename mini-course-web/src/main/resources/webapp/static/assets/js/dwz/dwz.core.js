@@ -218,8 +218,17 @@ var DWZ = {
 				cache: false,
 				success: function(response){
 					var json = DWZ.jsonEval(response);
-					
-					if (json[DWZ.keys.statusCode]==DWZ.statusCode.error){
+
+                    if (json[DWZ.keys.statusCode]==DWZ.statusCode.unauthorized) {
+                        alertMsg.error(DWZ.msg("sessionTimout"), {okCall:function(){
+							DWZ.loadLogin();
+						}});
+                    } else if (json[DWZ.keys.statusCode]==DWZ.statusCode.forbidden) {
+                        alertMsg.error(DWZ.msg("accessDenied"), {okCall:function(){
+						   if ($.pdialog) $.pdialog.checkCloseCurrent(json);
+                           if (navTab) navTab.checkCloseCurrent(json);
+						}});
+                    } else if (json[DWZ.keys.statusCode]==DWZ.statusCode.error){
 						if ($.pdialog) $.pdialog.checkCloseCurrent(json);
 						if (navTab) navTab.checkCloseCurrent(json);
 

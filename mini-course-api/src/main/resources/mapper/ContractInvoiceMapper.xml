@@ -20,12 +20,12 @@
                      select="org.edu.timelycourse.mc.biz.repository.ContractRepository.get" />-->
     </resultMap>
     
-    <insert id="insert" parameterType="InvoiceModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="ContractInvoiceModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `t_school_invoice` (contract_id, school_id, invoice_no, fee_amount, fee_type, creationTime, owner_id)
           VALUES (#{contractId}, #{schoolId}, #{invoiceNo}, #{price}, #{type}, #{creationTime}, #{ownerId})
     </insert>
 
-    <update id="update" parameterType="InvoiceModel">
+    <update id="update" parameterType="ContractInvoiceModel">
         UPDATE `t_school_invoice`
         <set>
             <if test="contractId != null and contractId > 0">`contract_id` = #{contractId},</if>
@@ -40,7 +40,7 @@
         WHERE id = #{id}
     </update>
 
-    <select id="getByPage" parameterType="InvoiceModel" resultMap="result_invoice">
+    <select id="getByPage" parameterType="ContractInvoiceModel" resultMap="result_invoice">
         SELECT * FROM `t_school_invoice`
         <where>
             1 = 1
@@ -54,7 +54,7 @@
         ORDER BY `creationTime` DESC
     </select>
 
-    <select id="getByCriteria" parameterType="org.edu.timelycourse.mc.beans.criteria.InvoiceCriteria" resultMap="result_invoice">
+    <select id="getByCriteria" parameterType="org.edu.timelycourse.mc.beans.criteria.ContractInvoiceCriteria" resultMap="result_invoice">
         SELECT * FROM `t_school_invoice`
         <where>
             1 = 1

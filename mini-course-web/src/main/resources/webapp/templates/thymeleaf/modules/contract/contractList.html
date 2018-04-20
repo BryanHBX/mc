@@ -14,27 +14,21 @@
                 <tr>
                     <td>
                         <label>学生姓名：</label>
-                        <input id="ss_id" type="hidden" name="student.id" clean="true"
-                               th:value="${criteria != null and criteria.student ne null ? criteria.student.id : ''}" />
-                        <input id="ss_name" name="student.name" type="text" class="textInput" postField="name"
-                               suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="ss" clean="true"
-                               th:value="${criteria != null and criteria.student ne null ? criteria.student.name : ''}"/>
+                        <input id="ss_name" name="studentName" type="text" class="textInput" postField="name"
+                               suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="ss"
+                               th:value="${criteria != null  ? criteria.studentName : ''}"/>
                     </td>
                     <td>
                         <label>咨询师：</label>
-                        <input id="sg_id" name="consultant.id" type="hidden" clean="true"
-                               th:value="${criteria != null and criteria.consultant ne null ? criteria.consultant.id : ''}"/>
-                        <input id="sg_userName" name="consultant.name" type="text" class="textInput"
-                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sg" clean="true"
-                               th:value="${criteria != null and criteria.consultant ne null ? criteria.consultant.name : ''}"/>
+                        <input id="sg_userName" name="consultantName" type="text" class="textInput"
+                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sg"
+                               th:value="${criteria != null ? criteria.consultantName : ''}"/>
                     </td>
                     <td>
                         <label>学管师：</label>
-                        <input id="sp_id" name="supervisor.id" type="hidden" clean="true"
-                               th:value="${criteria != null and criteria.supervisor ne null ? criteria.supervisor.id : ''}"/>
-                        <input id="sp_userName" name="supervisor.name" type="text" class="textInput"
-                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sp" clean="true"
-                               th:value="${criteria != null and criteria.supervisor ne null ? criteria.supervisor.name : ''}"/>
+                        <input id="sp_userName" name="supervisorName" type="text" class="textInput"
+                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sp"
+                               th:value="${criteria != null  ? criteria.supervisorName : ''}"/>
                     </td>
                     <td>
                         <label>合同状态：</label>

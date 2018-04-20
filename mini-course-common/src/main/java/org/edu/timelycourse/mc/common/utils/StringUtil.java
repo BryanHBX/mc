@@ -1,11 +1,15 @@
 package org.edu.timelycourse.mc.common.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 public class StringUtil
 {
+    public static String DEFAULT_ENCODING = "UTF-8";
+
     /**
      * Joins the specified list of strings with defaut separator ","
      *
@@ -186,5 +190,17 @@ public class StringUtil
             }
         }
         return true;
+    }
+
+    public static String decodeURLText (String text)
+    {
+        try
+        {
+            return StringUtil.isNotEmpty(text) ? URLDecoder.decode(text, DEFAULT_ENCODING) : null;
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            return text;
+        }
     }
 }

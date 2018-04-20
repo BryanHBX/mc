@@ -1,5 +1,7 @@
 package org.edu.timelycourse.mc.web.controller;
 
+import org.edu.timelycourse.mc.beans.criteria.ContractCriteria;
+import org.edu.timelycourse.mc.beans.criteria.StudentCriteria;
 import org.edu.timelycourse.mc.beans.dto.ContractDTO;
 import org.edu.timelycourse.mc.beans.enums.EBuiltInConfig;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
@@ -10,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,6 +23,12 @@ import javax.servlet.http.HttpServletRequest;
 public class ContractController extends AbstractController
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(ContractController.class);
+
+    @ModelAttribute("contractCriteria")
+    private ContractCriteria getContractCriteria () { return new ContractCriteria(); }
+
+    @ModelAttribute("studentCriteria")
+    private StudentCriteria getStudentCriteria () { return new StudentCriteria(); }
 
     @RequestMapping("/form")
     public String showContractForm (Model model, HttpServletRequest request)
@@ -39,7 +48,7 @@ public class ContractController extends AbstractController
     public String showContractList (Model model,
                                     @RequestParam(required = false) Integer pageNum,
                                     @RequestParam(required = false) Integer numPerPage,
-                                    @ModelAttribute("contractDTO") ContractDTO criteria,
+                                    @ModelAttribute("contractCriteria") ContractCriteria criteria,
                                     HttpServletRequest request)
     {
         model.addAttribute("pagingBean", fetchContracts(request, pageNum, numPerPage));
@@ -52,12 +61,14 @@ public class ContractController extends AbstractController
     public String showStudentList (Model model,
                                    @RequestParam(required = false) Integer pageNum,
                                    @RequestParam(required = false) Integer numPerPage,
-                                   @ModelAttribute("student") StudentModel criteria,
+                                   @ModelAttribute("studentCriteria") StudentCriteria criteria,
                                    HttpServletRequest request)
     {
-        criteria.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
         model.addAttribute("criteria", criteria);
         model.addAttribute("pagingBean", fetchStudents(request, pageNum, numPerPage));
+
+        model.addAttribute("level",
+                fetchConfigByName(request, EBuiltInConfig.C_STUDENT_LEVEL.name()));
 
         return getModulePage("studentList");
     }

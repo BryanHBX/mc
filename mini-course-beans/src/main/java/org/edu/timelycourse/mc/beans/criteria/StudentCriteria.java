@@ -1,6 +1,7 @@
 package org.edu.timelycourse.mc.beans.criteria;
 
 import lombok.Data;
+import org.edu.timelycourse.mc.common.utils.StringUtil;
 
 /**
  * Created by x36zhao on 2018/4/20.
@@ -14,4 +15,19 @@ public class StudentCriteria extends BaseCriteria
     private Integer studentStatus;
     private Integer grade;
     private Integer gradeSub;
+
+    public String getStudentName ()
+    {
+        return StringUtil.decodeURLText(studentName);
+    }
+
+    public String getConsultantName ()
+    {
+        return StringUtil.decodeURLText(consultantName);
+    }
+
+    public String getSupervisorName ()
+    {
+        return StringUtil.decodeURLText(supervisorName);
+    }
 }

@@ -13,48 +13,49 @@
             <ul class="searchContent">
                 <li>
                     <label>学生姓名：</label>
-                    <input id="ss_name" name="name" type="text" class="textInput" postField="name"
-                           suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="ss"
-                           th:value="${criteria != null and criteria.name ne null ? criteria.name : ''}"/>
+                    <input id="st_name" name="studentName" type="text" class="textInput" postField="name"
+                           suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="st"
+                           th:value="${criteria != null  ? criteria.studentName : ''}"/>
                 </li>
                 <li>
                     <label>学生类型：</label>
-                    <select class="combox" name="province" style="width:100px;">
+                    <select class="combox" name="studentStatus" style="width:100px;" th:value="${criteria != null  ? criteria.studentStatus : ''}">
                         <option value="">所有</option>
-                        <option value="1">在读生</option>
-                        <option value="0">老生</option>
+                        <option value="1">在读</option>
+                        <option value="2">老生</option>
+                        <option value="3">暂停</option>
                     </select>
                 </li>
                 <li>
                     <label>学生年段：</label>
-                    <select class="combox" name="province" style="width:100px;">
-                        <option value="">所有</option>
-                        <option value="北京">执行中</option>
-                        <option value="上海">已结束</option>
+                    <select id="stu_grade" class="combox" name="grade" style="width: 120px"
+                            ref="stu_gradeSub" refUrl="system/config/{value}" callIfEmpty="false"
+                            data="data" group="children" optName="configDescription" optVal="id"
+                            th:if="${not #lists.isEmpty(level.children)}"
+                            th:with="options=${level.children}"
+                            th:value="${criteria != null  ? criteria.grade : ''}">
+                        <option value="">请选择</option>
+                        <option th:each="option:${options}" th:value="${option.id}" th:text="${option.configDescription}">学生年段</option>
                     </select>
                 </li>
                 <li>
                     <label>细分年段：</label>
-                    <select class="combox" name="province" style="width:100px;">
-                        <option value="">所有</option>
-                        <option value="广东">有欠费</option>
+                    <select id="stu_gradeSub" class="combox" name="gradeSub" style="width: 120px"
+                            th:value="${criteria != null  ? criteria.gradeSub : ''}">
+                        <option value="">请选择</option>
                     </select>
                 </li>
                 <li>
                     <label>咨询师：</label>
-                    <input id="sg_id" name="consultantId" type="hidden" clean="true"
-                           th:value="${criteria != null and criteria.consultantId ne null ? criteria.consultantId : ''}"/>
-                    <input id="sg_userName" name="consultant.userName" type="text" class="textInput"
-                           postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sg" clean="true"
-                           th:value="${criteria != null and criteria.consultant ne null ? criteria.consultant.userName : ''}"/>
+                    <input id="st_userName" name="consultantName" type="text" class="textInput"
+                           postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="st"
+                           th:value="${criteria != null ? criteria.consultantName : ''}"/>
                 </li>
                 <li>
                     <label>学管师：</label>
-                    <input id="sp_id" name="supervisorId" type="hidden" clean="true"
-                           th:value="${criteria != null and criteria.supervisorId ne null ? criteria.supervisorId : ''}"/>
-                    <input id="sp_userName" name="supervisor.userName" type="text" class="textInput"
-                           postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sp" clean="true"
-                           th:value="${criteria != null and criteria.supervisor ne null ? criteria.supervisor.userName : ''}"/>
+                    <input id="st_userName" name="supervisorName" type="text" class="textInput"
+                           postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="st"
+                           th:value="${criteria != null  ? criteria.supervisorName : ''}"/>
                 </li>
             </ul>
             <div class="subBar">
@@ -89,15 +90,15 @@
                 <tr th:each="item: ${pagingBean.items}">
                     <td align="center"></td>
                     <td align="center" th:text="${item.name}"></td>
-                    <td align="left" th:text="${item.wxId}"></td>
-                    <td align="center" th:text="${item.level ne null ? item.level.configDescription : '--'}"></td>
-                    <td align="center" th:text="${item.subLevel ne null ? item.subLevel.configDescription : '--'}"></td>
+                    <td align="center" th:text="${item.wxId}"></td>
+                    <td align="center" th:text="${item.grade ne null ? item.grade.name : '--'}"></td>
+                    <td align="center" th:text="${item.gradeSub ne null ? item.gradeSub.name : '--'}"></td>
                     <td align="center" th:text="${item.contactName}"></td>
-                    <td align="center" th:text="${item.contactRelationType}"></td>
+                    <td align="center" th:text="${item.contactRelation ne null ? item.contactRelation.name : '--'}"></td>
                     <td align="center" th:text="${item.contactPhone}"></td>
                     <td align="center" th:text="${item.meto}"></td>
-                    <td align="center" th:text="${item.consultant ne null ? item.consultant.userName : '--'}"></td>
-                    <td align="center" th:text="${item.supervisor ne null ? item.supervisor.userName : '--'}"></td>
+                    <td align="center" th:text="${item.consultant ne null ? item.consultant.name : '--'}"></td>
+                    <td align="center" th:text="${item.supervisor ne null ? item.supervisor.name : '--'}"></td>
                     <td align="center">
                         <a href="javascript:void(0);" style="float: none; text-decoration: underline; color: #1465ff">变更微信号</a>
                     </td>
