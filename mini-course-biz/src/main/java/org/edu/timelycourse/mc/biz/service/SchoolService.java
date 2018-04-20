@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -25,6 +26,7 @@ public class SchoolService extends BaseService<SchoolModel>
     }
 
     @Override
+    @Transactional
     public SchoolModel add(SchoolModel entity)
     {
         // enabled by default and need license control in future
@@ -34,6 +36,7 @@ public class SchoolService extends BaseService<SchoolModel>
     }
 
     @Override
+    @Transactional
     public SchoolModel update(SchoolModel entity)
     {
         entity.setLastUpdateTime(new Date());

@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -76,6 +77,7 @@ public class ContractService extends BaseService<ContractModel>
     }
 
     @Override
+    @Transactional
     public ContractModel add(ContractModel model)
     {
         initContract(model);
@@ -143,6 +145,7 @@ public class ContractService extends BaseService<ContractModel>
     }
 
     @Override
+    @Transactional
     public Integer delete (Integer id)
     {
         if (EntityUtils.isValidEntityId(id))
@@ -170,6 +173,7 @@ public class ContractService extends BaseService<ContractModel>
     }
 
     @Override
+    @Transactional
     public ContractModel update(ContractModel entity)
     {
         if (entity.isValidInput() && EntityUtils.isValidEntityId(entity.getId()))

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
     }
 
     @Override
+    @Transactional
     public SystemConfigModel add (SystemConfigModel entity)
     {
         if (entity.isValidInput())
@@ -57,6 +59,7 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
     }
 
     @Override
+    @Transactional
     public SystemConfigModel update (SystemConfigModel entity)
     {
         if (entity.isValidInput() && EntityUtils.isValidEntityId(entity.getId()))
@@ -90,6 +93,7 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
     }
 
     @Override
+    @Transactional
     public Integer delete(Integer id)
     {
         if (EntityUtils.isValidEntityId(id))
@@ -120,6 +124,7 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
         return configRepository.getChildrenConfig(parentId);
     }
 
+    @Transactional
     public Integer deleteByConifgName(String configName)
     {
         SystemConfigModel config = assertEntityNotNullByName(configName);

@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ public class UserService extends BaseService<UserModel>
     }
 
     @Override
+    @Transactional
     public UserModel add (UserModel entity)
     {
         entity.setStatus(EUserStatus.ENABLED.code());
@@ -111,6 +113,7 @@ public class UserService extends BaseService<UserModel>
     }
 
     @Override
+    @Transactional
     public UserModel update(UserModel entity)
     {
         if (!entity.isValidInput() && !EntityUtils.isValidEntityId(entity.getId()) &&
@@ -158,6 +161,7 @@ public class UserService extends BaseService<UserModel>
         return entity;
     }
 
+    @Transactional
     private void updateUserRole (UserModel entity)
     {
         // check user roles
@@ -221,6 +225,7 @@ public class UserService extends BaseService<UserModel>
         return user;
     }
 
+    @Transactional
     public Integer resetPassword (Integer userId, String password)
     {
         if (EntityUtils.isValidEntityId(userId))
@@ -238,6 +243,7 @@ public class UserService extends BaseService<UserModel>
         throw new ServiceException(String.format("Invalid user id: %d", userId));
     }
 
+    @Transactional
     public Integer resetStatus (Integer userId, Integer userStatus)
     {
         if (EntityUtils.isValidEntityId(userId))
@@ -383,7 +389,7 @@ public class UserService extends BaseService<UserModel>
         throw new ServiceException(String.format("Invalid user phone %s",  userPhone));
     }
 
-
+    @Transactional
     private void addUserRole (final UserModel entity)
     {
         for (Integer roleId : entity.getRoleIds())

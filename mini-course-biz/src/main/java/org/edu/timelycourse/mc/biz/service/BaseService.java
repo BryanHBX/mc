@@ -11,6 +11,7 @@ import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.edu.timelycourse.mc.beans.paging.PagingBean;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public abstract class BaseService<T extends BaseModel>
         throw new ServiceException(String.format("Invalid entity id (%d) for fetching", id));
     }
 
+    @Transactional
     public T add (T entity)
     {
         if (entity != null && entity.isValidInput())
@@ -53,6 +55,7 @@ public abstract class BaseService<T extends BaseModel>
         throw new ServiceException("Empty entity to add");
     }
 
+    @Transactional
     public T update (T entity)
     {
         if (entity != null && entity.isValidInput() &&
@@ -70,6 +73,7 @@ public abstract class BaseService<T extends BaseModel>
         throw new ServiceException("Invalid entity to update: " + entity);
     }
 
+    @Transactional
     public Integer delete (Integer id)
     {
         if (EntityUtils.isValidEntityId(id))
@@ -123,6 +127,7 @@ public abstract class BaseService<T extends BaseModel>
         }
     }
 
+    @Transactional
     public T saveOrUpdate(T entity)
     {
         return entity.getId() != null ? update(entity) : add(entity);

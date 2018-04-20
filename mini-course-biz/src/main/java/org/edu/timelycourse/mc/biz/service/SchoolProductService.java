@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.parser.Entity;
 import java.util.Date;
@@ -59,6 +60,7 @@ public class SchoolProductService extends BaseService<SchoolProductModel>
     }
 
     @Override
+    @Transactional
     public SchoolProductModel add(SchoolProductModel entity)
     {
         entity.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
@@ -100,6 +102,7 @@ public class SchoolProductService extends BaseService<SchoolProductModel>
     }
 
     @Override
+    @Transactional
     public Integer delete (Integer id)
     {
         if (EntityUtils.isValidEntityId(id))
@@ -126,6 +129,7 @@ public class SchoolProductService extends BaseService<SchoolProductModel>
     }
 
     @Override
+    @Transactional
     public SchoolProductModel update(SchoolProductModel entity)
     {
         if (entity.isValidInput() && EntityUtils.isValidEntityId(entity.getId()))
