@@ -15,7 +15,7 @@ public class ResponseData<T> implements Serializable
     private int statusCode;
     private boolean success;
     private T data;
-    private String error;
+    private String message;
 
     public ResponseData () {}
 
@@ -43,7 +43,7 @@ public class ResponseData<T> implements Serializable
         ResponseData<T> result = new ResponseData<T>();
         result.setSuccess(false);
         result.setData(data);
-        result.setError(resultCode.message());
+        result.setMessage(resultCode.message());
         return result;
     }
 
@@ -52,7 +52,7 @@ public class ResponseData<T> implements Serializable
         ResponseData result = new ResponseData();
         result.setSuccess(false);
         result.setStatusCode(statusCode);
-        result.setError(message);
+        result.setMessage(message);
         return result;
     }
 }
