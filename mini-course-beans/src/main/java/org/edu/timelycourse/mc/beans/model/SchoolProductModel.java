@@ -69,10 +69,4 @@ public class SchoolProductModel extends BaseModel
                         (EntityUtils.isValidEntityId(productType) && ValidatorUtil.isFloatNumber(productPeriod)) :
                         EntityUtils.isValidEntityId(parentId));
     }
-
-    @Override
-    public String getUrlParams()
-    {
-        return null;
-    }
 }

@@ -1,7 +1,8 @@
 package org.edu.timelycourse.mc.beans.dto;
 
 import lombok.Data;
-import org.edu.timelycourse.mc.beans.model.InvoiceModel;
+import org.edu.timelycourse.mc.beans.enums.EPaymentType;
+import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
 import org.edu.timelycourse.mc.beans.paging.PagingBean;
 import org.springframework.beans.BeanUtils;
 
@@ -28,7 +29,12 @@ public class InvoiceDTO extends BaseDTO
     /**
      * 支付类型
      */
-    private String type;
+    //private String type;
+
+    /**
+     * 报名类型
+     */
+    private NamedOptionProperty payType;
 
     /**
      * 缴费日期
@@ -40,7 +46,7 @@ public class InvoiceDTO extends BaseDTO
      */
     private ContractDTO contract;
 
-    public static PagingBean<InvoiceDTO> from (PagingBean<InvoiceModel> pagingBean)
+    public static PagingBean<InvoiceDTO> from (PagingBean<ContractInvoiceModel> pagingBean)
     {
         PagingBean<InvoiceDTO> result = new PagingBean<>();
         result.setItems(from(pagingBean.getItems()));
@@ -51,17 +57,17 @@ public class InvoiceDTO extends BaseDTO
         return result;
     }
 
-    public static List<InvoiceDTO> from (List<InvoiceModel> models)
+    public static List<InvoiceDTO> from (List<ContractInvoiceModel> models)
     {
         List<InvoiceDTO> result = new ArrayList<>();
-        for (InvoiceModel model : models)
+        for (ContractInvoiceModel model : models)
         {
             result.add(from(model));
         }
         return result;
     }
 
-    public static InvoiceDTO from (InvoiceModel model)
+    public static InvoiceDTO from (ContractInvoiceModel model)
     {
         try
         {
@@ -70,6 +76,7 @@ public class InvoiceDTO extends BaseDTO
                 InvoiceDTO dto = new InvoiceDTO();
                 BeanUtils.copyProperties(model, dto);
                 dto.setContract(ContractDTO.from(model.getContract()));
+                dto.setPayType(new NamedOptionProperty(model.getType(), EPaymentType.getLabel(model.getType())));
                 return dto;
             }
             return null;
@@ -77,7 +84,7 @@ public class InvoiceDTO extends BaseDTO
         catch (Exception ex)
         {
             throw new RuntimeException(String.format(
-                    "Failed to copy properties from contract (%s) to VO object", model
+                    "Failed to copy properties from contract (%s) to DTO object", model
             ), ex);
         }
     }

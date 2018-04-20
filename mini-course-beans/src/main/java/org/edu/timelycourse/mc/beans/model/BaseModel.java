@@ -31,9 +31,6 @@ public abstract class BaseModel implements Serializable
     @JsonIgnore
     public abstract boolean isValidInput ();
 
-    @JsonIgnore
-    public abstract String getUrlParams();
-
     protected void appendParam (StringBuilder builder, String paramName, Object paramValue)
     {
         if (paramValue != null)

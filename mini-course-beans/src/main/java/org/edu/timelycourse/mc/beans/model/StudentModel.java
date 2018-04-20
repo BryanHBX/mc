@@ -103,18 +103,4 @@ public class StudentModel extends BaseModel
                 StringUtil.isNotEmpty(wxId, contactName, contactPhone, name) &&
                 EntityUtils.isValidEntityId(schoolId, levelId, subLevelId, courseId, subCourseId);
     }
-
-    @Override
-    public String getUrlParams()
-    {
-        StringBuilder builder = new StringBuilder();
-        appendParam(builder, "schoolId", schoolId);
-        appendParam(builder, "name", name);
-        appendParam(builder, "levelId", levelId);
-        appendParam(builder, "subLevelId", subLevelId);
-        appendParam(builder, "consultantId", consultantId);
-        appendParam(builder, "consultantId", supervisorId);
-        builder.deleteCharAt(builder.length() - 1);
-        return builder.toString();
-    }
 }

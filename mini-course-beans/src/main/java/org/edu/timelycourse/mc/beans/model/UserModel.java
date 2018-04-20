@@ -188,14 +188,4 @@ public class UserModel extends BaseModel
                 EntityUtils.isValidEntityId(this.schoolId) &&
                 StringUtil.isNotEmpty(this.phone);
     }
-
-    @JsonIgnore
-    public String getUrlParams ()
-    {
-        StringBuilder builder = new StringBuilder();
-        appendParam(builder, "userName", userName);
-        appendParam(builder, "schoolId", schoolId);
-        builder.deleteCharAt(builder.length() - 1);
-        return builder.toString();
-    }
 }

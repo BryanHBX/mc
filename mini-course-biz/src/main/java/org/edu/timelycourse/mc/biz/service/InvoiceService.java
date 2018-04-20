@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.biz.service;
 
-import org.edu.timelycourse.mc.beans.model.InvoiceModel;
+import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
 import org.edu.timelycourse.mc.biz.repository.ContractRepository;
 import org.edu.timelycourse.mc.biz.repository.InvoiceRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
@@ -17,7 +17,7 @@ import java.util.Date;
  * Created by x36zhao on 2017/3/17.
  */
 @Service
-public class InvoiceService extends BaseService<InvoiceModel>
+public class InvoiceService extends BaseService<ContractInvoiceModel>
 {
     private static Logger LOGGER = LoggerFactory.getLogger(InvoiceService.class);
 
@@ -32,7 +32,7 @@ public class InvoiceService extends BaseService<InvoiceModel>
     }
 
     @Override
-    public InvoiceModel add(InvoiceModel entity)
+    public ContractInvoiceModel add(ContractInvoiceModel entity)
     {
         if (entity.isValidInput())
         {
@@ -47,12 +47,12 @@ public class InvoiceService extends BaseService<InvoiceModel>
     }
 
     @Override
-    public InvoiceModel update(InvoiceModel entity)
+    public ContractInvoiceModel update(ContractInvoiceModel entity)
     {
         if (entity.isValidInput() && EntityUtils.isValidEntityId(entity.getId()))
         {
             // check if entity exists
-            InvoiceModel entityInDb = (InvoiceModel) Asserts.assertEntityNotNullById(repository, entity.getId());
+            ContractInvoiceModel entityInDb = (ContractInvoiceModel) Asserts.assertEntityNotNullById(repository, entity.getId());
 
             // check if any change with respect to contract
             if (entity.getContractId() != entityInDb.getContractId())

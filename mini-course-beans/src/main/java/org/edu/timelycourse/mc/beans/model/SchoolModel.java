@@ -83,10 +83,4 @@ public class SchoolModel extends BaseModel
     {
         return StringUtil.isNotEmpty(schoolName);
     }
-
-    @Override
-    public String getUrlParams()
-    {
-        return null;
-    }
 }

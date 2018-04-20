@@ -3,7 +3,7 @@ package org.edu.timelycourse.mc.biz.service;
 import org.edu.timelycourse.mc.beans.enums.EContractDebtStatus;
 import org.edu.timelycourse.mc.beans.enums.EContractStatus;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
-import org.edu.timelycourse.mc.beans.model.InvoiceModel;
+import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
 import org.edu.timelycourse.mc.beans.model.StudentModel;
 import org.edu.timelycourse.mc.beans.model.UserModel;
 import org.edu.timelycourse.mc.beans.paging.PagingBean;
@@ -127,7 +127,7 @@ public class ContractService extends BaseService<ContractModel>
             // save invoices
             if (model.getInvoices() != null)
             {
-                for (InvoiceModel invoice : model.getInvoices())
+                for (ContractInvoiceModel invoice : model.getInvoices())
                 {
                     invoice.setSchoolId(model.getSchoolId());
                     invoice.setCreationTime(new Date());
@@ -154,10 +154,10 @@ public class ContractService extends BaseService<ContractModel>
             SecurityContextHelper.validatePermission(contract.getSchoolId(), null);
 
             // delete invoices if have
-            List<InvoiceModel> invoices = invoiceRepository.getByContractId(id);
+            List<ContractInvoiceModel> invoices = invoiceRepository.getByContractId(id);
             if (invoices != null)
             {
-                for (InvoiceModel invoice : invoices)
+                for (ContractInvoiceModel invoice : invoices)
                 {
                     invoiceRepository.delete(invoice.getId());
                 }

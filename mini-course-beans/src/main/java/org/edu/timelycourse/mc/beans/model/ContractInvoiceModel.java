@@ -11,7 +11,7 @@ import org.springframework.beans.BeanUtils;
 import java.util.Date;
 
 @Data
-public class InvoiceModel extends BaseModel
+public class ContractInvoiceModel extends BaseModel
 {
     /**
      * 合同ID
@@ -63,15 +63,9 @@ public class InvoiceModel extends BaseModel
                 Strings.isNotEmpty(invoiceNo);
     }
 
-    @Override
-    public String getUrlParams()
+    public static ContractInvoiceModel from (final InvoiceDTO dto)
     {
-        return null;
-    }
-
-    public static InvoiceModel from (final InvoiceDTO dto)
-    {
-        InvoiceModel model = new InvoiceModel();
+        ContractInvoiceModel model = new ContractInvoiceModel();
         BeanUtils.copyProperties(dto, model);
         return model;
     }

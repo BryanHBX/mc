@@ -114,7 +114,7 @@ public class ContractModel extends BaseModel
     /**
      * 收据列表
      */
-    private List<InvoiceModel> invoices;
+    private List<ContractInvoiceModel> invoices;
 
     /**
      * 合同状态
@@ -134,7 +134,7 @@ public class ContractModel extends BaseModel
         double total = 0;
         if (invoices != null)
         {
-            for (InvoiceModel invoice : invoices)
+            for (ContractInvoiceModel invoice : invoices)
             {
                 total += invoice.getPrice();
             }
@@ -167,7 +167,7 @@ public class ContractModel extends BaseModel
 
         if (valid && invoices != null)
         {
-            for (InvoiceModel invoice : invoices)
+            for (ContractInvoiceModel invoice : invoices)
             {
                 invoice.setSchoolId(schoolId);
                 valid = invoice.isValidInput();
@@ -179,12 +179,6 @@ public class ContractModel extends BaseModel
         }
 
         return valid;
-    }
-
-    @Override
-    public String getUrlParams()
-    {
-        return null;
     }
 
     public static ContractModel from (final ContractDTO dto)

@@ -30,10 +30,4 @@ public class UserRoleModel extends BaseModel
     {
         return true;
     }
-
-    @Override
-    public String getUrlParams()
-    {
-        return null;
-    }
 }

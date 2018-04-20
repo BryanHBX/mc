@@ -2,10 +2,12 @@ package org.edu.timelycourse.mc.api.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.edu.timelycourse.mc.beans.criteria.ContractCriteria;
 import org.edu.timelycourse.mc.beans.dto.ContractDTO;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
 import org.edu.timelycourse.mc.biz.service.ContractService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
+import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,26 +30,27 @@ public class ContractController extends BaseController
     @Autowired
     private ContractService contractService;
 
-    @ModelAttribute("contractDTO")
-    public ContractDTO getContractDTOModel()
-    {
-        return new ContractDTO ();
-    }
+    @ModelAttribute("criteria")
+    public ContractCriteria getCriteria () { return new ContractCriteria(); }
 
     @RequestMapping(path="", method= RequestMethod.GET)
     @ApiOperation(value = "Get either list of all contracts or by given query")
     public ResponseData getContract(@RequestParam(name="pageNum", required = false) Integer pageNum,
                                     @RequestParam(name="pageSize", required = false) Integer pageSize,
-                                    @ModelAttribute("contractDTO") ContractDTO criteria,
+                                    @ModelAttribute("criteria") ContractCriteria criteria,
                                     @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
         {
-            LOGGER.debug("Enter getContract - [pageNum: {}, pageSize: {}, contract: {}]", pageNum, pageSize, criteria);
+            LOGGER.debug("Enter getContract - [pageNum: {}, pageSize: {}, criteria: {}]", pageNum, pageSize, criteria);
         }
 
-        return ResponseData.success(ContractDTO.from(contractService.findByPage(
-                ContractModel.from(criteria), pageNum, pageSize)));
+        criteria.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+        return ResponseData.success(ContractDTO.from(
+                contractService.findByCriteria(criteria, pageNum, pageSize)));
+
+        //return ResponseData.success(ContractDTO.from(contractService.findByPage(
+        //        ContractModel.from(criteria), pageNum, pageSize)));
     }
 
     @RequestMapping(path="/{contractId}", method= RequestMethod.GET)

@@ -4,7 +4,7 @@
 
     <cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
 
-    <resultMap type="org.edu.timelycourse.mc.beans.model.InvoiceModel" id="result_invoice">
+    <resultMap type="org.edu.timelycourse.mc.beans.model.ContractInvoiceModel" id="result_invoice">
         <id property="id" column="id"/>  
         <result property="contractId" column="contract_id"/>
         <result property="schoolId" column="school_id"/>
@@ -50,6 +50,35 @@
             <if test="type != null and type > -1"> AND `fee_type` = #{type}</if>
             <if test="ownerId != null and ownerId > 0"> AND `owner_id` = #{ownerId}</if>
             <if test="creationTime != null"> AND `creationTime` = #{creationTime}</if>
+        </where>
+        ORDER BY `creationTime` DESC
+    </select>
+
+    <select id="getByCriteria" parameterType="org.edu.timelycourse.mc.beans.criteria.InvoiceCriteria" resultMap="result_invoice">
+        SELECT * FROM `t_school_invoice`
+        <where>
+            1 = 1
+            <if test="startDate != null and startDate != ''">AND `creationTime` &gt;= #{startDate}</if>
+            <if test="endDate != null and endDate != ''">AND `creationTime` &lt;= #{endDate}</if>
+            <if test="schoolId != null and schoolId > 0"> AND `school_id` = #{schoolId}</if>
+            <if test="payType != null and payType > -1">AND `fee_type` = #{type}</if>
+            AND `contract_id` IN
+            (
+                SELECT `id` FROM `t_school_contract`
+                <where>
+                    1 = 1
+                    <if test="studentName != null and studentName != ''">
+                        AND `student_id` IN (SELECT `id` FROM `t_school_student` WHERE `s_name` LIKE CONCAT('%',#{studentName},'%'))
+                    </if>
+                    <if test="consultantName != null and consultantName != ''">
+                        AND `consult_id` IN (SELECT `id` FROM `t_member` WHERE `u_name` LIKE CONCAT('%',#{consultantName},'%'))
+                    </if>
+                    <if test="consultantName != null and consultantName != ''">
+                        AND `supervisor_id` IN (SELECT `id` FROM `t_member` WHERE `u_name` LIKE CONCAT('%',#{supervisorName},'%'))
+                    </if>
+                    <if test="contractStatus != null and contractStatus > -1"> AND `c_status` = #{contractStatus}</if>
+                </where>
+            )
         </where>
         ORDER BY `creationTime` DESC
     </select>

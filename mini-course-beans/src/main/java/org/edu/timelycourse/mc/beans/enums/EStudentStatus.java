@@ -1,18 +1,15 @@
 package org.edu.timelycourse.mc.beans.enums;
 
-public enum EContactType
+public enum EStudentStatus
 {
-    FATHER    (1, "父亲"),
-    MOTHER    (2, "母亲"),
-    GRANDPA   (3, "爷爷"),
-    GRANDMA   (4, "奶奶"),
-    PERSONAL  (5, "本人"),
-    OTHER     (6, "其他");
+    ONGOING     (1, "在读"),
+    FINISHED    (2, "老生"),
+    SUSPENDED   (3, "暂停");
 
     private Integer code;
     private String label;
 
-    EContactType(Integer code, String label)
+    EStudentStatus (Integer code, String label)
     {
         this.code = code;
         this.label = label;
@@ -30,7 +27,7 @@ public enum EContactType
 
     public static String getLabel(String name)
     {
-        for (EContactType item : EContactType.values())
+        for (EStudentStatus item : EStudentStatus.values())
         {
             if (item.name().equals(name))
             {
@@ -43,7 +40,7 @@ public enum EContactType
 
     public static String getLabel(Integer code)
     {
-        for (EContactType item : EContactType.values())
+        for (EStudentStatus item : EStudentStatus.values())
         {
             if (item.code().equals(code))
             {
@@ -56,7 +53,7 @@ public enum EContactType
 
     public static Integer getCode(String name)
     {
-        for (EContactType item : EContactType.values())
+        for (EStudentStatus item : EStudentStatus.values())
         {
             if (item.name().equals(name))
             {
@@ -68,7 +65,7 @@ public enum EContactType
 
     public static boolean hasValue (Integer code)
     {
-        for (EContactType item : EContactType.values())
+        for (EStudentStatus item : EStudentStatus.values())
         {
             if (item.code().equals(code))
             {

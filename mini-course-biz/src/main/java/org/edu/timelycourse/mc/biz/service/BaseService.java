@@ -2,6 +2,7 @@ package org.edu.timelycourse.mc.biz.service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.edu.timelycourse.mc.beans.criteria.BaseCriteria;
 import org.edu.timelycourse.mc.beans.model.BaseModel;
 import org.edu.timelycourse.mc.biz.repository.BaseRepository;
 import org.edu.timelycourse.mc.biz.utils.LocaleMessageSource;
@@ -100,6 +101,25 @@ public abstract class BaseService<T extends BaseModel>
             throw new ServiceException(String.format(
                     "Failed to find by page - [entity: %s, pageNum: %d, pageSize: %d]",
                     entity, pageNum, pageSize), ex);
+        }
+    }
+
+    public PagingBean<T> findByCriteria (BaseCriteria criteria, Integer pageNum, Integer pageSize)
+    {
+        try
+        {
+            PageHelper.startPage(
+                    EntityUtils.isValidEntityId(pageNum) ? pageNum : 1,
+                    EntityUtils.isValidEntityId(pageSize) ? pageSize : Constants.DEFAULT_PAGE_SIZE);
+
+            Page<T> result = this.repository.getByCriteria(criteria);
+            return new PagingBean<T>(result);
+        }
+        catch (Exception ex)
+        {
+            throw new ServiceException(String.format(
+                    "Failed to find by criteria - [criteria: %s, pageNum: %d, pageSize: %d]",
+                    criteria, pageNum, pageSize), ex);
         }
     }
 

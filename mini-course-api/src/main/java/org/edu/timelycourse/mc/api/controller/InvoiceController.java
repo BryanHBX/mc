@@ -2,8 +2,9 @@ package org.edu.timelycourse.mc.api.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.edu.timelycourse.mc.beans.criteria.InvoiceCriteria;
 import org.edu.timelycourse.mc.beans.dto.InvoiceDTO;
-import org.edu.timelycourse.mc.beans.model.InvoiceModel;
+import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
 import org.edu.timelycourse.mc.biz.service.InvoiceService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
@@ -26,10 +27,10 @@ public class InvoiceController extends BaseController
     @Autowired
     private InvoiceService invoiceService;
 
-    @ModelAttribute("invoiceDTO")
-    public InvoiceDTO getDTOModel()
+    @ModelAttribute("criteria")
+    public InvoiceCriteria getCriteria()
     {
-        return new InvoiceDTO ();
+        return new InvoiceCriteria();
     }
 
     @RequestMapping(path="", method= RequestMethod.GET)
@@ -37,15 +38,16 @@ public class InvoiceController extends BaseController
     @PreAuthorize("hasAnyRole('ROLE_TREASURER','ROLE_ADMINISTRATOR')")
     public ResponseData getInvoice(@RequestParam(name="pageNum", required = false) Integer pageNum,
                                    @RequestParam(name="pageSize", required = false) Integer pageSize,
-                                   @ModelAttribute("invoiceDTO") InvoiceDTO criteria,
+                                   @ModelAttribute("criteria") InvoiceCriteria criteria,
                                    @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
         {
-            LOGGER.debug("Enter getInvoice - [pageNum: {}, pageSize: {}, invoice: {}]", pageNum, pageSize, criteria);
+            LOGGER.debug("Enter getInvoice - [pageNum: {}, pageSize: {}, criteria: {}]", pageNum, pageSize, criteria);
         }
 
-        return ResponseData.success(invoiceService.findByPage(InvoiceModel.from(criteria), pageNum, pageSize));
+        return ResponseData.success(InvoiceDTO.from(invoiceService.findByCriteria(criteria, pageNum, pageSize)));
+        //return ResponseData.success(invoiceService.findByPage(ContractInvoiceModel.from(criteria), pageNum, pageSize));
     }
 
     @RequestMapping(path="/{invoiceId}", method= RequestMethod.GET)
@@ -64,7 +66,7 @@ public class InvoiceController extends BaseController
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add invoice by given entity")
     @PreAuthorize("hasAnyRole('ROLE_TREASURER','ROLE_ADMINISTRATOR', 'ROLE_CONSULTANT')")
-    public ResponseData addInvoice (@RequestBody InvoiceModel model,
+    public ResponseData addInvoice (@RequestBody ContractInvoiceModel model,
                                     @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
@@ -92,7 +94,7 @@ public class InvoiceController extends BaseController
     @ApiOperation(value = "Update invoice with respect to the specified id")
     @PreAuthorize("hasAnyRole('ROLE_TREASURER','ROLE_ADMINISTRATOR')")
     public ResponseData updateInvoice (@PathVariable(required = true) Integer invoiceId,
-                                       @RequestBody InvoiceModel model,
+                                       @RequestBody ContractInvoiceModel model,
                                        @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())

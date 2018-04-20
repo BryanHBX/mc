@@ -40,6 +40,19 @@ public enum EPaymentType
         return name;
     }
 
+    public static String getLabel(Integer code)
+    {
+        for (EPaymentType item : EPaymentType.values())
+        {
+            if (item.code().equals(code))
+            {
+                return item.label;
+            }
+        }
+        return null;
+    }
+
+
     public static Integer getCode(String name)
     {
         for (EPaymentType item : EPaymentType.values())

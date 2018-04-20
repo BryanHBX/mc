@@ -45,6 +45,10 @@
             <artifactId>mini-course-biz</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.edu.energycourse</groupId>
+            <artifactId>mini-course-beans</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>

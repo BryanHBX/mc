@@ -22,10 +22,4 @@ public class SystemRoleModel extends BaseModel
         return StringUtil.isNotEmpty(roleName, roleAlias) &&
                 EVisible.hasValue(roleVisible);
     }
-
-    @Override
-    public String getUrlParams()
-    {
-        return null;
-    }
 }
