@@ -1,15 +1,13 @@
 package org.edu.timelycourse.mc.web.controller;
 
 import org.edu.timelycourse.mc.beans.dto.ContractDTO;
-import org.edu.timelycourse.mc.beans.model.ContractModel;
+import org.edu.timelycourse.mc.beans.entity.ResponseData;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,6 +31,13 @@ public class FinanceController extends AbstractController
         return getModulePage("contractList");
     }
 
+    @RequestMapping(value = "/contract/transfer", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseData transferContract (Model model)
+    {
+        return null;
+    }
+
     @RequestMapping("/invoice")
     public String showInvoiceList ()
     {
@@ -51,6 +56,7 @@ public class FinanceController extends AbstractController
         return getModulePage("consumptionList");
     }
 
+    @Override
     protected String getMyModulePath()
     {
         return "finance";

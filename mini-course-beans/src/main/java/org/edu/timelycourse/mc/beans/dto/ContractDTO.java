@@ -77,6 +77,11 @@ public class ContractDTO extends BaseDTO
     private double freePeriod;
 
     /**
+     * 转退课时
+     */
+    private double transferPeriod;
+
+    /**
      * 签约总价
      */
     private double contractPrice;

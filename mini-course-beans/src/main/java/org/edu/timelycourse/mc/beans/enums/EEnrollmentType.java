@@ -3,7 +3,8 @@ package org.edu.timelycourse.mc.beans.enums;
 public enum EEnrollmentType
 {
     FRESHER     (1, "新报"),
-    CONTINUED   (2, "续保");
+    CONTINUED   (2, "续保"),
+    TRANSFER    (3, "转课时");
 
     private Integer code;
     private String label;

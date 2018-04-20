@@ -42,6 +42,7 @@ public class ContractModel extends BaseModel
      * 学生ID
      */
     private Integer studentId;
+
     /**
      * 学生信息
      */
@@ -80,6 +81,11 @@ public class ContractModel extends BaseModel
      * 赠送课时
      */
     private double freePeriod;
+
+    /**
+     * 转退课时
+     */
+    private double transferPeriod;
 
     /**
      * 签约总价
