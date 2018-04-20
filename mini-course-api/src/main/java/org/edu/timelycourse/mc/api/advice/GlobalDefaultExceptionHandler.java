@@ -1,8 +1,7 @@
 package org.edu.timelycourse.mc.api.advice;
 
 import org.edu.timelycourse.mc.biz.utils.LocaleMessageSource;
-import org.edu.timelycourse.mc.common.controller.BaseController;
-import org.edu.timelycourse.mc.common.entity.ResponseData;
+import org.edu.timelycourse.mc.beans.entity.ResponseData;
 import org.edu.timelycourse.mc.common.exception.AuthenticationException;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;

@@ -1,6 +1,5 @@
 package org.edu.timelycourse.mc.common.controller;
 
-import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;

@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.edu.timelycourse.mc.beans.model.SystemRoleModel;
 import org.edu.timelycourse.mc.biz.service.SystemRoleService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
-import org.edu.timelycourse.mc.common.entity.ResponseData;
+import org.edu.timelycourse.mc.beans.entity.ResponseData;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -6,7 +6,7 @@ import org.edu.timelycourse.mc.biz.security.JwtAuthenticationRequest;
 import org.edu.timelycourse.mc.biz.security.JwtAuthenticationResponse;
 import org.edu.timelycourse.mc.biz.security.JwtTokenUtil;
 import org.edu.timelycourse.mc.biz.security.JwtUser;
-import org.edu.timelycourse.mc.common.entity.ResponseData;
+import org.edu.timelycourse.mc.beans.entity.ResponseData;
 import org.edu.timelycourse.mc.common.exception.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

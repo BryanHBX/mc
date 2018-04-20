@@ -6,7 +6,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.edu.timelycourse.mc.beans.model.SystemConfigModel;
 import org.edu.timelycourse.mc.biz.service.SystemConfigService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
-import org.edu.timelycourse.mc.common.entity.ResponseData;
+import org.edu.timelycourse.mc.beans.entity.ResponseData;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

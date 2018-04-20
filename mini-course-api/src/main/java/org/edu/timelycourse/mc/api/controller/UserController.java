@@ -6,7 +6,7 @@ import org.edu.timelycourse.mc.beans.model.UserModel;
 import org.edu.timelycourse.mc.biz.service.UserService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
-import org.edu.timelycourse.mc.common.entity.ResponseData;
+import org.edu.timelycourse.mc.beans.entity.ResponseData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package org.edu.timelycourse.mc.common.dto;
+package org.edu.timelycourse.mc.beans.dto;
 
 import lombok.Data;
 import lombok.ToString;

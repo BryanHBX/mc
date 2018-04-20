@@ -1,7 +1,7 @@
-package org.edu.timelycourse.mc.common.entity;
+package org.edu.timelycourse.mc.beans.entity;
 
 import lombok.Data;
-import org.edu.timelycourse.mc.common.enums.ResultCode;
+import org.edu.timelycourse.mc.beans.enums.EResultCode;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
@@ -33,12 +33,12 @@ public class ResponseData<T> implements Serializable
         return result;
     }
 
-    public static ResponseData failure (ResultCode resultCode)
+    public static ResponseData failure (EResultCode resultCode)
     {
         return failure(resultCode, null);
     }
 
-    public static <T> ResponseData failure (ResultCode resultCode, T data)
+    public static <T> ResponseData failure (EResultCode resultCode, T data)
     {
         ResponseData<T> result = new ResponseData<T>();
         result.setSuccess(false);

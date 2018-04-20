@@ -1,15 +1,10 @@
 package org.edu.timelycourse.mc.web.advice;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import org.edu.timelycourse.mc.biz.utils.LocaleMessageSource;
-import org.edu.timelycourse.mc.common.entity.ResponseData;
-import org.edu.timelycourse.mc.common.exception.AuthenticationException;
-import org.edu.timelycourse.mc.common.exception.ServiceException;
+import org.edu.timelycourse.mc.beans.entity.ResponseData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
