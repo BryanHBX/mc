@@ -1,13 +1,17 @@
 package org.edu.timelycourse.mc.web.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.edu.timelycourse.mc.biz.security.JwtTokenUtil;
 import org.edu.timelycourse.mc.biz.security.JwtUser;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
+import org.edu.timelycourse.mc.common.entity.ResponseData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,8 +28,10 @@ import java.io.IOException;
 public class AuthorizationFilter extends OncePerRequestFilter
 {
     private Logger LOGGER = LoggerFactory.getLogger(AuthorizationFilter.class);
+
     private static String TOKEN_REQUEST_HEADER = "Bearer ";
     private static String TOKEN_REQUEST_PARAMETER = "token";
+    private static String AJAX_REQUEST_HEADER = "Ajax";
 
     private JwtTokenUtil jwtTokenUtil;
     private String tokenHeader;
@@ -89,13 +95,42 @@ public class AuthorizationFilter extends OncePerRequestFilter
                 }
             }
         }
-        catch (ExpiredJwtException ex)
+        catch (ExpiredJwtException | AccessDeniedException ex)
         {
-            LOGGER.warn("Expired JWT token", ex);
+            LOGGER.warn("Access is denied", ex);
             SecurityContextHolder.getContext().setAuthentication(null);
+            if (isAjaxRequest(request))
+            {
+                response.getOutputStream().write(restResponseBytes(
+                        ResponseData.failure(HttpStatus.FORBIDDEN.value(), "Unauthorized")));
+                return;
+            }
         }
+//        catch (AccessDeniedException ex)
+//        {
+//            LOGGER.warn("Access denied", ex);
+//            SecurityContextHolder.getContext().setAuthentication(null);
+//
+//            if (isAjaxRequest(request))
+//            {
+//                response.getOutputStream().write(restResponseBytes(
+//                        ResponseData.failure(HttpStatus.FORBIDDEN.value(), "Unauthorized")));
+//                return;
+//            }
+//        }
 
         chain.doFilter(request, response);
+    }
+
+    private byte[] restResponseBytes(ResponseData responseData) throws IOException
+    {
+        String serialized = new ObjectMapper().writeValueAsString(responseData);
+        return serialized.getBytes();
+    }
+
+    private boolean isAjaxRequest (HttpServletRequest request)
+    {
+        return request.getHeader(AJAX_REQUEST_HEADER) != null;
     }
 
     private String getToken (HttpServletRequest request)

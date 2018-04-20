@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.web.controller;
 
-import org.edu.timelycourse.mc.biz.model.ContractModel;
+import org.edu.timelycourse.mc.beans.model.ContractModel;
 import org.edu.timelycourse.mc.biz.security.JwtAuthenticationRequest;
 import org.edu.timelycourse.mc.biz.security.JwtUser;
 import org.slf4j.Logger;

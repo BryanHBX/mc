@@ -1,7 +1,7 @@
 package org.edu.timelycourse.mc.biz.security;
 
-import org.edu.timelycourse.mc.biz.model.UserModel;
-import org.edu.timelycourse.mc.biz.model.UserRoleModel;
+import org.edu.timelycourse.mc.beans.model.UserModel;
+import org.edu.timelycourse.mc.beans.model.UserRoleModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

@@ -28,6 +28,7 @@
         <module>mini-course-api</module>
         <module>mini-course-biz</module>
         <module>mini-course-common</module>
+        <module>mini-course-beans</module>
     </modules>
 
     <dependencyManagement>
@@ -55,6 +56,12 @@
             <dependency>
                 <groupId>org.edu.energycourse</groupId>
                 <artifactId>mini-course-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.edu.energycourse</groupId>
+                <artifactId>mini-course-beans</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

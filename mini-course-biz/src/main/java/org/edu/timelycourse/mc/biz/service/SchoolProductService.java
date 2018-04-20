@@ -1,8 +1,8 @@
 package org.edu.timelycourse.mc.biz.service;
 
 import com.sun.tools.javac.util.Assert;
-import org.edu.timelycourse.mc.biz.model.SchoolModel;
-import org.edu.timelycourse.mc.biz.model.SchoolProductModel;
+import org.edu.timelycourse.mc.beans.model.SchoolModel;
+import org.edu.timelycourse.mc.beans.model.SchoolProductModel;
 import org.edu.timelycourse.mc.biz.repository.SchoolProductRepository;
 import org.edu.timelycourse.mc.biz.repository.SchoolRepository;
 import org.edu.timelycourse.mc.biz.repository.SystemConfigRepository;

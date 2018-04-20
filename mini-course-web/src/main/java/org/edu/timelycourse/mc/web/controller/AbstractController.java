@@ -2,20 +2,18 @@ package org.edu.timelycourse.mc.web.controller;
 
 import com.google.common.reflect.TypeParameter;
 import com.google.common.reflect.TypeToken;
-import org.edu.timelycourse.mc.biz.dto.ContractDTO;
-import org.edu.timelycourse.mc.biz.model.*;
-import org.edu.timelycourse.mc.biz.paging.PagingBean;
+import org.edu.timelycourse.mc.beans.dto.ContractDTO;
+import org.edu.timelycourse.mc.beans.model.*;
+import org.edu.timelycourse.mc.beans.paging.PagingBean;
 import org.edu.timelycourse.mc.common.constants.Constants;
 import org.edu.timelycourse.mc.common.controller.BaseController;
 import org.edu.timelycourse.mc.common.entity.ResponseData;
-import org.edu.timelycourse.mc.common.exception.AuthenticationException;
 import org.edu.timelycourse.mc.common.reflect.ParameterizedTypeReferenceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +33,7 @@ public abstract class AbstractController extends BaseController implements Error
     @Autowired
     private RestTemplate restTemplate;
 
+    @Override
     public String getErrorPath()
     {
         return ERROR_PATH;
@@ -143,6 +142,7 @@ public abstract class AbstractController extends BaseController implements Error
                 new TypeToken<List<SystemConfigModel>>() {}).getData();
     }
 
+    @Override
     protected String getModulePath()
     {
         return getMyModulePath() != null ? String.format("%s/%s", MODULE_PATH, getMyModulePath()) : MODULE_PATH;

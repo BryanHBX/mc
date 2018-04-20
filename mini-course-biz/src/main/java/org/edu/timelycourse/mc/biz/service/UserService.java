@@ -1,10 +1,10 @@
 package org.edu.timelycourse.mc.biz.service;
 
-import org.edu.timelycourse.mc.biz.enums.EUserRole;
-import org.edu.timelycourse.mc.biz.enums.EUserStatus;
-import org.edu.timelycourse.mc.biz.enums.EUserType;
-import org.edu.timelycourse.mc.biz.model.*;
-import org.edu.timelycourse.mc.biz.paging.PagingBean;
+import org.edu.timelycourse.mc.beans.enums.EUserRole;
+import org.edu.timelycourse.mc.beans.enums.EUserStatus;
+import org.edu.timelycourse.mc.beans.enums.EUserType;
+import org.edu.timelycourse.mc.beans.model.*;
+import org.edu.timelycourse.mc.beans.paging.PagingBean;
 import org.edu.timelycourse.mc.biz.repository.*;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.biz.utils.PasswordUtil;

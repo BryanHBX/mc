@@ -1,11 +1,11 @@
 package org.edu.timelycourse.mc.web.controller;
 
 import com.google.common.reflect.TypeToken;
-import org.edu.timelycourse.mc.biz.enums.EBuiltInConfig;
-import org.edu.timelycourse.mc.biz.model.SchoolProductModel;
-import org.edu.timelycourse.mc.biz.model.SystemConfigModel;
-import org.edu.timelycourse.mc.biz.model.SystemRoleModel;
-import org.edu.timelycourse.mc.biz.model.UserModel;
+import org.edu.timelycourse.mc.beans.enums.EBuiltInConfig;
+import org.edu.timelycourse.mc.beans.model.SchoolProductModel;
+import org.edu.timelycourse.mc.beans.model.SystemConfigModel;
+import org.edu.timelycourse.mc.beans.model.SystemRoleModel;
+import org.edu.timelycourse.mc.beans.model.UserModel;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.slf4j.Logger;

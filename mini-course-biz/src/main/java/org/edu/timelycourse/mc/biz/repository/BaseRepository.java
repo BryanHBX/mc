@@ -1,7 +1,7 @@
 package org.edu.timelycourse.mc.biz.repository;
 
 import com.github.pagehelper.Page;
-import org.edu.timelycourse.mc.biz.model.BaseModel;
+import org.edu.timelycourse.mc.beans.model.BaseModel;
 
 import java.util.List;
 

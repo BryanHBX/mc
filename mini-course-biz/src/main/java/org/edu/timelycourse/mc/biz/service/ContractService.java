@@ -1,12 +1,12 @@
 package org.edu.timelycourse.mc.biz.service;
 
-import org.edu.timelycourse.mc.biz.enums.EContractDebtStatus;
-import org.edu.timelycourse.mc.biz.enums.EContractStatus;
-import org.edu.timelycourse.mc.biz.model.ContractModel;
-import org.edu.timelycourse.mc.biz.model.InvoiceModel;
-import org.edu.timelycourse.mc.biz.model.StudentModel;
-import org.edu.timelycourse.mc.biz.model.UserModel;
-import org.edu.timelycourse.mc.biz.paging.PagingBean;
+import org.edu.timelycourse.mc.beans.enums.EContractDebtStatus;
+import org.edu.timelycourse.mc.beans.enums.EContractStatus;
+import org.edu.timelycourse.mc.beans.model.ContractModel;
+import org.edu.timelycourse.mc.beans.model.InvoiceModel;
+import org.edu.timelycourse.mc.beans.model.StudentModel;
+import org.edu.timelycourse.mc.beans.model.UserModel;
+import org.edu.timelycourse.mc.beans.paging.PagingBean;
 import org.edu.timelycourse.mc.biz.repository.*;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;

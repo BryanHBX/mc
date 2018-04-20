@@ -2,7 +2,7 @@ package org.edu.timelycourse.mc.api.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.edu.timelycourse.mc.biz.model.SchoolProductModel;
+import org.edu.timelycourse.mc.beans.model.SchoolProductModel;
 import org.edu.timelycourse.mc.biz.service.SchoolProductService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;

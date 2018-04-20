@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.biz.repository;
 
-import org.edu.timelycourse.mc.biz.model.UserModel;
+import org.edu.timelycourse.mc.beans.model.UserModel;
 import org.apache.ibatis.annotations.Param;
 import org.edu.timelycourse.mc.biz.repository.BaseRepository;
 import org.springframework.stereotype.Component;

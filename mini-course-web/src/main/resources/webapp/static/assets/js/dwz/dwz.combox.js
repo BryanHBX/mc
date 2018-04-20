@@ -34,7 +34,10 @@
             return;
 		}
 
-        var _header = sessionStorage.getItem("token") != undefined ? {"Authorization": "Bearer " + sessionStorage.getItem("token")}: {};
+        var _header = {"ajax": true};
+        if (sessionStorage.getItem("token") != undefined) {
+            _header["Authorization"] = "Bearer " + sessionStorage.getItem("token");
+        }
 
         $.ajax({
 			type:'GET', dataType:"json", url:event.data.refUrl.replace("{value}", encodeURIComponent(event.data.$this.val())), cache: false, headers: _header,

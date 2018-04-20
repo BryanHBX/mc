@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.biz.service;
 
-import org.edu.timelycourse.mc.biz.model.UserRoleModel;
+import org.edu.timelycourse.mc.beans.model.UserRoleModel;
 import org.edu.timelycourse.mc.biz.repository.UserRoleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

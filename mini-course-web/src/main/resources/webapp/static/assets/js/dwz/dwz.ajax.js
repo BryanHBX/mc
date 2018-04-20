@@ -295,7 +295,11 @@ function ajaxTodo(url, callback, type){
 	var $callback = callback || navTabAjaxDone;
 	var _type = type || "POST";
 	if (! $.isFunction($callback)) $callback = eval('(' + callback + ')');
-    var _header = (sessionStorage.getItem("token") != undefined ? {"Authorization": "Bearer " + sessionStorage.getItem("token")}: {});
+
+	var _header = {"ajax": true};
+    if (sessionStorage.getItem("token") != undefined) {
+        _header["Authorization"] = "Bearer " + sessionStorage.getItem("token");
+    }
 
 	$.ajax({
 		type:_type,

@@ -1,8 +1,7 @@
 package org.edu.timelycourse.mc.biz.security;
 
-import org.edu.timelycourse.mc.biz.model.UserModel;
+import org.edu.timelycourse.mc.beans.model.UserModel;
 import org.edu.timelycourse.mc.biz.repository.UserRepository;
-import org.edu.timelycourse.mc.biz.security.JwtUserFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

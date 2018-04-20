@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.biz.service;
 
-import org.edu.timelycourse.mc.biz.model.SystemConfigModel;
+import org.edu.timelycourse.mc.beans.model.SystemConfigModel;
 import org.edu.timelycourse.mc.biz.repository.SystemConfigRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.exception.ServiceException;

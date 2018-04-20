@@ -3,7 +3,7 @@ package org.edu.timelycourse.mc.api.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.util.Strings;
-import org.edu.timelycourse.mc.biz.model.SystemConfigModel;
+import org.edu.timelycourse.mc.beans.model.SystemConfigModel;
 import org.edu.timelycourse.mc.biz.service.SystemConfigService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;

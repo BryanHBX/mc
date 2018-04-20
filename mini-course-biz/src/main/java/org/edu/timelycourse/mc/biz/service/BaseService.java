@@ -2,12 +2,12 @@ package org.edu.timelycourse.mc.biz.service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import org.edu.timelycourse.mc.biz.model.BaseModel;
+import org.edu.timelycourse.mc.beans.model.BaseModel;
 import org.edu.timelycourse.mc.biz.repository.BaseRepository;
 import org.edu.timelycourse.mc.biz.utils.LocaleMessageSource;
 import org.edu.timelycourse.mc.common.constants.Constants;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
-import org.edu.timelycourse.mc.biz.paging.PagingBean;
+import org.edu.timelycourse.mc.beans.paging.PagingBean;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 

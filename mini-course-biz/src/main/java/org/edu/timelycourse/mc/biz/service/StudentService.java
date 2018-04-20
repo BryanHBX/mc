@@ -1,7 +1,7 @@
 package org.edu.timelycourse.mc.biz.service;
 
-import org.edu.timelycourse.mc.biz.model.StudentModel;
-import org.edu.timelycourse.mc.biz.paging.PagingBean;
+import org.edu.timelycourse.mc.beans.model.StudentModel;
+import org.edu.timelycourse.mc.beans.paging.PagingBean;
 import org.edu.timelycourse.mc.biz.repository.SchoolRepository;
 import org.edu.timelycourse.mc.biz.repository.StudentRepository;
 import org.edu.timelycourse.mc.biz.repository.SystemConfigRepository;

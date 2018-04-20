@@ -57,14 +57,13 @@
             <version>${swagger-annotation.version}</version>
         </dependency>
         <dependency>
-            <groupId>net.sf.dozer</groupId>
-            <artifactId>dozer</artifactId>
-            <version>5.5.1</version>
-        </dependency>
-        <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>${pagehelper.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.edu.energycourse</groupId>
+            <artifactId>mini-course-beans</artifactId>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>

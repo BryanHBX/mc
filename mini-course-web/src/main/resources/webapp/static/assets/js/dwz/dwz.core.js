@@ -205,7 +205,10 @@ var DWZ = {
 
 			$this.trigger(DWZ.eventType.pageClear);
 
-            var _header = (!op.url.endsWith("/auth") ? {"Authorization": "Bearer " + sessionStorage.getItem("token")}: {});
+            var _header = {"ajax": true};
+            if (!op.url.endsWith("/auth") && sessionStorage.getItem("token") != undefined) {
+                _header["Authorization"] = "Bearer " + sessionStorage.getItem("token");
+            }
 
 			$.ajax({
 				type: op.type || 'GET',

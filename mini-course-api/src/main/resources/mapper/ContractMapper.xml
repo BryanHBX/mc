@@ -4,7 +4,7 @@
 
     <cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
 
-    <resultMap type="org.edu.timelycourse.mc.biz.model.ContractModel" id="result_contract">
+    <resultMap type="org.edu.timelycourse.mc.beans.model.ContractModel" id="result_contract">
         <id property="id" column="id"/>  
         <result property="contractNo"       column="contract_no"/>
         <result property="consultantId"     column="consult_id"/>
@@ -43,7 +43,7 @@
                      select="org.edu.timelycourse.mc.biz.repository.SchoolProductRepository.get" />
 
         <collection property="invoices" column="id" javaType="java.util.ArrayList"
-                    ofType="org.edu.timelycourse.mc.biz.model.InvoiceModel"
+                    ofType="org.edu.timelycourse.mc.beans.model.InvoiceModel"
                     select="org.edu.timelycourse.mc.biz.repository.InvoiceRepository.getByContractId"
         />
 

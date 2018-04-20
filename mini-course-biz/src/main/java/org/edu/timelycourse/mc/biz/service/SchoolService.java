@@ -1,7 +1,7 @@
 package org.edu.timelycourse.mc.biz.service;
 
-import org.edu.timelycourse.mc.biz.enums.EUserStatus;
-import org.edu.timelycourse.mc.biz.model.SchoolModel;
+import org.edu.timelycourse.mc.beans.enums.EUserStatus;
+import org.edu.timelycourse.mc.beans.model.SchoolModel;
 import org.edu.timelycourse.mc.biz.repository.SchoolRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

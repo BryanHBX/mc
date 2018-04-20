@@ -2,8 +2,8 @@ package org.edu.timelycourse.mc.api.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.edu.timelycourse.mc.biz.dto.InvoiceDTO;
-import org.edu.timelycourse.mc.biz.model.InvoiceModel;
+import org.edu.timelycourse.mc.beans.dto.InvoiceDTO;
+import org.edu.timelycourse.mc.beans.model.InvoiceModel;
 import org.edu.timelycourse.mc.biz.service.InvoiceService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.entity.ResponseData;

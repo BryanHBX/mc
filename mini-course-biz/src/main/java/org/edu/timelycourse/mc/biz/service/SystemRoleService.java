@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.biz.service;
 
-import org.edu.timelycourse.mc.biz.model.SystemRoleModel;
+import org.edu.timelycourse.mc.beans.model.SystemRoleModel;
 import org.edu.timelycourse.mc.biz.repository.SystemRoleRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.common.exception.ServiceException;

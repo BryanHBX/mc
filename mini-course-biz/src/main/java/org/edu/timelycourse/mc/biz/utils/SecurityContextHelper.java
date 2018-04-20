@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.biz.utils;
 
-import org.edu.timelycourse.mc.biz.enums.EAuthorityName;
+import org.edu.timelycourse.mc.beans.enums.EAuthorityName;
 import org.edu.timelycourse.mc.biz.security.JwtUser;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;

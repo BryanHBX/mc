@@ -1,7 +1,7 @@
 package org.edu.timelycourse.mc.web.controller;
 
 import com.google.common.reflect.TypeToken;
-import org.edu.timelycourse.mc.biz.model.SystemConfigModel;
+import org.edu.timelycourse.mc.beans.model.SystemConfigModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

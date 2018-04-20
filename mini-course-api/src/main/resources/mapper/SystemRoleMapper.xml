@@ -4,7 +4,7 @@
     
 	<cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
 	
-    <resultMap type="org.edu.timelycourse.mc.biz.model.SystemRoleModel" id="result_sysRole">
+    <resultMap type="org.edu.timelycourse.mc.beans.model.SystemRoleModel" id="result_sysRole">
         <id property="id" column="id"/>  
         <result property="roleName" column="role_name"/>
         <result property="roleAlias" column="role_alias"/>

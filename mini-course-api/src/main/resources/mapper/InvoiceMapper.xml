@@ -4,7 +4,7 @@
 
     <cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
 
-    <resultMap type="org.edu.timelycourse.mc.biz.model.InvoiceModel" id="result_invoice">
+    <resultMap type="org.edu.timelycourse.mc.beans.model.InvoiceModel" id="result_invoice">
         <id property="id" column="id"/>  
         <result property="contractId" column="contract_id"/>
         <result property="schoolId" column="school_id"/>

@@ -1,7 +1,7 @@
 package org.edu.timelycourse.mc.biz.repository;
 
 import org.apache.ibatis.annotations.Param;
-import org.edu.timelycourse.mc.biz.model.ContractModel;
+import org.edu.timelycourse.mc.beans.model.ContractModel;
 import org.springframework.stereotype.Component;
 
 /**

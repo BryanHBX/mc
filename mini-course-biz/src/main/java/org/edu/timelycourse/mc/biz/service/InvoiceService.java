@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.biz.service;
 
-import org.edu.timelycourse.mc.biz.model.InvoiceModel;
+import org.edu.timelycourse.mc.beans.model.InvoiceModel;
 import org.edu.timelycourse.mc.biz.repository.ContractRepository;
 import org.edu.timelycourse.mc.biz.repository.InvoiceRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;

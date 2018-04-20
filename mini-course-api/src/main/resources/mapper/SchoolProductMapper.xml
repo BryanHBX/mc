@@ -4,7 +4,7 @@
     
 	<cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
 	
-    <resultMap type="org.edu.timelycourse.mc.biz.model.SchoolProductModel" id="result_product">
+    <resultMap type="org.edu.timelycourse.mc.beans.model.SchoolProductModel" id="result_product">
         <id property="id" column="id"/>  
         <result property="productName" column="p_name"/>
         <result property="productType" column="p_type"/>
@@ -15,7 +15,7 @@
         <result property="lastUpdateTime" column="p_lastUpdateTime"/>
 
         <collection property="children" column="id" javaType="java.util.ArrayList"
-                    ofType="org.edu.timelycourse.mc.biz.model.SchoolProductModel"
+                    ofType="org.edu.timelycourse.mc.beans.model.SchoolProductModel"
                     select="getChildren"
         />
     </resultMap>

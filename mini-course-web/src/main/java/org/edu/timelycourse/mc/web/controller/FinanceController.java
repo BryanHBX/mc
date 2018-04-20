@@ -1,7 +1,7 @@
 package org.edu.timelycourse.mc.web.controller;
 
-import org.edu.timelycourse.mc.biz.dto.ContractDTO;
-import org.edu.timelycourse.mc.biz.model.ContractModel;
+import org.edu.timelycourse.mc.beans.dto.ContractDTO;
+import org.edu.timelycourse.mc.beans.model.ContractModel;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
