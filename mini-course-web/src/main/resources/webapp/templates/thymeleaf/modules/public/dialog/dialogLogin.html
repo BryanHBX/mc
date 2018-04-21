@@ -8,7 +8,8 @@
             generic_ajax_op("auth", "POST", $("#formLogin").serializeJSON(), null, (
                 function(result) {
 				    alertMsg.correct("登录成功");
-                    localStorage.setItem("token", result.token);
+                    localStorage.setItem("token", result.data.token);
+                    $.pdialog.closeCurrent();
                     navTab.reload(null, {});
                 }
             ));

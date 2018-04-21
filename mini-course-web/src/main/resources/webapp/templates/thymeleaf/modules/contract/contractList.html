@@ -92,7 +92,7 @@
                 <tr th:each="item: ${pagingBean.items}">
                     <td align="center" th:text="${item.enrollType ne null ? item.enrollType.name : '--'}"></td>
                     <td align="center" th:text="${item.contractDate ne null ? #dates.format(item.contractDate, 'yyyy-MM-dd') : '--'}"></td>
-                    <td align="center">
+                    <td align="left">
                         <a target="dialog" mask="true" width="890" height="590"
                            style="float: none; text-decoration: underline; color: #1465ff"
                            th:href="'contract/' + ${item.id}"

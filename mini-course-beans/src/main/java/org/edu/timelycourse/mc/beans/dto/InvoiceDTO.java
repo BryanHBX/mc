@@ -46,6 +46,11 @@ public class InvoiceDTO extends BaseDTO
      */
     private ContractDTO contract;
 
+    /**
+     * 归属者
+     */
+    private NamedOptionProperty owner;
+
     public static PagingBean<InvoiceDTO> from (PagingBean<ContractInvoiceModel> pagingBean)
     {
         PagingBean<InvoiceDTO> result = new PagingBean<>();

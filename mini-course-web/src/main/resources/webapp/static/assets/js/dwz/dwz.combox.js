@@ -89,7 +89,7 @@
 
 				allSelectBox.push(box.attr("id"));
 				$(op.selector, box).click(function(){
-					if (! box.hasClass('disabled')) {
+					if (! box.hasClass('disabled') && ! box.find("select").hasClass("disabled")) {
 						var options = $("#op_"+box.attr("id"));
 						if (options.is(":hidden")) {
 							if(options.height() > 300) {

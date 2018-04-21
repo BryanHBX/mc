@@ -11,9 +11,9 @@
 </style>
 
 <div xmlns:th="http://www.thymeleaf.org" class="pageContent">
-    <form method="post" action="" class="pageForm required-validate" id="contractForm" novalidate="novalidate">
+    <form method="post" action="" class="pageForm required-validate" id="contractFormDialog" novalidate="novalidate">
         <div class="pageFormContent" id="contractDialogFormContent" layouth="56" style="overflow: auto;">
-            <div th:if="${op eq 'addInvoice'}">
+            <div>
                 <fieldset>
                     <legend>合同信息</legend>
                     <dl>
@@ -48,7 +48,8 @@
                     <dl>
                         <dt>报名类型：</dt>
                         <dd>
-                            <select class="combox" name="enrollType" style="width: 160px"
+                            <select name="enrollType" style="width: 160px"
+                                    th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
                                     th:value="${entity ne null ? entity.enrollType : ''}"
                                     th:readonly="${entity ne null and op ne 'edit'}">
                                 <option value="1">新报</option>
@@ -67,9 +68,10 @@
                     <dl>
                         <dt>学生年段：</dt>
                         <dd>
-                            <select id="stu_levelId" class="combox" name="levelId" style="width: 160px"
+                            <select id="stu_levelId" name="levelId" style="width: 160px"
                                     ref="stu_subLevelId" refUrl="system/config/{value}" callIfEmpty="false"
                                     data="data" group="children" optName="configDescription" optVal="id"
+                                    th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
                                     th:if="${not #lists.isEmpty(level.children)}"
                                     th:with="options=${level.children}"
                                     th:value="${entity ne null ? entity.levelId : ''}">
@@ -81,17 +83,23 @@
                     <dl>
                         <dt>细分年段：</dt>
                         <dd>
-                            <select id="stu_subLevelId" class="combox" name="subLevelId" style="width: 160px" th:value="${entity ne null ? entity.subLevelId : ''}">
+                            <select id="stu_subLevelId" name="subLevelId" style="width: 160px"
+                                    th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
+                                    th:value="${entity ne null ? entity.subLevelId : ''}">
                                 <option value="">请选择</option>
+                                <option th:if="${entity.subLevelId ne null}"
+                                        th:value="${entity.subLevelId}"
+                                        th:text="${entity ne null and entity.subLevel ne null ? entity.subLevel.configDescription : ''}"></option>
                             </select>
                         </dd>
                     </dl>
                     <dl>
                         <dt>课程名称：</dt>
                         <dd>
-                            <select id="stu_courseId"  class="combox" name="courseId" style="width: 160px"
+                            <select id="stu_courseId" name="courseId" style="width: 160px"
                                     ref="stu_subCourseId" refUrl="product/{value}" callIfEmpty="false"
                                     data="data" group="children" optName="productName" optVal="id"
+                                    th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
                                     th:value="${entity ne null ? entity.courseId : ''}">
                                 <option value="">请选择</option>
                                 <option th:each="option:${products}" th:value="${option.id}" th:text="${option.productName}">课程名称</option>
@@ -101,9 +109,13 @@
                     <dl>
                         <dt>课程子类：</dt>
                         <dd>
-                            <select class="combox" name="subCourseId" style="width: 160px" id="stu_subCourseId"
+                            <select name="subCourseId" style="width: 160px" id="stu_subCourseId"
+                                    th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
                                     th:value="${entity ne null ? entity.subCourseId : ''}">
                                 <option value="">请选择</option>
+                                <option th:if="${entity.subCourseId ne null}"
+                                        th:value="${entity.subCourseId}"
+                                        th:text="${entity ne null and entity.subCourse ne null ? entity.subCourse.productName : ''}"></option>
                             </select>
                         </dd>
                     </dl>
@@ -162,8 +174,9 @@
                     <dl>
                         <dt>联系人关系：</dt>
                         <dd>
-                            <select id="stu_contactRelationType" clean="true" class="combox" style="width: 160px" name="student[contactRelationType]"
-                                    th:value="${entity ne null and entity.student ne null ? entity.student.contactRelationType : ''}" >
+                            <select id="stu_contactRelationType" clean="true" style="width: 160px" name="student[contactRelationType]"
+                                    th:value="${entity ne null and entity.student ne null ? entity.student.contactRelationType : ''}"
+                                    th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}">
                                 <option value="1">父亲</option>
                                 <option value="2">母亲</option>
                                 <option value="3">爷爷</option>
@@ -210,7 +223,7 @@
                                 <tr>
                                     <th type="text" width="" name="invoices[][invoiceNo]" fieldClass="required">收据编号</th>
                                     <th type="text" width="" name="invoices[][price]" defaultVal="0.00" size="12" fieldClass="number required">支付金额</th>
-                                    <th type="enum" width="120" name="invoices[][type]" enum="现金:1,转账:2,微信:3,支付宝:4,其他:5">支付方式</th>
+                                    <th type="enum" width="120" name="invoices[][payType][id]" enum="现金:1,转账:2,微信:3,支付宝:4,其他:5">支付方式</th>
                                     <th type="del" width="60" align="center">操作</th>
                                 </tr>
                             </thead>
@@ -219,7 +232,7 @@
                                     <td><input type="text" name="invoices[][invoiceNo]" value="" size="12" class="required" maxlength="10"></td>
                                     <td><input type="text" name="invoices[][price]" value="0.00" size="12" class="required number textInput"></td>
                                     <td>
-                                        <select class="combox" style="width: 120px" name="invoices[][type]">
+                                        <select class="combox" style="width: 120px" name="invoices[][payType][id]">
                                             <option value="1">现金</option>
                                             <option value="2">转账</option>
                                             <option value="3">微信</option>
@@ -235,34 +248,74 @@
                 </fieldset>
             </div>
 
+            <div th:if="${entity ne null and op ne 'addInvoice'}">
+                <fieldset>
+                    <legend>收据信息</legend>
+                    <div style="overflow: auto;">
+                        <table class="list nowrap" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>收据编号</th>
+                                    <th>支付金额</th>
+                                    <th>支付方式</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="invoice: ${entity.invoices}">
+                                    <td align="center" th:text="${invoice.invoiceNo}"></td>
+                                    <td align="center" th:text="${invoice.price}"></td>
+                                    <td align="center" th:text="${invoice.typeName}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+
             <div class="divider"></div>
-            <div>
+            <div th:if="${op eq 'addInvoice'}">
                 <label style="width: 80px; padding: 0; text-align: right;">开票归属：</label>
-                <input type="text" name="contractDate" class="textInput required" />
+                <input id="sd_id" name="ownerId" type="hidden" class="textInput" />
+                <input id="sd_userName" name="ownerName" type="text" class="textInput"
+                       postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sd"/>
             </div>
         </div>
         <div class="formBar">
             <ul>
-                <li><div class="buttonActive"><div class="buttonContent"><button type="button" id="btnSaveContract">保存</button></div></div></li>
+                <li th:if="${entity ne null and (op eq 'addInvoice' or op eq 'edit')}"><div class="buttonActive"><div class="buttonContent"><button type="button" id="btnSaveContract">保存</button></div></div></li>
                 <li><div class="button"><div class="buttonContent"><button class="close" type="button">取消</button></div></div></li>
             </ul>
         </div>
+        <input type="hidden" name="id" th:value="${entity ne null ? entity.id : ''}" />
     </form>
 </div>
 
-<script>
+<script xmlns:th="http://www.thymeleaf.org" type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    var operation = [[${op}]];
     $(function(){
         $("#btnSaveContract").unbind("click").bind("click", function(){
-            if (!$("#contractForm").valid()) {
+            if (!$("#contractFormDialog").valid()) {
                 return false;
             }
 
-            generic_ajax_op("contract", "POST", $("#contractForm").serializeJSON(), null, (
-                function(result) {
-                    alertMsg.correct("合同添加成功");
-                    navTab.reload(null, {});
+            if (operation == "addInvoice") {
+                var formData = $("#contractFormDialog").serializeJSON();
+                var invoiceData = formData["invoices"];
+                for (var index in invoiceData) {
+                    invoiceData[index]["contract"] = {"id" : formData["id"]};
+                    invoiceData[index]["owner"] = {"id": formData["ownerId"]};
                 }
-            ));
+                console.log(invoiceData);
+                generic_ajax_op("invoice", "POST", invoiceData, null, (
+                    function (result) {
+                        alertMsg.correct("学费补缴成功");
+                        $.pdialog.closeCurrent();
+                        navTab.reload(null, {});
+                    }
+                ));
+            }
         });
     });
+    /*]]>*/
 </script>

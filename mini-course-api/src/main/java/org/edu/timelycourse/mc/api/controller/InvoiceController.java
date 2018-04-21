@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Created by x36zhao on 2018/4/3.
  */
@@ -66,14 +68,15 @@ public class InvoiceController extends BaseController
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add invoice by given entity")
     @PreAuthorize("hasAnyRole('ROLE_TREASURER','ROLE_ADMINISTRATOR', 'ROLE_CONSULTANT')")
-    public ResponseData addInvoice (@RequestBody ContractInvoiceModel model,
+    public ResponseData addInvoice (@RequestBody List<InvoiceDTO> models,
+                                    //@RequestBody ContractInvoiceModel model,
                                     @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
         {
-            LOGGER.debug(String.format("Enter addInvoice - [model: %s]", model));
+            LOGGER.debug(String.format("Enter addInvoice - [models: %s]", models));
         }
-        return ResponseData.success(invoiceService.add(model));
+        return ResponseData.success(invoiceService.add(ContractInvoiceModel.from(models)));
     }
 
     @RequestMapping(path="/{invoiceId}", method= RequestMethod.DELETE)

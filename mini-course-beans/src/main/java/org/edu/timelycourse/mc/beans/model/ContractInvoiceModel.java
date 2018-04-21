@@ -7,8 +7,11 @@ import org.edu.timelycourse.mc.beans.enums.EPaymentType;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
 import org.springframework.beans.BeanUtils;
+import sun.plugin.liveconnect.SecurityContextHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class ContractInvoiceModel extends BaseModel
@@ -40,6 +43,14 @@ public class ContractInvoiceModel extends BaseModel
     private Integer type;
 
     /**
+     * 支付方式名称
+     */
+    public String getTypeName()
+    {
+        return type != null ? EPaymentType.getLabel(type) : null;
+    }
+
+    /**
      * 收据添加时间
      */
     private Date creationTime;
@@ -67,6 +78,22 @@ public class ContractInvoiceModel extends BaseModel
     {
         ContractInvoiceModel model = new ContractInvoiceModel();
         BeanUtils.copyProperties(dto, model);
+        model.setType(dto.getPayType() != null ? dto.getPayType().getId() : null);
+        model.setContractId(dto.getContract() != null ? dto.getContract().getId() : null);
+        model.setOwnerId(dto.getOwner() != null ? dto.getOwner().getId() : null);
         return model;
+    }
+
+    public static List<ContractInvoiceModel> from (final List<InvoiceDTO> dtos)
+    {
+        List<ContractInvoiceModel> models = new ArrayList<>();
+        if (dtos != null)
+        {
+            for (InvoiceDTO dto : dtos)
+            {
+                models.add(from(dto));
+            }
+        }
+        return models;
     }
 }

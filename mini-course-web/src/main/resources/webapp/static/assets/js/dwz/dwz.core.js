@@ -205,9 +205,12 @@ var DWZ = {
 
 			$this.trigger(DWZ.eventType.pageClear);
 
-            var _header = {"ajax": true};
-            if (!op.url.endsWith("/auth") && localStorage.getItem("token") != undefined) {
-                _header["Authorization"] = "Bearer " + localStorage.getItem("token");
+            var _header = {};
+			if (op.url != DWZ._set.loginUrl) {
+                _header = {"ajax": true};
+                if (!op.url.endsWith("/auth") && localStorage.getItem("token") != undefined) {
+                    _header["Authorization"] = "Bearer " + localStorage.getItem("token");
+                }
             }
 
 			$.ajax({
