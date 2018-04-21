@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 
         http
             .authorizeRequests()
-            .antMatchers("/assets/**", "/plugins/**").permitAll()
+            .antMatchers("/assets/**", "/plugins/**", "/loginDialog").permitAll()
             .anyRequest().authenticated().and()
             .formLogin()//.successHandler(new RefererRedirectionAuthenticationSuccessHandler())
             .loginPage("/login").permitAll();

@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.beans.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.edu.timelycourse.mc.beans.enums.EEnrollmentType;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
@@ -19,17 +20,13 @@ public class ContractDTO extends BaseDTO
     /**
      * 学校ID
      */
-    //private Integer schoolId;
+    @JsonIgnore
+    private Integer schoolId;
 
     /**
      * 报名类型
      */
     private NamedOptionProperty enrollType;
-
-    /**
-     * 学校ID
-     */
-    private Integer schoolId;
 
     /**
      * 签约日期

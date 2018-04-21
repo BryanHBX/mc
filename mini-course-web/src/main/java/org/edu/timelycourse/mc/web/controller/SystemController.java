@@ -1,7 +1,5 @@
 package org.edu.timelycourse.mc.web.controller;
 
-import com.google.common.reflect.TypeToken;
-import org.edu.timelycourse.mc.beans.model.SystemConfigModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -37,11 +34,11 @@ public class SystemController extends AbstractController
     {
         if (configId != null && configId > 0)
         {
-            model.addAttribute("config", fetchConfigById(request, configId));
+            model.addAttribute("config", findConfigById(request, configId));
             return getModulePage("system/pages/configListPage");
         }
 
-        model.addAttribute("configs", fetchConfigs(request));
+        model.addAttribute("configs", getAllSystemConfigs(request));
 
         return getModulePage("system/config");
     }
@@ -54,13 +51,13 @@ public class SystemController extends AbstractController
     {
         if (configId != null && configId > 0)
         {
-            model.addAttribute("config", fetchConfigById(request, configId));
+            model.addAttribute("config", findConfigById(request, configId));
         }
 
         if (parentId != null && parentId > 0)
         {
             model.addAttribute("parentId", parentId);
-            model.addAttribute("parent", fetchConfigById(request, parentId));
+            model.addAttribute("parent", findConfigById(request, parentId));
         }
 
         return getModulePage("system/dialog/dialogConfigField");

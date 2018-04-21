@@ -26,6 +26,7 @@
         <result property="lastUpdateTime"   column="updateTime" />
         <result property="contractStatus"   column="c_status" />
         <result property="payStatus"        column="c_paystatus" />
+        <result property="transferPeriod"   column="period_transfer" />
 
         <association property="consultant" column="consult_id"
                      select="org.edu.timelycourse.mc.biz.repository.UserRepository.get" />
@@ -52,11 +53,11 @@
     <insert id="insert" parameterType="ContractModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `t_school_contract`
         (
-            contract_no, student_id, school_id, consult_id, contract_type, period_enroll, period_free, contract_price, discount_price, total_price, supervisor_id,
+            contract_no, student_id, school_id, consult_id, contract_type, period_enroll, period_free, contract_price, discount_price, total_price, supervisor_id, period_transfer,
             cfg_level, cfg_subLevel, cfg_course, cfg_subCourse, contract_date, creationTime, updateTime, c_status, c_paystatus
         ) VALUES
         (
-            #{contractNo}, #{studentId}, #{schoolId}, #{consultantId}, #{enrollType}, #{enrollPeriod}, #{freePeriod}, #{contractPrice}, #{discountPrice}, #{totalPrice}, #{supervisorId},
+            #{contractNo}, #{studentId}, #{schoolId}, #{consultantId}, #{enrollType}, #{enrollPeriod}, #{freePeriod}, #{contractPrice}, #{discountPrice}, #{totalPrice}, #{supervisorId}, #{transferPeriod},
             #{levelId}, #{subLevelId}, #{courseId}, #{subCourseId}, #{contractDate}, #{creationTime}, #{lastUpdateTime}, #{contractStatus}, #{payStatus}
         )
     </insert>
@@ -83,6 +84,7 @@
             <if test="lastUpdateTime != null">`updateTime` = #{lastUpdateTime},</if>
             <if test="contractStatus != null and contractStatus > -1">`c_status` = #{contractStatus},</if>
             <if test="payStatus != null and payStatus > -1">`c_paystatus` = #{payStatus},</if>
+            <if test="transferPeriod != null and transferPeriod > 0">`period_transfer` = #{transferPeriod},</if>
             `id` = `id`
         </set>
         WHERE id = #{id}
@@ -106,6 +108,7 @@
             <if test="supervisorId != null and supervisorId > 0"> AND `supervisor_id` = #{supervisorId}</if>
             <if test="contractStatus != null and contractStatus > -1"> AND `c_status` = #{contractStatus}</if>
             <if test="payStatus != null and payStatus > -1"> AND `c_paystatus` = #{payStatus}</if>
+            <if test="transferPeriod != null and transferPeriod > 0"> AND `period_transfer` = #{transferPeriod}</if>
         </where>
          ORDER BY `contract_date` DESC
     </select>

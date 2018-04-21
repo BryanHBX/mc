@@ -162,8 +162,8 @@
                     postData[$input.attr("postField")||"inputValue"] = $input.val();
 
                     var _header = {"ajax": true};
-                    if (sessionStorage.getItem("token") != undefined) {
-                        _header["Authorization"] = "Bearer " + sessionStorage.getItem("token");
+                    if (localStorage.getItem("token") != undefined) {
+                        _header["Authorization"] = "Bearer " + localStorage.getItem("token");
                     }
 
                     $.ajax({

@@ -25,7 +25,7 @@ public class FinanceController extends AbstractController
                                     HttpServletRequest request)
     {
         criteria.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
-        model.addAttribute("pagingBean", fetchContracts(request, pageNum, numPerPage));
+        model.addAttribute("pagingBean", findContractsByPage(request, pageNum, numPerPage));
         model.addAttribute("criteria", criteria);
 
         return getModulePage("contractList");

@@ -9,7 +9,7 @@ import org.edu.timelycourse.mc.beans.paging.PagingBean;
 import org.edu.timelycourse.mc.common.constants.Constants;
 import org.edu.timelycourse.mc.common.controller.BaseController;
 import org.edu.timelycourse.mc.beans.entity.ResponseData;
-import org.edu.timelycourse.mc.common.reflect.ParameterizedTypeReferenceBuilder;
+import org.edu.timelycourse.mc.common.utils.ParameterizedTypeReferenceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -63,24 +63,24 @@ public abstract class AbstractController extends BaseController implements Error
 
     }
 
-    protected UserModel fetchMemberById (HttpServletRequest request, Integer memberId)
+    protected UserModel findMemberById (HttpServletRequest request, Integer memberId)
     {
         return remoteCall(request,"member/" + memberId, new TypeToken<UserModel>() {}).getData();
     }
 
-    protected SchoolModel fetchSchool (HttpServletRequest request)
+    protected SchoolModel findSchool(HttpServletRequest request)
     {
         // TODO: Debug usage only
         Integer schoolId = 1;
         return remoteCall(request,"school/" + schoolId, new TypeToken<SchoolModel>() {}).getData();
     }
 
-    protected SchoolProductModel fetchProduct (HttpServletRequest request, Integer productId)
+    protected SchoolProductModel findProductById (HttpServletRequest request, Integer productId)
     {
         return remoteCall(request,"product/" + productId, new TypeToken<SchoolProductModel>() {}).getData();
     }
 
-    protected PagingBean<UserModel> fetchMembers (HttpServletRequest request,
+    protected PagingBean<UserModel> getAllMembers (HttpServletRequest request,
                                                   Integer pageNum,
                                                   Integer pageSize)
     {
@@ -89,58 +89,62 @@ public abstract class AbstractController extends BaseController implements Error
                 request.getQueryString()), new TypeToken<PagingBean<UserModel>>() {}).getData();
     }
 
-    protected PagingBean<StudentDTO> fetchStudents (HttpServletRequest request,
-                                                    Integer pageNum,
-                                                    Integer pageSize)
+    protected PagingBean<StudentDTO> findStudentsByPage (HttpServletRequest request,
+                                                        Integer pageNum,
+                                                        Integer pageSize)
     {
         return remoteCall(request, String.format("student?pageNum=%d&pageSize=%d&%s",
                 pageNum != null ? pageNum : 1, pageSize != null ? pageSize : Constants.DEFAULT_PAGE_SIZE,
                 request.getQueryString()), new TypeToken<PagingBean<StudentDTO>>() {}).getData();
     }
 
-    protected PagingBean<ContractDTO> fetchContracts (HttpServletRequest request,
-                                                      Integer pageNum,
-                                                      Integer pageSize)
+    protected ContractModel fetchContract (HttpServletRequest request, Integer contractId)
+    {
+        return remoteCall(request,"contract/" + contractId, new TypeToken<ContractModel>() {}).getData();
+    }
+
+    protected PagingBean<ContractDTO> findContractsByPage (HttpServletRequest request,
+                                                          Integer pageNum,
+                                                          Integer pageSize)
     {
         return remoteCall(request, String.format("contract?pageNum=%d&pageSize=%d&%s",
                 pageNum != null ? pageNum : 1, pageSize != null ? pageSize : Constants.DEFAULT_PAGE_SIZE,
                 request.getQueryString()), new TypeToken<PagingBean<ContractDTO>>() {}).getData();
     }
 
-    protected List<SchoolProductModel> fetchProducts (HttpServletRequest request)
+    protected ContractModel findContractById (HttpServletRequest request, Integer contractId)
     {
-        return remoteCall(request,"product",
-                new TypeToken<List<SchoolProductModel>>() {}).getData();
+        return remoteCall(request,"contract/" + contractId, new TypeToken<ContractModel>() {}).getData();
     }
 
-    protected List<SchoolProductModel> fetchProductByType (HttpServletRequest request, Integer productType)
+    protected List<SchoolProductModel> getAllProducts (HttpServletRequest request)
     {
-        return remoteCall(request,"product?productType=" + productType,
-                new TypeToken<List<SchoolProductModel>>() {}).getData();
+        return remoteCall(request,"product", new TypeToken<List<SchoolProductModel>>() {}).getData();
     }
 
-    protected SystemConfigModel fetchConfigByName (HttpServletRequest request, String configName)
+    protected List<SchoolProductModel> findProductByType (HttpServletRequest request, Integer productType)
     {
-        return remoteCall(request,"system/config?configName=" + configName,
-                new TypeToken<SystemConfigModel>() {}).getData();
+        return remoteCall(request,"product?productType=" + productType, new TypeToken<List<SchoolProductModel>>() {}).getData();
     }
 
-    protected List<SystemRoleModel> fetchSystemRoles (HttpServletRequest request)
+    protected SystemConfigModel findConfigByName(HttpServletRequest request, String configName)
     {
-        return remoteCall(request,"system/role",
-                new TypeToken<List<SystemRoleModel>>() {}).getData();
+        return remoteCall(request,"system/config?configName=" + configName, new TypeToken<SystemConfigModel>() {}).getData();
     }
 
-    protected SystemConfigModel fetchConfigById (HttpServletRequest request, Integer configId)
+    protected List<SystemRoleModel> getAllSystemRoles(HttpServletRequest request)
     {
-        return remoteCall(request,"system/config/" + configId,
-                new TypeToken<SystemConfigModel>() {}).getData();
+        return remoteCall(request,"system/role", new TypeToken<List<SystemRoleModel>>() {}).getData();
     }
 
-    protected List<SystemConfigModel> fetchConfigs (HttpServletRequest request)
+    protected SystemConfigModel findConfigById (HttpServletRequest request, Integer configId)
     {
-        return remoteCall(request,"system/config",
-                new TypeToken<List<SystemConfigModel>>() {}).getData();
+        return remoteCall(request,"system/config/" + configId, new TypeToken<SystemConfigModel>() {}).getData();
+    }
+
+    protected List<SystemConfigModel> getAllSystemConfigs(HttpServletRequest request)
+    {
+        return remoteCall(request,"system/config", new TypeToken<List<SystemConfigModel>>() {}).getData();
     }
 
     @Override
