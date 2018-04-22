@@ -135,6 +135,12 @@ public class SchoolController extends AbstractController
         return getModulePage("schoolConsult");
     }
 
+    @Override
+    protected String getModuleName()
+    {
+        return "school";
+    }
+
     protected String getMyModulePath()
     {
         return "school";

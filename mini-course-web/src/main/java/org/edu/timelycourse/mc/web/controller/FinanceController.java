@@ -1,5 +1,7 @@
 package org.edu.timelycourse.mc.web.controller;
 
+import org.edu.timelycourse.mc.beans.criteria.ContractCriteria;
+import org.edu.timelycourse.mc.beans.criteria.InvoiceCriteria;
 import org.edu.timelycourse.mc.beans.dto.ContractDTO;
 import org.edu.timelycourse.mc.beans.entity.ResponseData;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
@@ -21,14 +23,13 @@ public class FinanceController extends AbstractController
     public String showContractList (Model model,
                                     @RequestParam(required = false) Integer pageNum,
                                     @RequestParam(required = false) Integer numPerPage,
-                                    @ModelAttribute("contractDTO") ContractDTO criteria,
+                                    @ModelAttribute("contractCriteria") ContractCriteria criteria,
                                     HttpServletRequest request)
     {
-        criteria.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
         model.addAttribute("pagingBean", findContractsByPage(request, pageNum, numPerPage));
         model.addAttribute("criteria", criteria);
-
-        return getModulePage("contractList");
+        model.addAttribute("module", getModuleName());
+        return getModulePage("contract/contractList");
     }
 
     @RequestMapping(value = "/contract/transfer", method = RequestMethod.POST)
@@ -39,15 +40,21 @@ public class FinanceController extends AbstractController
     }
 
     @RequestMapping("/invoice")
-    public String showInvoiceList ()
+    public String showInvoiceList (Model model,
+                                   @RequestParam(required = false) Integer pageNum,
+                                   @RequestParam(required = false) Integer numPerPage,
+                                   @ModelAttribute("invoiceCriteria") InvoiceCriteria criteria,
+                                   HttpServletRequest request)
     {
-        return getModulePage("invoiceList");
+        model.addAttribute("pagingBean", findInvoicesByPage(request, pageNum, numPerPage));
+        model.addAttribute("module", getModuleName());
+        return getModulePage("invoice/invoiceList");
     }
 
     @RequestMapping("/attendance")
     public String showAttendanceList ()
     {
-        return getModulePage("attendanceList");
+        return getModulePage("attendance/attendanceList");
     }
 
     @RequestMapping("/consumption")
@@ -59,6 +66,18 @@ public class FinanceController extends AbstractController
     @Override
     protected String getMyModulePath()
     {
+        return null;
+    }
+
+    @Override
+    protected String getModuleName()
+    {
         return "finance";
     }
+
+    @ModelAttribute("contractCriteria")
+    private ContractCriteria getContractCriteria () { return new ContractCriteria(); }
+
+    @ModelAttribute("invoiceCriteria")
+    private InvoiceCriteria getInvoiceCriteria () { return new InvoiceCriteria(); }
 }

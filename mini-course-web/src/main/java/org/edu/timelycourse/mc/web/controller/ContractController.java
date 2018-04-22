@@ -31,7 +31,7 @@ public class ContractController extends AbstractController
         model.addAttribute("course",
                 findConfigByName(request, EBuiltInConfig.C_COURSE_TYPE.name()));
 
-        return getModulePage("contractForm");
+        return getModulePage("contract/form/formContract");
     }
 
     @RequestMapping("/list")
@@ -43,8 +43,8 @@ public class ContractController extends AbstractController
     {
         model.addAttribute("pagingBean", findContractsByPage(request, pageNum, numPerPage));
         model.addAttribute("criteria", criteria);
-
-        return getModulePage("contractList");
+        model.addAttribute("module", getModuleName());
+        return getModulePage("contract/contractList");
     }
 
     @RequestMapping("/{id}")
@@ -58,7 +58,8 @@ public class ContractController extends AbstractController
         model.addAttribute("course", findConfigByName(request, EBuiltInConfig.C_COURSE_TYPE.name()));
         model.addAttribute("entity", findContractById(request, contractId));
         model.addAttribute("op", operation);
-        return getModulePage("dialog/dialogContract");
+
+        return getModulePage("contract/dialog/dialogContract");
     }
 
     @RequestMapping("/students")
@@ -74,10 +75,16 @@ public class ContractController extends AbstractController
         model.addAttribute("level",
                 findConfigByName(request, EBuiltInConfig.C_STUDENT_LEVEL.name()));
 
-        return getModulePage("studentList");
+        return getModulePage("student/studentList");
     }
 
     protected String getMyModulePath()
+    {
+        return null;
+    }
+
+    @Override
+    protected String getModuleName()
     {
         return "contract";
     }

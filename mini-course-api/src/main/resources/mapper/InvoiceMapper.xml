@@ -54,7 +54,7 @@
         ORDER BY `creationTime` DESC
     </select>
 
-    <select id="getByCriteria" parameterType="org.edu.timelycourse.mc.beans.criteria.ContractInvoiceCriteria" resultMap="result_invoice">
+    <select id="getByCriteria" parameterType="org.edu.timelycourse.mc.beans.criteria.InvoiceCriteria" resultMap="result_invoice">
         SELECT * FROM `t_school_invoice`
         <where>
             1 = 1

@@ -48,4 +48,10 @@ public class PublicController extends AbstractController
     {
         return null;
     }
+
+    @Override
+    protected String getModuleName()
+    {
+        return "public";
+    }
 }

@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.beans.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
 import org.edu.timelycourse.mc.beans.dto.ContractDTO;
@@ -25,12 +26,16 @@ public class ContractModel extends BaseModel
      * 咨询师ID
      */
     private Integer consultantId;
+
+    @JsonIgnore
     private UserModel consultant;
 
     /**
      * 学管师
      */
     private Integer supervisorId;
+
+    @JsonIgnore
     private UserModel supervisor;
 
     /**
@@ -46,30 +51,39 @@ public class ContractModel extends BaseModel
     /**
      * 学生信息
      */
+    @JsonIgnore
     private StudentModel student;
 
     /**
      * 学生年段
      */
     private Integer levelId;
+
+    @JsonIgnore
     private SystemConfigModel level;
 
     /**
      * 细分年段
      */
     private Integer subLevelId;
+
+    @JsonIgnore
     private SystemConfigModel subLevel;
 
     /**
      * 课程名称
      */
     private Integer courseId;
+
+    @JsonIgnore
     private SchoolProductModel course;
 
     /**
      * 课程子类
      */
     private Integer subCourseId;
+
+    @JsonIgnore
     private SchoolProductModel subCourse;
 
     /**
@@ -121,6 +135,11 @@ public class ContractModel extends BaseModel
      * 收据列表
      */
     private List<ContractInvoiceModel> invoices;
+
+    /**
+     * 已支付金额
+     */
+    private double paid;
 
     /**
      * 合同状态

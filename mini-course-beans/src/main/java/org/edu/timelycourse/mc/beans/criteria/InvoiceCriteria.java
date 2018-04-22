@@ -6,7 +6,7 @@ import lombok.Data;
  * Created by x36zhao on 2018/4/20.
  */
 @Data
-public class ContractInvoiceCriteria extends BaseCriteria
+public class InvoiceCriteria extends BaseCriteria
 {
     private String startDate;
     private String endDate;

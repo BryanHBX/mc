@@ -67,4 +67,10 @@ public class SystemController extends AbstractController
     {
         return "admin";
     }
+
+    @Override
+    protected String getModuleName()
+    {
+        return "system";
+    }
 }
