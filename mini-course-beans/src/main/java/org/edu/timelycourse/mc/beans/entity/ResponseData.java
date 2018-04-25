@@ -47,6 +47,11 @@ public class ResponseData<T> implements Serializable
         return result;
     }
 
+    public static ResponseData failure (String message)
+    {
+        return failure(HttpStatus.OK.value(), message);
+    }
+
     public static ResponseData failure (int statusCode, String message)
     {
         ResponseData result = new ResponseData();

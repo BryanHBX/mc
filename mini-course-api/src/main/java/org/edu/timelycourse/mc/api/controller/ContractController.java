@@ -4,6 +4,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.edu.timelycourse.mc.beans.criteria.ContractCriteria;
 import org.edu.timelycourse.mc.beans.dto.ContractDTO;
+import org.edu.timelycourse.mc.beans.dto.ContractRefundDTO;
+import org.edu.timelycourse.mc.beans.dto.ContractTransformDTO;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
 import org.edu.timelycourse.mc.biz.service.ContractService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
@@ -76,6 +78,40 @@ public class ContractController extends BaseController
             LOGGER.debug("Enter addContract - [model: {}]", model);
         }
         return ResponseData.success(contractService.add(model));
+    }
+
+    @RequestMapping(path="/{contractId}/transmission", method= RequestMethod.POST)
+    @ApiOperation(value = "Transfer contract")
+    public ResponseData transferContract (@PathVariable(required = true) Integer contractId,
+                                          @RequestBody ContractTransformDTO dto,
+                                          @RequestHeader(name = "Authorization") String auth)
+    {
+        dto.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+        dto.setSourceContract(contractId);
+
+        if (LOGGER.isDebugEnabled())
+        {
+            LOGGER.debug("Enter transferContract - [contractId: {}, dto: {}]", contractId, dto);
+        }
+
+        return ResponseData.success(contractService.transform(dto));
+    }
+
+    @RequestMapping(path="/{contractId}/refund", method= RequestMethod.POST)
+    @ApiOperation(value = "Transfer contract")
+    public ResponseData refundContract (@PathVariable(required = true) Integer contractId,
+                                        @RequestBody ContractRefundDTO dto,
+                                        @RequestHeader(name = "Authorization") String auth)
+    {
+        dto.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+        dto.setContractId(contractId);
+
+        if (LOGGER.isDebugEnabled())
+        {
+            LOGGER.debug("Enter transferContract - [contractId: {}, dto: {}]", contractId, dto);
+        }
+
+        return ResponseData.success(contractService.refund(dto));
     }
 
     @RequestMapping(path="/{contractId}", method= RequestMethod.DELETE)

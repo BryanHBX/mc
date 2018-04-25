@@ -1,7 +1,10 @@
 package org.edu.timelycourse.mc.biz.service;
 
+import org.edu.timelycourse.mc.beans.dto.ContractRefundDTO;
+import org.edu.timelycourse.mc.beans.dto.ContractTransformDTO;
 import org.edu.timelycourse.mc.beans.enums.EContractDebtStatus;
 import org.edu.timelycourse.mc.beans.enums.EContractStatus;
+import org.edu.timelycourse.mc.beans.enums.EEnrollmentType;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
 import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
 import org.edu.timelycourse.mc.beans.model.StudentModel;
@@ -11,9 +14,11 @@ import org.edu.timelycourse.mc.biz.repository.*;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
+import org.edu.timelycourse.mc.common.utils.DateUtil;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -120,6 +125,7 @@ public class ContractService extends BaseService<ContractModel>
                         model.getContractNo(), model.getSchoolId()));
             }
 
+            model.setRemainedPeriod(model.getEnrollPeriod());
             model.setStudentId(studentEntity.getId());
             model.setCreationTime(new Date());
 
@@ -142,6 +148,67 @@ public class ContractService extends BaseService<ContractModel>
         }
 
         throw new ServiceException(String.format("Invalid model data to add, %s", model));
+    }
+
+    public Integer refund (ContractRefundDTO dto)
+    {
+        if (dto.isValid())
+        {
+            // check if contract exists
+            ContractModel contract = (ContractModel) Asserts.assertEntityNotNullById(repository, dto.getContractId());
+
+            // update contract
+            contract.setContractStatus(EContractStatus.FINISHED.code());
+            contract.setRemainedPeriod(0);
+            contract.setLastUpdateTime(new Date());
+            repository.update(contract);
+
+            // add invoice with refund status
+            ContractInvoiceModel refundInvoice = new ContractInvoiceModel();
+            refundInvoice.setContractId(contract.getId());
+            refundInvoice.setCreationTime(DateUtil.from(dto.getRefundDate()));
+
+        }
+
+        throw new ServiceException(String.format("Invalid DTO for contract refund: %s", dto));
+    }
+
+    @Transactional
+    public ContractModel transform (ContractTransformDTO dto)
+    {
+        if (dto.isValid())
+        {
+            // check if contract exists
+            ContractModel source = (ContractModel) Asserts.assertEntityNotNullById(repository, dto.getSourceContract());
+
+            // check any hacks
+            if (!source.getSchoolId().equals(dto.getSchoolId()))
+            {
+                throw new ServiceException("You don't have permission update the " +
+                        "contract data which is not owned by you");
+            }
+
+            // add new contract after transform
+            ContractModel target = new ContractModel();
+            BeanUtils.copyProperties(source, target, "id");
+            target.setCourseId(dto.getTargetCourse());
+            target.setSubCourseId(dto.getTargetSubCourse());
+            target.setEnrollPeriod(dto.getTransformPeriod());
+            target.setContractPrice(dto.getTransformPrice());
+            target.setTotalPrice(dto.getTransformPrice());
+            target.setEnrollType(EEnrollmentType.TRANSFER.code());
+            repository.insert(target);
+
+            // update the original contract
+            source.setTransferPeriod(dto.getTransformPrice() /
+                    (source.getTotalPrice() / source.getRemainedPeriod()));
+            source.setRemainedPeriod(source.getRemainedPeriod() - source.getTransferPeriod());
+            repository.update(source);
+
+            return target;
+        }
+
+        throw new ServiceException(String.format("Invalid DTO for contract transform: %s", dto));
     }
 
     @Override

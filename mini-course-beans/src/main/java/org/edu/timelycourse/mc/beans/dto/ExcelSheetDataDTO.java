@@ -47,6 +47,12 @@ public class ExcelSheetDataDTO extends BaseDTO
         return -1;
     }
 
+    @Override
+    public boolean isValid ()
+    {
+        return false;
+    }
+
     @Data
     @ToString
     public static class HeaderColumn

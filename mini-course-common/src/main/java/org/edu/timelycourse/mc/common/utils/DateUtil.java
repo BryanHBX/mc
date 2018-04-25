@@ -21,4 +21,9 @@ public class DateUtil
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
         return dateFormat.format(date);
     }
+
+    public static Date from (String date)
+    {
+        return null;
+    }
 }

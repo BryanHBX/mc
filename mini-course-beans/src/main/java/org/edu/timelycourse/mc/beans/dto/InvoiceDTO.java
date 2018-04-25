@@ -93,4 +93,10 @@ public class InvoiceDTO extends BaseDTO
             ), ex);
         }
     }
+
+    @Override
+    public boolean isValid ()
+    {
+        return false;
+    }
 }

@@ -7,6 +7,7 @@ import org.edu.timelycourse.mc.beans.enums.EStudentStatus;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
 import org.edu.timelycourse.mc.beans.model.StudentModel;
 import org.edu.timelycourse.mc.beans.paging.PagingBean;
+import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
@@ -19,11 +20,6 @@ import java.util.List;
 @Data
 public class StudentDTO extends BaseDTO
 {
-    /**
-     * 学校ID
-     */
-    private Integer schoolId;
-
     /**
      * 学生类型
      */
@@ -145,5 +141,11 @@ public class StudentDTO extends BaseDTO
                     "Failed to copy properties from student (%s) to DTO object", model
             ), ex);
         }
+    }
+
+    @Override
+    public boolean isValid ()
+    {
+        return EntityUtils.isValidEntityId(getSchoolId());
     }
 }

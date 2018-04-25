@@ -97,6 +97,11 @@ public class ContractModel extends BaseModel
     private double freePeriod;
 
     /**
+     * 剩余课时
+     */
+    private double remainedPeriod;
+
+    /**
      * 转退课时
      */
     private double transferPeriod;
@@ -110,6 +115,11 @@ public class ContractModel extends BaseModel
      * 优惠金额
      */
     private double discountPrice;
+
+    /**
+     * 其他费用
+     */
+    private double otherPrice;
 
     /**
      * 实收金额
@@ -178,6 +188,15 @@ public class ContractModel extends BaseModel
     {
         this.contractNo = contractNo;
         this.schoolId = schoolId;
+    }
+
+    /**
+     * 剩余金额
+     * @return
+     */
+    public double getRemainedPrice()
+    {
+        return ((totalPrice - otherPrice) / enrollPeriod) * remainedPeriod;
     }
 
     @Override

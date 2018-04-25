@@ -5,6 +5,7 @@ import lombok.Data;
 import org.edu.timelycourse.mc.beans.enums.EEnrollmentType;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
 import org.edu.timelycourse.mc.beans.paging.PagingBean;
+import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
@@ -17,12 +18,6 @@ import java.util.List;
 @Data
 public class ContractDTO extends BaseDTO
 {
-    /**
-     * 学校ID
-     */
-    @JsonIgnore
-    private Integer schoolId;
-
     /**
      * 报名类型
      */
@@ -180,5 +175,11 @@ public class ContractDTO extends BaseDTO
                     "Failed to copy properties from contract (%s) to VO object", model
             ), ex);
         }
+    }
+
+    @Override
+    public boolean isValid ()
+    {
+        return EntityUtils.isValidEntityId(getSchoolId());
     }
 }

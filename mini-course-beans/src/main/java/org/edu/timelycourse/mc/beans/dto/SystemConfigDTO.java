@@ -6,7 +6,7 @@ import org.edu.timelycourse.mc.beans.model.SystemConfigModel;
 import java.io.Serializable;
 
 @Data
-public class SystemConfigDTO implements Serializable
+public class SystemConfigDTO extends BaseDTO implements Serializable
 {
     private Integer id;
     private String configName;
@@ -15,5 +15,11 @@ public class SystemConfigDTO implements Serializable
     public static SystemConfigDTO from (final SystemConfigModel entity)
     {
         return null;
+    }
+
+    @Override
+    public boolean isValid ()
+    {
+        return false;
     }
 }

@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.beans.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
 import org.edu.timelycourse.mc.beans.dto.InvoiceDTO;
@@ -20,6 +21,8 @@ public class ContractInvoiceModel extends BaseModel
      * 合同ID
      */
     private Integer contractId;
+
+    @JsonIgnore
     private ContractModel contract;
 
     /**

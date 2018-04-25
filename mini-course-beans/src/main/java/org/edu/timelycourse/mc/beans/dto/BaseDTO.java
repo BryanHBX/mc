@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.beans.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,5 +11,16 @@ import java.io.Serializable;
 @Data
 public abstract class BaseDTO implements Serializable
 {
-    private Integer id;
+    /**
+     * 实体ID
+     */
+    protected Integer id;
+
+    /**
+     * 学校ID
+     */
+    @JsonIgnore
+    private Integer schoolId;
+
+    public abstract boolean isValid();
 }
