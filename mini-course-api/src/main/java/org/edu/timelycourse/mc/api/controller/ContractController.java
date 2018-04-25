@@ -108,7 +108,7 @@ public class ContractController extends BaseController
 
         if (LOGGER.isDebugEnabled())
         {
-            LOGGER.debug("Enter transferContract - [contractId: {}, dto: {}]", contractId, dto);
+            LOGGER.debug("Enter refundContract - [contractId: {}, dto: {}]", contractId, dto);
         }
 
         return ResponseData.success(contractService.refund(dto));

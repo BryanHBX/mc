@@ -150,7 +150,7 @@ public class ContractService extends BaseService<ContractModel>
         throw new ServiceException(String.format("Invalid model data to add, %s", model));
     }
 
-    public Integer refund (ContractRefundDTO dto)
+    public boolean refund (ContractRefundDTO dto)
     {
         if (dto.isValid())
         {
@@ -164,10 +164,14 @@ public class ContractService extends BaseService<ContractModel>
             repository.update(contract);
 
             // add invoice with refund status
-            ContractInvoiceModel refundInvoice = new ContractInvoiceModel();
-            refundInvoice.setContractId(contract.getId());
-            refundInvoice.setCreationTime(DateUtil.from(dto.getRefundDate()));
+            ContractInvoiceModel invoice = new ContractInvoiceModel();
+            invoice.setContractId(contract.getId());
+            invoice.setSchoolId(contract.getSchoolId());
+            invoice.setPrice(-dto.getRefundPrice());
+            invoice.setCreationTime(DateUtil.from(dto.getRefundDate()));
+            invoiceRepository.insert(invoice);
 
+            return true;
         }
 
         throw new ServiceException(String.format("Invalid DTO for contract refund: %s", dto));

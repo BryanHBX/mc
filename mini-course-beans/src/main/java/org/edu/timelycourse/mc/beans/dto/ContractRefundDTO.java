@@ -12,13 +12,19 @@ public class ContractRefundDTO extends BaseDTO
 {
     private Integer contractId;
     private double refundPeriod;
-    private double refundPrice;
+    private double refundPeriodPrice;
+    private double refundOtherPrice;
     private String refundDate;
+
+    public double getRefundPrice()
+    {
+        return refundPeriodPrice + refundOtherPrice;
+    }
 
     @Override
     public boolean isValid ()
     {
         return EntityUtils.isValidEntityId(getSchoolId()) &&
-                refundPeriod > 0 && refundPrice > 0 && StringUtil.isNotEmpty(refundDate);
+                refundPeriod > 0 && refundPeriodPrice > 0 && StringUtil.isNotEmpty(refundDate);
     }
 }
