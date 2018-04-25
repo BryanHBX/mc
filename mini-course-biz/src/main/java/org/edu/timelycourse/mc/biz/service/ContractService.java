@@ -75,7 +75,7 @@ public class ContractService extends BaseService<ContractModel>
     private void initContract (ContractModel model)
     {
         model.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
-        model.setPayStatus(model.getPayTotal() < model.getTotalPrice() ?
+        model.setPayStatus(model.getPaid() < model.getTotalPrice() ?
                 EContractDebtStatus.ARREARAGE.code() : EContractDebtStatus.DONE.code());
 
         initStudentModelBeforeAdd(model);

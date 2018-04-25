@@ -122,9 +122,9 @@ public abstract class AbstractController extends BaseController implements Error
                 request.getQueryString()), new TypeToken<PagingBean<InvoiceDTO>>() {}).getData();
     }
 
-    protected ContractModel findContractById (HttpServletRequest request, Integer contractId)
+    protected ContractDTO findContractById (HttpServletRequest request, Integer contractId)
     {
-        return remoteCall(request,"contract/" + contractId, new TypeToken<ContractModel>() {}).getData();
+        return remoteCall(request,"contract/" + contractId, new TypeToken<ContractDTO>() {}).getData();
     }
 
     protected List<SchoolProductModel> getAllProducts (HttpServletRequest request)

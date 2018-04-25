@@ -144,6 +144,7 @@ public class ContractModel extends BaseModel
     /**
      * 收据列表
      */
+    @JsonIgnore
     private List<ContractInvoiceModel> invoices;
 
     /**
@@ -160,22 +161,6 @@ public class ContractModel extends BaseModel
      * 缴费状态
      */
     private Integer payStatus;
-
-    /**
-     * 获取已缴费金额
-     */
-    public double getPayTotal ()
-    {
-        double total = 0;
-        if (invoices != null)
-        {
-            for (ContractInvoiceModel invoice : invoices)
-            {
-                total += invoice.getPrice();
-            }
-        }
-        return total;
-    }
 
     /**
      * 学校ID
@@ -229,9 +214,20 @@ public class ContractModel extends BaseModel
     {
         ContractModel model = new ContractModel();
         BeanUtils.copyProperties(dto, model, "course", "student", "enrollType", "consultant", "supervisor");
-        model.setStudentId(dto.getStudent() != null ? dto.getStudent().getId() : null);
+        if (dto.getStudent() != null)
+        {
+            model.setStudentId(dto.getStudent().getId());
+            model.setStudent(StudentModel.from(dto.getStudent()));
+        }
+
         model.setConsultantId(dto.getConsultant() != null ? dto.getConsultant().getId() : null);
         model.setSupervisorId(dto.getSupervisor() != null ? dto.getSupervisor().getId() : null);
+        model.setEnrollType(dto.getEnrollType() != null ? dto.getEnrollType().getId() : null);
+        model.setLevelId(dto.getGrade() != null ? dto.getGrade().getId() : null);
+        model.setSubLevelId(dto.getGradeSub() != null ? dto.getGradeSub().getId() : null);
+        model.setCourseId(dto.getCourse() != null ? dto.getCourse().getId() : null);
+        model.setSubCourseId(dto.getCourseSub() != null ? dto.getCourseSub().getId() : null);
+
         return model;
     }
 }

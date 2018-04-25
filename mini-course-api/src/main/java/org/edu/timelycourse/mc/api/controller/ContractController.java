@@ -65,22 +65,27 @@ public class ContractController extends BaseController
         {
             LOGGER.debug("Enter getContractById - [contractId: {}]", contractId);
         }
-        return ResponseData.success(Asserts.assertEntityNotNullById(contractService, contractId));
+
+        return ResponseData.success(ContractDTO.from(
+                (ContractModel) Asserts.assertEntityNotNullById(contractService, contractId)));
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add contract by given entity")
-    public ResponseData addContract (@RequestBody ContractModel model,
+    public ResponseData addContract (@RequestBody ContractDTO model,
                                      @RequestHeader(name = "Authorization") String auth)
     {
+        model.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+
         if (LOGGER.isDebugEnabled())
         {
             LOGGER.debug("Enter addContract - [model: {}]", model);
         }
-        return ResponseData.success(contractService.add(model));
+
+        return ResponseData.success(contractService.add(ContractModel.from(model)));
     }
 
-    @RequestMapping(path="/{contractId}/transmission", method= RequestMethod.POST)
+    @RequestMapping(path="/{contractId}/transform", method= RequestMethod.POST)
     @ApiOperation(value = "Transfer contract")
     public ResponseData transferContract (@PathVariable(required = true) Integer contractId,
                                           @RequestBody ContractTransformDTO dto,

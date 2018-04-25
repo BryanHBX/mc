@@ -31,15 +31,15 @@
                     <dl>
                         <dt>咨询师：</dt>
                         <dd>
-                            <input id="cg_id" name="consultantId" type="hidden" clean="true" />
-                            <input id="cg_userName" name="userName" type="text" class="required textInput"
+                            <input id="cg_id" name="consultant[id]" type="hidden" clean="true" />
+                            <input id="cg_userName" name="consultant[name]" type="text" class="required textInput"
                                    postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="cg" clean="true"/>
                         </dd>
                     </dl>
                     <dl>
                         <dt>报名类型：</dt>
                         <dd>
-                            <select class="combox" name="enrollType" style="width: 160px">
+                            <select class="combox" name="enrollType[id]" style="width: 160px">
                                 <option value="1">新报</option>
                                 <option value="2">续保</option>
                             </select>
@@ -52,7 +52,7 @@
                     <dl>
                         <dt>学生年段：</dt>
                         <dd>
-                            <select id="stu_levelId" class="combox" name="levelId" style="width: 160px"
+                            <select id="stu_levelId" class="combox" name="grade[id]" style="width: 160px"
                                     ref="stu_subLevelId" refUrl="system/config/{value}" callIfEmpty="false"
                                     data="data" group="children" optName="configDescription" optVal="id"
                                     th:if="${not #lists.isEmpty(level.children)}"
@@ -65,7 +65,7 @@
                     <dl>
                         <dt>细分年段：</dt>
                         <dd>
-                            <select id="stu_subLevelId" class="combox" name="subLevelId" style="width: 160px">
+                            <select id="stu_subLevelId" class="combox" name="gradeSub[id]" style="width: 160px">
                                 <option value="">请选择</option>
                             </select>
                         </dd>
@@ -73,7 +73,7 @@
                     <dl>
                         <dt>课程名称：</dt>
                         <dd>
-                            <select id="stu_courseId"  class="combox" name="courseId" style="width: 160px"
+                            <select id="stu_courseId"  class="combox" name="course[id]" style="width: 160px"
                                     ref="stu_subCourseId" refUrl="product/{value}" callIfEmpty="false"
                                     data="data" group="children" optName="productName" optVal="id">
                                 <option value="">请选择</option>
@@ -84,7 +84,7 @@
                     <dl>
                         <dt>课程子类：</dt>
                         <dd>
-                            <select class="combox" name="subCourseId" style="width: 160px" id="stu_subCourseId">
+                            <select class="combox" name="courseSub[id]" style="width: 160px" id="stu_subCourseId">
                                 <option value="">请选择</option>
                             </select>
                         </dd>
@@ -98,16 +98,16 @@
                         <dd><input name="freePeriod" type="text" class="textInput number"></dd>
                     </dl>
                     <dl>
-                        <dt></dt>
-                        <dd></dd>
-                    </dl>
-                    <dl>
                         <dt>签约总价：</dt>
                         <dd><input name="contractPrice" type="text" class="textInput required number"></dd>
                     </dl>
                     <dl>
                         <dt>优惠：</dt>
                         <dd><input name="discountPrice" type="text" class="textInput number"></dd>
+                    </dl>
+                    <dl>
+                        <dt>其他费用：</dt>
+                        <dd><input name="otherPrice" type="text" class="textInput number"></dd>
                     </dl>
                     <dl>
                         <dt>实收金额：</dt>
@@ -120,7 +120,7 @@
                     <dl>
                         <dt>联系人关系：</dt>
                         <dd>
-                            <select id="stu_contactRelationType" clean="true" class="combox" style="width: 160px" name="student[contactRelationType]">
+                            <select id="stu_contactRelationType" clean="true" class="combox" style="width: 160px" name="student[contactRelation][id]">
                                 <option value="1">父亲</option>
                                 <option value="2">母亲</option>
                                 <option value="3">爷爷</option>
@@ -155,7 +155,7 @@
                                 <tr>
                                     <th type="text" width="" name="invoices[][invoiceNo]" fieldClass="required">收据编号</th>
                                     <th type="text" width="" name="invoices[][price]" defaultVal="0.00" size="12" fieldClass="number required">支付金额</th>
-                                    <th type="enum" width="120" name="invoices[][type]" enum="现金:1,转账:2,微信:3,支付宝:4,其他:5">支付方式</th>
+                                    <th type="enum" width="120" name="invoices[][payType][id]" enum="现金:1,转账:2,微信:3,支付宝:4,其他:5">支付方式</th>
                                     <th type="del" width="60" align="center">操作</th>
                                 </tr>
                             </thead>
@@ -164,7 +164,7 @@
                                     <td><input type="text" name="invoices[][invoiceNo]" value="" size="12" class="required" maxlength="10"></td>
                                     <td><input type="text" name="invoices[][price]" value="0.00" size="12" class="required number textInput"></td>
                                     <td>
-                                        <select class="combox" style="width: 120px" name="invoices[][type]">
+                                        <select class="combox" style="width: 120px" name="invoices[][payType][id]">
                                             <option value="1">现金</option>
                                             <option value="2">转账</option>
                                             <option value="3">微信</option>
@@ -198,8 +198,18 @@
 
             generic_ajax_op("contract", "POST", $("#contractForm").serializeJSON(), null, (
                 function(result) {
-                    alertMsg.correct("合同添加成功");
-                    navTab.reload(null, {});
+                    // add invoices if any
+                    var formData = $("#contractForm").serializeJSON();
+                    var invoiceData = formData["invoices"];
+                    for (var index in invoiceData) {
+                        invoiceData[index]["contract"] = {"id" : result.data.id};
+                    }
+                    generic_ajax_op("invoice", "POST", invoiceData, null, (
+                        function (result) {
+                            alertMsg.correct("合同添加成功");
+                            navTab.reload(null, {});
+                        }
+                    ));
                 }
             ));
         });

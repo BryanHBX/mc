@@ -74,9 +74,19 @@ public class ContractDTO extends BaseDTO
     private double transferPeriod;
 
     /**
+     * 剩余课时
+     */
+    private double remainedPeriod;
+
+    /**
      * 签约总价
      */
     private double contractPrice;
+
+    /**
+     * 其他费用
+     */
+    private double otherPrice;
 
     /**
      * 优惠金额
@@ -106,7 +116,13 @@ public class ContractDTO extends BaseDTO
     /**
      * 学生
      */
-    private NamedOptionProperty student;
+    //private NamedOptionProperty student;
+    private StudentDTO student;
+
+    /**
+     * 收据
+     */
+    private List<InvoiceDTO> invoices;
 
     /**
      * 合同状态
@@ -117,6 +133,15 @@ public class ContractDTO extends BaseDTO
      * 缴费状态
      */
     private Integer payStatus;
+
+    /**
+     * 剩余金额
+     * @return
+     */
+    public double getRemainedPrice()
+    {
+        return ((totalPrice - otherPrice) / enrollPeriod) * remainedPeriod;
+    }
 
     public static List<ContractDTO> from (List<ContractModel> models)
     {
@@ -147,23 +172,15 @@ public class ContractDTO extends BaseDTO
             {
                 ContractDTO dto = new ContractDTO();
                 BeanUtils.copyProperties(model, dto, "course", "student", "enrollType", "consultant", "supervisor");
-                dto.setEnrollType(new NamedOptionProperty(
-                        model.getEnrollType(), EEnrollmentType.getLabel(model.getEnrollType())));
-                dto.setConsultant(NamedOptionProperty.from(
-                        model.getConsultantId(), model.getConsultant(), "userName"));
-                dto.setGrade(NamedOptionProperty.from(
-                        model.getLevelId(), model.getLevel(), "configDescription"));
-                dto.setGradeSub(NamedOptionProperty.from(
-                        model.getSubLevelId(), model.getSubLevel(), "configDescription"));
-                dto.setCourse(NamedOptionProperty.from(
-                        model.getCourseId(), model.getCourse(), "productName"));
-                dto.setCourseSub(NamedOptionProperty.from(
-                        model.getSubCourseId(), model.getSubCourse(), "productName"));
-                dto.setStudent(NamedOptionProperty.from(
-                        model.getStudentId(), model.getStudent(), "name"));
-                dto.setSupervisor(NamedOptionProperty.from(
-                        model.getSupervisorId(), model.getSupervisor(), "userName"));
-                dto.setPaid(model.getPayTotal());
+                dto.setEnrollType(new NamedOptionProperty(model.getEnrollType(), EEnrollmentType.getLabel(model.getEnrollType())));
+                dto.setConsultant(NamedOptionProperty.from(model.getConsultantId(), model.getConsultant(), "userName"));
+                dto.setGrade(NamedOptionProperty.from(model.getLevelId(), model.getLevel(), "configDescription"));
+                dto.setGradeSub(NamedOptionProperty.from(model.getSubLevelId(), model.getSubLevel(), "configDescription"));
+                dto.setCourse(NamedOptionProperty.from(model.getCourseId(), model.getCourse(), "productName"));
+                dto.setCourseSub(NamedOptionProperty.from(model.getSubCourseId(), model.getSubCourse(), "productName"));
+                dto.setStudent(StudentDTO.from(model.getStudent()));
+                dto.setSupervisor(NamedOptionProperty.from(model.getSupervisorId(), model.getSupervisor(), "userName"));
+                dto.setInvoices(InvoiceDTO.from(model.getInvoices()));
                 return dto;
             }
 

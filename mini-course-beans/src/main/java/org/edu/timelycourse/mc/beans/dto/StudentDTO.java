@@ -114,22 +114,14 @@ public class StudentDTO extends BaseDTO
             {
                 StudentDTO dto = new StudentDTO();
                 BeanUtils.copyProperties(model, dto, "course", "consultant", "supervisor");
-                dto.setConsultant(NamedOptionProperty.from(
-                        model.getConsultantId(), model.getConsultant(), "userName"));
-                dto.setGrade(NamedOptionProperty.from(
-                        model.getLevelId(), model.getLevel(), "configDescription"));
-                dto.setGradeSub(NamedOptionProperty.from(
-                        model.getSubLevelId(), model.getSubLevel(), "configDescription"));
-                dto.setCourse(NamedOptionProperty.from(
-                        model.getCourseId(), model.getCourse(), "productName"));
-                dto.setCourseSub(NamedOptionProperty.from(
-                        model.getSubCourseId(), model.getSubCourse(), "productName"));
-                dto.setSupervisor(NamedOptionProperty.from(
-                        model.getSupervisorId(), model.getSupervisor(), "userName"));
-                dto.setContactRelation(new NamedOptionProperty(
-                        model.getContactRelationType(), EContactType.getLabel(model.getContactRelationType())));
-                dto.setStudentStatus(new NamedOptionProperty(
-                        model.getStatus(), EStudentStatus.getLabel(model.getStatus())));
+                dto.setConsultant(NamedOptionProperty.from(model.getConsultantId(), model.getConsultant(), "userName"));
+                dto.setGrade(NamedOptionProperty.from(model.getLevelId(), model.getLevel(), "configDescription"));
+                dto.setGradeSub(NamedOptionProperty.from(model.getSubLevelId(), model.getSubLevel(), "configDescription"));
+                dto.setCourse(NamedOptionProperty.from(model.getCourseId(), model.getCourse(), "productName"));
+                dto.setCourseSub(NamedOptionProperty.from(model.getSubCourseId(), model.getSubCourse(), "productName"));
+                dto.setSupervisor(NamedOptionProperty.from(model.getSupervisorId(), model.getSupervisor(), "userName"));
+                dto.setContactRelation(new NamedOptionProperty(model.getContactRelationType(), EContactType.getLabel(model.getContactRelationType())));
+                dto.setStudentStatus(new NamedOptionProperty(model.getStatus(), EStudentStatus.getLabel(model.getStatus())));
                 return dto;
             }
 

@@ -46,13 +46,20 @@ public class InvoiceService extends BaseService<ContractInvoiceModel>
         {
             // check if contract exists
             ContractModel contractEntity = (ContractModel) Asserts.assertEntityNotNullById(contractRepository, entity.getContractId());
+            if (!contractEntity.getSchoolId().equals(entity.getSchoolId()))
+            {
+                throw new ServiceException("You don't have permission update the " +
+                        "contract data which is not owned by you");
+            }
 
             entity.setCreationTime(new Date());
             repository.insert(entity);
 
             // update contract pay status
-            contractEntity.setPayStatus(contractEntity.getPayTotal() + entity.getPrice() >= contractEntity.getTotalPrice() ?
+            contractEntity.setPayStatus(contractEntity.getPaid() + entity.getPrice() >= contractEntity.getTotalPrice() ?
                     EContractDebtStatus.DONE.code() : EContractDebtStatus.ARREARAGE.code());
+            contractEntity.setPaid(contractEntity.getPaid() + entity.getPrice());
+
             contractRepository.update(contractEntity);
 
             return entity;

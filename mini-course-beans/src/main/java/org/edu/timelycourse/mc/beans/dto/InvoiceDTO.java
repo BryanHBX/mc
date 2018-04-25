@@ -29,11 +29,6 @@ public class InvoiceDTO extends BaseDTO
     /**
      * 支付类型
      */
-    //private String type;
-
-    /**
-     * 报名类型
-     */
     private NamedOptionProperty payType;
 
     /**

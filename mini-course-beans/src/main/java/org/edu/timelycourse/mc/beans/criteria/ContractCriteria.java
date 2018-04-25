@@ -15,6 +15,7 @@ public class ContractCriteria extends BaseCriteria
     private Integer contractStatus;
     private Integer payStatus;
     private Integer enrollType;
+    private Double remainedPeriod;
 
     public String getStudentName ()
     {

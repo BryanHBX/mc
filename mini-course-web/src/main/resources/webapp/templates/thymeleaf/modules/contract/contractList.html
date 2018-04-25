@@ -1,4 +1,4 @@
-<form xmlns:th="http://www.thymeleaf.org" id="pagerForm" method="GET" action="contract/list">
+<form xmlns:th="http://www.thymeleaf.org" id="pagerForm" method="GET" th:action="${module eq 'finance' ? 'finance/contract' : 'contract/list'}">
     <input type="hidden" name="pageNum" th:value="${pagingBean ne null ? pagingBean.pageNumber : 1}" />
     <input type="hidden" name="numPerPage" th:value="${pagingBean ne null ? pagingBean.pageSize : 20}"  />
 </form>
@@ -8,7 +8,8 @@
 </style>
 
 <div class="pageHeader" xmlns:th="http://www.thymeleaf.org">
-    <form id="contractSearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="contract/list" method="GET">
+    <form id="contractSearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);"
+          th:action="${module eq 'finance' ? 'finance/contract' : 'contract/list'}" method="GET">
         <div class="searchBar">
             <table class="searchContent">
                 <tr>
@@ -50,7 +51,8 @@
                     </td>
                     <td>
                         <label>剩余课时≤：</label>
-                        <input type="text" name="keywords" style="width: 100px;" class="textInput">
+                        <input type="text" name="remainedPeriod" style="width: 100px;" class="textInput"
+                               th:value="${criteria != null and criteria.remainedPeriod > 0 ? criteria.remainedPeriod : ''}"/>
                     </td>
             </table>
             <div class="subBar">
@@ -106,12 +108,12 @@
                     <td align="center" th:text="${item.freePeriod}"></td>
                     <td align="center" th:text="${item.contractPrice}"></td>
                     <td align="center" th:text="${item.totalPrice}"></td>
-                    <td align="center" th:text="${#numbers.formatDecimal(item.totalPrice / item.enrollPeriod, 3, 2)}"></td>
+                    <td align="center" th:text="${#numbers.formatDecimal((item.totalPrice - item.otherPrice)/ item.enrollPeriod, 2, 2)}"></td>
                     <td align="center" th:text="${item.paid}"></td>
                     <td align="center" th:text="${item.totalPrice - item.paid > 0 ? ('-' + (item.totalPrice - item.paid)) : '--'}"
                         th:style="${item.totalPrice - item.paid > 0 ? 'background-color: red;' : ''}"></td>
                     <td align="center" th:text="${item.transferPeriod}"></td>
-                    <td align="center" ></td>
+                    <td align="center" th:text="${item.remainedPeriod}"></td>
                     <td align="center">
                         <a title="查看课时记录" target="dialog" mask="true" width="585" height="450" class="btnLook" href="" style="float: none">查看</a>
                     </td>

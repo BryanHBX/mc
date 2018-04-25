@@ -22,7 +22,8 @@
                             <input name="student[wxId]" type="text"
                                    class="'textInput readonly" readonly="readonly"
                                    th:value="${entity ne null and entity.student ne null ? entity.student.wxId : ''}"/>
-                            <input type="hidden" name="student[id]" clean="true" th:value="${entity ne null ? entity.studentId : ''}"/>
+                            <input type="hidden" name="student[id]" clean="true"
+                                   th:value="${entity ne null and entity.student ne null ? entity.student.id : ''}"/>
                         </dd>
                     </dl>
                     <dl>
@@ -36,20 +37,21 @@
                     <dl>
                         <dt>咨询师：</dt>
                         <dd>
-                            <input name="consultantId" type="hidden" th:value="${entity ne null ? entity.consultantId : ''}"/>
-                            <input name="consultant[userName]" type="text"
+                            <input name="consultant[id]" type="hidden"
+                                   th:value="${entity ne null and entity.consultant ne null ? entity.consultant.id : ''}"/>
+                            <input name="consultant[name]" type="text"
                                    th:class="'textInput ' + ${entity eq null or op eq 'edit' ? 'required' : 'readonly'}"
                                    th:readonly="${entity ne null and op ne 'edit'}"
-                                   th:value="${entity ne null and entity.consultant ne null ? entity.consultant.userName : ''}"
+                                   th:value="${entity ne null and entity.consultant ne null ? entity.consultant.name : ''}"
                             />
                         </dd>
                     </dl>
                     <dl>
                         <dt>报名类型：</dt>
                         <dd>
-                            <select name="enrollType" style="width: 160px"
+                            <select name="enrollType[id]" style="width: 160px"
                                     th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
-                                    th:value="${entity ne null ? entity.enrollType : ''}"
+                                    th:value="${entity ne null and entity.enrollType ne null ? entity.enrollType.id : ''}"
                                     th:readonly="${entity ne null and op ne 'edit'}">
                                 <option value="1">新报</option>
                                 <option value="2">续保</option>
@@ -66,13 +68,13 @@
                     <dl th:if="${op ne 'transfer' and op ne 'refund'}">
                         <dt>学生年段：</dt>
                         <dd>
-                            <select id="stu_levelId" name="levelId" style="width: 160px"
+                            <select id="stu_levelId" name="grade[id]" style="width: 160px"
                                     ref="stu_subLevelId" refUrl="system/config/{value}" callIfEmpty="false"
                                     data="data" group="children" optName="configDescription" optVal="id"
                                     th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
                                     th:if="${not #lists.isEmpty(level.children)}"
                                     th:with="options=${level.children}"
-                                    th:value="${entity ne null ? entity.levelId : ''}">
+                                    th:value="${entity ne null and entity.grade ne null ? entity.grade.id : ''}">
                                 <option value="">请选择</option>
                                 <option th:each="option:${options}" th:value="${option.id}" th:text="${option.configDescription}">学生年段</option>
                             </select>
@@ -81,24 +83,24 @@
                     <dl>
                         <dt>细分年段：</dt>
                         <dd>
-                            <select id="stu_subLevelId" name="subLevelId" style="width: 160px"
+                            <select id="stu_subLevelId" name="gradeSub[id]" style="width: 160px"
                                     th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
-                                    th:value="${entity ne null ? entity.subLevelId : ''}">
+                                    th:value="${entity ne null and entity.gradeSub ne null ? entity.gradeSub.id : ''}">
                                 <option value="">请选择</option>
-                                <option th:if="${entity.subLevelId ne null}"
-                                        th:value="${entity.subLevelId}"
-                                        th:text="${entity ne null and entity.subLevel ne null ? entity.subLevel.configDescription : ''}"></option>
+                                <option th:if="${entity.gradeSub ne null}"
+                                        th:value="${entity.gradeSub.id}"
+                                        th:text="${entity ne null and entity.gradeSub ne null ? entity.gradeSub.name : ''}"></option>
                             </select>
                         </dd>
                     </dl>
                     <dl>
                         <dt>课程大类：</dt>
                         <dd>
-                            <select id="stu_courseId" name="courseId" style="width: 160px"
+                            <select id="stu_courseId" name="course[id]" style="width: 160px"
                                     ref="stu_subCourseId" refUrl="product/{value}" callIfEmpty="false"
                                     data="data" group="children" optName="productName" optVal="id"
                                     th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
-                                    th:value="${entity ne null ? entity.courseId : ''}">
+                                    th:value="${entity ne null and entity.course ne null ? entity.course.id : ''}">
                                 <option value="">请选择</option>
                                 <option th:each="option:${products}" th:value="${option.id}" th:text="${option.productName}">课程名称</option>
                             </select>
@@ -107,13 +109,13 @@
                     <dl>
                         <dt>课程子类：</dt>
                         <dd>
-                            <select name="subCourseId" style="width: 160px" id="stu_subCourseId"
+                            <select name="courseSub[id]" style="width: 160px" id="stu_subCourseId"
                                     th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
-                                    th:value="${entity ne null ? entity.subCourseId : ''}">
+                                    th:value="${entity ne null and entity.courseSub ne null ? entity.courseSub.id : ''}">
                                 <option value="">请选择</option>
-                                <option th:if="${entity.subCourseId ne null}"
-                                        th:value="${entity.subCourseId}"
-                                        th:text="${entity ne null and entity.subCourse ne null ? entity.subCourse.productName : ''}"></option>
+                                <option th:if="${entity.courseSub ne null}"
+                                        th:value="${entity.courseSub.id}"
+                                        th:text="${entity ne null and entity.courseSub ne null ? entity.courseSub.name : ''}"></option>
                             </select>
                         </dd>
                     </dl>
@@ -142,26 +144,26 @@
                     <div th:if="${op eq 'transfer' or op eq 'refund'}">
                         <dl>
                             <dt>剩余课时：</dt>
-                            <dd><input name="contractPrice" type="text"
+                            <dd><input name="remainedPeriod" type="text"
                                        th:class="'textInput ' + ${entity eq null or op eq 'edit' ? 'required number' : 'readonly'}"
                                        th:readonly="${entity ne null and op ne 'edit'}"
-                                       th:value="${entity ne null ? entity.contractPrice : ''}"/>
+                                       th:value="${entity ne null ? entity.remainedPeriod : ''}"/>
                             </dd>
                         </dl>
                         <dl>
                             <dt>剩余金额：</dt>
-                            <dd><input name="discountPrice" type="text"
+                            <dd><input name="remainedPrice" type="text"
                                        th:class="'textInput ' + ${entity eq null or op eq 'edit' ? 'number' : 'readonly'}"
                                        th:readonly="${entity ne null and op ne 'edit'}"
-                                       th:value="${entity ne null ? entity.discountPrice : ''}"/>
+                                       th:value="${entity ne null ? entity.remainedPrice : ''}"/>
                             </dd>
                         </dl>
                         <dl th:if="${op eq 'refund'}">
                             <dt>赠送课时：</dt>
-                            <dd><input name="enrollPeriod" type="text"
+                            <dd><input name="freePeriod" type="text"
                                        th:class="'textInput ' + ${entity eq null or op eq 'edit' ? 'required number' : 'readonly'}"
                                        th:readonly="${entity ne null and op ne 'edit'}"
-                                       th:value="${entity ne null ? entity.enrollPeriod : ''}"/>
+                                       th:value="${entity ne null ? entity.freePeriod : ''}"/>
                             </dd>
                         </dl>
                     </div>
@@ -201,7 +203,7 @@
                             <dt>联系人关系：</dt>
                             <dd>
                                 <select id="stu_contactRelationType" clean="true" style="width: 160px" name="student[contactRelationType]"
-                                        th:value="${entity ne null and entity.student ne null ? entity.student.contactRelationType : ''}"
+                                        th:value="${entity ne null and entity.student ne null and entity.student.contactRelation ne null ? entity.student.contactRelation.id : ''}"
                                         class="combox disabled">
                                     <option value="1">父亲</option>
                                     <option value="2">母亲</option>
@@ -337,7 +339,7 @@
             <!-- 欠费补缴 -->
             <div th:if="${entity ne null and op eq 'addInvoice'}">
                 <fieldset>
-                    <legend style="color:red;" th:text="'该合同欠费金额' + ${entity.totalPrice - entity.payTotal}">收据信息</legend>
+                    <legend style="color:red;" th:text="'该合同欠费金额' + ${entity.totalPrice - entity.paid}">收据信息</legend>
                     <div style="overflow: auto;" id="cform">
                         <table class="list nowrap itemDetail" width="100%" th:addButton="${op eq 'addInvoice' ? '添加收据' : ''}" rowNumWidth="30">
                             <thead>
@@ -475,7 +477,7 @@
                                 <tr th:each="invoice: ${entity.invoices}">
                                     <td align="center" th:text="${invoice.invoiceNo}"></td>
                                     <td align="center" th:text="${invoice.price}"></td>
-                                    <td align="center" th:text="${invoice.typeName}"></td>
+                                    <td align="center" th:text="${invoice.payType.name}"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -489,7 +491,7 @@
             <ul>
                 <li th:if="${entity ne null and (op ne null or op ne '')}">
                     <div class="buttonActive"><div class="buttonContent">
-                        <button type="button" id="btnSaveContract" th:text="${op eq 'refund' ? '退费' : (op eq 'transfer' ? '转课时' : '保存')}">保存</button></div>
+                        <button type="button" id="btnDialogSaveContract" th:text="${op eq 'refund' ? '退费' : (op eq 'transfer' ? '转课时' : '保存')}">保存</button></div>
                     </div>
                 </li>
                 <li>
@@ -501,9 +503,10 @@
     </form>
 </div>
 
-<script xmlns:th="http://www.thymeleaf.org" type="text/javascript" th:inline="javascript" th:if="${op eq 'addInvoice'}">
+<script xmlns:th="http://www.thymeleaf.org" type="text/javascript" th:if="${op eq 'addInvoice'}">
+    /*<![CDATA[*/
     $(function(){
-        $("#btnSaveContract").unbind("click").bind("click", function(){
+        $("#btnDialogSaveContract").unbind("click").bind("click", function(){
             if (!$("#contractFormDialog").valid()) {
                 return false;
             }
@@ -513,7 +516,6 @@
                 invoiceData[index]["contract"] = {"id" : formData["id"]};
                 invoiceData[index]["owner"] = {"id": formData["ownerId"]};
             }
-            console.log(invoiceData);
             generic_ajax_op("invoice", "POST", invoiceData, null, (
                 function (result) {
                     alertMsg.correct("学费补缴成功");
@@ -523,4 +525,5 @@
             ));
         });
     });
+    /*]]>*/
 </script>
