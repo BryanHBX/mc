@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-04-18 23:38:39
+Date: 2018-04-26 00:09:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -106,9 +106,13 @@ CREATE TABLE `t_school_contract` (
   `contract_type` tinyint(4) NOT NULL COMMENT '报名类型',
   `period_enroll` double(4,0) NOT NULL COMMENT '报名课时',
   `period_free` double(4,0) DEFAULT NULL COMMENT '赠送课时',
-  `contract_price` double(4,0) DEFAULT NULL COMMENT '签约总价',
-  `discount_price` double(4,0) DEFAULT NULL COMMENT '优惠',
-  `total_price` double(4,0) NOT NULL COMMENT '实收金额',
+  `period_transfer` double DEFAULT NULL,
+  `period_remained` double DEFAULT NULL,
+  `price_contract` double(4,0) DEFAULT NULL COMMENT '签约总价',
+  `price_discount` double(4,0) DEFAULT NULL COMMENT '优惠',
+  `price_total` double(4,0) NOT NULL COMMENT '实收金额',
+  `price_other` double DEFAULT NULL,
+  `paid` double DEFAULT NULL,
   `cfg_level` int(4) DEFAULT NULL COMMENT '学生年段',
   `cfg_subLevel` int(4) DEFAULT NULL COMMENT '细分年段',
   `cfg_course` int(4) DEFAULT NULL COMMENT '课程名称',
@@ -120,15 +124,12 @@ CREATE TABLE `t_school_contract` (
   `c_paystatus` int(11) DEFAULT NULL COMMENT '缴费状态',
   `recorder` int(4) DEFAULT NULL COMMENT '登记人员ID',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_school_contract
 -- ----------------------------
-INSERT INTO `t_school_contract` VALUES ('1', 'fea', '1', '12', null, '0', '2', '12', '0', '12', '0', '12', '41', '43', '18', '21', '2018-04-24', '2018-04-10 22:50:53', null, null, null, null);
-INSERT INTO `t_school_contract` VALUES ('2', '1213141', '2', '13', null, '2', '1', '12', '0', '1234', '0', '1234', '70', '71', '18', '21', '2018-04-17', '2018-04-17 23:07:03', null, null, null, null);
-INSERT INTO `t_school_contract` VALUES ('3', '201804181241053254', '3', '13', null, '2', '2', '25', '2', '7435', '35', '7400', '69', '73', '9', '11', '2018-04-18', '2018-04-18 12:43:36', null, null, null, null);
-INSERT INTO `t_school_contract` VALUES ('4', '201804181241053259', '4', '12', null, '2', '1', '80', '0', '9400', '0', '9400', '70', '72', '9', '11', '2018-04-02', '2018-04-18 14:57:12', null, '1', '1', null);
+INSERT INTO `t_school_contract` VALUES ('9', '201804181241053254', '4', '12', null, '2', '2', '40', '0', '0', '40', '2400', '0', '2500', '100', '1090', '69', '73', '9', '11', '2018-04-17', '2018-04-25 23:22:42', null, '1', '1', null);
 
 -- ----------------------------
 -- Table structure for `t_school_invoice`
@@ -138,7 +139,7 @@ CREATE TABLE `t_school_invoice` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `contract_id` int(11) NOT NULL COMMENT '合同ID',
   `school_id` int(11) NOT NULL COMMENT '学校ID',
-  `invoice_no` varchar(255) NOT NULL COMMENT '收据编号',
+  `invoice_no` varchar(255) DEFAULT NULL COMMENT '收据编号',
   `fee_amount` double NOT NULL COMMENT '支付金额',
   `fee_type` tinyint(4) DEFAULT NULL COMMENT '支付方式',
   `creationTime` datetime DEFAULT NULL,
@@ -146,17 +147,14 @@ CREATE TABLE `t_school_invoice` (
   `recorder` int(4) DEFAULT NULL COMMENT '操作人员ID',
   `owner_id` int(11) DEFAULT NULL COMMENT '归属者',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_school_invoice
 -- ----------------------------
-INSERT INTO `t_school_invoice` VALUES ('1', '1', '0', '124', '123', '1', '2018-04-10 22:50:53', null, null, null);
-INSERT INTO `t_school_invoice` VALUES ('2', '1', '0', '1241', '24', '3', '2018-04-10 22:50:53', null, null, null);
-INSERT INTO `t_school_invoice` VALUES ('3', '1', '0', '123', '231', '4', '2018-04-10 22:50:53', null, null, null);
-INSERT INTO `t_school_invoice` VALUES ('4', '2', '2', '1231', '12', '1', '2018-04-17 23:07:03', null, null, null);
-INSERT INTO `t_school_invoice` VALUES ('5', '3', '2', '2018041812', '7400', '2', '2018-04-18 12:43:36', null, null, null);
-INSERT INTO `t_school_invoice` VALUES ('6', '4', '2', '12311231', '4500', '3', '2018-04-18 14:57:12', null, null, null);
+INSERT INTO `t_school_invoice` VALUES ('14', '9', '2', '80421', '600', '3', '2018-04-25 23:22:46', null, null, null);
+INSERT INTO `t_school_invoice` VALUES ('15', '9', '2', '231', '145', '4', '2018-04-25 23:40:59', null, null, null);
+INSERT INTO `t_school_invoice` VALUES ('16', '9', '2', '534', '345', '1', '2018-04-25 23:48:38', null, null, null);
 
 -- ----------------------------
 -- Table structure for `t_school_product`
