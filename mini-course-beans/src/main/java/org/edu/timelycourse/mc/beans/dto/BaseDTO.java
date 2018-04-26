@@ -22,5 +22,6 @@ public abstract class BaseDTO implements Serializable
     @JsonIgnore
     private Integer schoolId;
 
+    @JsonIgnore
     public abstract boolean isValid();
 }

@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.beans.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.edu.timelycourse.mc.beans.enums.EPaymentType;
 import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
@@ -90,6 +91,7 @@ public class InvoiceDTO extends BaseDTO
     }
 
     @Override
+    @JsonIgnore
     public boolean isValid ()
     {
         return false;

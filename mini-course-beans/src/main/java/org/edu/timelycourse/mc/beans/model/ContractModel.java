@@ -184,6 +184,15 @@ public class ContractModel extends BaseModel
         return ((totalPrice - otherPrice) / enrollPeriod) * remainedPeriod;
     }
 
+    /**
+     * 获取课时单价
+     * @return
+     */
+    public double getPricePerPeriod ()
+    {
+        return (totalPrice - otherPrice) / enrollPeriod;
+    }
+
     @Override
     public boolean isValidInput ()
     {

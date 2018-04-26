@@ -1,5 +1,7 @@
 package org.edu.timelycourse.mc.beans.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
@@ -8,6 +10,7 @@ import org.edu.timelycourse.mc.common.utils.StringUtil;
  * Created by x36zhao on 2018/4/25.
  */
 @Data
+@JsonIgnoreProperties(value = { "id" })
 public class ContractRefundDTO extends BaseDTO
 {
     private Integer contractId;
@@ -22,6 +25,7 @@ public class ContractRefundDTO extends BaseDTO
     }
 
     @Override
+    @JsonIgnore
     public boolean isValid ()
     {
         return EntityUtils.isValidEntityId(getSchoolId()) &&

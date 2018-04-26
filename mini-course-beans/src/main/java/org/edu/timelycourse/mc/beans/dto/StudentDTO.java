@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.beans.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.edu.timelycourse.mc.beans.enums.EContactType;
 import org.edu.timelycourse.mc.beans.enums.EEnrollmentType;
@@ -136,6 +137,7 @@ public class StudentDTO extends BaseDTO
     }
 
     @Override
+    @JsonIgnore
     public boolean isValid ()
     {
         return EntityUtils.isValidEntityId(getSchoolId());

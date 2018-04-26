@@ -92,7 +92,7 @@ public class ContractController extends BaseController
                                           @RequestHeader(name = "Authorization") String auth)
     {
         dto.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
-        dto.setSourceContract(contractId);
+        dto.setContractId(contractId);
 
         if (LOGGER.isDebugEnabled())
         {

@@ -195,6 +195,7 @@ public class ContractDTO extends BaseDTO
     }
 
     @Override
+    @JsonIgnore
     public boolean isValid ()
     {
         return EntityUtils.isValidEntityId(getSchoolId());

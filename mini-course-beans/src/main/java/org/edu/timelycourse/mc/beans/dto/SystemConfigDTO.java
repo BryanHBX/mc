@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.beans.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.edu.timelycourse.mc.beans.model.SystemConfigModel;
 
@@ -18,6 +19,7 @@ public class SystemConfigDTO extends BaseDTO implements Serializable
     }
 
     @Override
+    @JsonIgnore
     public boolean isValid ()
     {
         return false;

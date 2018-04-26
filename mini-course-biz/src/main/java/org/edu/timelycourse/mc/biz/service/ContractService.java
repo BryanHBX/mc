@@ -157,6 +157,19 @@ public class ContractService extends BaseService<ContractModel>
             // check if contract exists
             ContractModel contract = (ContractModel) Asserts.assertEntityNotNullById(repository, dto.getContractId());
 
+            // check any hacks
+            if (!contract.getSchoolId().equals(dto.getSchoolId()))
+            {
+                throw new ServiceException("You don't have permission update the " +
+                        "contract data which is not owned by you");
+            }
+
+            // check if money paid out already
+            if (contract.getPayStatus().equals(EContractDebtStatus.ARREARAGE.code()))
+            {
+                throw new ServiceException("It's not allowed to refund when it's still under arrearage state");
+            }
+
             // update contract
             contract.setContractStatus(EContractStatus.FINISHED.code());
             contract.setRemainedPeriod(0);
@@ -183,7 +196,7 @@ public class ContractService extends BaseService<ContractModel>
         if (dto.isValid())
         {
             // check if contract exists
-            ContractModel source = (ContractModel) Asserts.assertEntityNotNullById(repository, dto.getSourceContract());
+            ContractModel source = (ContractModel) Asserts.assertEntityNotNullById(repository, dto.getContractId());
 
             // check any hacks
             if (!source.getSchoolId().equals(dto.getSchoolId()))
@@ -192,21 +205,40 @@ public class ContractService extends BaseService<ContractModel>
                         "contract data which is not owned by you");
             }
 
+            // calculate the period from source contract
+            double transferPeriod = dto.getTransformPeriod() / source.getPricePerPeriod();
+            double remainedPeriod = source.getRemainedPeriod() - transferPeriod;
+            if (remainedPeriod < 0)
+            {
+                throw new ServiceException(String.format("Invalid period to be transferred (%s) " +
+                        "as remained period from source contract (%s) is negative (%d) after transform",
+                        dto, source, remainedPeriod));
+            }
+
             // add new contract after transform
             ContractModel target = new ContractModel();
-            BeanUtils.copyProperties(source, target, "id");
+            BeanUtils.copyProperties(source, target,
+                    "id", "consultant", "supervisor", "student",
+                    "level", "subLevel", "course", "subCourse", "otherPrice", "remainedPeriod");
             target.setCourseId(dto.getTargetCourse());
             target.setSubCourseId(dto.getTargetSubCourse());
             target.setEnrollPeriod(dto.getTransformPeriod());
             target.setContractPrice(dto.getTransformPrice());
             target.setTotalPrice(dto.getTransformPrice());
             target.setEnrollType(EEnrollmentType.TRANSFER.code());
+            target.setRemainedPeriod(target.getEnrollPeriod());
+            target.setPayStatus(EContractDebtStatus.DONE.code());
             repository.insert(target);
 
             // update the original contract
-            source.setTransferPeriod(dto.getTransformPrice() /
-                    (source.getTotalPrice() / source.getRemainedPeriod()));
-            source.setRemainedPeriod(source.getRemainedPeriod() - source.getTransferPeriod());
+            source.setTransferPeriod(transferPeriod);
+            source.setRemainedPeriod(remainedPeriod);
+            source.setLastUpdateTime(new Date());
+            if (source.getRemainedPeriod() == 0)
+            {
+                source.setContractStatus(EContractStatus.FINISHED.code());
+                source.setPayStatus(EContractDebtStatus.DONE.code());
+            }
             repository.update(source);
 
             return target;
