@@ -37,6 +37,19 @@ public enum EContractStatus
         return name;
     }
 
+    public static String getLabel(Integer code)
+    {
+        for (EContractStatus item : EContractStatus.values())
+        {
+            if (item.code().equals(code))
+            {
+                return item.label;
+            }
+        }
+
+        return null;
+    }
+
     public static Integer getCode(String name)
     {
         for (EContractStatus item : EContractStatus.values())

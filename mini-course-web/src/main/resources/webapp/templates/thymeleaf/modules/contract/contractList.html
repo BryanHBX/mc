@@ -68,6 +68,7 @@
     <table class="table" width="100%" layoutH="110">
         <thead>
             <tr>
+                <th width="60">合同状态</th>
                 <th width="60">报名类型</th>
                 <th width="80">签约日期</th>
                 <th>合同编号</th>
@@ -94,7 +95,8 @@
         <tbody>
             <div th:if="${pagingBean != null and pagingBean.items != null}">
                 <tr th:each="item: ${pagingBean.items}">
-                    <td align="center" th:text="${item.enrollType ne null ? item.enrollType.name : '--'}"></td>
+                    <td align="center" th:text="${item.status ne null ? item.status.name : '--'}"></td>
+                    <td align="left" th:text="${item.enrollType ne null ? item.enrollType.name : '--'}"></td>
                     <td align="center" th:text="${item.contractDate ne null ? #dates.format(item.contractDate, 'yyyy-MM-dd') : '--'}"></td>
                     <td align="left">
                         <a target="dialog" mask="true" width="890" height="590"
@@ -125,10 +127,11 @@
                         <span th:if="${item.totalPrice - item.paid <= 0}">--</span>
                     </td>
                     <td align="center" th:if="${module eq 'finance'}">
-                        <a title="转课时" target="dialog" mask="true" width="890" height="520" th:href="'contract/' + ${item.id} + '?op=transfer'"
+                        <a title="转课时" th:if="${item.remainedPeriod > 0}" target="dialog" mask="true" width="890" height="520" th:href="'contract/' + ${item.id} + '?op=transfer'"
                            style="float: none; text-decoration: underline; color: #1465ff">
                             <span>转课时</span>
                         </a>
+                        <span th:if="${item.remainedPeriod <= 0}">--</span>
                     </td>
                     <td align="center" th:if="${module eq 'finance'}">
                         <a title="学费退费" target="dialog" mask="true" width="890" height="450" th:href="'contract/' + ${item.id} + '?op=refund'"

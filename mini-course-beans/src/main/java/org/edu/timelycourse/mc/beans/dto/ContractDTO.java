@@ -2,6 +2,7 @@ package org.edu.timelycourse.mc.beans.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.edu.timelycourse.mc.beans.enums.EContractStatus;
 import org.edu.timelycourse.mc.beans.enums.EEnrollmentType;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
 import org.edu.timelycourse.mc.beans.paging.PagingBean;
@@ -126,7 +127,7 @@ public class ContractDTO extends BaseDTO
     /**
      * 合同状态
      */
-    private Integer contractStatus;
+    private NamedOptionProperty status;
 
     /**
      * 缴费状态
@@ -177,6 +178,7 @@ public class ContractDTO extends BaseDTO
                 dto.setGradeSub(NamedOptionProperty.from(model.getSubLevelId(), model.getSubLevel(), "configDescription"));
                 dto.setCourse(NamedOptionProperty.from(model.getCourseId(), model.getCourse(), "productName"));
                 dto.setCourseSub(NamedOptionProperty.from(model.getSubCourseId(), model.getSubCourse(), "productName"));
+                dto.setStatus(new NamedOptionProperty(model.getContractStatus(), EContractStatus.getLabel(model.getContractStatus())));
                 dto.setStudent(StudentDTO.from(model.getStudent()));
                 dto.setSupervisor(NamedOptionProperty.from(model.getSupervisorId(), model.getSupervisor(), "userName"));
                 dto.setInvoices(InvoiceDTO.from(model.getInvoices()));

@@ -89,14 +89,14 @@
             <div th:if="${pagingBean != null and pagingBean.items != null}">
                 <tr th:each="item: ${pagingBean.items}">
                     <td align="center"></td>
-                    <td align="center" th:text="${item.name}"></td>
-                    <td align="center" th:text="${item.wxId}"></td>
+                    <td align="left" th:text="${item.name}"></td>
+                    <td align="left" th:text="${item.wxId}"></td>
                     <td align="center" th:text="${item.grade ne null ? item.grade.name : '--'}"></td>
                     <td align="center" th:text="${item.gradeSub ne null ? item.gradeSub.name : '--'}"></td>
-                    <td align="center" th:text="${item.contactName}"></td>
+                    <td align="left" th:text="${item.contactName}"></td>
                     <td align="center" th:text="${item.contactRelation ne null ? item.contactRelation.name : '--'}"></td>
                     <td align="center" th:text="${item.contactPhone}"></td>
-                    <td align="center" th:text="${item.meto}"></td>
+                    <td align="left" th:text="${item.meto ne null and item.meto ne '' ? item.meto : '--'}"></td>
                     <td align="center" th:text="${item.consultant ne null ? item.consultant.name : '--'}"></td>
                     <td align="center" th:text="${item.supervisor ne null ? item.supervisor.name : '--'}"></td>
                     <td align="center">

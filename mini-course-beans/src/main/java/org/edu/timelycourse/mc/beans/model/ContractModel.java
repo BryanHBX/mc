@@ -252,6 +252,11 @@ public class ContractModel extends BaseModel
             model.setStudent(StudentModel.from(dto.getStudent()));
         }
 
+        if (dto.getStatus() != null)
+        {
+            model.setContractStatus(dto.getStatus().getId());
+        }
+
         model.setConsultantId(dto.getConsultant() != null ? dto.getConsultant().getId() : null);
         model.setSupervisorId(dto.getSupervisor() != null ? dto.getSupervisor().getId() : null);
         model.setEnrollType(dto.getEnrollType() != null ? dto.getEnrollType().getId() : null);
