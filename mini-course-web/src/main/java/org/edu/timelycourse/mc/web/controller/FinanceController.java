@@ -47,6 +47,7 @@ public class FinanceController extends AbstractController
                                    HttpServletRequest request)
     {
         model.addAttribute("pagingBean", findInvoicesByPage(request, pageNum, numPerPage));
+        model.addAttribute("criteria", criteria);
         model.addAttribute("module", getModuleName());
         return getModulePage("invoice/invoiceList");
     }

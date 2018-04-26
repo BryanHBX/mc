@@ -44,12 +44,13 @@ public class InvoiceController extends BaseController
                                    @ModelAttribute("criteria") InvoiceCriteria criteria,
                                    @RequestHeader(name = "Authorization") String auth)
     {
+        criteria.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+
         if (LOGGER.isDebugEnabled())
         {
             LOGGER.debug("Enter getInvoice - [pageNum: {}, pageSize: {}, criteria: {}]", pageNum, pageSize, criteria);
         }
 
-        criteria.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
         return ResponseData.success(InvoiceDTO.from(invoiceService.findByCriteria(criteria, pageNum, pageSize)));
         //return ResponseData.success(invoiceService.findByPage(ContractInvoiceModel.from(criteria), pageNum, pageSize));
     }

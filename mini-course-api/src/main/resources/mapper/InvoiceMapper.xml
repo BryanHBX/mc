@@ -58,8 +58,8 @@
         SELECT * FROM `t_school_invoice`
         <where>
             1 = 1
-            <if test="startDate != null and startDate != ''">AND `creationTime` &gt;= #{startDate}</if>
-            <if test="endDate != null and endDate != ''">AND `creationTime` &lt;= #{endDate}</if>
+            <if test="startDate != null and startDate != ''">AND DATE_FORMAT(`creationTime`, '%Y-%m-%d') &gt;= #{startDate}</if>
+            <if test="endDate != null and endDate != ''">AND DATE_FORMAT(`creationTime`,'%Y-%m-%d') &lt;= #{endDate}</if>
             <if test="schoolId != null and schoolId > 0"> AND `school_id` = #{schoolId}</if>
             <if test="payType != null and payType > -1">AND `fee_type` = #{type}</if>
             AND `contract_id` IN

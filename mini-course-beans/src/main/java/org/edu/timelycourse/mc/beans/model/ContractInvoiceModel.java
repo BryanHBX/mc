@@ -45,14 +45,6 @@ public class ContractInvoiceModel extends BaseModel
     private Integer type;
 
     /**
-     * 支付方式名称
-     */
-    public String getTypeName()
-    {
-        return type != null ? EPaymentType.getLabel(type) : null;
-    }
-
-    /**
      * 收据更新时间
      */
     private Date lastUpdateTime;
@@ -90,6 +82,14 @@ public class ContractInvoiceModel extends BaseModel
         }
 
        return valid;
+    }
+
+    /**
+     * 获取支付方式名称
+     */
+    public String getTypeName()
+    {
+        return type != null ? EPaymentType.getLabel(type) : null;
     }
 
     public static ContractInvoiceModel from (final InvoiceDTO dto)

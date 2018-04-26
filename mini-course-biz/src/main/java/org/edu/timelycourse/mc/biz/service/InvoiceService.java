@@ -1,9 +1,11 @@
 package org.edu.timelycourse.mc.biz.service;
 
+import org.edu.timelycourse.mc.beans.criteria.BaseCriteria;
 import org.edu.timelycourse.mc.beans.dto.ContractDTO;
 import org.edu.timelycourse.mc.beans.enums.EContractDebtStatus;
 import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
+import org.edu.timelycourse.mc.beans.paging.PagingBean;
 import org.edu.timelycourse.mc.biz.repository.ContractRepository;
 import org.edu.timelycourse.mc.biz.repository.InvoiceRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
@@ -80,6 +82,20 @@ public class InvoiceService extends BaseService<ContractInvoiceModel>
         }
 
         return entities;
+    }
+
+    @Override
+    public PagingBean<ContractInvoiceModel> findByCriteria(BaseCriteria criteria, Integer pageNum, Integer pageSize)
+    {
+        PagingBean<ContractInvoiceModel> invoices = super.findByCriteria(criteria, pageNum, pageSize);
+        if (invoices.getItems() != null)
+        {
+            for (ContractInvoiceModel invoice : invoices.getItems())
+            {
+                invoice.setContract(contractRepository.get(invoice.getContractId()));
+            }
+        }
+        return invoices;
     }
 
     @Override

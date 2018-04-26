@@ -14,8 +14,8 @@
                 <tr>
                     <td>
                         <label>缴费日期：</label>
-                        <input type="text" name="startDate" class="date textInput" > -
-                        <input type="text" name="endData" class="date textInput">
+                        <input type="text" name="startDate" class="date textInput" th:value="${criteria != null  ? criteria.startDate : ''}" /> -
+                        <input type="text" name="endDate" class="date textInput" th:value="${criteria != null  ? criteria.endDate : ''}" />
                     </td>
                     <td>
                         <label>报名类型：</label>
@@ -23,42 +23,36 @@
                                 th:value="${criteria != null and criteria.contractStatus ne null ? criteria.contractStatus : ''}">
                             <option value="">所有</option>
                             <option value="1" th:selected="${criteria != null and criteria.contractStatus eq 1}">新报</option>
-                            <option value="0" th:selected="${criteria != null and criteria.contractStatus eq 0}">续报</option>
-                            <option value="2" th:selected="${criteria != null and criteria.contractStatus eq 0}">退费</option>
+                            <option value="2" th:selected="${criteria != null and criteria.contractStatus eq 0}">续报</option>
+                            <option value="4" th:selected="${criteria != null and criteria.contractStatus eq 0}">退费</option>
                         </select>
                     </td>
                     <td>
                         <label>学生姓名：</label>
-                        <input id="ss_name" name="student.name" type="text" class="textInput" postField="name"
-                               suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="ss" clean="true"
-                               th:value="${criteria != null and criteria.student ne null ? criteria.student.name : ''}"/>
-                        <input id="ss_id" type="hidden" name="student.id" clean="true"
-                               th:value="${criteria != null and criteria.student ne null ? criteria.student.id : ''}" />
+                        <input id="si_name" name="studentName" type="text" class="textInput" postField="name"
+                               suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="si" clean="true"
+                               th:value="${criteria != null ? criteria.studentName : ''}"/>
                     </td>
                     <td>
                         <label>咨询师：</label>
-                        <input id="sg_id" name="consultantId" type="hidden" clean="true"
-                               th:value="${criteria != null ? criteria.consultantId : ''}"/>
-                        <input id="sg_userName" name="consultant.userName" type="text" class="textInput"
-                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sg" clean="true"
-                               th:value="${criteria != null and criteria.consultant ne null ? criteria.consultant.userName : ''}"/>
+                        <input id="sic_userName" name="consultantName" type="text" class="textInput"
+                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sic" clean="true"
+                               th:value="${criteria != null ? criteria.consultantName : ''}"/>
                     </td>
                     <td>
                         <label>学管师：</label>
-                        <input id="sp_id" name="supervisorId" type="hidden" clean="true"
-                               th:value="${criteria != null ? criteria.supervisorId : ''}"/>
-                        <input id="sp_userName" name="supervisor.userName" type="text" class="textInput"
-                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sp" clean="true"
-                               th:value="${criteria != null and criteria.supervisor ne null ? criteria.supervisor.userName : ''}"/>
+                        <input id="sip_userName" name="supervisorName" type="text" class="textInput"
+                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sip" clean="true"
+                               th:value="${criteria != null ? criteria.supervisorName : ''}"/>
                     </td>
                     <td>
                         <label>支付方式：</label>
-                        <select class="combox" style="width: 120px" >
-                            <option value="1">现金</option>
-                            <option value="2">转账</option>
-                            <option value="3">微信</option>
-                            <option value="4">支付宝</option>
-                            <option value="5">其他</option>
+                        <select class="combox" style="width: 120px" th:value="${criteria != null and criteria.payType ne null ? criteria.payType : ''}">
+                            <option value="1" th:selected="${criteria != null and criteria.payType eq 1}">现金</option>
+                            <option value="2" th:selected="${criteria != null and criteria.payType eq 2}">转账</option>
+                            <option value="3" th:selected="${criteria != null and criteria.payType eq 3}">微信</option>
+                            <option value="4" th:selected="${criteria != null and criteria.payType eq 4}">支付宝</option>
+                            <option value="5" th:selected="${criteria != null and criteria.payType eq 5}">其他</option>
                         </select>
                     </td>
                 </tr>
