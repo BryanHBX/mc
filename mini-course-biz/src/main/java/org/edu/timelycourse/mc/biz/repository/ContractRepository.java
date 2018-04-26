@@ -10,5 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 public interface ContractRepository extends BaseRepository<ContractModel>
 {
-    ContractModel getByContractNo(@Param("contractNo") String contractNo);
+    ContractModel getByContractNo(@Param("contractNo") String contractNo,
+                                  @Param("sid") Integer schoolId);
 }

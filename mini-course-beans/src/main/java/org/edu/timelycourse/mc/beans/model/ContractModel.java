@@ -28,16 +28,10 @@ public class ContractModel extends BaseModel
      */
     private Integer consultantId;
 
-    @JsonIgnore
-    private UserModel consultant;
-
     /**
      * 学管师
      */
     private Integer supervisorId;
-
-    @JsonIgnore
-    private UserModel supervisor;
 
     /**
      * 报名类型
@@ -50,42 +44,24 @@ public class ContractModel extends BaseModel
     private Integer studentId;
 
     /**
-     * 学生信息
-     */
-    @JsonIgnore
-    private StudentModel student;
-
-    /**
      * 学生年段
      */
     private Integer levelId;
-
-    @JsonIgnore
-    private SystemConfigModel level;
 
     /**
      * 细分年段
      */
     private Integer subLevelId;
 
-    @JsonIgnore
-    private SystemConfigModel subLevel;
-
     /**
      * 课程名称
      */
     private Integer courseId;
 
-    @JsonIgnore
-    private SchoolProductModel course;
-
     /**
      * 课程子类
      */
     private Integer subCourseId;
-
-    @JsonIgnore
-    private SchoolProductModel subCourse;
 
     /**
      * 报名课时
@@ -135,18 +111,14 @@ public class ContractModel extends BaseModel
     /**
      * 合同创建时间
      */
+    @JsonIgnore
     private Date creationTime;
 
     /**
      * 合同更新时间
      */
-    private Date lastUpdateTime;
-
-    /**
-     * 收据列表
-     */
     @JsonIgnore
-    private List<ContractInvoiceModel> invoices;
+    private Date lastUpdateTime;
 
     /**
      * 已支付金额
@@ -166,7 +138,35 @@ public class ContractModel extends BaseModel
     /**
      * 学校ID
      */
+    @JsonIgnore
     private Integer schoolId;
+
+    @JsonIgnore
+    private SystemConfigModel subLevel;
+
+    @JsonIgnore
+    private SystemConfigModel level;
+
+    @JsonIgnore
+    private StudentModel student;
+
+    @JsonIgnore
+    private UserModel consultant;
+
+    @JsonIgnore
+    private UserModel supervisor;
+
+    @JsonIgnore
+    private SchoolProductModel course;
+
+    @JsonIgnore
+    private SchoolProductModel subCourse;
+
+    /**
+     * 收据列表
+     */
+    @JsonIgnore
+    private List<ContractInvoiceModel> invoices;
 
     public ContractModel () {}
 

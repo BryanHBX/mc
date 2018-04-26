@@ -1,9 +1,6 @@
 package org.edu.timelycourse.mc.biz.service;
 
-import org.edu.timelycourse.mc.beans.model.CourseGradeModel;
 import org.edu.timelycourse.mc.beans.model.StudentAttendanceModel;
-import org.edu.timelycourse.mc.biz.repository.ContractRepository;
-import org.edu.timelycourse.mc.biz.repository.CourseGradeRepository;
 import org.edu.timelycourse.mc.biz.repository.StudentAttendanceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

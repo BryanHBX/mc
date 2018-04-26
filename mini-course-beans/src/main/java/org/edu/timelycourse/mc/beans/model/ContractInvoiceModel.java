@@ -23,12 +23,10 @@ public class ContractInvoiceModel extends BaseModel
      */
     private Integer contractId;
 
-    @JsonIgnore
-    private ContractModel contract;
-
     /**
      * 学校ID
      */
+    @JsonIgnore
     private Integer schoolId;
 
     /**
@@ -55,11 +53,6 @@ public class ContractInvoiceModel extends BaseModel
     }
 
     /**
-     * 收据添加时间
-     */
-    private Date creationTime;
-
-    /**
      * 收据更新时间
      */
     private Date lastUpdateTime;
@@ -68,6 +61,15 @@ public class ContractInvoiceModel extends BaseModel
      * 归属者
      */
     private Integer ownerId;
+
+    /**
+     * 收据添加时间
+     */
+    @JsonIgnore
+    private Date creationTime;
+
+    @JsonIgnore
+    private ContractModel contract;
 
     @Override
     public boolean isValidInput ()

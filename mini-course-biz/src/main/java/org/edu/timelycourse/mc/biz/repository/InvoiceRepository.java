@@ -12,5 +12,6 @@ import java.util.List;
 @Component
 public interface InvoiceRepository extends BaseRepository<ContractInvoiceModel>
 {
-    List<ContractInvoiceModel> getByContractId(@Param("contractId") Integer contractId);
+    List<ContractInvoiceModel> getByContractId(@Param("cid") Integer contractId,
+                                               @Param("sid") Integer schoolId);
 }

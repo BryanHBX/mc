@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.beans.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
@@ -34,16 +35,19 @@ public class SchoolProductModel extends BaseModel
     /**
      * 学校ID
      */
+    @JsonIgnore
     private Integer schoolId;
 
     /**
      * 创建时间
      */
+    @JsonIgnore
     private Date creationTime;
 
     /**
      * 更新时间
      */
+    @JsonIgnore
     private Date lastUpdateTime;
 
     /**

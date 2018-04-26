@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 
+import java.util.Date;
+
 /**
  * Created by x36zhao on 2018/4/25.
  */
@@ -20,8 +22,9 @@ public class ContractTransformDTO extends BaseDTO
 
     @JsonIgnore
     private double sourcePeriod;
-
     private double transformPrice;
+
+    private Date transformDate;
 
     @Override
     @JsonIgnore

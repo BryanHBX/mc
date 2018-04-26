@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.beans.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 
@@ -9,15 +10,17 @@ import org.edu.timelycourse.mc.common.utils.EntityUtils;
 @Data
 public class CourseArrangementModel extends BaseModel
 {
+    @JsonIgnore
     private Integer schoolId;
     private Integer contractId;
     private Integer teacherId;
-    private Integer gradeId;
+    private Integer classId;
 
     @Override
+    @JsonIgnore
     public boolean isValidInput ()
     {
         return EntityUtils.isValidEntityId(schoolId, contractId, teacherId) &&
-                (gradeId == null || EntityUtils.isValidEntityId(gradeId));
+                (classId == null || EntityUtils.isValidEntityId(classId));
     }
 }

@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.beans.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.Date;
@@ -18,6 +19,7 @@ public class StudentAttendanceModel extends BaseModel
     /**
      * 学校ID
      */
+    @JsonIgnore
     private Integer schoolId;
 
     /**
