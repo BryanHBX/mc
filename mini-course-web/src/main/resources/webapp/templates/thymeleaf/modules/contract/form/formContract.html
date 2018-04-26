@@ -206,7 +206,7 @@
 
             var paid = 0;
             if (valid) {
-                $("input.paymoney").each(function(){
+                 $("#contractForm").find("input.paymoney").each(function(){
                     if (valid) {
                         var invoiceNo = $($(this).parent().parent().find("input")[0]).val();
                         $(this).val($(this).val().trim());

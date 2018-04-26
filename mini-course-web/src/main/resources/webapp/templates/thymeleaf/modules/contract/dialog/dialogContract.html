@@ -49,7 +49,7 @@
                     <dl>
                         <dt>报名类型：</dt>
                         <dd>
-                            <select name="enrollType[id]" style="width: 160px"
+                            <select name="enrollType[id]" style="width: 160px" title="报名类型"
                                     th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
                                     th:value="${entity ne null and entity.enrollType ne null ? entity.enrollType.id : ''}"
                                     th:readonly="${entity ne null and op ne 'edit'}">
@@ -68,7 +68,7 @@
                     <dl th:if="${op ne 'transfer' and op ne 'refund'}">
                         <dt>学生年段：</dt>
                         <dd>
-                            <select id="stu_levelId" name="grade[id]" style="width: 160px"
+                            <select id="stu_levelId" name="grade[id]" style="width: 160px" title="学生年段"
                                     ref="stu_subLevelId" refUrl="system/config/{value}" callIfEmpty="false"
                                     data="data" group="children" optName="configDescription" optVal="id"
                                     th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
@@ -83,7 +83,7 @@
                     <dl>
                         <dt>细分年段：</dt>
                         <dd>
-                            <select id="stu_subLevelId" name="gradeSub[id]" style="width: 160px"
+                            <select id="stu_subLevelId" name="gradeSub[id]" style="width: 160px" title="细分年段"
                                     th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
                                     th:value="${entity ne null and entity.gradeSub ne null ? entity.gradeSub.id : ''}">
                                 <option value="">请选择</option>
@@ -96,7 +96,7 @@
                     <dl>
                         <dt>课程大类：</dt>
                         <dd>
-                            <select id="stu_courseId" name="course[id]" style="width: 160px"
+                            <select id="stu_courseId" name="course[id]" style="width: 160px" title="课程大类"
                                     ref="stu_subCourseId" refUrl="product/{value}" callIfEmpty="false"
                                     data="data" group="children" optName="productName" optVal="id"
                                     th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
@@ -109,7 +109,7 @@
                     <dl>
                         <dt>课程子类：</dt>
                         <dd>
-                            <select name="courseSub[id]" style="width: 160px" id="stu_subCourseId"
+                            <select name="courseSub[id]" style="width: 160px" id="stu_subCourseId" title="课程子类"
                                     th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
                                     th:value="${entity ne null and entity.courseSub ne null ? entity.courseSub.id : ''}">
                                 <option value="">请选择</option>
@@ -202,7 +202,7 @@
                         <dl>
                             <dt>联系人关系：</dt>
                             <dd>
-                                <select id="stu_contactRelationType" clean="true" style="width: 160px" name="student[contactRelationType]"
+                                <select id="stu_contactRelationType" clean="true" style="width: 160px" name="student[contactRelationType]" title="联系人关系"
                                         th:value="${entity ne null and entity.student ne null and entity.student.contactRelation ne null ? entity.student.contactRelation.id : ''}"
                                         class="combox disabled">
                                     <option value="1">父亲</option>
@@ -249,7 +249,7 @@
                         <dl>
                             <dt>课程大类：</dt>
                             <dd>
-                                <select id="stu_courseId" name="courseId" style="width: 160px"
+                                <select id="stu_targetCourseId" name="courseId" style="width: 160px" title="课程大类"
                                         ref="stu_subCourseId" refUrl="product/{value}" callIfEmpty="false"
                                         data="data" group="children" optName="productName" optVal="id"
                                         th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
@@ -262,7 +262,7 @@
                         <dl>
                             <dt>课程子类：</dt>
                             <dd>
-                                <select name="subCourseId" style="width: 160px" id="stu_subCourseId"
+                                <select name="subCourseId" style="width: 160px" id="stu_targetSubCourseId" title="课程子类"
                                         th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
                                         th:value="${entity ne null ? entity.subCourseId : ''}">
                                     <option value="">请选择</option>
@@ -345,7 +345,7 @@
                             <thead>
                                 <tr>
                                     <th type="text" width="" name="invoices[][invoiceNo]" fieldClass="required">收据编号</th>
-                                    <th type="text" width="" name="invoices[][price]" defaultVal="0.00" size="12" fieldClass="number required">支付金额</th>
+                                    <th type="text" width="" name="invoices[][price]" defaultVal="0.00" size="12" fieldClass="number required paymoney">支付金额</th>
                                     <th type="enum" width="120" name="invoices[][payType][id]" enum="现金:1,转账:2,微信:3,支付宝:4,其他:5">支付方式</th>
                                     <th type="del" width="60" align="center">操作</th>
                                 </tr>
@@ -353,7 +353,7 @@
                             <tbody>
                                 <tr class="unitBox">
                                     <td><input type="text" name="invoices[][invoiceNo]" value="" size="12" class="required" maxlength="10"></td>
-                                    <td><input type="text" name="invoices[][price]" value="0.00" size="12" class="required number textInput"></td>
+                                    <td><input type="text" name="invoices[][price]" value="0.00" size="12" class="required number textInput paymoney"></td>
                                     <td>
                                         <select class="combox" style="width: 120px" name="invoices[][payType][id]">
                                             <option value="1">现金</option>
@@ -374,7 +374,7 @@
                 <div th:if="${entity ne null and op eq 'addInvoice'}">
                     <label style="width: 80px; padding: 0; text-align: right;">开票归属：</label>
                     <input id="sd_id" name="ownerId" type="hidden" class="textInput" />
-                    <input id="sd_userName" name="ownerName" type="text" class="textInput"
+                    <input id="sd_userName" name="ownerName" type="text" class="textInput required"
                            postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sd"/>
                 </div>
             </div>
@@ -430,7 +430,7 @@
                             <thead>
                             <tr>
                                 <th type="text" width="" name="invoices[][invoiceNo]" fieldClass="required">收据编号</th>
-                                <th type="text" width="" name="invoices[][price]" defaultVal="0.00" size="12" fieldClass="number required">支付金额</th>
+                                <th type="text" width="" name="invoices[][price]" defaultVal="0.00" size="12" fieldClass="number required paymoney">支付金额</th>
                                 <th type="enum" width="120" name="invoices[][type]" enum="现金:1,转账:2,微信:3,支付宝:4,其他:5">支付方式</th>
                                 <th type="del" width="60" align="center">操作</th>
                             </tr>
@@ -439,7 +439,7 @@
                                 <div th:if="${not #lists.isEmpty(entity.invoices)}">
                                     <tr class="unitBox" th:each="invoice: ${entity.invoices}">
                                         <td><input type="text" name="invoices[][invoiceNo]" th:value="${invoice.invoiceNo}" size="12" class="required" maxlength="10"></td>
-                                        <td><input type="text" name="invoices[][price]" th:value="${invoice.price}" size="12" class="required number textInput"></td>
+                                        <td><input type="text" name="invoices[][price]" th:value="${invoice.price}" size="12" class="required number textInput paymoney"></td>
                                         <td>
                                             <select class="combox" style="width: 120px" name="invoices[][type]" th:value="${invoice.type}">
                                                 <option value="1">现金</option>
@@ -510,19 +510,51 @@
             if (!$("#contractFormDialog").valid()) {
                 return false;
             }
-            var formData = $("#contractFormDialog").serializeJSON();
-            var invoiceData = formData["invoices"];
-            for (var index in invoiceData) {
-                invoiceData[index]["contract"] = {"id" : formData["id"]};
-                invoiceData[index]["owner"] = {"id": formData["ownerId"]};
-            }
-            generic_ajax_op("invoice", "POST", invoiceData, null, (
-                function (result) {
-                    alertMsg.correct("学费补缴成功");
-                    $.pdialog.closeCurrent();
-                    navTab.reload(null, {});
+
+            var valid = true;
+            var paid = 0;
+            $("#contractFormDialog").find("input.paymoney").each(function(){
+                if (valid) {
+                    $(this).val($(this).val().trim());
+                    var invoiceNoEle = $($(this).parent().parent().find("input")[0]);
+                    if ($(invoiceNoEle).val() == "") {
+                        alertMsg.error("收据编号不能为空");
+                        $(invoiceNoEle).focus();
+                        valid = false;
+                        return;
+                    }
+
+                    if ($(this).val() == "" || !/^-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test($(this).val()) || parseFloat($(this).val()) <= 0) {
+                        $(this).focus();
+                        valid = false;
+                        alertMsg.error("非法支付金额: " + $(this).val());
+                        return;
+                    } else {
+                        paid += parseFloat($(this).val());
+                    }
                 }
-            ));
+            });
+
+            if (valid) {
+                if (paid > [[${entity.totalPrice - entity.paid}]]) {
+                    alertMsg.error("缴费总额 (" + paid + ") 超出了欠费金额 (" + [[${entity.totalPrice - entity.paid}]] + ") !");
+                    return false;
+                }
+
+                var formData = $("#contractFormDialog").serializeJSON();
+                var invoiceData = formData["invoices"];
+                for (var index in invoiceData) {
+                    invoiceData[index]["contract"] = {"id" : formData["id"]};
+                    invoiceData[index]["owner"] = {"id": formData["ownerId"]};
+                }
+                generic_ajax_op("invoice", "POST", invoiceData, null, (
+                    function (result) {
+                        alertMsg.correct("学费补缴成功");
+                        $.pdialog.closeCurrent();
+                        navTab.reload(null, {});
+                    }
+                ));
+            }
         });
     });
     /*]]>*/
