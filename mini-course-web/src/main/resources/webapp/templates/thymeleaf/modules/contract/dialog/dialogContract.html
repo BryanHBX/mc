@@ -157,6 +157,14 @@
                                    th:value="${entity ne null ? entity.remainedPrice : ''}"/>
                         </dd>
                     </dl>
+                    <dl>
+                        <dt>其他费用：</dt>
+                        <dd><input name="otherPrice" type="text"
+                                   th:class="'textInput ' + ${entity eq null or op eq 'edit' ? 'number' : 'readonly'}"
+                                   th:readonly="${entity ne null and op ne 'edit'}"
+                                   th:value="${entity ne null ? entity.otherPrice : ''}"/>
+                        </dd>
+                    </dl>
                     <dl th:if="${op eq 'refund'}">
                         <dt>赠送课时：</dt>
                         <dd><input name="freePeriod" type="text"
@@ -240,8 +248,8 @@
             </fieldset>
         </div>
 
-        <!-- 转课时 -->
         <div th:if="${entity ne null and op eq 'transfer'}">
+            <!-- 转课时 -->
             <form id="transForm" method="POST" th:action="'contract/' + ${entity.id} + '/transform'">
                 <div>
                     <fieldset>
@@ -254,7 +262,10 @@
                                         data="data" group="children" optName="productName" optVal="id"
                                         th:value="${entity ne null and entity.course ne null ? entity.course.id : ''}">
                                     <option value="">请选择</option>
-                                    <option th:each="option:${products}" th:value="${option.id}" th:text="${option.productName}">课程名称</option>
+                                    <option th:each="option:${products}"
+                                            th:value="${option.id}"
+                                            th:text="${option.productName}"
+                                            th:selected="${entity ne null and entity.course ne null and entity.course.id eq option.id}">课程大类</option>
                                 </select>
                             </dd>
                         </dl>
@@ -266,7 +277,8 @@
                                     <option value="">请选择</option>
                                     <option th:if="${entity.courseSub ne null}"
                                             th:value="${entity.courseSub.id}"
-                                            th:text="${entity ne null and entity.courseSub ne null ? entity.courseSub.name : ''}"></option>
+                                            th:text="${entity ne null and entity.courseSub ne null ? entity.courseSub.name : ''}"
+                                            th:selected="${entity ne null and entity.courseSub ne null}">课程子类</option>
                                 </select>
                             </dd>
                         </dl>
@@ -276,11 +288,11 @@
                         </dl>
                         <dl>
                             <dt>新课课时：</dt>
-                            <dd><input name="transformPeriod" type="text" class="textInput required number" /></dd>
+                            <dd><input name="transformPeriod" id="transformPeriod" type="text" class="textInput required number" /></dd>
                         </dl>
                         <dl>
                             <dt>转换金额：</dt>
-                            <dd><input name="transformPrice" type="text" class="textInput required number" /></dd>
+                            <dd><input name="transformPrice" id="transformPrice" type="text" class="textInput required number" /></dd>
                         </dl>
                         <dl>
                             <dt>需原课时：</dt>
@@ -312,51 +324,54 @@
             </form>
         </div>
 
-        <!-- 欠费补缴 -->
         <div th:if="${entity ne null and op eq 'addInvoice'}">
-            <fieldset>
-                <legend style="color:red;" th:text="'该合同欠费金额' + ${entity.totalPrice - entity.paid}">收据信息</legend>
-                <div style="overflow: auto;" id="addInvoiceForm">
-                    <table class="list nowrap itemDetail" width="100%" th:addButton="${op eq 'addInvoice' ? '添加收据' : ''}" rowNumWidth="30">
-                        <thead>
-                            <tr>
-                                <th type="text" width="" name="invoices[][invoiceNo]" fieldClass="required">收据编号</th>
-                                <th type="text" width="" name="invoices[][price]" defaultVal="0.00" size="12" fieldClass="number required paymoney">支付金额</th>
-                                <th type="enum" width="120" name="invoices[][payType][id]" enum="现金:1,转账:2,微信:3,支付宝:4,其他:5">支付方式</th>
-                                <th type="del" width="60" align="center">操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="unitBox">
-                                <td><input type="text" name="invoices[][invoiceNo]" value="" size="12" class="required" maxlength="10"></td>
-                                <td><input type="text" name="invoices[][price]" value="0.00" size="12" class="required number textInput paymoney"></td>
-                                <td>
-                                    <select class="combox" style="width: 120px" name="invoices[][payType][id]">
-                                        <option value="1">现金</option>
-                                        <option value="2">转账</option>
-                                        <option value="3">微信</option>
-                                        <option value="4">支付宝</option>
-                                        <option value="5">其他</option>
-                                    </select>
-                                </td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </fieldset>
+            <!-- 欠费补缴 -->
+            <form id="addInvoiceForm" method="POST" action="invoice">
+                <fieldset>
+                    <legend style="color:red;" th:text="'该合同欠费金额' + ${entity.totalPrice - entity.paid}">收据信息</legend>
+                    <div style="overflow: auto;" id="addInvoiceForm">
+                        <table class="list nowrap itemDetail" width="100%" th:addButton="${op eq 'addInvoice' ? '添加收据' : ''}" rowNumWidth="30">
+                            <thead>
+                                <tr>
+                                    <th type="text" width="" name="invoices[][invoiceNo]" fieldClass="required">收据编号</th>
+                                    <th type="text" width="" name="invoices[][price]" defaultVal="0.00" size="12" fieldClass="number required paymoney">支付金额</th>
+                                    <th type="enum" width="120" name="invoices[][payType][id]" enum="现金:1,转账:2,微信:3,支付宝:4,其他:5">支付方式</th>
+                                    <th type="del" width="60" align="center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="unitBox">
+                                    <td><input type="text" name="invoices[][invoiceNo]" value="" size="12" class="required" maxlength="10"></td>
+                                    <td><input type="text" name="invoices[][price]" value="0.00" size="12" class="required number textInput paymoney"></td>
+                                    <td>
+                                        <select class="combox" style="width: 120px" name="invoices[][payType][id]">
+                                            <option value="1">现金</option>
+                                            <option value="2">转账</option>
+                                            <option value="3">微信</option>
+                                            <option value="4">支付宝</option>
+                                            <option value="5">其他</option>
+                                        </select>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
 
-            <div class="divider"></div>
-            <div>
-                <label style="width: 80px; padding: 0; text-align: right;">开票归属：</label>
-                <input id="sai_id" name="invoices[][owner][id]" type="hidden" class="textInput" />
-                <input id="sai_userName" name="invoices[][owner][name]" type="text" class="textInput required"
-                       postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sai"/>
-            </div>
+                <div class="divider"></div>
+                <div>
+                    <label style="width: 80px; padding: 0; text-align: right;">开票归属：</label>
+                    <input id="sai_id" name="ownerId" type="hidden" class="textInput" />
+                    <input id="sai_userName" name="ownerName" type="text" class="textInput required"
+                           postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sai"/>
+                </div>
+                <input type="hidden" name="contractId" th:value="${entity ne null ? entity.id : ''}" />
+            </form>
         </div>
 
-        <!-- 退费 -->
         <div th:if="${entity ne null and op eq 'refund'}">
+            <!-- 退费 -->
             <fieldset>
                 <legend>退费处理</legend>
                 <dl>
@@ -397,8 +412,8 @@
             </div>
         </div>
 
-        <!-- 编辑 -->
         <div th:if="${entity ne null and op eq 'edit'}">
+            <!-- 编辑 -->
             <fieldset>
                 <legend>收据信息</legend>
                 <div style="overflow: auto;" id="editForm">
@@ -436,8 +451,8 @@
             </fieldset>
         </div>
 
-        <!-- 查看 -->
         <div th:if="${entity ne null and (op eq null or op eq '')}">
+            <!-- 查看 -->
             <fieldset>
                 <legend>收据信息</legend>
                 <div style="overflow: auto;">
@@ -480,12 +495,14 @@
 
 <script xmlns:th="http://www.thymeleaf.org" type="text/javascript" th:if="${op eq 'transfer'}">
     /*<![CDATA[*/
+    var pricePerPeriod = [[${(entity.totalPrice - entity.otherPrice) / entity.enrollPeriod}]];
     $(function() {
         $("#btnDialogSaveContract").unbind("click").bind("click", function(){
             if (!$("#transForm").valid()) {
                 return false;
             }
-            generic_ajax_op("invoice/" + [[${entity.id}]] + "/transform", "POST", $("#transForm").serializeJSON(), null, (
+
+            generic_ajax_op("contract/" + [[${entity.id}]] + "/transform", "POST", $("#transForm").serializeJSON(), null, (
                 function (result) {
                     alertMsg.correct("转课时成功");
                     $.pdialog.closeCurrent();
@@ -494,35 +511,18 @@
             ));
         });
 
-        $("#transformPeriod").keyup(function(){
-            price = $("#transformPrice").val().trim();
-            if (price != "") {
-                if (!isNaN($(this).val().trim()) && !isNaN(price)) {
-                    price = parseFloat(price);
-                    period = parseFloat($(this).val());
-                    if (price > 0 && period > 0) {
-                        $("#sourcePeriod").val(price / [[${entity.pricePerPeriod}]]);
-                        return;
-                    }
-                }
-            }
-
-            $("#sourcePeriod").val("");
-        });
         $("#transformPrice").keyup(function(){
-            period = $("#transformPeriod").val().trim();
-            if (period != "") {
-                if (!isNaN($(this).val() && !isNaN(period)) {
-                    price = parseFloat($(this).val());
-                    period = parseFloat(period);
-                    if (price > 0 && period > 0) {
-                        $("#sourcePeriod").val(price / [[${entity.pricePerPeriod}]]);
-                        return;
-                    }
+            if ($(this).val().trim() != "" && !isNaN($(this).val().trim())) {
+                var price = parseFloat($(this).val().trim());
+                if (price > 0) {
+                    var costPeriod = price / pricePerPeriod;
+                    $("#sourcePeriod").val(costPeriod);
+                    $("#remainedPeriod").val([[${entity.remainedPeriod}]] - costPeriod);
+                    $("#remainedPrice").val([[${entity.remainedPrice}]] - costPeriod * pricePerPeriod);
                 }
+            } else {
+                $("#sourcePeriod").val("");
             }
-
-            $("#sourcePeriod").val("");
         });
     });
 </script>
@@ -543,13 +543,13 @@
     /*<![CDATA[*/
     $(function(){
         $("#btnDialogSaveContract").unbind("click").bind("click", function(){
-            if (!$("#contractFormDialog").valid()) {
+            if (!$("#addInvoiceForm").valid()) {
                 return false;
             }
 
             var valid = true;
             var paid = 0;
-            $("#contractFormDialog").find("input.paymoney").each(function(){
+            $("#addInvoiceForm").find("input.paymoney").each(function(){
                 if (valid) {
                     $(this).val($(this).val().trim());
                     var invoiceNoEle = $($(this).parent().parent().find("input")[0]);
@@ -577,11 +577,11 @@
                     return false;
                 }
 
-                var formData = $("#contractFormDialog").serializeJSON();
+                var formData = $("#addInvoiceForm").serializeJSON();
                 var invoiceData = formData["invoices"];
                 for (var index in invoiceData) {
-                    invoiceData[index]["contract"] = {"id" : formData["id"]};
-                    invoiceData[index]["owner"] = {"id": formData["ownerId"]};
+                    invoiceData[index]["contract"] = { id : formData["contractId"] };
+                    invoiceData[index]["owner"] = { id: formData["ownerId"] };
                 }
                 generic_ajax_op("invoice", "POST", invoiceData, null, (
                     function (result) {

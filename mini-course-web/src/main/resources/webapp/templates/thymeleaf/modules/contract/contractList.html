@@ -68,26 +68,27 @@
     <table class="table" width="100%" layoutH="110">
         <thead>
             <tr>
-                <th width="60">合同状态</th>
-                <th width="60">报名类型</th>
-                <th width="80">签约日期</th>
+                <th>合同状态</th>
+                <th>报名类型</th>
+                <th>签约日期</th>
                 <th>合同编号</th>
                 <th>姓名</th>
                 <th>细分年段</th>
                 <th>报名课程</th>
-                <th width="80">报名课时</th>
-                <th width="80">赠送课时</th>
+                <th width="60">报名课时</th>
+                <th width="60">赠送课时</th>
                 <th>签约总价</th>
+                <th>其他费用</th>
                 <th>实收金额</th>
                 <th>实际单价</th>
                 <th>已缴费</th>
                 <th>欠费</th>
                 <th>转退课时</th>
-                <th width="80">剩余课时</th>
-                <th width="60">课时记录</th>
+                <th>剩余课时</th>
+                <th>课时记录</th>
                 <th width="60" th:if="${module eq 'finance'}">转课时</th>
-                <th width="60" th:if="${module eq 'finance'}">退费</th>
-                <th width="60" th:if="${module eq 'contract'}">补缴</th>
+                <th width="40" th:if="${module eq 'finance'}">退费</th>
+                <th width="40" th:if="${module eq 'contract'}">补缴</th>
                 <th>咨询师</th>
                 <th>学管师</th>
             </tr>
@@ -96,7 +97,7 @@
             <div th:if="${pagingBean != null and pagingBean.items != null}">
                 <tr th:each="item: ${pagingBean.items}">
                     <td align="center" th:text="${item.status ne null ? item.status.name : '--'}"></td>
-                    <td align="left" th:text="${item.enrollType ne null ? item.enrollType.name : '--'}"></td>
+                    <td align="center" th:text="${item.enrollType ne null ? item.enrollType.name : '--'}"></td>
                     <td align="center" th:text="${item.contractDate ne null ? #dates.format(item.contractDate, 'yyyy-MM-dd') : '--'}"></td>
                     <td align="left">
                         <a target="dialog" mask="true" width="890" height="590"
@@ -109,12 +110,13 @@
                     <td align="center" th:text="${item.enrollPeriod}"></td>
                     <td align="center" th:text="${item.freePeriod}"></td>
                     <td align="center" th:text="${item.contractPrice}"></td>
+                    <td align="center" th:text="${item.otherPrice}"></td>
                     <td align="center" th:text="${item.totalPrice}"></td>
-                    <td align="center" th:text="${#numbers.formatDecimal((item.totalPrice - item.otherPrice)/ item.enrollPeriod, 2, 2)}"></td>
+                    <td align="center" th:text="${#numbers.formatDecimal((item.totalPrice - item.otherPrice)/ item.enrollPeriod, 0, 2)}"></td>
                     <td align="center" th:text="${item.paid}"></td>
                     <td align="center" th:text="${item.totalPrice - item.paid > 0 ? ('-' + (item.totalPrice - item.paid)) : '--'}"
                         th:style="${item.totalPrice - item.paid > 0 ? 'background-color: red;' : ''}"></td>
-                    <td align="center" th:text="${item.transferPeriod}"></td>
+                    <td align="center" th:text="${#numbers.formatDecimal(item.transferPeriod, 1, 2)}"></td>
                     <td align="center" th:text="${item.remainedPeriod}"></td>
                     <td align="center">
                         <a title="查看课时记录" target="dialog" mask="true" width="585" height="450" class="btnLook" href="" style="float: none">查看</a>

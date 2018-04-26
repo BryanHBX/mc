@@ -220,7 +220,7 @@ public class ContractService extends BaseService<ContractModel>
             }
 
             // calculate the period from source contract
-            double transferPeriod = dto.getTransformPeriod() / source.getPricePerPeriod();
+            double transferPeriod = dto.getTransformPrice() / source.getPricePerPeriod();
             double remainedPeriod = source.getRemainedPeriod() - transferPeriod;
             if (remainedPeriod < 0)
             {
@@ -242,10 +242,11 @@ public class ContractService extends BaseService<ContractModel>
             target.setEnrollType(EEnrollmentType.TRANSFER.code());
             target.setRemainedPeriod(target.getEnrollPeriod());
             target.setPayStatus(EContractDebtStatus.DONE.code());
+            target.setPaid(target.getTotalPrice());
             repository.insert(target);
 
             // update the original contract
-            source.setTransferPeriod(transferPeriod);
+            source.setTransferPeriod(source.getTransferPeriod() + transferPeriod);
             source.setRemainedPeriod(remainedPeriod);
             source.setLastUpdateTime(new Date());
             if (source.getRemainedPeriod() == 0)
@@ -274,7 +275,7 @@ public class ContractService extends BaseService<ContractModel>
             SecurityContextHelper.validatePermission(contract.getSchoolId(), null);
 
             // delete invoices if have
-            List<ContractInvoiceModel> invoices = invoiceRepository.getByContractId(id);
+            List<ContractInvoiceModel> invoices = invoiceRepository.getByContractId(id, contract.getSchoolId());
             if (invoices != null)
             {
                 for (ContractInvoiceModel invoice : invoices)
