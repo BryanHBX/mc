@@ -117,7 +117,7 @@
                     <td align="center" th:text="${item.totalPrice - item.paid > 0 ? ('-' + (item.totalPrice - item.paid)) : '--'}"
                         th:style="${item.totalPrice - item.paid > 0 ? 'background-color: red;' : ''}"></td>
                     <td align="center" th:text="${#numbers.formatDecimal(item.transferPeriod, 1, 2)}"></td>
-                    <td align="center" th:text="${item.remainedPeriod}"></td>
+                    <td align="center" th:text="${#numbers.formatDecimal(item.remainedPeriod, 1, 2)}"></td>
                     <td align="center">
                         <a title="查看课时记录" target="dialog" mask="true" width="585" height="450" class="btnLook" href="" style="float: none">查看</a>
                     </td>
