@@ -116,7 +116,6 @@ public class ContractDTO extends BaseDTO
     /**
      * 学生
      */
-    //private NamedOptionProperty student;
     private StudentDTO student;
 
     /**

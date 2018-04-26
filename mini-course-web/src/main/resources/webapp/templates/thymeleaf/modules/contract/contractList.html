@@ -122,7 +122,7 @@
                            style="float: none; text-decoration: underline; color: #1465ff">
                             <span>补缴</span>
                         </a>
-                        <span th:if="${item.totalPrice - item.paid == 0}">--</span>
+                        <span th:if="${item.totalPrice - item.paid <= 0}">--</span>
                     </td>
                     <td align="center" th:if="${module eq 'finance'}">
                         <a title="转课时" target="dialog" mask="true" width="890" height="520" th:href="'contract/' + ${item.id} + '?op=transfer'"

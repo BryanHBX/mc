@@ -6,6 +6,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.edu.timelycourse.mc.beans.dto.InvoiceDTO;
 import org.edu.timelycourse.mc.beans.enums.EPaymentType;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
+import org.edu.timelycourse.mc.common.utils.StringUtil;
 import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
 import org.springframework.beans.BeanUtils;
 import sun.plugin.liveconnect.SecurityContextHelper;
@@ -71,10 +72,22 @@ public class ContractInvoiceModel extends BaseModel
     @Override
     public boolean isValidInput ()
     {
-        return EPaymentType.hasValue(type) &&
-                ValidatorUtil.isFloatNumber(price) &&
-                EntityUtils.isValidEntityId(schoolId) &&
-                Strings.isNotEmpty(invoiceNo);
+        boolean valid = EPaymentType.hasValue(type) && EntityUtils.isValidEntityId(schoolId);
+
+        if (valid)
+        {
+            if (!StringUtil.isNotEmpty(invoiceNo) && price > 0)
+            {
+                return false;
+            }
+
+            if (StringUtil.isNotEmpty(invoiceNo) && price <= 0)
+            {
+                return false;
+            }
+        }
+
+       return valid;
     }
 
     public static ContractInvoiceModel from (final InvoiceDTO dto)

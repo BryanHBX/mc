@@ -16,10 +16,12 @@ import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.edu.timelycourse.mc.common.utils.DateUtil;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
+import org.edu.timelycourse.mc.common.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -99,6 +101,8 @@ public class ContractService extends BaseService<ContractModel>
             if (model.getStudentId() != null && EntityUtils.isValidEntityId(model.getStudentId()))
             {
                 studentEntity = (StudentModel) Asserts.assertEntityNotNullById(studentRepository, model.getStudentId());
+                BeanUtils.copyProperties(model.getStudent(), studentEntity, "id");
+                studentRepository.update(studentEntity);
             }
             else
             {
@@ -107,8 +111,8 @@ public class ContractService extends BaseService<ContractModel>
             }
 
             // check if same school id in place
-            if (consultant.getSchoolId() != model.getSchoolId() &&
-                    studentEntity.getSchoolId() != model.getSchoolId())
+            if (!consultant.getSchoolId().equals(model.getSchoolId()) &&
+                    !studentEntity.getSchoolId().equals(model.getSchoolId()))
             {
                 throw new ServiceException(String.format(
                         "Conflict school id in payload request - [consultant (sid: %d), student (sid: %d), contract (sid: %d)]",
@@ -128,6 +132,7 @@ public class ContractService extends BaseService<ContractModel>
             model.setRemainedPeriod(model.getEnrollPeriod());
             model.setStudentId(studentEntity.getId());
             model.setCreationTime(new Date());
+            model.setPaid(model.getInvoicePayTotal());
 
             // save contract
             repository.insert(model);
@@ -137,10 +142,14 @@ public class ContractService extends BaseService<ContractModel>
             {
                 for (ContractInvoiceModel invoice : model.getInvoices())
                 {
-                    invoice.setSchoolId(model.getSchoolId());
-                    invoice.setCreationTime(new Date());
-                    invoice.setContractId(model.getId());
-                    invoiceRepository.insert(invoice);
+                    if (invoice.getPrice() > 0 && StringUtil.isNotEmpty(invoice.getInvoiceNo()))
+                    {
+                        invoice.setSchoolId(model.getSchoolId());
+                        invoice.setCreationTime(new Date());
+                        invoice.setContractId(model.getId());
+                        invoice.setOwnerId(model.getConsultantId());
+                        invoiceRepository.insert(invoice);
+                    }
                 }
             }
 
@@ -177,10 +186,15 @@ public class ContractService extends BaseService<ContractModel>
             repository.update(contract);
 
             // add invoice with refund status
+            double refundedPrice = dto.getRefundPrice();
+            if (dto.getRefundOtherPrice() > 0)
+            {
+                refundedPrice += dto.getRefundOtherPrice();
+            }
             ContractInvoiceModel invoice = new ContractInvoiceModel();
             invoice.setContractId(contract.getId());
             invoice.setSchoolId(contract.getSchoolId());
-            invoice.setPrice(-dto.getRefundPrice());
+            invoice.setPrice(-refundedPrice);
             invoice.setCreationTime(DateUtil.from(dto.getRefundDate()));
             invoiceRepository.insert(invoice);
 

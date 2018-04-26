@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
 import org.edu.timelycourse.mc.beans.dto.ContractDTO;
+import org.edu.timelycourse.mc.beans.dto.InvoiceDTO;
 import org.edu.timelycourse.mc.beans.enums.EContractDebtStatus;
 import org.edu.timelycourse.mc.beans.enums.EContractStatus;
 import org.edu.timelycourse.mc.beans.enums.EEnrollmentType;
@@ -193,6 +194,23 @@ public class ContractModel extends BaseModel
         return (totalPrice - otherPrice) / enrollPeriod;
     }
 
+    /**
+     * 获取缴费总额
+     * @return
+     */
+    public double getInvoicePayTotal ()
+    {
+        double payTotal = 0;
+        if (invoices != null)
+        {
+            for (ContractInvoiceModel invoice : invoices)
+            {
+                payTotal += invoice.getPrice();
+            }
+        }
+        return payTotal;
+    }
+
     @Override
     public boolean isValidInput ()
     {
@@ -216,6 +234,11 @@ public class ContractModel extends BaseModel
             }
         }
 
+        if (getInvoicePayTotal() > 0)
+        {
+            valid = getInvoicePayTotal() <= totalPrice;
+        }
+
         return valid;
     }
 
@@ -236,6 +259,11 @@ public class ContractModel extends BaseModel
         model.setSubLevelId(dto.getGradeSub() != null ? dto.getGradeSub().getId() : null);
         model.setCourseId(dto.getCourse() != null ? dto.getCourse().getId() : null);
         model.setSubCourseId(dto.getCourseSub() != null ? dto.getCourseSub().getId() : null);
+
+        if (dto.getInvoices() != null)
+        {
+            model.setInvoices(ContractInvoiceModel.from(dto.getInvoices()));
+        }
 
         return model;
     }

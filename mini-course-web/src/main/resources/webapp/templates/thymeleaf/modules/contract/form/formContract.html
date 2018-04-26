@@ -39,7 +39,7 @@
                     <dl>
                         <dt>报名类型：</dt>
                         <dd>
-                            <select class="combox" name="enrollType[id]" style="width: 160px">
+                            <select class="combox" name="enrollType[id]" title="报名类型" style="width: 160px">
                                 <option value="1">新报</option>
                                 <option value="2">续保</option>
                             </select>
@@ -52,7 +52,7 @@
                     <dl>
                         <dt>学生年段：</dt>
                         <dd>
-                            <select id="stu_levelId" class="combox" name="grade[id]" style="width: 160px"
+                            <select id="stu_levelId" class="combox" name="grade[id]" style="width: 160px" title="学生年段"
                                     ref="stu_subLevelId" refUrl="system/config/{value}" callIfEmpty="false"
                                     data="data" group="children" optName="configDescription" optVal="id"
                                     th:if="${not #lists.isEmpty(level.children)}"
@@ -65,7 +65,7 @@
                     <dl>
                         <dt>细分年段：</dt>
                         <dd>
-                            <select id="stu_subLevelId" class="combox" name="gradeSub[id]" style="width: 160px">
+                            <select id="stu_subLevelId" class="combox" name="gradeSub[id]" style="width: 160px" title="细分年段">
                                 <option value="">请选择</option>
                             </select>
                         </dd>
@@ -73,7 +73,7 @@
                     <dl>
                         <dt>课程名称：</dt>
                         <dd>
-                            <select id="stu_courseId"  class="combox" name="course[id]" style="width: 160px"
+                            <select id="stu_courseId"  class="combox" name="course[id]" style="width: 160px" title="课程名称"
                                     ref="stu_subCourseId" refUrl="product/{value}" callIfEmpty="false"
                                     data="data" group="children" optName="productName" optVal="id">
                                 <option value="">请选择</option>
@@ -84,7 +84,7 @@
                     <dl>
                         <dt>课程子类：</dt>
                         <dd>
-                            <select class="combox" name="courseSub[id]" style="width: 160px" id="stu_subCourseId">
+                            <select class="combox" name="courseSub[id]" style="width: 160px" id="stu_subCourseId" title="课程子类">
                                 <option value="">请选择</option>
                             </select>
                         </dd>
@@ -120,7 +120,7 @@
                     <dl>
                         <dt>联系人关系：</dt>
                         <dd>
-                            <select id="stu_contactRelationType" clean="true" class="combox" style="width: 160px" name="student[contactRelation][id]">
+                            <select id="stu_contactRelationType" clean="true" class="combox" style="width: 160px" name="student[contactRelation][id]" title="联系人关系">
                                 <option value="1">父亲</option>
                                 <option value="2">母亲</option>
                                 <option value="3">爷爷</option>
@@ -153,16 +153,16 @@
                         <table class="list nowrap itemDetail" width="100%" addButton="添加收据" rowNumWidth="30">
                             <thead>
                                 <tr>
-                                    <th type="text" width="" name="invoices[][invoiceNo]" fieldClass="required">收据编号</th>
-                                    <th type="text" width="" name="invoices[][price]" defaultVal="0.00" size="12" fieldClass="number required">支付金额</th>
+                                    <th type="text" width="" name="invoices[][invoiceNo]">收据编号</th>
+                                    <th type="text" width="" name="invoices[][price]" defaultVal="0.00" size="12" fieldClass="number paymoney">支付金额</th>
                                     <th type="enum" width="120" name="invoices[][payType][id]" enum="现金:1,转账:2,微信:3,支付宝:4,其他:5">支付方式</th>
                                     <th type="del" width="60" align="center">操作</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr class="unitBox">
-                                    <td><input type="text" name="invoices[][invoiceNo]" value="" size="12" class="required" maxlength="10"></td>
-                                    <td><input type="text" name="invoices[][price]" value="0.00" size="12" class="required number textInput"></td>
+                                    <td><input type="text" name="invoices[][invoiceNo]" value="" size="12" maxlength="10"></td>
+                                    <td><input type="text" name="invoices[][price]" value="0.00" size="12" class="number textInput paymoney"></td>
                                     <td>
                                         <select class="combox" style="width: 120px" name="invoices[][payType][id]">
                                             <option value="1">现金</option>
@@ -196,22 +196,63 @@
                 return false;
             }
 
-            generic_ajax_op("contract", "POST", $("#contractForm").serializeJSON(), null, (
-                function(result) {
-                    // add invoices if any
-                    var formData = $("#contractForm").serializeJSON();
-                    var invoiceData = formData["invoices"];
-                    for (var index in invoiceData) {
-                        invoiceData[index]["contract"] = {"id" : result.data.id};
-                    }
-                    generic_ajax_op("invoice", "POST", invoiceData, null, (
-                        function (result) {
-                            alertMsg.correct("合同添加成功");
-                            navTab.reload(null, {});
-                        }
-                    ));
+            var valid = true;
+            $("#contractForm").find("select").each(function(){
+                if (valid && $(this).val() == "") {
+                    alertMsg.error($(this).attr("title") + " 不能为空");
+                    valid = false;
                 }
-            ));
+            });
+
+            var paid = 0;
+            if (valid) {
+                $("input.paymoney").each(function(){
+                    if (valid) {
+                        var invoiceNo = $($(this).parent().parent().find("input")[0]).val();
+                        $(this).val($(this).val().trim());
+                        if (invoiceNo != "" && ($(this).val() == "" ||
+                            !/^-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test($(this).val()) ||
+                            parseFloat($(this).val()) <= 0)
+                        ) {
+                            $(this).focus();
+                            valid = false;
+                            alertMsg.error("非法支付金额: " + $(this).val());
+                        } else {
+                            paid += parseFloat($(this).val());
+                        }
+                    }
+                });
+            }
+
+            var jsonData = $("#contractForm").serializeJSON();
+            var totalPrice = parseFloat(jsonData.totalPrice);
+            if (paid > totalPrice) {
+                alertMsg.error("收据支付总额 (" + paid + ") 超出了实收金额 (" + totalPrice + ") !");
+                return false;
+            }
+
+            if (valid) {
+                generic_ajax_op("contract", "POST", $("#contractForm").serializeJSON(), null, (
+                    function(result) {
+                        // add invoices if any
+                        alertMsg.correct("合同添加成功");
+                        navTab.reload(null, {});
+                        /*
+                        var formData = $("#contractForm").serializeJSON();
+                        var invoiceData = formData["invoices"];
+                        for (var index in invoiceData) {
+                            invoiceData[index]["contract"] = {"id" : result.data.id};
+                        }
+                        generic_ajax_op("invoice", "POST", invoiceData, null, (
+                            function (result) {
+                                alertMsg.correct("合同添加成功");
+                                navTab.reload(null, {});
+                            }
+                        ));
+                        */
+                    }
+                ));
+            }
         });
     });
 </script>
