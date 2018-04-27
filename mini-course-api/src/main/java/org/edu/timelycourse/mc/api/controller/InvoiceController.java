@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.edu.timelycourse.mc.beans.criteria.InvoiceCriteria;
 import org.edu.timelycourse.mc.beans.dto.InvoiceDTO;
+import org.edu.timelycourse.mc.beans.dto.InvoiceStatDTO;
 import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
 import org.edu.timelycourse.mc.biz.service.InvoiceService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
@@ -51,7 +52,12 @@ public class InvoiceController extends BaseController
             LOGGER.debug("Enter getInvoice - [pageNum: {}, pageSize: {}, criteria: {}]", pageNum, pageSize, criteria);
         }
 
-        return ResponseData.success(InvoiceDTO.from(invoiceService.findByCriteria(criteria, pageNum, pageSize)));
+        InvoiceStatDTO invoiceStat = new InvoiceStatDTO();
+        invoiceStat.setInvoices(InvoiceDTO.from(invoiceService.findByCriteria(criteria, pageNum, pageSize)));
+        invoiceStat.setTotalIncome(invoiceService.getTotalIncomeByCriteria(criteria));
+        invoiceStat.setTotalRefund(invoiceService.getTotalRefundByCriteria(criteria));
+
+        return ResponseData.success(invoiceStat); //InvoiceDTO.from(invoiceService.findByCriteria(criteria, pageNum, pageSize)));
         //return ResponseData.success(invoiceService.findByPage(ContractInvoiceModel.from(criteria), pageNum, pageSize));
     }
 

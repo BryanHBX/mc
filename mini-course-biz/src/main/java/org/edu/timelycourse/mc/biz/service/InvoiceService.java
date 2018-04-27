@@ -1,6 +1,9 @@
 package org.edu.timelycourse.mc.biz.service;
 
+import com.sun.xml.internal.rngom.parse.host.Base;
 import org.edu.timelycourse.mc.beans.criteria.BaseCriteria;
+import org.edu.timelycourse.mc.beans.criteria.ContractCriteria;
+import org.edu.timelycourse.mc.beans.criteria.InvoiceCriteria;
 import org.edu.timelycourse.mc.beans.dto.ContractDTO;
 import org.edu.timelycourse.mc.beans.enums.EContractDebtStatus;
 import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
@@ -30,12 +33,14 @@ public class InvoiceService extends BaseService<ContractInvoiceModel>
     private static Logger LOGGER = LoggerFactory.getLogger(InvoiceService.class);
 
     private ContractRepository contractRepository;
+    private InvoiceRepository invoiceRepository;
 
     @Autowired
     public InvoiceService(InvoiceRepository repository,
                           ContractRepository contractRepository)
     {
         super(repository);
+        this.invoiceRepository = repository;
         this.contractRepository = contractRepository;
     }
 
@@ -96,6 +101,18 @@ public class InvoiceService extends BaseService<ContractInvoiceModel>
             }
         }
         return invoices;
+    }
+
+    public Double getTotalIncomeByCriteria (InvoiceCriteria criteria)
+    {
+        criteria.setPositiveFlag(1);
+        return invoiceRepository.getTotalFeeByCriteria(criteria);
+    }
+
+    public Double getTotalRefundByCriteria (InvoiceCriteria criteria)
+    {
+        criteria.setPositiveFlag(0);
+        return invoiceRepository.getTotalFeeByCriteria(criteria);
     }
 
     @Override

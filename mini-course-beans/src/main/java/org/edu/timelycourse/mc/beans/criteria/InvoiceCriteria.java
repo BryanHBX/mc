@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.beans.criteria;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
 
@@ -16,6 +17,9 @@ public class InvoiceCriteria extends BaseCriteria
     private String consultantName;
     private String supervisorName;
     private Integer payType;
+
+    @JsonIgnore
+    private Integer positiveFlag;
 
     public String getStudentName ()
     {
