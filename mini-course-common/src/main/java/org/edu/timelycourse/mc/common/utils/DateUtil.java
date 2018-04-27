@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.common.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,8 +23,8 @@ public class DateUtil
         return dateFormat.format(date);
     }
 
-    public static Date from (String date)
+    public static Date from (String date) throws ParseException
     {
-        return null;
+        return new SimpleDateFormat("yyyy-MM-dd").parse(date);
     }
 }

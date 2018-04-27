@@ -2,6 +2,7 @@ package org.edu.timelycourse.mc.beans.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.edu.timelycourse.mc.beans.enums.EInvoiceStatus;
 import org.edu.timelycourse.mc.beans.enums.EPaymentType;
 import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
 import org.edu.timelycourse.mc.beans.paging.PagingBean;
@@ -43,6 +44,11 @@ public class InvoiceDTO extends BaseDTO
     private ContractDTO contract;
 
     /**
+     * 状态
+     */
+    private NamedOptionProperty status;
+
+    /**
      * 归属者
      */
     private NamedOptionProperty owner;
@@ -78,6 +84,7 @@ public class InvoiceDTO extends BaseDTO
                 BeanUtils.copyProperties(model, dto);
                 dto.setContract(ContractDTO.from(model.getContract()));
                 dto.setPayType(new NamedOptionProperty(model.getType(), EPaymentType.getLabel(model.getType())));
+                dto.setStatus(new NamedOptionProperty(model.getStatus(), EInvoiceStatus.getLabel(model.getStatus())));
                 return dto;
             }
             return null;
@@ -85,7 +92,7 @@ public class InvoiceDTO extends BaseDTO
         catch (Exception ex)
         {
             throw new RuntimeException(String.format(
-                    "Failed to copy properties from contract (%s) to DTO object", model
+                    "Failed to copy properties from invoice (%s) to DTO object", model
             ), ex);
         }
     }

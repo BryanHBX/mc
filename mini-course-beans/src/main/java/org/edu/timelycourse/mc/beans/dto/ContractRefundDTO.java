@@ -6,6 +6,8 @@ import lombok.Data;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
 
+import java.util.Date;
+
 /**
  * Created by x36zhao on 2018/4/25.
  */
@@ -17,7 +19,7 @@ public class ContractRefundDTO extends BaseDTO
     private double refundPeriod;
     private double refundPeriodPrice;
     private double refundOtherPrice;
-    private String refundDate;
+    private Date refundDate;
 
     public double getRefundPrice()
     {
@@ -29,6 +31,6 @@ public class ContractRefundDTO extends BaseDTO
     public boolean isValid ()
     {
         return EntityUtils.isValidEntityId(getSchoolId()) &&
-                refundPeriod > 0 && refundPeriodPrice > 0 && StringUtil.isNotEmpty(refundDate);
+                refundPeriod > 0 && refundPeriodPrice > 0 && refundDate != null;
     }
 }

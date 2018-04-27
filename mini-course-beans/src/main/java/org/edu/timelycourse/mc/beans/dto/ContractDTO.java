@@ -100,6 +100,11 @@ public class ContractDTO extends BaseDTO
     private double totalPrice;
 
     /**
+     * 转退金额
+     */
+    private double refundPrice;
+
+    /**
      * 咨询师
      */
     private NamedOptionProperty consultant;
@@ -140,7 +145,7 @@ public class ContractDTO extends BaseDTO
      */
     public double getRemainedPrice()
     {
-        return ((totalPrice - otherPrice) / enrollPeriod) * remainedPeriod;
+        return paid - refundPrice - otherPrice; //((totalPrice - otherPrice) / enrollPeriod) * remainedPeriod;
     }
 
     public static List<ContractDTO> from (List<ContractModel> models)

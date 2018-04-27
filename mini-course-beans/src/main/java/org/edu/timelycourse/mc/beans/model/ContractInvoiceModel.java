@@ -63,6 +63,11 @@ public class ContractInvoiceModel extends BaseModel
     @JsonIgnore
     private ContractModel contract;
 
+    /**
+     * 收据类型
+     */
+    private Integer status;
+
     @Override
     public boolean isValidInput ()
     {

@@ -5,6 +5,7 @@ import org.edu.timelycourse.mc.beans.dto.ContractTransformDTO;
 import org.edu.timelycourse.mc.beans.enums.EContractDebtStatus;
 import org.edu.timelycourse.mc.beans.enums.EContractStatus;
 import org.edu.timelycourse.mc.beans.enums.EEnrollmentType;
+import org.edu.timelycourse.mc.beans.enums.EInvoiceStatus;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
 import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
 import org.edu.timelycourse.mc.beans.model.StudentModel;
@@ -148,6 +149,8 @@ public class ContractService extends BaseService<ContractModel>
                         invoice.setCreationTime(new Date());
                         invoice.setContractId(model.getId());
                         invoice.setOwnerId(model.getConsultantId());
+                        invoice.setStatus(!model.getEnrollType().equals(EEnrollmentType.TRANSFER.code())
+                                ? model.getEnrollType() : EEnrollmentType.FRESHER.code());
                         invoiceRepository.insert(invoice);
                     }
                 }
@@ -159,6 +162,7 @@ public class ContractService extends BaseService<ContractModel>
         throw new ServiceException(String.format("Invalid model data to add, %s", model));
     }
 
+    @Transactional
     public boolean refund (ContractRefundDTO dto)
     {
         if (dto.isValid())
@@ -173,30 +177,36 @@ public class ContractService extends BaseService<ContractModel>
                         "contract data which is not owned by you");
             }
 
-            // check if money paid out already
-            if (contract.getPayStatus().equals(EContractDebtStatus.ARREARAGE.code()))
-            {
-                throw new ServiceException("It's not allowed to refund when it's still under arrearage state");
-            }
+//            // check if money paid out already
+//            if (contract.getPayStatus().equals(EContractDebtStatus.ARREARAGE.code()))
+//            {
+//                throw new ServiceException("It's not allowed to refund when it's still under arrearage state");
+//            }
 
-            // update contract
-            contract.setContractStatus(EContractStatus.FINISHED.code());
-            contract.setRemainedPeriod(0);
-            contract.setLastUpdateTime(new Date());
-            repository.update(contract);
+            // validate the refund price and period
+            if (dto.getRefundPrice() > contract.getRemainedPrice() ||
+                    dto.getRefundPeriod() > contract.getRemainedPeriod() ||
+                    dto.getRefundOtherPrice() > contract.getOtherPrice())
+            {
+                throw new ServiceException("Refund price or period is beyond of the original contract value");
+            }
 
             // add invoice with refund status
-            double refundedPrice = dto.getRefundPrice();
-            if (dto.getRefundOtherPrice() > 0)
-            {
-                refundedPrice += dto.getRefundOtherPrice();
-            }
             ContractInvoiceModel invoice = new ContractInvoiceModel();
             invoice.setContractId(contract.getId());
             invoice.setSchoolId(contract.getSchoolId());
-            invoice.setPrice(-refundedPrice);
-            invoice.setCreationTime(DateUtil.from(dto.getRefundDate()));
+            invoice.setPrice(-(contract.getRemainedPrice() + dto.getRefundOtherPrice()));
+            invoice.setCreationTime(dto.getRefundDate());
+            invoice.setStatus(EInvoiceStatus.REFUND.code());
             invoiceRepository.insert(invoice);
+
+            // update contract
+            contract.setContractStatus(EContractStatus.FINISHED.code());
+            contract.setRefundPrice(contract.getRefundPrice() + contract.getRemainedPrice());
+            contract.setPayStatus(EContractDebtStatus.DONE.code());
+            contract.setRemainedPeriod(0);
+            contract.setLastUpdateTime(new Date());
+            repository.update(contract);
 
             return true;
         }
@@ -232,7 +242,7 @@ public class ContractService extends BaseService<ContractModel>
             // add new contract after transform
             ContractModel target = new ContractModel();
             BeanUtils.copyProperties(source, target,
-                    "id", "consultant", "supervisor", "student",
+                    "id", "consultant", "supervisor", "student", "contractDate",
                     "level", "subLevel", "course", "subCourse", "otherPrice", "remainedPeriod");
             target.setCourseId(dto.getTargetCourse());
             target.setSubCourseId(dto.getTargetSubCourse());
@@ -243,12 +253,14 @@ public class ContractService extends BaseService<ContractModel>
             target.setRemainedPeriod(target.getEnrollPeriod());
             target.setPayStatus(EContractDebtStatus.DONE.code());
             target.setPaid(target.getTotalPrice());
+            target.setContractDate(dto.getTransformDate());
             repository.insert(target);
 
             // update the original contract
             source.setTransferPeriod(source.getTransferPeriod() + transferPeriod);
             source.setRemainedPeriod(remainedPeriod);
             source.setLastUpdateTime(new Date());
+            source.setRefundPrice(target.getTotalPrice());
             if (source.getRemainedPeriod() == 0)
             {
                 source.setContractStatus(EContractStatus.FINISHED.code());

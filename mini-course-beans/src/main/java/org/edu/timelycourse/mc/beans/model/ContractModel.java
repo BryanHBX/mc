@@ -104,6 +104,11 @@ public class ContractModel extends BaseModel
     private double totalPrice;
 
     /**
+     * 转退金额
+     */
+    private double refundPrice;
+
+    /**
      * 合同签约日期
      */
     private Date contractDate;
@@ -182,7 +187,7 @@ public class ContractModel extends BaseModel
      */
     public double getRemainedPrice()
     {
-        return ((totalPrice - otherPrice) / enrollPeriod) * remainedPeriod;
+        return paid - refundPrice - otherPrice; //((totalPrice - otherPrice - refundPrice) / enrollPeriod) * remainedPeriod;
     }
 
     /**

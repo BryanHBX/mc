@@ -83,6 +83,7 @@
                 <th>实际单价</th>
                 <th>已缴费</th>
                 <th>欠费</th>
+                <th>转退费用</th>
                 <th>转退课时</th>
                 <th>剩余课时</th>
                 <th>课时记录</th>
@@ -108,15 +109,16 @@
                     <td align="center" th:text="${item.gradeSub ne null ? item.gradeSub.name : '--'}"></td>
                     <td align="center" th:text="${item.course ne null ? item.course.name : '--'}"></td>
                     <td align="center" th:text="${item.enrollPeriod}"></td>
-                    <td align="center" th:text="${item.freePeriod}"></td>
+                    <td align="center" th:text="${item.freePeriod > 0 ? item.freePeriod : '--'}"></td>
                     <td align="center" th:text="${item.contractPrice}"></td>
-                    <td align="center" th:text="${item.otherPrice}"></td>
+                    <td align="center" th:text="${item.otherPrice > 0 ? item.otherPrice : '--'}"></td>
                     <td align="center" th:text="${item.totalPrice}"></td>
                     <td align="center" th:text="${#numbers.formatDecimal((item.totalPrice - item.otherPrice)/ item.enrollPeriod, 0, 2)}"></td>
                     <td align="center" th:text="${item.paid}"></td>
-                    <td align="center" th:text="${item.totalPrice - item.paid > 0 ? ('-' + (item.totalPrice - item.paid)) : '--'}"
-                        th:style="${item.totalPrice - item.paid > 0 ? 'background-color: red;' : ''}"></td>
-                    <td align="center" th:text="${#numbers.formatDecimal(item.transferPeriod, 1, 2)}"></td>
+                    <td align="center" th:text="${item.status ne null and item.status.id ne 2 ? (item.totalPrice - item.paid > 0 ? ('-' + (item.totalPrice - item.paid)) : '--') : '--'}"
+                        th:style="${item.totalPrice - item.paid > 0 and item.status ne null and item.status.id ne 2 ? 'background-color: red;' : ''}"></td>
+                    <td align="center" th:text="${item.refundPrice > 0 ? item.refundPrice : '--'}"></td>
+                    <td align="center" th:text="${item.transferPeriod > 0 ? #numbers.formatDecimal(item.transferPeriod, 1, 2) : '--'}"></td>
                     <td align="center" th:text="${#numbers.formatDecimal(item.remainedPeriod, 1, 2)}"></td>
                     <td align="center">
                         <a title="查看课时记录" target="dialog" mask="true" width="585" height="450" class="btnLook" href="" style="float: none">查看</a>
@@ -136,7 +138,7 @@
                         <span th:if="${item.remainedPeriod <= 0}">--</span>
                     </td>
                     <td align="center" th:if="${module eq 'finance'}">
-                        <a title="学费退费" target="dialog" mask="true" width="890" height="450" th:href="'contract/' + ${item.id} + '?op=refund'"
+                        <a title="学费退费" target="dialog" mask="true" width="890" height="480" th:href="'contract/' + ${item.id} + '?op=refund'"
                            style="float: none; text-decoration: underline; color: #1465ff">
                             <span>退费</span>
                         </a>

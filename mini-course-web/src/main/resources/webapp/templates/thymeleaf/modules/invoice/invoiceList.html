@@ -19,35 +19,35 @@
                     </td>
                     <td>
                         <label>报名类型：</label>
-                        <select class="combox" name="contractStatus" style="width: 100px;"
-                                th:value="${criteria != null and criteria.contractStatus ne null ? criteria.contractStatus : ''}">
+                        <select class="combox" name="status" style="width: 100px;"
+                                th:value="${criteria != null ? criteria.status : ''}">
                             <option value="">所有</option>
-                            <option value="1" th:selected="${criteria != null and criteria.contractStatus eq 1}">新报</option>
-                            <option value="2" th:selected="${criteria != null and criteria.contractStatus eq 0}">续报</option>
-                            <option value="4" th:selected="${criteria != null and criteria.contractStatus eq 0}">退费</option>
+                            <option value="1" th:selected="${criteria != null and criteria.status eq 1}">新报</option>
+                            <option value="2" th:selected="${criteria != null and criteria.status eq 2}">续报</option>
+                            <option value="3" th:selected="${criteria != null and criteria.status eq 3}">退费</option>
                         </select>
                     </td>
                     <td>
                         <label>学生姓名：</label>
-                        <input id="si_name" name="studentName" type="text" class="textInput" postField="name"
-                               suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="si" clean="true"
+                        <input id="sils_name" name="studentName" type="text" class="textInput" postField="name"
+                               suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="sils" clean="true"
                                th:value="${criteria != null ? criteria.studentName : ''}"/>
                     </td>
                     <td>
                         <label>咨询师：</label>
-                        <input id="sic_userName" name="consultantName" type="text" class="textInput"
-                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sic" clean="true"
+                        <input id="silc_userName" name="consultantName" type="text" class="textInput"
+                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="silc" clean="true"
                                th:value="${criteria != null ? criteria.consultantName : ''}"/>
                     </td>
                     <td>
                         <label>学管师：</label>
-                        <input id="sip_userName" name="supervisorName" type="text" class="textInput"
-                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sip" clean="true"
+                        <input id="silp_userName" name="supervisorName" type="text" class="textInput"
+                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="silp" clean="true"
                                th:value="${criteria != null ? criteria.supervisorName : ''}"/>
                     </td>
                     <td>
                         <label>支付方式：</label>
-                        <select class="combox" style="width: 120px" th:value="${criteria != null and criteria.payType ne null ? criteria.payType : ''}">
+                        <select class="combox" style="width: 120px" name="payType" th:value="${criteria != null and criteria.payType ne null ? criteria.payType : ''}">
                             <option value="1" th:selected="${criteria != null and criteria.payType eq 1}">现金</option>
                             <option value="2" th:selected="${criteria != null and criteria.payType eq 2}">转账</option>
                             <option value="3" th:selected="${criteria != null and criteria.payType eq 3}">微信</option>
@@ -85,14 +85,14 @@
         <tbody>
         <div th:if="${pagingBean != null and pagingBean.items != null}">
             <tr th:each="item: ${pagingBean.items}">
-                <td align="center" th:text="${item.contract ne null and item.contract.enrollType ne null ? item.contract.enrollType.name : '--'}"></td>
+                <td align="center" th:text="${item.status ne null and item.status.name ne null ? item.status.name : '--'}"></td>
                 <td align="center" th:text="${item.creationTime ne null ? #dates.format(item.creationTime, 'yyyy-MM-dd') : '--'}"></td>
                 <td align="center" th:text="${item.contract ne null and item.contract.student ne null ? item.contract.student.name : '--'}"></td>
                 <td align="center" th:text="${item.contract ne null and item.contract.gradeSub ne null ? item.contract.gradeSub.name : '--'}"></td>
                 <td align="center" th:text="${item.contract ne null and item.contract.course ne null ? item.contract.course.name : '--'}"></td>
-                <td align="center" th:text="${item.price}"></td>
-                <td align="center" th:text="${item.invoiceNo}"></td>
-                <td align="center" th:text="${item.payType ne null ? item.payType.name : '--'}"></td>
+                <td align="center" th:text="${item.price}" th:style="${item.price < 0 ? 'color: red;' : ''}"></td>
+                <td align="center" th:text="${item.invoiceNo ne null ? item.invoiceNo : '--'}"></td>
+                <td align="center" th:text="${item.payType ne null and item.payType.id ne null ? item.payType.name : '--'}"></td>
                 <td align="center" th:text="${item.contract ne null and item.contract.consultant ne null ? item.contract.consultant.name : '--'}"></td>
                 <td align="center" th:text="${item.contract ne null and item.contract.supervisor ne null ? item.contract.supervisor.name : '--'}"></td>
             </tr>

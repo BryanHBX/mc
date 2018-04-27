@@ -14,6 +14,7 @@
         <result property="creationTime" column="creationTime" />
         <result property="lastUpdateTime" column="updateTime" />
         <result property="ownerId" column="owner_id" />
+        <result property="status" column="status" />
 
         <!--
         <association property="contract" column="contract_id"
@@ -21,8 +22,8 @@
     </resultMap>
     
     <insert id="insert" parameterType="ContractInvoiceModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_school_invoice` (contract_id, school_id, invoice_no, fee_amount, fee_type, creationTime, owner_id)
-          VALUES (#{contractId}, #{schoolId}, #{invoiceNo}, #{price}, #{type}, #{creationTime}, #{ownerId})
+        INSERT INTO `t_school_invoice` (contract_id, school_id, invoice_no, fee_amount, fee_type, creationTime, owner_id, status)
+          VALUES (#{contractId}, #{schoolId}, #{invoiceNo}, #{price}, #{type}, #{creationTime}, #{ownerId}, #{status})
     </insert>
 
     <update id="update" parameterType="ContractInvoiceModel">
@@ -35,6 +36,7 @@
             <if test="updateTime != null">`updateTime` = #{lastUpdateTime},</if>
             <if test="creationTime != null">`creationTime` = #{creationTime},</if>
             <if test="ownerId != null and ownerId > 0">`owner_id` = #{ownerId},</if>
+            <if test="status != null and status > 0">`status` = #{status},</if>
             `id` = `id`
         </set>
         WHERE id = #{id}
@@ -50,6 +52,7 @@
             <if test="type != null and type > -1"> AND `fee_type` = #{type}</if>
             <if test="ownerId != null and ownerId > 0"> AND `owner_id` = #{ownerId}</if>
             <if test="creationTime != null"> AND `creationTime` = #{creationTime}</if>
+            <if test="status != null and status > 0"> AND `status` = #{status}</if>
         </where>
         ORDER BY `creationTime` DESC
     </select>
@@ -61,7 +64,8 @@
             <if test="startDate != null and startDate != ''">AND DATE_FORMAT(`creationTime`, '%Y-%m-%d') &gt;= #{startDate}</if>
             <if test="endDate != null and endDate != ''">AND DATE_FORMAT(`creationTime`,'%Y-%m-%d') &lt;= #{endDate}</if>
             <if test="schoolId != null and schoolId > 0"> AND `school_id` = #{schoolId}</if>
-            <if test="payType != null and payType > -1">AND `fee_type` = #{type}</if>
+            <if test="payType != null and payType > -1">AND `fee_type` = #{payType}</if>
+            <if test="status != null and status > 0"> AND `status` = #{status}</if>
             AND `contract_id` IN
             (
                 SELECT `id` FROM `t_school_contract`
@@ -73,10 +77,10 @@
                     <if test="consultantName != null and consultantName != ''">
                         AND `consult_id` IN (SELECT `id` FROM `t_member` WHERE `u_name` LIKE CONCAT('%',#{consultantName},'%'))
                     </if>
-                    <if test="consultantName != null and consultantName != ''">
+                    <if test="supervisorName != null and supervisorName != ''">
                         AND `supervisor_id` IN (SELECT `id` FROM `t_member` WHERE `u_name` LIKE CONCAT('%',#{supervisorName},'%'))
                     </if>
-                    <if test="contractStatus != null and contractStatus > -1"> AND `c_status` = #{contractStatus}</if>
+                    <!-- <if test="contractStatus != null and contractStatus > -1"> AND `c_status` = #{contractStatus}</if> -->
                 </where>
             )
         </where>

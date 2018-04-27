@@ -3,6 +3,7 @@
     #contractDialog td, #contractFormContent dd {position: relative}
     #contractDialogFormContent span.error {left: auto; right: 0px; top: 0;}
     #contractDialogFormContent td span.error {left: auto; right: 0px;position: absolute;z-index: 9999;}
+    #refundForm span.error, #transForm span.error { top: 26px;}
     #contractDialogFormContent dl {width: 270px; margin-bottom: 6px;}
     #contractDialogFormContent dd {width: 160px;}
     #contractDialogFormContent dt {width: 100px; text-align: right;}
@@ -293,7 +294,7 @@
                         </dl>
                         <dl>
                             <dt>转换金额：</dt>
-                            <dd><input name="transformPrice" id="transformPrice" type="text" class="textInput required number" /></dd>
+                            <dd><input name="transformPrice" id="transformPrice" type="text" th:max="${entity.remainedPrice}" class="textInput required number" /></dd>
                         </dl>
                         <dl>
                             <dt>需原课时：</dt>
@@ -319,7 +320,7 @@
                 <div>
                     <dl>
                         <dt>转课日期：</dt>
-                        <dd><input name="transformDate" type="text" class="date textInput required"/></dd>
+                        <dd><input name="transformDate" type="text" class="date textInput required" style="width: 157px;"/></dd>
                     </dl>
                 </div>
             </form>
@@ -373,44 +374,46 @@
 
         <div th:if="${entity ne null and op eq 'refund'}">
             <!-- 退费 -->
-            <fieldset>
-                <legend>退费处理</legend>
-                <dl>
-                    <dt>退费课时：</dt>
-                    <dd><input name="enrollPeriod" type="text"
-                               th:class="'textInput ' + ${entity eq null or op eq 'edit' ? 'required number' : 'readonly'}"
-                               th:readonly="${entity ne null and op ne 'edit'}"
-                               th:value="${entity ne null ? entity.enrollPeriod : ''}"/>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt>退费金额：</dt>
-                    <dd><input name="enrollPeriod" type="text"
-                               th:class="'textInput ' + ${entity eq null or op eq 'edit' ? 'required number' : 'readonly'}"
-                               th:readonly="${entity ne null and op ne 'edit'}"
-                               th:value="${entity ne null ? entity.enrollPeriod : ''}"/>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt>赠送课时：</dt>
-                    <dd><input name="enrollPeriod" type="text"
-                               th:class="'textInput ' + ${entity eq null or op eq 'edit' ? 'required number' : 'readonly'}"
-                               th:readonly="${entity ne null and op ne 'edit'}"
-                               th:value="${entity ne null ? entity.enrollPeriod : ''}"/>
-                    </dd>
-                </dl>
-            </fieldset>
-            <div class="divider"></div>
-            <div>
-                <dl>
-                    <dt>退费日期：</dt>
-                    <dd><input name="enrollPeriod" type="text"
-                               th:class="'textInput ' + ${entity eq null or op eq 'edit' ? 'required number' : 'readonly'}"
-                               th:readonly="${entity ne null and op ne 'edit'}"
-                               th:value="${entity ne null ? entity.enrollPeriod : ''}"/>
-                    </dd>
-                </dl>
-            </div>
+            <form id="refundForm" method="POST" th:action="'contract/' + ${entity.id} + '/refund'">
+                <fieldset>
+                    <legend>退费处理</legend>
+                    <dl>
+                        <dt>退费课时：</dt>
+                        <dd><input name="refundPeriod" type="text" class="textInput required number" readonly="readonly"
+                                   th:max="${entity.remainedPeriod}"
+                                   th:value="${entity ne null ? entity.remainedPeriod : ''}"/>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>退费金额：</dt>
+                        <dd><input name="refundPeriodPrice" type="text" class="textInput required number" readonly="readonly"
+                                   th:max="${entity.remainedPrice}"
+                                   th:value="${entity.remainedPrice}" /></dd>
+                    </dl>
+                    <dl>
+                        <dt>其他费用：</dt>
+                        <dd><input name="refundOtherPrice" type="text" class="textInput number" th:max="${entity.otherPrice}" th:value="${entity.otherPrice}"/>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>赠送课时：</dt>
+                        <dd><input name="refundOtherPrice" type="text"
+                                   th:class="'textInput ' + ${entity eq null or op eq 'edit' ? 'required number' : 'readonly'}"
+                                   th:readonly="${entity ne null and op ne 'edit'}"
+                                   th:value="${entity ne null ? entity.freePeriod : ''}"/>
+                        </dd>
+                    </dl>
+                </fieldset>
+                <div class="divider"></div>
+                <div>
+                    <dl>
+                        <dt>退费日期：</dt>
+                        <dd><input name="refundDate" type="text" class="date textInput required" style="width: 157px;"/>
+                        </dd>
+                    </dl>
+                </div>
+                <input type="hidden" name="contractId" th:value="${entity ne null ? entity.id : ''}" />
+            </form>
         </div>
 
         <div th:if="${entity ne null and op eq 'edit'}">
@@ -516,7 +519,7 @@
             if ($(this).val().trim() != "" && !isNaN($(this).val().trim())) {
                 var price = parseFloat($(this).val().trim());
                 if (price > 0) {
-                    var costPeriod = price / pricePerPeriod;
+                    var costPeriod = (price / pricePerPeriod).toFixed(2);
                     $("#sourcePeriod").val(costPeriod);
                     $("#remainedPeriod").val([[${entity.remainedPeriod}]] - costPeriod);
                     $("#remainedPrice").val([[${entity.remainedPrice}]] - costPeriod * pricePerPeriod);
@@ -531,6 +534,19 @@
 <script xmlns:th="http://www.thymeleaf.org" type="text/javascript" th:if="${op eq 'refund'}">
      /*<![CDATA[*/
     $(function(){
+        $("#btnDialogSaveContract").unbind("click").bind("click", function() {
+            if (!$("#refundForm").valid()) {
+                return false;
+            }
+
+            generic_ajax_op("contract/" + [[${entity.id}]] + "/refund", "POST", $("#refundForm").serializeJSON(), null, (
+                function (result) {
+                    alertMsg.correct("退费成功");
+                    $.pdialog.closeCurrent();
+                    navTab.reload(null, {});
+                }
+            ));
+        });
     });
 </script>
 
