@@ -3,8 +3,7 @@ package org.edu.timelycourse.mc.web.controller;
 import com.google.common.reflect.TypeParameter;
 import com.google.common.reflect.TypeToken;
 import org.edu.timelycourse.mc.beans.dto.ContractDTO;
-import org.edu.timelycourse.mc.beans.dto.InvoiceDTO;
-import org.edu.timelycourse.mc.beans.dto.InvoiceStatDTO;
+import org.edu.timelycourse.mc.beans.dto.ContractInvoiceStatDTO;
 import org.edu.timelycourse.mc.beans.dto.StudentDTO;
 import org.edu.timelycourse.mc.beans.model.*;
 import org.edu.timelycourse.mc.beans.paging.PagingBean;
@@ -114,13 +113,13 @@ public abstract class AbstractController extends BaseController implements Error
                 request.getQueryString()), new TypeToken<PagingBean<ContractDTO>>() {}).getData();
     }
 
-    protected InvoiceStatDTO findInvoicesByPage (HttpServletRequest request,
-                                                             Integer pageNum,
-                                                             Integer pageSize)
+    protected ContractInvoiceStatDTO findInvoicesByPage (HttpServletRequest request,
+                                                         Integer pageNum,
+                                                         Integer pageSize)
     {
         return remoteCall(request, String.format("invoice?pageNum=%d&pageSize=%d&%s",
                 pageNum != null ? pageNum : 1, pageSize != null ? pageSize : Constants.DEFAULT_PAGE_SIZE,
-                request.getQueryString()), new TypeToken<InvoiceStatDTO>() {}).getData();
+                request.getQueryString()), new TypeToken<ContractInvoiceStatDTO>() {}).getData();
     }
 
     protected ContractDTO findContractById (HttpServletRequest request, Integer contractId)

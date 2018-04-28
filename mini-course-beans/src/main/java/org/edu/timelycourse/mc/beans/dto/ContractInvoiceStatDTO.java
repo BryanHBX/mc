@@ -10,9 +10,9 @@ import org.edu.timelycourse.mc.beans.paging.PagingBean;
  */
 @Data
 @JsonIgnoreProperties(value = { "id", "schoolId" })
-public class InvoiceStatDTO extends BaseDTO
+public class ContractInvoiceStatDTO extends BaseDTO
 {
-    private PagingBean<InvoiceDTO> invoices;
+    private PagingBean<ContractInvoiceDTO> invoices;
     private double totalIncome;
     private double totalRefund;
 

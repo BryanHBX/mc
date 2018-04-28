@@ -3,8 +3,8 @@ package org.edu.timelycourse.mc.api.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.edu.timelycourse.mc.beans.criteria.InvoiceCriteria;
-import org.edu.timelycourse.mc.beans.dto.InvoiceDTO;
-import org.edu.timelycourse.mc.beans.dto.InvoiceStatDTO;
+import org.edu.timelycourse.mc.beans.dto.ContractInvoiceDTO;
+import org.edu.timelycourse.mc.beans.dto.ContractInvoiceStatDTO;
 import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
 import org.edu.timelycourse.mc.biz.service.InvoiceService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
@@ -52,12 +52,12 @@ public class InvoiceController extends BaseController
             LOGGER.debug("Enter getInvoice - [pageNum: {}, pageSize: {}, criteria: {}]", pageNum, pageSize, criteria);
         }
 
-        InvoiceStatDTO invoiceStat = new InvoiceStatDTO();
-        invoiceStat.setInvoices(InvoiceDTO.from(invoiceService.findByCriteria(criteria, pageNum, pageSize)));
+        ContractInvoiceStatDTO invoiceStat = new ContractInvoiceStatDTO();
+        invoiceStat.setInvoices(ContractInvoiceDTO.from(invoiceService.findByCriteria(criteria, pageNum, pageSize)));
         invoiceStat.setTotalIncome(invoiceService.getTotalIncomeByCriteria(criteria));
         invoiceStat.setTotalRefund(invoiceService.getTotalRefundByCriteria(criteria));
 
-        return ResponseData.success(invoiceStat); //InvoiceDTO.from(invoiceService.findByCriteria(criteria, pageNum, pageSize)));
+        return ResponseData.success(invoiceStat); //ContractInvoiceDTO.from(invoiceService.findByCriteria(criteria, pageNum, pageSize)));
         //return ResponseData.success(invoiceService.findByPage(ContractInvoiceModel.from(criteria), pageNum, pageSize));
     }
 
@@ -77,7 +77,7 @@ public class InvoiceController extends BaseController
     @RequestMapping(path="", method= RequestMethod.POST)
     @ApiOperation(value = "Add invoice by given entity")
     @PreAuthorize("hasAnyRole('ROLE_TREASURER','ROLE_ADMINISTRATOR', 'ROLE_CONSULTANT')")
-    public ResponseData addInvoice (@RequestBody List<InvoiceDTO> models,
+    public ResponseData addInvoice (@RequestBody List<ContractInvoiceDTO> models,
                                     //@RequestBody ContractInvoiceModel model,
                                     @RequestHeader(name = "Authorization") String auth)
     {

@@ -15,14 +15,12 @@ import org.edu.timelycourse.mc.biz.repository.*;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
-import org.edu.timelycourse.mc.common.utils.DateUtil;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +36,7 @@ public class ContractService extends BaseService<ContractModel>
     private static Logger LOGGER = LoggerFactory.getLogger(ContractService.class);
 
     private StudentRepository studentRepository;
-    private InvoiceRepository invoiceRepository;
+    private ContractInvoiceRepository invoiceRepository;
     private SchoolRepository schoolRepository;
     private UserRepository userRepository;
     private ContractRepository contractRepository;
@@ -46,7 +44,7 @@ public class ContractService extends BaseService<ContractModel>
     @Autowired
     public ContractService(ContractRepository repository,
                            StudentRepository studentRepository,
-                           InvoiceRepository invoiceRepository,
+                           ContractInvoiceRepository invoiceRepository,
                            SchoolRepository schoolRepository,
                            UserRepository userRepository)
     {

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
 import org.edu.timelycourse.mc.beans.dto.ContractDTO;
-import org.edu.timelycourse.mc.beans.dto.InvoiceDTO;
 import org.edu.timelycourse.mc.beans.enums.EContractDebtStatus;
 import org.edu.timelycourse.mc.beans.enums.EContractStatus;
 import org.edu.timelycourse.mc.beans.enums.EEnrollmentType;
@@ -166,6 +165,9 @@ public class ContractModel extends BaseModel
 
     @JsonIgnore
     private SchoolProductModel subCourse;
+
+    @JsonIgnore
+    private List<ContractArrangementModel> courses;
 
     /**
      * 收据列表

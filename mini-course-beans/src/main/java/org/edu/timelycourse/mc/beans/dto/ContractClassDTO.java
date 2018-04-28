@@ -7,7 +7,7 @@ import lombok.Data;
  * Created by x36zhao on 2018/4/26.
  */
 @Data
-public class CourseClassDTO extends BaseDTO
+public class ContractClassDTO extends BaseDTO
 {
     private Integer contractId;
     private Integer teacherId;

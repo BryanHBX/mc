@@ -1,16 +1,13 @@
 package org.edu.timelycourse.mc.biz.service;
 
-import com.sun.xml.internal.rngom.parse.host.Base;
 import org.edu.timelycourse.mc.beans.criteria.BaseCriteria;
-import org.edu.timelycourse.mc.beans.criteria.ContractCriteria;
 import org.edu.timelycourse.mc.beans.criteria.InvoiceCriteria;
-import org.edu.timelycourse.mc.beans.dto.ContractDTO;
 import org.edu.timelycourse.mc.beans.enums.EContractDebtStatus;
 import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
 import org.edu.timelycourse.mc.beans.paging.PagingBean;
 import org.edu.timelycourse.mc.biz.repository.ContractRepository;
-import org.edu.timelycourse.mc.biz.repository.InvoiceRepository;
+import org.edu.timelycourse.mc.biz.repository.ContractInvoiceRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
@@ -33,10 +30,10 @@ public class InvoiceService extends BaseService<ContractInvoiceModel>
     private static Logger LOGGER = LoggerFactory.getLogger(InvoiceService.class);
 
     private ContractRepository contractRepository;
-    private InvoiceRepository invoiceRepository;
+    private ContractInvoiceRepository invoiceRepository;
 
     @Autowired
-    public InvoiceService(InvoiceRepository repository,
+    public InvoiceService(ContractInvoiceRepository repository,
                           ContractRepository contractRepository)
     {
         super(repository);

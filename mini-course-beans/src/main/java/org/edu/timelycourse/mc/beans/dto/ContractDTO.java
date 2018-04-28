@@ -127,7 +127,7 @@ public class ContractDTO extends BaseDTO
     /**
      * 收据
      */
-    private List<InvoiceDTO> invoices;
+    private List<ContractInvoiceDTO> invoices;
 
     /**
      * 合同状态
@@ -186,7 +186,7 @@ public class ContractDTO extends BaseDTO
                 dto.setStatus(new NamedOptionProperty(model.getContractStatus(), EContractStatus.getLabel(model.getContractStatus())));
                 dto.setStudent(StudentDTO.from(model.getStudent()));
                 dto.setSupervisor(NamedOptionProperty.from(model.getSupervisorId(), model.getSupervisor(), "userName"));
-                dto.setInvoices(InvoiceDTO.from(model.getInvoices()));
+                dto.setInvoices(ContractInvoiceDTO.from(model.getInvoices()));
                 return dto;
             }
 

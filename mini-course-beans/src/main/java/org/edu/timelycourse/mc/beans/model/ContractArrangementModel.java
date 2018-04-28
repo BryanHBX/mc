@@ -8,7 +8,7 @@ import org.edu.timelycourse.mc.common.utils.EntityUtils;
  * Created by x36zhao on 2018/4/20.
  */
 @Data
-public class CourseArrangementModel extends BaseModel
+public class ContractArrangementModel extends BaseModel
 {
     @JsonIgnore
     private Integer schoolId;

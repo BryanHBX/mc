@@ -16,7 +16,7 @@ import java.util.List;
  * Created by x36zhao on 2018/4/19.
  */
 @Data
-public class InvoiceDTO extends BaseDTO
+public class ContractInvoiceDTO extends BaseDTO
 {
     /**
      * 收据编号
@@ -53,9 +53,9 @@ public class InvoiceDTO extends BaseDTO
      */
     private NamedOptionProperty owner;
 
-    public static PagingBean<InvoiceDTO> from (PagingBean<ContractInvoiceModel> pagingBean)
+    public static PagingBean<ContractInvoiceDTO> from (PagingBean<ContractInvoiceModel> pagingBean)
     {
-        PagingBean<InvoiceDTO> result = new PagingBean<>();
+        PagingBean<ContractInvoiceDTO> result = new PagingBean<>();
         result.setItems(from(pagingBean.getItems()));
         result.setPageNumber(pagingBean.getPageNumber());
         result.setPageSize(pagingBean.getPageSize());
@@ -64,9 +64,9 @@ public class InvoiceDTO extends BaseDTO
         return result;
     }
 
-    public static List<InvoiceDTO> from (List<ContractInvoiceModel> models)
+    public static List<ContractInvoiceDTO> from (List<ContractInvoiceModel> models)
     {
-        List<InvoiceDTO> result = new ArrayList<>();
+        List<ContractInvoiceDTO> result = new ArrayList<>();
         for (ContractInvoiceModel model : models)
         {
             result.add(from(model));
@@ -74,13 +74,13 @@ public class InvoiceDTO extends BaseDTO
         return result;
     }
 
-    public static InvoiceDTO from (ContractInvoiceModel model)
+    public static ContractInvoiceDTO from (ContractInvoiceModel model)
     {
         try
         {
             if (model != null)
             {
-                InvoiceDTO dto = new InvoiceDTO();
+                ContractInvoiceDTO dto = new ContractInvoiceDTO();
                 BeanUtils.copyProperties(model, dto);
                 dto.setContract(ContractDTO.from(model.getContract()));
                 dto.setPayType(new NamedOptionProperty(model.getType(), EPaymentType.getLabel(model.getType())));

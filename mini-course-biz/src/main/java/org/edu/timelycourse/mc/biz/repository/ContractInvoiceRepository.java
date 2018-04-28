@@ -11,7 +11,7 @@ import java.util.List;
  * Created by x36zhao on 2018/3/31.
  */
 @Component
-public interface InvoiceRepository extends BaseRepository<ContractInvoiceModel>
+public interface ContractInvoiceRepository extends BaseRepository<ContractInvoiceModel>
 {
 
     Double getTotalFeeByCriteria(final BaseCriteria criteria);

@@ -2,14 +2,11 @@ package org.edu.timelycourse.mc.beans.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.apache.logging.log4j.util.Strings;
-import org.edu.timelycourse.mc.beans.dto.InvoiceDTO;
+import org.edu.timelycourse.mc.beans.dto.ContractInvoiceDTO;
 import org.edu.timelycourse.mc.beans.enums.EPaymentType;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
-import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
 import org.springframework.beans.BeanUtils;
-import sun.plugin.liveconnect.SecurityContextHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,7 +94,7 @@ public class ContractInvoiceModel extends BaseModel
         return type != null ? EPaymentType.getLabel(type) : null;
     }
 
-    public static ContractInvoiceModel from (final InvoiceDTO dto)
+    public static ContractInvoiceModel from (final ContractInvoiceDTO dto)
     {
         ContractInvoiceModel model = new ContractInvoiceModel();
         BeanUtils.copyProperties(dto, model);
@@ -107,12 +104,12 @@ public class ContractInvoiceModel extends BaseModel
         return model;
     }
 
-    public static List<ContractInvoiceModel> from (final List<InvoiceDTO> dtos)
+    public static List<ContractInvoiceModel> from (final List<ContractInvoiceDTO> dtos)
     {
         List<ContractInvoiceModel> models = new ArrayList<>();
         if (dtos != null)
         {
-            for (InvoiceDTO dto : dtos)
+            for (ContractInvoiceDTO dto : dtos)
             {
                 models.add(from(dto));
             }

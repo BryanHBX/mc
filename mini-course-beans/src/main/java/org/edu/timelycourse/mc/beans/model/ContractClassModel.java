@@ -9,7 +9,7 @@ import java.util.Date;
  * Created by x36zhao on 2018/4/20.
  */
 @Data
-public class CourseClassModel extends BaseModel
+public class ContractClassModel extends BaseModel
 {
     @JsonIgnore
     private Integer schoolId;

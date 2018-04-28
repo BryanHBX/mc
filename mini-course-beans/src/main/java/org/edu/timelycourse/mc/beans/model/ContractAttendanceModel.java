@@ -9,7 +9,7 @@ import java.util.Date;
  * Created by x36zhao on 2018/4/20.
  */
 @Data
-public class StudentAttendanceModel extends BaseModel
+public class ContractAttendanceModel extends BaseModel
 {
     /**
      * 学生ID
