@@ -24,9 +24,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/${api.version}/invoice")
 @Api(tags = { "合同收据API" })
-public class InvoiceController extends BaseController
+public class ContractInvoiceController extends BaseController
 {
-    private static Logger LOGGER = LoggerFactory.getLogger(InvoiceController.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(ContractInvoiceController.class);
 
     @Autowired
     private InvoiceService invoiceService;
