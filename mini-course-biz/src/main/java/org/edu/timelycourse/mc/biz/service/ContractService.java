@@ -83,7 +83,7 @@ public class ContractService extends BaseService<ContractModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public ContractModel add(ContractModel model)
     {
         initContract(model);
@@ -160,7 +160,7 @@ public class ContractService extends BaseService<ContractModel>
         throw new ServiceException(String.format("Invalid model data to add, %s", model));
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean refund (ContractRefundDTO dto)
     {
         if (dto.isValid())
@@ -212,7 +212,7 @@ public class ContractService extends BaseService<ContractModel>
         throw new ServiceException(String.format("Invalid DTO for contract refund: %s", dto));
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public ContractModel transform (ContractTransformDTO dto)
     {
         if (dto.isValid())
@@ -273,7 +273,7 @@ public class ContractService extends BaseService<ContractModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer delete (Integer id)
     {
         if (EntityUtils.isValidEntityId(id))
@@ -301,7 +301,7 @@ public class ContractService extends BaseService<ContractModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public ContractModel update(ContractModel entity)
     {
         if (entity.isValidInput() && EntityUtils.isValidEntityId(entity.getId()))

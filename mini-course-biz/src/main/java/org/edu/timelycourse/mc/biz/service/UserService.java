@@ -58,7 +58,7 @@ public class UserService extends BaseService<UserModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public UserModel add (UserModel entity)
     {
         entity.setStatus(EUserStatus.ENABLED.code());
@@ -113,7 +113,7 @@ public class UserService extends BaseService<UserModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public UserModel update(UserModel entity)
     {
         if (!entity.isValidInput() && !EntityUtils.isValidEntityId(entity.getId()) &&
@@ -161,7 +161,7 @@ public class UserService extends BaseService<UserModel>
         return entity;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     private void updateUserRole (UserModel entity)
     {
         // check user roles
@@ -225,7 +225,7 @@ public class UserService extends BaseService<UserModel>
         return user;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer resetPassword (Integer userId, String password)
     {
         if (EntityUtils.isValidEntityId(userId))
@@ -243,7 +243,7 @@ public class UserService extends BaseService<UserModel>
         throw new ServiceException(String.format("Invalid user id: %d", userId));
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer resetStatus (Integer userId, Integer userStatus)
     {
         if (EntityUtils.isValidEntityId(userId))

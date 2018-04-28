@@ -39,7 +39,7 @@ public abstract class BaseService<T extends BaseModel>
         throw new ServiceException(String.format("Invalid entity id (%d) for fetching", id));
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public T add (T entity)
     {
         if (entity != null && entity.isValidInput())
@@ -55,7 +55,7 @@ public abstract class BaseService<T extends BaseModel>
         throw new ServiceException("Empty entity to add");
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public T update (T entity)
     {
         if (entity != null && entity.isValidInput() &&
@@ -73,7 +73,7 @@ public abstract class BaseService<T extends BaseModel>
         throw new ServiceException("Invalid entity to update: " + entity);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer delete (Integer id)
     {
         if (EntityUtils.isValidEntityId(id))
@@ -127,7 +127,7 @@ public abstract class BaseService<T extends BaseModel>
         }
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public T saveOrUpdate(T entity)
     {
         return entity.getId() != null ? update(entity) : add(entity);

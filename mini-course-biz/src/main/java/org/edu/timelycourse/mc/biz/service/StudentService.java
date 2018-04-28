@@ -48,7 +48,7 @@ public class StudentService extends BaseService<StudentModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public StudentModel add (StudentModel entity)
     {
         entity.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
@@ -82,7 +82,7 @@ public class StudentService extends BaseService<StudentModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public StudentModel update (StudentModel entity)
     {
         if (entity.isValidInput() && EntityUtils.isValidEntityId(entity.getId()))

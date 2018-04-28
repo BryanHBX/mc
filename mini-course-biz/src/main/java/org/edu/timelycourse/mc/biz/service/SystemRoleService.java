@@ -26,7 +26,7 @@ public class SystemRoleService extends BaseService<SystemRoleModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public SystemRoleModel add(SystemRoleModel entity)
     {
         if (entity.isValidInput())
@@ -45,7 +45,7 @@ public class SystemRoleService extends BaseService<SystemRoleModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public SystemRoleModel update(SystemRoleModel entity)
     {
         if (entity.isValidInput() && EntityUtils.isValidEntityId(entity.getId()))

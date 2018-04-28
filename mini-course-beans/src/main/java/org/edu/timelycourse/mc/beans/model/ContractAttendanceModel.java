@@ -2,6 +2,7 @@ package org.edu.timelycourse.mc.beans.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.edu.timelycourse.mc.common.utils.EntityUtils;
 
 import java.util.Date;
 
@@ -45,6 +46,7 @@ public class ContractAttendanceModel extends BaseModel
     @Override
     public boolean isValidInput ()
     {
-        return false;
+        return EntityUtils.isValidEntityId(schoolId, studentId, teacherId, contractId)
+                && cost > 0 && date != null;
     }
 }

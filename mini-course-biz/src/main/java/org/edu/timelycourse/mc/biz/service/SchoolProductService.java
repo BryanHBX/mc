@@ -60,7 +60,7 @@ public class SchoolProductService extends BaseService<SchoolProductModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public SchoolProductModel add(SchoolProductModel entity)
     {
         entity.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
@@ -102,7 +102,7 @@ public class SchoolProductService extends BaseService<SchoolProductModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer delete (Integer id)
     {
         if (EntityUtils.isValidEntityId(id))
@@ -129,7 +129,7 @@ public class SchoolProductService extends BaseService<SchoolProductModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public SchoolProductModel update(SchoolProductModel entity)
     {
         if (entity.isValidInput() && EntityUtils.isValidEntityId(entity.getId()))

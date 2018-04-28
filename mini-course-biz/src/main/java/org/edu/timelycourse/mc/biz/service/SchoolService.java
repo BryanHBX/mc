@@ -26,7 +26,7 @@ public class SchoolService extends BaseService<SchoolModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public SchoolModel add(SchoolModel entity)
     {
         // enabled by default and need license control in future
@@ -36,7 +36,7 @@ public class SchoolService extends BaseService<SchoolModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public SchoolModel update(SchoolModel entity)
     {
         entity.setLastUpdateTime(new Date());

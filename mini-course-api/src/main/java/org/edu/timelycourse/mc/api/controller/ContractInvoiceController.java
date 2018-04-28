@@ -6,7 +6,7 @@ import org.edu.timelycourse.mc.beans.criteria.InvoiceCriteria;
 import org.edu.timelycourse.mc.beans.dto.ContractInvoiceDTO;
 import org.edu.timelycourse.mc.beans.dto.ContractInvoiceStatDTO;
 import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
-import org.edu.timelycourse.mc.biz.service.InvoiceService;
+import org.edu.timelycourse.mc.biz.service.ContractInvoiceService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.beans.entity.ResponseData;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
@@ -29,7 +29,7 @@ public class ContractInvoiceController extends BaseController
     private static Logger LOGGER = LoggerFactory.getLogger(ContractInvoiceController.class);
 
     @Autowired
-    private InvoiceService invoiceService;
+    private ContractInvoiceService invoiceService;
 
     @ModelAttribute("criteria")
     public InvoiceCriteria getCriteria()

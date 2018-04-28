@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
  * Created by x36zhao on 2017/3/17.
  */
 @Service
-public class CourseClassService extends BaseService<ContractClassModel>
+public class ContractClassService extends BaseService<ContractClassModel>
 {
-    private static Logger LOGGER = LoggerFactory.getLogger(CourseClassService.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(ContractClassService.class);
 
     @Autowired
-    public CourseClassService (ContractClassRepository repository)
+    public ContractClassService (ContractClassRepository repository)
     {
         super(repository);
     }

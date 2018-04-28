@@ -25,16 +25,16 @@ import java.util.List;
  * Created by x36zhao on 2017/3/17.
  */
 @Service
-public class InvoiceService extends BaseService<ContractInvoiceModel>
+public class ContractInvoiceService extends BaseService<ContractInvoiceModel>
 {
-    private static Logger LOGGER = LoggerFactory.getLogger(InvoiceService.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(ContractInvoiceService.class);
 
     private ContractRepository contractRepository;
     private ContractInvoiceRepository invoiceRepository;
 
     @Autowired
-    public InvoiceService(ContractInvoiceRepository repository,
-                          ContractRepository contractRepository)
+    public ContractInvoiceService (ContractInvoiceRepository repository,
+                                   ContractRepository contractRepository)
     {
         super(repository);
         this.invoiceRepository = repository;
@@ -42,7 +42,7 @@ public class InvoiceService extends BaseService<ContractInvoiceModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public ContractInvoiceModel add(ContractInvoiceModel entity)
     {
         entity.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
@@ -72,7 +72,7 @@ public class InvoiceService extends BaseService<ContractInvoiceModel>
         throw new ServiceException(String.format("Invalid model data to add, %s", entity));
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public List<ContractInvoiceModel> add (List<ContractInvoiceModel> entities)
     {
         if (entities != null)
@@ -113,7 +113,7 @@ public class InvoiceService extends BaseService<ContractInvoiceModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public ContractInvoiceModel update(ContractInvoiceModel entity)
     {
         entity.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());

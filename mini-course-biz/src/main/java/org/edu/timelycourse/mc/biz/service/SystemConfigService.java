@@ -31,7 +31,7 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public SystemConfigModel add (SystemConfigModel entity)
     {
         if (entity.isValidInput())
@@ -59,7 +59,7 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public SystemConfigModel update (SystemConfigModel entity)
     {
         if (entity.isValidInput() && EntityUtils.isValidEntityId(entity.getId()))
@@ -93,7 +93,7 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer delete(Integer id)
     {
         if (EntityUtils.isValidEntityId(id))
@@ -124,7 +124,7 @@ public class SystemConfigService extends BaseService<SystemConfigModel>
         return configRepository.getChildrenConfig(parentId);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer deleteByConifgName(String configName)
     {
         SystemConfigModel config = assertEntityNotNullByName(configName);
