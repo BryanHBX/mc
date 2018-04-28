@@ -123,7 +123,7 @@ public class ContractInvoiceService extends BaseService<ContractInvoiceModel>
             ContractInvoiceModel entityInDb = (ContractInvoiceModel) Asserts.assertEntityNotNullById(repository, entity.getId());
 
             // check if any change with respect to contract
-            if (entity.getContractId() != entityInDb.getContractId())
+            if (!entityInDb.getContractId().equals(entity.getContractId()))
             {
                 throw new ServiceException(String.format(
                         "It's not allowed to change the contract from %d to %d",
