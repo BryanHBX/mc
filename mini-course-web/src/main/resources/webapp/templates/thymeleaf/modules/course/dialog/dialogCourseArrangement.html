@@ -109,7 +109,7 @@
                                     <td><input type="text" name="clazz[name]" id="clazzName" readonly="readonly"/></td>
                                 </tr>
                                 <tr>
-                                    <td>未到需扣课时</td>
+                                    <td>未到需扣课时：</td>
                                     <td><input type="checkbox" id="ckAbsenceCost"/></td>
                                 </tr>
                             </table>
@@ -121,6 +121,7 @@
                                     <tr>
                                         <th>已安排教师</th>
                                         <th>班课</th>
+                                        <th>未到需扣课时</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
@@ -128,6 +129,7 @@
                                     <tr th:each="arrange:${arranges}">
                                         <td align="center" th:text="${arrange.teacher.name}"></td>
                                         <td align="center" th:text="${arrange.clazz ne null and arrange.clazz.id ne null ? arrange.clazz.name : '--'}"></td>
+                                        <td align="center" th:text="${arrange.absenceCost ne null ? '是' : '否'}"></td>
                                         <td align="center"><a href="#" style="float: none; text-decoration: underline;color: #1465ff">移出</a></td>
                                     </tr>
                                 </tbody>

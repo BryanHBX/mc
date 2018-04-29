@@ -100,7 +100,7 @@
                     <td align="center" th:text="${item.status ne null ? item.status.name : '--'}"></td>
                     <td align="center" th:text="${item.enrollType ne null ? item.enrollType.name : '--'}"></td>
                     <td align="center" th:text="${item.contractDate ne null ? #dates.format(item.contractDate, 'yyyy-MM-dd') : '--'}"></td>
-                    <td align="left">
+                    <td align="center">
                         <a target="dialog" mask="true" width="890" height="590"
                            style="float: none; text-decoration: underline; color: #1465ff"
                            th:href="'contract/' + ${item.id} + ${module eq 'finance' ? '?op=edit' : '?op=view'}"

@@ -455,7 +455,7 @@
             </fieldset>
         </div>
 
-        <div th:if="${entity ne null and (op eq null or op eq '')}">
+        <div th:if="${entity ne null and (op eq null or op eq '' or op eq 'view')}">
             <!-- 查看 -->
             <fieldset>
                 <legend>收据信息</legend>
@@ -466,13 +466,15 @@
                                 <th>收据编号</th>
                                 <th>支付金额</th>
                                 <th>支付方式</th>
+                                <th>备注</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="invoice: ${entity.invoices}">
-                                <td align="center" th:text="${invoice.invoiceNo}"></td>
+                                <td align="center" th:text="${invoice.invoiceNo ne null ? invoice.invoiceNo : '--'}"></td>
                                 <td align="center" th:text="${invoice.price}"></td>
-                                <td align="center" th:text="${invoice.payType.name}"></td>
+                                <td align="center" th:text="${invoice.payType.name ne null ? invoice.payType.name : '--'}"></td>
+                                <td align="center" th:text="${invoice.price < 0 ? '退款' : '--'}"></td>
                             </tr>
                         </tbody>
                     </table>

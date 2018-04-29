@@ -1,9 +1,11 @@
 package org.edu.timelycourse.mc.biz.service;
 
 import com.github.pagehelper.Page;
+import org.edu.timelycourse.mc.beans.criteria.BaseCriteria;
 import org.edu.timelycourse.mc.beans.criteria.ContractClazzCriteria;
 import org.edu.timelycourse.mc.beans.enums.EClazzStatus;
 import org.edu.timelycourse.mc.beans.model.ContractClazzModel;
+import org.edu.timelycourse.mc.beans.paging.PagingBean;
 import org.edu.timelycourse.mc.biz.repository.ContractClazzRepository;
 import org.edu.timelycourse.mc.biz.repository.UserRepository;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
@@ -77,6 +79,13 @@ public class ContractClazzService extends BaseService<ContractClazzModel>
             return repository.delete(id);
         }
         throw new ServiceException(String.format("Illegal clazz id (%d) for deletion", id));
+    }
+
+    @Override
+    public PagingBean<ContractClazzModel> findByCriteria(BaseCriteria criteria, Integer pageNum, Integer pageSize)
+    {
+        criteria.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+        return super.findByCriteria(criteria, pageNum, pageSize);
     }
 
     private boolean isClazzNameExisted (ContractClazzModel entity)
