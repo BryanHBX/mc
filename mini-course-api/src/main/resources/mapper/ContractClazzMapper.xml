@@ -38,7 +38,7 @@
             <if test="clazzName != null and clazzName != ''"> AND `c_name` = #{clazzName}</if>
             <if test="schoolId != null and schoolId > 0"> AND `school_id` = #{schoolId}</if>
         </where>
-        ORDER BY `contract_date` DESC
+        ORDER BY `c_time` DESC
     </select>
 
     <select id="getByPage" parameterType="ContractClazzModel" resultMap="result_clazz">
@@ -66,7 +66,7 @@
     </select>
 
     <select id="getAll" resultMap="result_clazz">
-        SELECT * FROM `t_school_class` ORDER BY `creationTime` DESC
+        SELECT * FROM `t_school_class` ORDER BY `c_time` DESC
     </select>
     
 </mapper>

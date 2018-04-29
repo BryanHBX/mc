@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.biz.service;
 
+import org.edu.timelycourse.mc.beans.criteria.ContractArrangementCriteria;
 import org.edu.timelycourse.mc.beans.enums.EContractArrangementStatus;
 import org.edu.timelycourse.mc.beans.model.ContractArrangementModel;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
@@ -16,6 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by x36zhao on 2017/3/17.
@@ -74,8 +78,8 @@ public class ContractArrangementService extends BaseService<ContractArrangementM
             if (model.getClazz() != null)
             {
                 clazzService.add(model.getClazz());
+                model.setClassId(model.getClazz().getId());
             }
-
             repository.insert(model);
 
             // update contract arrange status
@@ -114,5 +118,16 @@ public class ContractArrangementService extends BaseService<ContractArrangementM
         }
 
         throw new ServiceException(String.format("Illegal argument when delete arrangement - (contractId: %d, id: %d)", contractId, id));
+    }
+
+    public List<ContractArrangementModel> findByContract (Integer contractId)
+    {
+        Asserts.assertEntityNotNullById(contractRepository, contractId,
+                String.format("The contract with id (%d) does not exist", contractId));
+
+        ContractArrangementCriteria criteria = new ContractArrangementCriteria();
+        criteria.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+        criteria.setContractId(contractId);
+        return repository.getListByCriteria(criteria);
     }
 }

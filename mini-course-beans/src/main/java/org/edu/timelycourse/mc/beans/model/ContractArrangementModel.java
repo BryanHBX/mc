@@ -23,6 +23,9 @@ public class ContractArrangementModel extends BaseModel
     @JsonIgnore
     private ContractClazzModel clazz;
 
+    @JsonIgnore
+    private UserModel teacher;
+
     @Override
     @JsonIgnore
     public boolean isValidInput ()
@@ -45,6 +48,7 @@ public class ContractArrangementModel extends BaseModel
             model.setClazz(clazzModel);
         }
         model.setTeacherId(dto.getTeacher().getId());
+        model.setAbsenceCost(dto.getAbsenceCost() != null ? 1 : 0);
         return model;
     }
 }

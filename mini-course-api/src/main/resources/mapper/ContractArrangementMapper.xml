@@ -11,6 +11,11 @@
         <result property="teacherId" column="teacher_id"/>
         <result property="absenceCost" column="absence_flag"/>
         <result property="classId" column="class_id"/>
+
+        <association property="teacher" column="teacher_id"
+                     select="org.edu.timelycourse.mc.biz.repository.UserRepository.get" />
+        <association property="clazz" column="class_id"
+                     select="org.edu.timelycourse.mc.biz.repository.ContractClazzRepository.get" />
     </resultMap>
     
     <insert id="insert" parameterType="ContractArrangementModel" useGeneratedKeys="true" keyProperty="id">
@@ -52,7 +57,6 @@
             <if test="contractId != null and contractId > 0"> AND `contract_id` = #{contractId}</if>
             <if test="schoolId != null and schoolId > 0"> AND `school_id` = #{schoolId}</if>
         </where>
-        ORDER BY `contract_date` DESC
     </select>
 
     <select id="get" parameterType="java.lang.Integer" resultMap="result_arrangement">
@@ -63,16 +67,18 @@
         DELETE FROM `t_school_arrangement` WHERE `id` = #{id}
     </update>
 
-    <select id="getByContractId" parameterType="java.lang.Integer" resultMap="result_arrangement">
-        SELECT * FROM `t_school_arrangement` where `contract_id` = #{cid} AND `school_id` = #{sid}
-    </select>
-
-    <select id="getByTeacherId" parameterType="java.lang.Integer" resultMap="result_arrangement">
-        SELECT * FROM `t_school_arrangement` where `teacher_id` = #{tid} AND `school_id` = #{sid}
-    </select>
-
     <select id="getAll" resultMap="result_arrangement">
         SELECT * FROM `t_school_arrangement`
+    </select>
+
+    <select id="getListByCriteria" parameterType="org.edu.timelycourse.mc.beans.criteria.ContractArrangementCriteria"  resultMap="result_arrangement">
+        SELECT * FROM `t_school_arrangement`
+        <where>
+            1 = 1
+            <if test="teacherId != null and teacherId > 0"> AND `teacher_id` = #{teacherId}</if>
+            <if test="contractId != null and contractId > 0"> AND `contract_id` = #{contractId}</if>
+            <if test="schoolId != null and schoolId > 0"> AND `school_id` = #{schoolId}</if>
+        </where>
     </select>
     
 </mapper>

@@ -13,6 +13,7 @@ public interface BaseRepository<T extends BaseModel>
     Integer update(final T entity);
     Integer delete(Integer id);
     List<T> getAll();
+    List<T> getListByCriteria (final BaseCriteria criteria);
     T getByEntity (final T entity);
     Page<T> getByPage (final T entity);
     Page<T> getByCriteria (final BaseCriteria criteria);

@@ -94,24 +94,43 @@
                                 </tr>
                                 <tr>
                                     <td>是否安排班课：</td>
-                                    <td><input type="checkbox" id="clazzArrange"/></td>
+                                    <td><input type="checkbox" id="ckClazzArrange"/></td>
                                 </tr>
                                 <tr>
                                     <td style="padding-left: 8px;">请选择班级：</td>
                                     <td>
-                                        <select class="combox" id="clazzDropdownList" style="width: 100px;">
-                                            <option value="">所有</option>
+                                        <select class="combox disabled" id="clazzDropdownList">
+                                            <option value="">请选择班级</option>
                                         </select>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="padding-left: 8px;">或创建班级：</td>
-                                    <td><input type="text" name="clazz[name]" /></td>
+                                    <td><input type="text" name="clazz[name]" id="clazzName" readonly="readonly"/></td>
                                 </tr>
                                 <tr>
                                     <td>未到需扣课时</td>
-                                    <td><input type="checkbox" name="absenceCost"/></td>
+                                    <td><input type="checkbox" id="ckAbsenceCost"/></td>
                                 </tr>
+                            </table>
+                        </div>
+
+                        <div style="margin-left: 310px">
+                            <table class="table" th:if="${arranges ne null}" width="100%" layoutH="280">
+                                <thead>
+                                    <tr>
+                                        <th>已安排教师</th>
+                                        <th>班课</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="arrange:${arranges}">
+                                        <td align="center" th:text="${arrange.teacher.name}"></td>
+                                        <td align="center" th:text="${arrange.clazz ne null and arrange.clazz.id ne null ? arrange.clazz.name : '--'}"></td>
+                                        <td align="center"><a href="#" style="float: none; text-decoration: underline;color: #1465ff">移出</a></td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                     </fieldset>
@@ -139,12 +158,32 @@
 <script xmlns:th="http://www.thymeleaf.org" type="text/javascript">
      /*<![CDATA[*/
     $(function() {
+
+        $("#ckClazzArrange").unbind("click").bind("click", function(){
+            if (!$(this).is(":checked")) {
+                $("#clazzName").attr("readonly", "readonly").addClass("readonly");
+                $("#clazzDropdownList").addClass("disabled");
+            } else {
+                $("#clazzName").removeAttr("readonly").removeClass("readonly");
+                $("#clazzDropdownList").removeClass("disabled");
+            }
+        });
+
         $("#btnDialogSaveArrangement").unbind("click").bind("click", function () {
             if (!$("#arrangeForm").valid()) {
                 return false;
             }
 
             var jsonData = $("#arrangeForm").serializeJSON();
+
+            if ($("#ckAbsenceCost").is(':checked')) {
+                jsonData["absenceCost"] = 1;
+            }
+
+            if (!$("#ckClazzArrange").is(':checked')) {
+                delete jsonData["clazz"];
+            }
+
             generic_ajax_op("contract/" + [[${entity.id}]] + "/arrangement", "POST", jsonData, null, (
                 function (result) {
                     alertMsg.correct("教师安排成功");

@@ -50,8 +50,8 @@ public class ContractCourseController extends BaseController
         {
             LOGGER.debug("Enter getCourseArrangementByContractId - [contractId: {}]", contractId);
         }
-        Asserts.assertEntityNotNullById(contractService, contractId);
-        return null;
+
+        return ResponseData.success(ContractArrangementDTO.from(arrangementService.findByContract(contractId)));
     }
 
     @RequestMapping(path="/{contractId}/arrangement/{id}", method= RequestMethod.DELETE)

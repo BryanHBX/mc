@@ -2,6 +2,7 @@ package org.edu.timelycourse.mc.web.controller;
 
 import com.google.common.reflect.TypeParameter;
 import com.google.common.reflect.TypeToken;
+import org.edu.timelycourse.mc.beans.dto.ContractArrangementDTO;
 import org.edu.timelycourse.mc.beans.dto.ContractDTO;
 import org.edu.timelycourse.mc.beans.dto.ContractInvoiceStatDTO;
 import org.edu.timelycourse.mc.beans.dto.StudentDTO;
@@ -155,6 +156,12 @@ public abstract class AbstractController extends BaseController implements Error
     protected List<SystemConfigModel> getAllSystemConfigs(HttpServletRequest request)
     {
         return remoteCall(request,"system/config", new TypeToken<List<SystemConfigModel>>() {}).getData();
+    }
+
+    protected List<ContractArrangementDTO> findArrangementByContract (HttpServletRequest request, Integer contractId)
+    {
+        return remoteCall(request, String.format("contract/%d/arrangement", contractId),
+                new TypeToken<List<ContractArrangementDTO>>() {}).getData();
     }
 
     @Override

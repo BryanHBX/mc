@@ -51,11 +51,11 @@ public class AcademicController extends AbstractController
                                    @RequestParam(required = false, name = "type") String type,
                                    HttpServletRequest request)
     {
-        model.addAttribute("level", findConfigByName(request, EBuiltInConfig.C_STUDENT_LEVEL.name()));
         model.addAttribute("products", getAllProducts(request));
-        model.addAttribute("course", findConfigByName(request, EBuiltInConfig.C_COURSE_TYPE.name()));
+        model.addAttribute("level", findConfigByName(request, EBuiltInConfig.C_STUDENT_LEVEL.name()));
         model.addAttribute("entity", findContractById(request, contractId));
         model.addAttribute("type", type);
+        model.addAttribute("arranges", findArrangementByContract(request, contractId));
         return getModulePage("course/dialog/dialogCourseArrangement");
     }
 
