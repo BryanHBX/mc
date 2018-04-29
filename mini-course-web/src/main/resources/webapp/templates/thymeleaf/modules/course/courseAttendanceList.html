@@ -1,0 +1,101 @@
+<form xmlns:th="http://www.thymeleaf.org" id="pagerForm" method="GET" th:action="${module eq 'finance' ? 'finance/contract' : 'contract/list'}">
+    <input type="hidden" name="pageNum" th:value="${pagingBean ne null ? pagingBean.pageNumber : 1}" />
+    <input type="hidden" name="numPerPage" th:value="${pagingBean ne null ? pagingBean.pageSize : 20}"  />
+</form>
+
+<style>
+    #courseAttendanceSearchForm input { width: 80px; }
+</style>
+
+<div class="pageHeader" xmlns:th="http://www.thymeleaf.org">
+    <form id="courseAttendanceSearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);"
+          th:action="${module eq 'finance' ? 'finance/contract' : 'contract/list'}" method="GET">
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        <label>授课日期：</label>
+                        <input type="text" name="startDate" class="date textInput" th:value="${criteria != null  ? criteria.startDate : ''}" /> -
+                        <input type="text" name="endDate" class="date textInput" th:value="${criteria != null  ? criteria.endDate : ''}" />
+                    </td>
+                    <td>
+                        <label>学生姓名：</label>
+                        <input id="sca_name" name="studentName" type="text" class="textInput" postField="name"
+                               suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="sca"
+                               th:value="${criteria != null  ? criteria.studentName : ''}"/>
+                    </td>
+                    <td>
+                        <label>教师姓名：</label>
+                        <input id="scat_userName" name="teacherName" type="text" class="textInput"
+                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="scat" clean="true"
+                               th:value="${criteria != null ? criteria.consultantName : ''}"/>
+                    </td>
+            </table>
+            <div class="subBar">
+                <ul>
+                    <li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="pageContent" xmlns:th="http://www.thymeleaf.org">
+    <table class="table" width="100%" layoutH="110">
+        <thead>
+            <tr>
+                <th>授课日期</th>
+                <th>教师姓名</th>
+                <th>学生姓名</th>
+                <th>课程名称</th>
+                <th>学生签字</th>
+                <th>考勤</th>
+                <th>课时</th>
+                <th>补课换算课时</th>
+                <th>编辑</th>
+            </tr>
+        </thead>
+        <tbody>
+            <div th:if="${pagingBean != null and pagingBean.items != null}">
+                <tr th:each="item: ${pagingBean.items}">
+                    <td align="center" th:text="${item.enrollType ne null ? item.enrollType.name : '--'}"></td>
+                    <td align="center" th:text="${item.contractDate ne null ? #dates.format(item.contractDate, 'yyyy-MM-dd') : '--'}"></td>
+                    <td align="center" th:text="${item.consultant ne null ? item.consultant.name : '--'}"></td>
+                    <td align="center" th:text="${item.supervisor ne null ? item.supervisor.name : '--'}"></td>
+                    <td align="center" th:text="${item.enrollType ne null ? item.enrollType.name : '--'}"></td>
+                    <td align="center" th:text="${item.contractDate ne null ? #dates.format(item.contractDate, 'yyyy-MM-dd') : '--'}"></td>
+                    <td align="center" th:text="${item.consultant ne null ? item.consultant.name : '--'}"></td>
+                    <td align="center" th:text="${item.supervisor ne null ? item.supervisor.name : '--'}"></td>
+                    <td align="center">
+                        <a title="编辑" target="dialog" mask="true" width="890" height="480" th:href="'contract/' + ${item.id} + '?op=refund'"
+                           style="float: none; text-decoration: underline; color: #1465ff">
+                            <span>编辑</span>
+                        </a>
+                    </td>
+                </tr>
+            </div>
+        </tbody>
+    </table>
+
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                <option value="1" th:selected="${pagingBean != null and pagingBean.pageSize eq 1}">1</option>
+                <option value="20" th:selected="${pagingBean != null and pagingBean.pageSize eq 20}">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+                <option value="250">250</option>
+            </select>
+            <span th:text="'条，共' + ${pagingBean ne null ? pagingBean.totalItems : 0} + '条'"></span>
+        </div>
+        <div class="pagination" targetType="navTab"
+             th:totalCount="${pagingBean ne null ? pagingBean.totalItems : 0}"
+             th:numPerPage="${pagingBean ne null ? pagingBean.pageSize : 20}"
+             pageNumShown="10"
+             th:currentPage="${pagingBean ne null ? pagingBean.pageNumber : 1}">
+        </div>
+    </div>
+</div>

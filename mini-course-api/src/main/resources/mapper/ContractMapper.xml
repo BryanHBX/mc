@@ -30,6 +30,7 @@
         <result property="lastUpdateTime"   column="updateTime" />
         <result property="contractStatus"   column="c_status" />
         <result property="payStatus"        column="c_paystatus" />
+        <result property="arrangeStatus"    column="c_arrangeStatus" />
         <result property="transferPeriod"   column="period_transfer" />
 
         <association property="consultant" column="consult_id"
@@ -59,12 +60,12 @@
         (
             contract_no, student_id, school_id, consult_id, contract_type, period_enroll, period_free, period_remained,
             price_contract, price_discount, price_total, price_other, price_refund, supervisor_id, period_transfer, paid,
-            cfg_level, cfg_subLevel, cfg_course, cfg_subCourse, contract_date, creationTime, updateTime, c_status, c_paystatus
+            cfg_level, cfg_subLevel, cfg_course, cfg_subCourse, contract_date, creationTime, updateTime, c_status, c_paystatus, c_arrangeStatus
         ) VALUES
         (
             #{contractNo}, #{studentId}, #{schoolId}, #{consultantId}, #{enrollType}, #{enrollPeriod}, #{freePeriod}, #{remainedPeriod},
             #{contractPrice}, #{discountPrice}, #{totalPrice}, #{otherPrice}, #{refundPrice}, #{supervisorId}, #{transferPeriod}, #{paid},
-            #{levelId}, #{subLevelId}, #{courseId}, #{subCourseId}, #{contractDate}, #{creationTime}, #{lastUpdateTime}, #{contractStatus}, #{payStatus}
+            #{levelId}, #{subLevelId}, #{courseId}, #{subCourseId}, #{contractDate}, #{creationTime}, #{lastUpdateTime}, #{contractStatus}, #{payStatus}, #{arrangeStatus}
         )
     </insert>
 
@@ -95,6 +96,7 @@
             <if test="contractStatus != null and contractStatus > -1">`c_status` = #{contractStatus},</if>
             <if test="payStatus != null and payStatus > -1">`c_paystatus` = #{payStatus},</if>
             <if test="transferPeriod != null and transferPeriod > 0">`period_transfer` = #{transferPeriod},</if>
+            <if test="arrangeStatus != null and arrangeStatus > -1">`c_arrangeStatus` = #{arrangeStatus},</if>
             `id` = `id`
         </set>
         WHERE id = #{id}
@@ -121,6 +123,7 @@
             <if test="transferPeriod != null and transferPeriod > 0"> AND `period_transfer` = #{transferPeriod}</if>
             <if test="remainedPeriod != null and remainedPeriod > 0"> AND `period_remained` = #{remainedPeriod}</if>
             <if test="paid != null and paid > 0"> AND `paid` = #{paid}</if>
+            <if test="arrangeStatus != null and arrangeStatus > -1"> AND `c_arrangeStatus` = #{arrangeStatus}</if>
         </where>
          ORDER BY `contract_date` DESC
     </select>
@@ -143,6 +146,7 @@
             <if test="contractStatus != null and contractStatus > -1"> AND `c_status` = #{contractStatus}</if>
             <if test="payStatus != null and payStatus > -1"> AND `c_paystatus` = #{payStatus}</if>
             <if test="remainedPeriod != null and remainedPeriod > 0"> AND `period_remained` &lt;= #{remainedPeriod}</if>
+            <if test="arrangeStatus != null and arrangeStatus > -1"> AND `c_arrangeStatus` = #{arrangeStatus}</if>
         </where>
         ORDER BY `contract_date` DESC
     </select>
@@ -167,6 +171,7 @@
             <if test="payStatus != null and payStatus > -1"> AND `c_paystatus` = #{payStatus}</if>
             <if test="remainedPeriod != null and remainedPeriod > 0"> AND `period_remained` = #{remainedPeriod}</if>
             <if test="paid != null and paid > 0"> AND `paid` = #{paid}</if>
+            <if test="arrangeStatus != null and arrangeStatus > -1"> AND `c_arrangeStatus` = #{arrangeStatus}</if>
         </where>
          ORDER BY `contract_date` DESC
     </select>

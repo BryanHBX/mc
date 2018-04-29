@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
 import org.edu.timelycourse.mc.beans.dto.ContractDTO;
+import org.edu.timelycourse.mc.beans.enums.EContractArrangementStatus;
 import org.edu.timelycourse.mc.beans.enums.EContractDebtStatus;
 import org.edu.timelycourse.mc.beans.enums.EContractStatus;
 import org.edu.timelycourse.mc.beans.enums.EEnrollmentType;
@@ -140,6 +141,11 @@ public class ContractModel extends BaseModel
     private Integer payStatus;
 
     /**
+     * 排课状态
+     */
+    private Integer arrangeStatus;
+
+    /**
      * 学校ID
      */
     @JsonIgnore
@@ -223,6 +229,7 @@ public class ContractModel extends BaseModel
     {
         boolean valid =
                 EEnrollmentType.hasValue(enrollType) && EContractStatus.hasValue(contractStatus) &&
+                EContractArrangementStatus.hasValue(arrangeStatus) &&
                 Strings.isNotEmpty(contractNo) && EContractDebtStatus.hasValue(payStatus) &&
                 ValidatorUtil.isFloatNumber(contractPrice, totalPrice) &&
                 EntityUtils.isValidEntityId(consultantId, levelId, subLevelId, courseId, subCourseId, schoolId) &&

@@ -1,0 +1,122 @@
+<form xmlns:th="http://www.thymeleaf.org" id="pagerForm" method="GET" th:action="${module eq 'finance' ? 'finance/contract' : 'contract/list'}">
+    <input type="hidden" name="pageNum" th:value="${pagingBean ne null ? pagingBean.pageNumber : 1}" />
+    <input type="hidden" name="numPerPage" th:value="${pagingBean ne null ? pagingBean.pageSize : 20}"  />
+</form>
+
+<style>
+    #coursePlanningSearchForm input { width: 80px; }
+</style>
+
+<div class="pageHeader" xmlns:th="http://www.thymeleaf.org">
+    <form id="coursePlanningSearchForm" rel="pagerForm" onsubmit="return navTabSearch(this);"
+          th:action="${module eq 'finance' ? 'finance/contract' : 'contract/list'}" method="GET">
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        <label>学生姓名：</label>
+                        <input id="scp_name" name="studentName" type="text" class="textInput" postField="name"
+                               suggestUrl="student" suggestFields="name,contactPhone" lookupGroup="scp"
+                               th:value="${criteria != null  ? criteria.studentName : ''}"/>
+                    </td>
+                    <td>
+                        <label>排课状态：</label>
+                        <select class="combox" name="arrangeStatus" style="width: 100px;"
+                                th:value="${criteria != null and criteria.payStatus ne null ? criteria.arrangeStatus : ''}">
+                            <option value="">所有</option>
+                            <option value="0" th:selected="${criteria != null and criteria.arrangeStatus eq 0}">待安排</option>
+                            <option value="1" th:selected="${criteria != null and criteria.arrangeStatus eq 1}">已安排</option>
+                            <option value="2" th:selected="${criteria != null and criteria.arrangeStatus eq 2}">已结束</option>
+                        </select>
+                    </td>
+            </table>
+            <div class="subBar">
+                <ul>
+                    <li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="pageContent" xmlns:th="http://www.thymeleaf.org">
+    <table class="table" width="100%" layoutH="110">
+        <thead>
+            <tr>
+                <th>报名类型</th>
+                <th>签约日期</th>
+                <th>合同编号</th>
+                <th>姓名</th>
+                <th>细分年段</th>
+                <th>报名课程</th>
+                <th width="60">报名课时</th>
+                <th width="60">赠送课时</th>
+                <th>剩余课时</th>
+                <th>课时记录</th>
+                <th>安排教师</th>
+                <th>安排学管师</th>
+                <th>咨询师</th>
+                <th>学管师</th>
+            </tr>
+        </thead>
+        <tbody>
+            <div th:if="${pagingBean != null and pagingBean.items != null}">
+                <tr th:each="item: ${pagingBean.items}">
+                    <td align="center" th:text="${item.enrollType ne null ? item.enrollType.name : '--'}"></td>
+                    <td align="center" th:text="${item.contractDate ne null ? #dates.format(item.contractDate, 'yyyy-MM-dd') : '--'}"></td>
+                    <td align="left">
+                        <a target="dialog" mask="true" width="890" height="590"
+                           style="float: none; text-decoration: underline; color: #1465ff"
+                           th:href="'contract/' + ${item.id} + ${module eq 'finance' ? '?op=edit' : ''}"
+                           th:text="${item.contractNo}"/></td>
+                    <td align="center" th:text="${item.student ne null ? item.student.name : '--'}"></td>
+                    <td align="center" th:text="${item.gradeSub ne null ? item.gradeSub.name : '--'}"></td>
+                    <td align="center" th:text="${item.course ne null ? item.course.name : '--'}"></td>
+                    <td align="center" th:text="${item.enrollPeriod}"></td>
+                    <td align="center" th:text="${item.freePeriod > 0 ? item.freePeriod : '--'}"></td>
+                    <td align="center" th:text="${#numbers.formatDecimal(item.remainedPeriod, 1, 2)}"></td>
+                    <td align="center">
+                        <a title="查看课时记录" target="dialog" mask="true" width="585" height="450" class="btnLook" href="" style="float: none">查看</a>
+                    </td>
+                    </td>
+                    <td align="center">
+                        <a title="安排教师" target="dialog" mask="true" width="890" height="480" th:href="'contract/' + ${item.id} + '?op=refund'"
+                           style="float: none; text-decoration: underline; color: #1465ff">
+                            <span>安排</span>
+                        </a>
+                    </td>
+                    <td align="center">
+                        <a title="安排学管师" target="dialog" mask="true" width="890" height="480" th:href="'contract/' + ${item.id} + '?op=refund'"
+                           style="float: none; text-decoration: underline; color: #1465ff">
+                            <span>安排</span>
+                        </a>
+                    </td>
+                    <td align="center" th:text="${item.consultant ne null ? item.consultant.name : '--'}"></td>
+                    <td align="center" th:text="${item.supervisor ne null ? item.supervisor.name : '--'}"></td>
+                </tr>
+            </div>
+        </tbody>
+    </table>
+
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                <option value="1" th:selected="${pagingBean != null and pagingBean.pageSize eq 1}">1</option>
+                <option value="20" th:selected="${pagingBean != null and pagingBean.pageSize eq 20}">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+                <option value="250">250</option>
+            </select>
+            <span th:text="'条，共' + ${pagingBean ne null ? pagingBean.totalItems : 0} + '条'"></span>
+        </div>
+        <div class="pagination" targetType="navTab"
+             th:totalCount="${pagingBean ne null ? pagingBean.totalItems : 0}"
+             th:numPerPage="${pagingBean ne null ? pagingBean.pageSize : 20}"
+             pageNumShown="10"
+             th:currentPage="${pagingBean ne null ? pagingBean.pageNumber : 1}">
+        </div>
+    </div>
+</div>

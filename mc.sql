@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-04-27 18:22:07
+Date: 2018-04-29 10:05:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -121,8 +121,9 @@ CREATE TABLE `t_school_contract` (
   `contract_date` date NOT NULL COMMENT '签约日期',
   `creationTime` datetime DEFAULT NULL COMMENT '创建时间',
   `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
-  `c_status` int(11) DEFAULT NULL COMMENT '合同状态',
-  `c_paystatus` int(11) DEFAULT NULL COMMENT '缴费状态',
+  `c_status` tinyint(11) DEFAULT NULL COMMENT '合同状态',
+  `c_paystatus` tinyint(11) DEFAULT NULL COMMENT '缴费状态',
+  `c_arrangeStatus` tinyint(4) DEFAULT '0',
   `recorder` int(4) DEFAULT NULL COMMENT '登记人员ID',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
@@ -130,8 +131,8 @@ CREATE TABLE `t_school_contract` (
 -- ----------------------------
 -- Records of t_school_contract
 -- ----------------------------
-INSERT INTO `t_school_contract` VALUES ('20', '201804181241053254', '3', '13', null, '2', '1', '20', '0', '10', '10', '3000', '0', '3000', '0', '2600', '2600', '69', '73', '9', '11', '2018-04-23', '2018-04-27 15:13:03', '2018-04-27 15:13:53', '2', '0', null);
-INSERT INTO `t_school_contract` VALUES ('21', '201804181241053254', '3', '13', null, '2', '3', '10', '0', '0', '10', '1500', '0', '1500', '0', '0', '1500', '69', '73', '9', '11', '2018-04-26', '2018-04-27 15:13:03', null, '1', '0', null);
+INSERT INTO `t_school_contract` VALUES ('20', '201804181241053254', '3', '13', null, '2', '1', '20', '0', '10', '10', '3000', '0', '3000', '0', '2600', '2600', '69', '73', '9', '11', '2018-04-23', '2018-04-27 15:13:03', '2018-04-27 15:13:53', '2', '0', null, null);
+INSERT INTO `t_school_contract` VALUES ('21', '201804181241053254', '3', '13', null, '2', '3', '10', '0', '0', '10', '1500', '0', '1500', '0', '0', '1500', '69', '73', '9', '11', '2018-04-26', '2018-04-27 15:13:03', null, '1', '0', null, null);
 
 -- ----------------------------
 -- Table structure for `t_school_invoice`

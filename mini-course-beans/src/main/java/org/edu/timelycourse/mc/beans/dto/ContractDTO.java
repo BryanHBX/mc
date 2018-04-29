@@ -2,6 +2,7 @@ package org.edu.timelycourse.mc.beans.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.edu.timelycourse.mc.beans.enums.EContractArrangementStatus;
 import org.edu.timelycourse.mc.beans.enums.EContractStatus;
 import org.edu.timelycourse.mc.beans.enums.EEnrollmentType;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
@@ -140,6 +141,11 @@ public class ContractDTO extends BaseDTO
     private Integer payStatus;
 
     /**
+     * 排课状态
+     */
+    private NamedOptionProperty arrangeStatus;
+
+    /**
      * 剩余金额
      * @return
      */
@@ -176,7 +182,7 @@ public class ContractDTO extends BaseDTO
             if (model != null)
             {
                 ContractDTO dto = new ContractDTO();
-                BeanUtils.copyProperties(model, dto, "course", "student", "enrollType", "consultant", "supervisor");
+                BeanUtils.copyProperties(model, dto, "course", "student", "enrollType", "consultant", "supervisor", "arrangeStatus");
                 dto.setEnrollType(new NamedOptionProperty(model.getEnrollType(), EEnrollmentType.getLabel(model.getEnrollType())));
                 dto.setConsultant(NamedOptionProperty.from(model.getConsultantId(), model.getConsultant(), "userName"));
                 dto.setGrade(NamedOptionProperty.from(model.getLevelId(), model.getLevel(), "configDescription"));
@@ -187,6 +193,7 @@ public class ContractDTO extends BaseDTO
                 dto.setStudent(StudentDTO.from(model.getStudent()));
                 dto.setSupervisor(NamedOptionProperty.from(model.getSupervisorId(), model.getSupervisor(), "userName"));
                 dto.setInvoices(ContractInvoiceDTO.from(model.getInvoices()));
+                dto.setArrangeStatus(new NamedOptionProperty(model.getArrangeStatus(), EContractArrangementStatus.getLabel(model.getArrangeStatus())));
                 return dto;
             }
 
