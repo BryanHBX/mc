@@ -26,8 +26,8 @@ function generic_ajax_op(url,type,json_data,send_handler,success_handler,error_h
         url: _url,
         async: _asyn > 0 ? true : false,
         global: _global ? true : false,
-        data: JSON.stringify(_data),
-        dataType: "json",
+        data: json_data != null ? JSON.stringify(_data) : null,
+        dataType: _type.toLowerCase() == "get" ? "json" : "json",
         headers: _header,
         contentType: content_type || "application/json; charset=utf-8",
         beforeSend: function() {

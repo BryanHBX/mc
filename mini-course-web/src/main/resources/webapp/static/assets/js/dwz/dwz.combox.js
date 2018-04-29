@@ -59,6 +59,9 @@
 
 		$.each(json, function(i){
 			if ($parent.attr("optName") && $parent.attr("optVal")) {
+				if ($parent.attr("placeholder")) {
+					html += '<option value="">' + $parent.attr("placeholder") + '</option>';
+				}
 				html += '<option value="' + json[i][$parent.attr("optVal")] + '">' + json[i][$parent.attr("optName")] + '</option>';
 			} else {
                 if (json[i] && json[i].length > 1) {
@@ -187,7 +190,7 @@
 		comboxRefresh: function(json){
 			return this.each(function(){
 				var $select = $(this);
-				_comboxRefresh($select, json);
+				_comboxRefresh($select, $select, json);
 			});
 		},
 

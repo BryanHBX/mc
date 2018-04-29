@@ -30,6 +30,10 @@
                     if (inputId == name || name == inputName) {
                         if (args[key] || (args[key] == "" && clean != undefined)) {
                             $input.val(args[key]);
+
+                            // add callback
+                            var _callback = $input.attr("callback");
+                            if (_callback != undefined && ! $.isFunction(_callback)) _callback = eval('(' + _callback + ')');
                             break;
                         }
                     }

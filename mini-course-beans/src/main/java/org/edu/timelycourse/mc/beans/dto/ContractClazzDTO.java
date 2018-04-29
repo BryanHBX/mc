@@ -17,9 +17,9 @@ import java.util.List;
 @Data
 public class ContractClazzDTO extends BaseDTO
 {
-    private Integer contractId;
-    private Integer teacherId;
+    //private Integer contractId;
     private String name;
+    private Integer teacherId;
 
     @JsonIgnore
     private Integer schoolId;
@@ -31,7 +31,7 @@ public class ContractClazzDTO extends BaseDTO
     @JsonIgnore
     public boolean isValid ()
     {
-        return EntityUtils.isValidEntityId(contractId, teacherId, schoolId) && StringUtil.isNotEmpty(name);
+        return EntityUtils.isValidEntityId(teacherId, schoolId) && StringUtil.isNotEmpty(name);
     }
 
     public static PagingBean<ContractClazzDTO> from (PagingBean<ContractClazzModel> pagingBean)

@@ -79,7 +79,7 @@
                     </td>
                     </td>
                     <td align="center">
-                        <a th:title="${item.arrangeStatus ne null and item.arrangeStatus.name ne null ? item.arrangeStatus.name : '安排'} + '教师'"
+                        <a th:title="${item.arrangeStatus ne null and item.arrangeStatus.id eq 1 ? '再排' : '安排'} + '教师'"
                            target="dialog" mask="true" width="620" height="460" th:href="'academic/' + ${item.id} + '/arrangement?type=teacher'"
                            th:style="'float: none; text-decoration: underline;' + ${item.arrangeStatus ne null and item.arrangeStatus.id eq 1 ? 'color: #1465ff' : 'color: red' }">
                             <span

@@ -86,7 +86,7 @@
                                     <td>
                                         <input id="sdt_id" name="teacher[id]" type="hidden" />
                                         <input id="sdt_userName" name="teacher[name]" type="text" class="textInput required"
-                                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sdt" clean="true"/>
+                                               postField="userName" suggestUrl="member" suggestFields="userName,phone" callback="refreshCombox()" lookupGroup="sdt" clean="true"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -99,7 +99,8 @@
                                 <tr>
                                     <td style="padding-left: 8px;">请选择班级：</td>
                                     <td>
-                                        <select class="combox disabled" id="clazzDropdownList">
+                                        <select class="combox disabled" id="clazzDropdownList" name="clazz[id]"
+                                                optName="name" optVal="id" style="width: 153px;" placeholder="请选择班级">
                                             <option value="">请选择班级</option>
                                         </select>
                                     </td>
@@ -128,7 +129,9 @@
                                 <tbody>
                                     <tr th:each="arrange:${arranges}">
                                         <td align="center" th:text="${arrange.teacher.name}"></td>
-                                        <td align="center" th:text="${arrange.clazz ne null and arrange.clazz.id ne null ? arrange.clazz.name : '--'}"></td>
+                                        <td align="center"
+                                            th:data="${arrange.clazz ne null and arrange.clazz.id ne null ? arrange.clazz.id : ''}"
+                                            th:text="${arrange.clazz ne null and arrange.clazz.id ne null ? arrange.clazz.name : '--'}"></td>
                                         <td align="center" th:text="${arrange.absenceCost ne null ? '是' : '否'}"></td>
                                         <td align="center"><a href="#" style="float: none; text-decoration: underline;color: #1465ff">移出</a></td>
                                     </tr>
@@ -159,6 +162,20 @@
 
 <script xmlns:th="http://www.thymeleaf.org" type="text/javascript">
      /*<![CDATA[*/
+
+     function refreshCombox () {
+         var id = $("#sdt_id").val();
+         generic_ajax_op("teacher/" + id + "/clazz", "get", null, null, (
+             function (result) {
+                 var data = result.data;
+                 if (data.items != null) {
+                     console.log(data.items);
+                     $("#clazzDropdownList").comboxRefresh(data.items);
+                 }
+             }
+         ));
+     }
+
     $(function() {
 
         $("#ckClazzArrange").unbind("click").bind("click", function(){
@@ -168,6 +185,18 @@
             } else {
                 $("#clazzName").removeAttr("readonly").removeClass("readonly");
                 $("#clazzDropdownList").removeClass("disabled");
+            }
+        });
+
+        $("#clazzName").unbind("input propertychange").bind("input propertychange", function(){
+            if ($(this).val().trim() != "") {
+                $("#clazzDropdownList").comboxReset();
+            }
+        });
+
+        $("#clazzDropdownList").unbind("change").bind("change", function () {
+            if ($(this).val().trim() != "") {
+                $("#clazzName").val("");
             }
         });
 
@@ -184,6 +213,15 @@
 
             if (!$("#ckClazzArrange").is(':checked')) {
                 delete jsonData["clazz"];
+            } else {
+                var clazzId = jsonData["clazz"]["id"];
+                if (clazzId != '') {
+                    var clazzName = $("#clazzDropdownList").find(":selected").text();
+                    if ($("td[data=" + clazzId + "]").size() > 0) {
+                        alertMsg.error("班课 '" + (jsonData["teacher"]["name"] + "-" + clazzName) + "' 已被安排, 不能重复操作!");
+                        return false;
+                    }
+                }
             }
 
             generic_ajax_op("contract/" + [[${entity.id}]] + "/arrangement", "POST", jsonData, null, (
