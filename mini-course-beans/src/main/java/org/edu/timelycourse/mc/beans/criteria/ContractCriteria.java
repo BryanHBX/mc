@@ -9,6 +9,7 @@ import org.edu.timelycourse.mc.common.utils.StringUtil;
 @Data
 public class ContractCriteria extends BaseCriteria
 {
+    private Integer id;
     private String studentName;
     private String consultantName;
     private String supervisorName;

@@ -1,0 +1,157 @@
+<style>
+    #arrangementDialogFormContent span.error {left: auto; right: 0px; top: 0;}
+    #arrangementDialogFormContent td span.error {left: auto; right: 0px;position: absolute;z-index: 9999;}
+    #arrangementDialogFormContent dl {width: 270px; margin-bottom: 6px;}
+    #arrangementDialogFormContent dd {width: 160px;}
+    #arrangementDialogFormContent dt {width: 100px; text-align: right;}
+    #arrangementDialogFormContent th {text-align: center}
+    #arrangementDialogFormContent td {position: relative}
+    #arrangementDialogFormContent td input {float: none;}
+</style>
+
+<div xmlns:th="http://www.thymeleaf.org" class="pageContent">
+    <div class="pageFormContent" id="arrangementDialogFormContent" layouth="56" style="overflow: auto;">
+        <div>
+            <fieldset>
+                <legend>合同信息</legend>
+                <dl>
+                    <dt>报名类型：</dt>
+                    <dd>
+                        <select name="enrollType[id]" style="width: 152px" title="报名类型"
+                                th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
+                                th:value="${entity ne null and entity.enrollType ne null ? entity.enrollType.id : ''}"
+                                th:readonly="${entity ne null and op ne 'edit'}">
+                            <option value="1">新报</option>
+                            <option value="2">续保</option>
+                            <option value="3">转课时</option>
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>学生姓名：</dt>
+                    <dd><input name="student[name]" type="text"
+                               class="'textInput readonly" readonly="readonly"
+                               th:value="${entity ne null and entity.student ne null ? entity.student.name : ''}"/>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>学生年段：</dt>
+                    <dd>
+                        <select name="grade[id]" style="width: 152px" title="学生年段"
+                                th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
+                                th:if="${not #lists.isEmpty(level.children)}"
+                                th:with="options=${level.children}"
+                                th:value="${entity ne null and entity.grade ne null ? entity.grade.id : ''}">
+                            <option value="">请选择</option>
+                            <option th:each="option:${options}" th:value="${option.id}" th:text="${option.configDescription}">学生年段</option>
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>课程大类：</dt>
+                    <dd>
+                        <select name="course[id]" style="width: 152px" title="课程大类"
+                                th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
+                                th:value="${entity ne null and entity.course ne null ? entity.course.id : ''}">
+                            <option value="">请选择</option>
+                            <option th:each="option:${products}" th:value="${option.id}" th:text="${option.productName}">课程名称</option>
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>课程子类：</dt>
+                    <dd>
+                        <select name="courseSub[id]" style="width: 152px" title="课程子类"
+                                th:class="'combox ' + ${entity eq null or op eq 'edit' ? '' : 'disabled'}"
+                                th:value="${entity ne null and entity.courseSub ne null ? entity.courseSub.id : ''}">
+                            <option value="">请选择</option>
+                            <option th:if="${entity.courseSub ne null}"
+                                    th:value="${entity.courseSub.id}"
+                                    th:text="${entity ne null and entity.courseSub ne null ? entity.courseSub.name : ''}"></option>
+                        </select>
+                    </dd>
+                </dl>
+            </fieldset>
+        </div>
+
+        <div>
+            <form id="arrangeForm" method="POST">
+                <div>
+                    <fieldset>
+                        <legend>安排教师</legend>
+                        <div style="float:left; width: 300px;">
+                            <table style="width:100%; border-spacing: 8px; border-right: 1px solid #a0c5e8;" >
+                                <tr>
+                                    <td>教师姓名：</td>
+                                    <td>
+                                        <input id="sdt_id" name="teacher[id]" type="hidden" />
+                                        <input id="sdt_userName" name="teacher[name]" type="text" class="textInput required"
+                                               postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sdt" clean="true"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><div class="divider"/> </td>
+                                </tr>
+                                <tr>
+                                    <td>是否安排班课：</td>
+                                    <td><input type="checkbox" id="clazzArrange"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 8px;">请选择班级：</td>
+                                    <td>
+                                        <select class="combox" id="clazzDropdownList" style="width: 100px;">
+                                            <option value="">所有</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 8px;">或创建班级：</td>
+                                    <td><input type="text" name="clazz[name]" /></td>
+                                </tr>
+                                <tr>
+                                    <td>未到需扣课时</td>
+                                    <td><input type="checkbox" name="absenceCost"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="formBar">
+        <ul>
+            <li>
+                <div class="buttonActive"><div class="buttonContent">
+                    <button type="button" id="btnDialogSaveArrangement">安排教师</button></div>
+                </div>
+            </li>
+            <li>
+                <div class="button"><div class="buttonContent"><button class="close" type="button">取消</button></div></div>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<script xmlns:th="http://www.thymeleaf.org" type="text/javascript">
+     /*<![CDATA[*/
+    $(function() {
+        $("#btnDialogSaveArrangement").unbind("click").bind("click", function () {
+            if (!$("#arrangeForm").valid()) {
+                return false;
+            }
+
+            var jsonData = $("#arrangeForm").serializeJSON();
+            generic_ajax_op("contract/" + [[${entity.id}]] + "/arrangement", "POST", jsonData, null, (
+                function (result) {
+                    alertMsg.correct("教师安排成功");
+                    $.pdialog.closeCurrent();
+                    navTab.reload(null, {});
+                }
+            ));
+        });
+    });
+</script>

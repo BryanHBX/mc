@@ -11,7 +11,7 @@ import java.util.Date;
  * Created by x36zhao on 2018/4/20.
  */
 @Data
-public class ContractClassModel extends BaseModel
+public class ContractClazzModel extends BaseModel
 {
     @JsonIgnore
     private Integer schoolId;

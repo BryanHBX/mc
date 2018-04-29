@@ -103,7 +103,7 @@
                     <td align="left">
                         <a target="dialog" mask="true" width="890" height="590"
                            style="float: none; text-decoration: underline; color: #1465ff"
-                           th:href="'contract/' + ${item.id} + ${module eq 'finance' ? '?op=edit' : ''}"
+                           th:href="'contract/' + ${item.id} + ${module eq 'finance' ? '?op=edit' : '?op=view'}"
                            th:text="${item.contractNo}"/></td>
                     <td align="center" th:text="${item.student ne null ? item.student.name : '--'}"></td>
                     <td align="center" th:text="${item.gradeSub ne null ? item.gradeSub.name : '--'}"></td>

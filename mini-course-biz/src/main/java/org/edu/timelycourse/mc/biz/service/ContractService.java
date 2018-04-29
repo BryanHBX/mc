@@ -2,10 +2,7 @@ package org.edu.timelycourse.mc.biz.service;
 
 import org.edu.timelycourse.mc.beans.dto.ContractRefundDTO;
 import org.edu.timelycourse.mc.beans.dto.ContractTransformDTO;
-import org.edu.timelycourse.mc.beans.enums.EContractDebtStatus;
-import org.edu.timelycourse.mc.beans.enums.EContractStatus;
-import org.edu.timelycourse.mc.beans.enums.EEnrollmentType;
-import org.edu.timelycourse.mc.beans.enums.EInvoiceStatus;
+import org.edu.timelycourse.mc.beans.enums.*;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
 import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
 import org.edu.timelycourse.mc.beans.model.StudentModel;
@@ -132,6 +129,7 @@ public class ContractService extends BaseService<ContractModel>
             model.setStudentId(studentEntity.getId());
             model.setCreationTime(new Date());
             model.setPaid(model.getInvoicePayTotal());
+            model.setArrangeStatus(EContractArrangementStatus.TODO.code());
 
             // save contract
             repository.insert(model);

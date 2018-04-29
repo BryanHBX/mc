@@ -66,7 +66,7 @@
                     <td align="left">
                         <a target="dialog" mask="true" width="890" height="590"
                            style="float: none; text-decoration: underline; color: #1465ff"
-                           th:href="'contract/' + ${item.id} + ${module eq 'finance' ? '?op=edit' : ''}"
+                           th:href="'contract/' + ${item.id} + '?op=view'"
                            th:text="${item.contractNo}"/></td>
                     <td align="center" th:text="${item.student ne null ? item.student.name : '--'}"></td>
                     <td align="center" th:text="${item.gradeSub ne null ? item.gradeSub.name : '--'}"></td>
@@ -80,14 +80,16 @@
                     </td>
                     <td align="center">
                         <a th:title="${item.arrangeStatus ne null and item.arrangeStatus.name ne null ? item.arrangeStatus.name : '安排'} + '教师'"
-                           target="dialog" mask="true" width="890" height="480" th:href="'contract/' + ${item.id} + '?op=refund'" style="float: none; text-decoration: underline; color: #1465ff">
-                            <span th:title="${item.arrangeStatus ne null and item.arrangeStatus.name ne null ? item.arrangeStatus.name : '安排'}">安排</span>
+                           target="dialog" mask="true" width="580" height="460" th:href="'academic/' + ${item.id} + '/arrangement?type=teacher'"
+                           th:style="'float: none; text-decoration: underline;' + ${item.arrangeStatus ne null and item.arrangeStatus.id eq 1 ? 'color: #1465ff' : 'color: red' }">
+                            <span
+                                th:text="${item.arrangeStatus ne null and item.arrangeStatus.id eq 1 ? '再排' : '安排'}">安排</span>
                         </a>
                     </td>
                     <td align="center">
-                        <a th:title="${item.arrangeStatus ne null and item.arrangeStatus.name ne null ? item.arrangeStatus.name : '安排'} + '学管师'"
-                           target="dialog" mask="true" width="890" height="480" th:href="'contract/' + ${item.id} + '?op=refund'" style="float: none; text-decoration: underline; color: #1465ff">
-                            <span th:title="${item.arrangeStatus ne null and item.arrangeStatus.name ne null ? item.arrangeStatus.name : '安排'}">安排</span>
+                        <a title="安排学管师'"
+                           target="dialog" mask="true" width="890" height="480" th:href="'academic/' + ${item.id} + '/arrangement?type=supervisor'" style="float: none; text-decoration: underline; color: #1465ff">
+                            <span>安排</span>
                         </a>
                     </td>
                     <td align="center" th:text="${item.consultant ne null ? item.consultant.name : '--'}"></td>

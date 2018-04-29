@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-04-29 10:05:57
+Date: 2018-04-29 15:04:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -93,6 +93,63 @@ INSERT INTO `t_school` VALUES ('2', 'string', 'string', 'string', '0', '2018-04-
 INSERT INTO `t_school` VALUES ('3', 'string', 'string12', 'string12', '0', '2018-04-08 22:46:17', '2018-04-08 22:50:19', null, null, null, null, null, null);
 
 -- ----------------------------
+-- Table structure for `t_school_arrangement`
+-- ----------------------------
+DROP TABLE IF EXISTS `t_school_arrangement`;
+CREATE TABLE `t_school_arrangement` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `contract_id` int(11) NOT NULL COMMENT '合同ID',
+  `teacher_id` int(11) NOT NULL COMMENT '教师ID',
+  `absence_flag` tinyint(4) DEFAULT '0' COMMENT '未到扣课时',
+  `school_id` tinyint(4) NOT NULL COMMENT '学校ID',
+  `class_id` int(11) DEFAULT NULL COMMENT '班课ID',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_school_arrangement
+-- ----------------------------
+INSERT INTO `t_school_arrangement` VALUES ('1', '20', '12', null, '2', null);
+
+-- ----------------------------
+-- Table structure for `t_school_attendance`
+-- ----------------------------
+DROP TABLE IF EXISTS `t_school_attendance`;
+CREATE TABLE `t_school_attendance` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `contract_id` int(11) NOT NULL COMMENT '合同ID',
+  `school_id` int(11) NOT NULL COMMENT '学校ID',
+  `teacher_id` int(11) NOT NULL COMMENT '教师ID',
+  `class_id` int(11) DEFAULT NULL,
+  `cost` double DEFAULT NULL COMMENT '课时',
+  `date` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '授课日期',
+  `sign_img` varchar(255) DEFAULT NULL COMMENT '签字图片',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_school_attendance
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `t_school_class`
+-- ----------------------------
+DROP TABLE IF EXISTS `t_school_class`;
+CREATE TABLE `t_school_class` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `c_name` varchar(120) NOT NULL DEFAULT '班课名',
+  `teacher_id` int(4) NOT NULL COMMENT '教师ID',
+  `school_id` int(11) NOT NULL COMMENT '学校ID',
+  `c_status` tinyint(4) DEFAULT NULL COMMENT '状态',
+  `c_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_school_class
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `t_school_contract`
 -- ----------------------------
 DROP TABLE IF EXISTS `t_school_contract`;
@@ -131,7 +188,7 @@ CREATE TABLE `t_school_contract` (
 -- ----------------------------
 -- Records of t_school_contract
 -- ----------------------------
-INSERT INTO `t_school_contract` VALUES ('20', '201804181241053254', '3', '13', null, '2', '1', '20', '0', '10', '10', '3000', '0', '3000', '0', '2600', '2600', '69', '73', '9', '11', '2018-04-23', '2018-04-27 15:13:03', '2018-04-27 15:13:53', '2', '0', null, null);
+INSERT INTO `t_school_contract` VALUES ('20', '201804181241053254', '3', '13', null, '2', '1', '20', '0', '10', '10', '3000', '0', '3000', '0', '2600', '2600', '69', '73', '9', '11', '2018-04-23', '2018-04-27 15:13:03', '2018-04-27 15:13:53', '2', '0', '1', null);
 INSERT INTO `t_school_contract` VALUES ('21', '201804181241053254', '3', '13', null, '2', '3', '10', '0', '0', '10', '1500', '0', '1500', '0', '0', '1500', '69', '73', '9', '11', '2018-04-26', '2018-04-27 15:13:03', null, '1', '0', null, null);
 
 -- ----------------------------

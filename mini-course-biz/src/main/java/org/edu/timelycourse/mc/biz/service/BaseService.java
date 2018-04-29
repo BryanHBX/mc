@@ -42,24 +42,26 @@ public abstract class BaseService<T extends BaseModel>
     @Transactional(rollbackFor = Exception.class)
     public T add (T entity)
     {
-        if (entity != null && entity.isValidInput())
+        if (entity != null)
         {
-            Integer result = this.repository.insert(entity);
-            if (result > 0)
+            if (entity.isValidInput())
             {
-                return entity;
+                Integer result = this.repository.insert(entity);
+                if (result > 0)
+                {
+                    return entity;
+                }
+                throw new ServiceException("Failed to add entity: " + entity);
             }
-            throw new ServiceException("Failed to add entity: " + entity);
+            throw new ServiceException("Invalid entity input to add: " + entity);
         }
-
         throw new ServiceException("Empty entity to add");
     }
 
     @Transactional(rollbackFor = Exception.class)
     public T update (T entity)
     {
-        if (entity != null && entity.isValidInput() &&
-                EntityUtils.isValidEntityId(entity.getId()))
+        if (entity != null && entity.isValidInput() && EntityUtils.isValidEntityId(entity.getId()))
         {
             Integer result = this.repository.update(entity);
             if (result > 0)

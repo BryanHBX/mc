@@ -3,11 +3,14 @@ package org.edu.timelycourse.mc.api.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.edu.timelycourse.mc.beans.criteria.ContractCriteria;
+import org.edu.timelycourse.mc.beans.dto.ContractArrangementDTO;
 import org.edu.timelycourse.mc.beans.dto.ContractDTO;
 import org.edu.timelycourse.mc.beans.dto.ContractRefundDTO;
 import org.edu.timelycourse.mc.beans.dto.ContractTransformDTO;
 import org.edu.timelycourse.mc.beans.entity.ResponseData;
+import org.edu.timelycourse.mc.beans.model.ContractArrangementModel;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
+import org.edu.timelycourse.mc.biz.service.ContractArrangementService;
 import org.edu.timelycourse.mc.biz.service.ContractService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
@@ -22,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by x36zhao on 2018/4/3.
  */
 @RestController
-@RequestMapping("/api/${api.version}/contract/course/")
+@RequestMapping("/api/${api.version}/contract/")
 @Api(tags = { "课时课表API" })
 @PreAuthorize("hasAnyRole('ROLE_CONSULTANT','ROLE_ADMINISTRATOR','ROLE_TREASURER')")
 public class ContractCourseController extends BaseController
@@ -32,119 +35,51 @@ public class ContractCourseController extends BaseController
     @Autowired
     private ContractService contractService;
 
-    @ModelAttribute("criteria")
-    public ContractCriteria getCriteria () { return new ContractCriteria(); }
+    @Autowired
+    private ContractArrangementService arrangementService;
 
-    @RequestMapping(path="", method= RequestMethod.GET)
-    @ApiOperation(value = "Get either list of all contracts or by given query")
-    public ResponseData getContract(@RequestParam(name="pageNum", required = false) Integer pageNum,
-                                    @RequestParam(name="pageSize", required = false) Integer pageSize,
-                                    @ModelAttribute("criteria") ContractCriteria criteria,
-                                    @RequestHeader(name = "Authorization") String auth)
-    {
-        criteria.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
+    @ModelAttribute("contractCriteria")
+    public ContractCriteria getContractCriteria () { return new ContractCriteria(); }
 
-        if (LOGGER.isDebugEnabled())
-        {
-            LOGGER.debug("Enter getContract - [pageNum: {}, pageSize: {}, criteria: {}]", pageNum, pageSize, criteria);
-        }
-
-        return ResponseData.success(ContractDTO.from(
-                contractService.findByCriteria(criteria, pageNum, pageSize)));
-
-        //return ResponseData.success(ContractDTO.from(contractService.findByPage(
-        //        ContractModel.from(criteria), pageNum, pageSize)));
-    }
-
-    @RequestMapping(path="/{contractId}", method= RequestMethod.GET)
-    @ApiOperation(value = "Get contract by given id")
-    public ResponseData getContractById(@PathVariable(required = true) Integer contractId,
-                                        @RequestHeader(name = "Authorization") String auth)
+    @RequestMapping(path="/{contractId}/arrangement", method= RequestMethod.GET)
+    @ApiOperation(value = "Get either list of all courses or by given contract criteria")
+    public ResponseData getCourseArrangementByContractId(@PathVariable(required = true) Integer contractId,
+                                                         @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
         {
-            LOGGER.debug("Enter getContractById - [contractId: {}]", contractId);
-        }
-
-        return ResponseData.success(ContractDTO.from(
-                (ContractModel) Asserts.assertEntityNotNullById(contractService, contractId)));
-    }
-
-    @RequestMapping(path="", method= RequestMethod.POST)
-    @ApiOperation(value = "Add contract by given entity")
-    public ResponseData addContract (@RequestBody ContractDTO model,
-                                     @RequestHeader(name = "Authorization") String auth)
-    {
-        model.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
-
-        if (LOGGER.isDebugEnabled())
-        {
-            LOGGER.debug("Enter addContract - [model: {}]", model);
-        }
-
-        return ResponseData.success(contractService.add(ContractModel.from(model)));
-    }
-
-    @RequestMapping(path="/{contractId}/transform", method= RequestMethod.POST)
-    @ApiOperation(value = "Transfer contract")
-    public ResponseData transferContract (@PathVariable(required = true) Integer contractId,
-                                          @RequestBody ContractTransformDTO dto,
-                                          @RequestHeader(name = "Authorization") String auth)
-    {
-        dto.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
-        dto.setContractId(contractId);
-
-        if (LOGGER.isDebugEnabled())
-        {
-            LOGGER.debug("Enter transferContract - [contractId: {}, dto: {}]", contractId, dto);
-        }
-
-        return ResponseData.success(contractService.transform(dto));
-    }
-
-    @RequestMapping(path="/{contractId}/refund", method= RequestMethod.POST)
-    @ApiOperation(value = "Transfer contract")
-    public ResponseData refundContract (@PathVariable(required = true) Integer contractId,
-                                        @RequestBody ContractRefundDTO dto,
-                                        @RequestHeader(name = "Authorization") String auth)
-    {
-        dto.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
-        dto.setContractId(contractId);
-
-        if (LOGGER.isDebugEnabled())
-        {
-            LOGGER.debug("Enter refundContract - [contractId: {}, dto: {}]", contractId, dto);
-        }
-
-        return ResponseData.success(contractService.refund(dto));
-    }
-
-    @RequestMapping(path="/{contractId}", method= RequestMethod.DELETE)
-    @ApiOperation(value = "Delete contract by given id")
-    public ResponseData deleteContractById (@PathVariable(required = true) Integer contractId,
-                                            @RequestHeader(name = "Authorization") String auth)
-    {
-        if (LOGGER.isDebugEnabled())
-        {
-            LOGGER.debug("Enter deleteContractById - [contractId: {}]", contractId);
+            LOGGER.debug("Enter getCourseArrangementByContractId - [contractId: {}]", contractId);
         }
         Asserts.assertEntityNotNullById(contractService, contractId);
-        return ResponseData.success(contractService.delete(contractId));
+        return null;
     }
 
-    @RequestMapping(path="/{contractId}", method= RequestMethod.PATCH)
-    @ApiOperation(value = "Update contract with respect to the specified id")
-    public ResponseData updateContract (@PathVariable(required = true) Integer contractId,
-                                        @RequestBody ContractModel model,
-                                        @RequestHeader(name = "Authorization") String auth)
+    @RequestMapping(path="/{contractId}/arrangement/{id}", method= RequestMethod.DELETE)
+    @ApiOperation(value = "Add course arrangement")
+    public ResponseData deleteCourseArrangement (@PathVariable(required = true, name = "contractId") Integer contractId,
+                                                 @PathVariable(required = true, name = "id") Integer id,
+                                                 @RequestHeader(name = "Authorization") String auth)
     {
         if (LOGGER.isDebugEnabled())
         {
-            LOGGER.debug("Enter updateContract - [contractId: {}, model: {}]", contractId, model);
+            LOGGER.debug("Enter deleteCourseArrangement - [contractId: {}, id: {}]", contractId, id);
         }
-        // in order to avoid overwritten id in the payload
-        model.setId(contractId);
-        Asserts.assertEntityNotNullById(contractService, contractId);
-        return ResponseData.success(this.contractService.update(model));
+
+        return ResponseData.success(arrangementService.delete(contractId, id));
+    }
+
+    @RequestMapping(path="/{contractId}/arrangement", method= RequestMethod.POST)
+    @ApiOperation(value = "Add course arrangement")
+    public ResponseData addCourseArrangement (@PathVariable(required = true) Integer contractId,
+                                              @RequestBody ContractArrangementDTO dto,
+                                              @RequestHeader(name = "Authorization") String auth)
+    {
+        if (LOGGER.isDebugEnabled())
+        {
+            LOGGER.debug("Enter addCourseArrangement - [contractId: {}, dto: {}]", contractId, dto);
+        }
+
+        dto.setContractId(contractId);
+        return ResponseData.success(arrangementService.add(ContractArrangementModel.from(dto)));
     }
 }

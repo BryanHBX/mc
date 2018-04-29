@@ -15,20 +15,30 @@ public final class Asserts
 
     public static BaseModel assertEntityNotNullById (BaseService service, Integer entityId)
     {
+        return assertEntityNotNullById (service, entityId, String.format("Entity (id: %d) does not exist", entityId));
+    }
+
+    public static BaseModel assertEntityNotNullById (BaseService service, Integer entityId, String message)
+    {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format(
                     "Enter assertEntityNotNullById from %s - [entityId: %d]", service.getClass().getName(), entityId));
 
-        return assertEntityNotNull(service.get(entityId));
+        return assertEntityNotNull(service.get(entityId), message);
     }
 
     public static BaseModel assertEntityNotNullById (BaseRepository repository, Integer entityId)
+    {
+        return assertEntityNotNullById(repository, entityId, String.format("Entity (id: %d) does not exist", entityId));
+    }
+
+    public static BaseModel assertEntityNotNullById (BaseRepository repository, Integer entityId, String message)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format(
                     "Enter assertEntityNotNullById from %s - [entityId: %d]", repository.getClass().getName(), entityId));
 
-        return assertEntityNotNull(repository.get(entityId));
+        return assertEntityNotNull(repository.get(entityId), message);
     }
 
     public static void assertListNotNull (List entities)
@@ -41,13 +51,13 @@ public final class Asserts
         throw new RuntimeException("Empty list of entities");
     }
 
-    private static BaseModel assertEntityNotNull (BaseModel entity)
+    private static BaseModel assertEntityNotNull (BaseModel entity, String message)
     {
         if (entity != null)
         {
             return entity;
         }
 
-        throw new ServiceException(String.format("Entity does not exist"));
+        throw new ServiceException(message != null ? message : String.format("Entity does not exist"));
     }
 }

@@ -484,7 +484,7 @@
 
     <div class="formBar">
         <ul>
-            <li th:if="${entity ne null and (op ne null or op ne '')}">
+            <li th:if="${entity ne null and op ne 'view'}">
                 <div class="buttonActive"><div class="buttonContent">
                     <button type="button" id="btnDialogSaveContract" th:text="${op eq 'refund' ? '退费' : (op eq 'transfer' ? '转课时' : '保存')}">保存</button></div>
                 </div>

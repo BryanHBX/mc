@@ -1,11 +1,13 @@
 package org.edu.timelycourse.mc.web.controller;
 
 import org.edu.timelycourse.mc.beans.criteria.ContractCriteria;
+import org.edu.timelycourse.mc.beans.enums.EBuiltInConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -41,6 +43,20 @@ public class AcademicController extends AbstractController
         model.addAttribute("criteria", criteria);
         model.addAttribute("module", getModuleName());
         return getModulePage("course/courseAttendanceList");
+    }
+
+    @RequestMapping("/{contractId}/arrangement")
+    public String showArrangement (Model model,
+                                   @PathVariable(required = true, name = "contractId") Integer contractId,
+                                   @RequestParam(required = false, name = "type") String type,
+                                   HttpServletRequest request)
+    {
+        model.addAttribute("level", findConfigByName(request, EBuiltInConfig.C_STUDENT_LEVEL.name()));
+        model.addAttribute("products", getAllProducts(request));
+        model.addAttribute("course", findConfigByName(request, EBuiltInConfig.C_COURSE_TYPE.name()));
+        model.addAttribute("entity", findContractById(request, contractId));
+        model.addAttribute("type", type);
+        return getModulePage("course/dialog/dialogCourseArrangement");
     }
 
     @RequestMapping("/stat")

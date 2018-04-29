@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.edu.timelycourse.mc.biz.repository.ContractArrangementRepository">
+
+    <cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
+
+    <resultMap type="org.edu.timelycourse.mc.beans.model.ContractArrangementModel" id="result_arrangement">
+        <id property="id" column="id"/>  
+        <result property="contractId" column="contract_id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="teacherId" column="teacher_id"/>
+        <result property="absenceCost" column="absence_flag"/>
+        <result property="classId" column="class_id"/>
+    </resultMap>
+    
+    <insert id="insert" parameterType="ContractArrangementModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `t_school_arrangement` (contract_id, school_id, teacher_id, absence_flag, class_id)
+          VALUES (#{contractId}, #{schoolId}, #{teacherId}, #{absenceCost}, #{classId})
+    </insert>
+
+    <update id="update" parameterType="ContractArrangementModel">
+        UPDATE `t_school_arrangement`
+        <set>
+            <if test="contractId != null and contractId > 0">`contract_id` = #{contractId},</if>
+            <if test="teacher_id != null and teacher_id > 0">`teacher_id` = #{teacherId},</if>
+            <if test="school_id != null and school_id > 0">`school_id` = #{schoolId},</if>
+            <if test="absenceCost != null">`absence_flag` = #{absenceCost},</if>
+            <if test="class_id != null and class_id > 0">`class_id` = #{classId},</if>
+            `id` = `id`
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="getByPage" parameterType="ContractInvoiceModel" resultMap="result_arrangement">
+        SELECT * FROM `t_school_arrangement`
+        <where>
+            1 = 1
+            <if test="contractId != null and contractId > 0"> AND `contract_id` = #{contractId}</if>
+            <if test="teacherId != null and teacherId > 0"> AND `teacher_id` = #{teacherId}</if>
+            <if test="school_id != null and school_id > 0"> AND `school_id` = #{schoolId}</if>
+            <if test="absenceCost != null"> AND `absence_flag` = #{absenceCost}</if>
+            <if test="classId != null and classId > 0"> AND `class_id` = #{classId}</if>
+        </where>
+        ORDER BY `creationTime` DESC
+    </select>
+
+    <select id="getByCriteria" parameterType="org.edu.timelycourse.mc.beans.criteria.ContractArrangementCriteria" resultMap="result_arrangement">
+        SELECT * FROM `t_school_arrangement`
+        <where>
+            1 = 1
+            <if test="teacherId != null and teacherId > 0"> AND `teacher_id` = #{teacherId}</if>
+            <if test="contractId != null and contractId > 0"> AND `contract_id` = #{contractId}</if>
+            <if test="schoolId != null and schoolId > 0"> AND `school_id` = #{schoolId}</if>
+        </where>
+        ORDER BY `contract_date` DESC
+    </select>
+
+    <select id="get" parameterType="java.lang.Integer" resultMap="result_arrangement">
+        SELECT * FROM `t_school_arrangement` where `id` = #{id}
+    </select>
+
+    <update id="delete" parameterType="java.lang.Integer">
+        DELETE FROM `t_school_arrangement` WHERE `id` = #{id}
+    </update>
+
+    <select id="getByContractId" parameterType="java.lang.Integer" resultMap="result_arrangement">
+        SELECT * FROM `t_school_arrangement` where `contract_id` = #{cid} AND `school_id` = #{sid}
+    </select>
+
+    <select id="getByTeacherId" parameterType="java.lang.Integer" resultMap="result_arrangement">
+        SELECT * FROM `t_school_arrangement` where `teacher_id` = #{tid} AND `school_id` = #{sid}
+    </select>
+
+    <select id="getAll" resultMap="result_arrangement">
+        SELECT * FROM `t_school_arrangement`
+    </select>
+    
+</mapper>
