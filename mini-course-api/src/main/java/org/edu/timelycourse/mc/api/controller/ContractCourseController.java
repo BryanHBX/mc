@@ -32,6 +32,9 @@ public class ContractCourseController extends BaseController
 {
     private static Logger LOGGER = LoggerFactory.getLogger(ContractCourseController.class);
 
+    private static String ARRANGE_TYPE_TEACHER = "teacher";
+    private static String ARRANGE_TYPE_SUPERVISOR = "supervisor";
+
     @Autowired
     private ContractService contractService;
 
@@ -79,7 +82,6 @@ public class ContractCourseController extends BaseController
             LOGGER.debug("Enter addCourseArrangement - [contractId: {}, dto: {}]", contractId, dto);
         }
 
-        dto.setContractId(contractId);
-        return ResponseData.success(arrangementService.add(ContractArrangementModel.from(dto)));
+        return ResponseData.success(arrangementService.add(dto, contractId));
     }
 }

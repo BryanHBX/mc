@@ -11,4 +11,5 @@ public class ContractArrangementCriteria extends BaseCriteria
     private Integer teacherId;
     private Integer contractId;
     private Integer clazzId;
+    private Integer contractStatus;
 }

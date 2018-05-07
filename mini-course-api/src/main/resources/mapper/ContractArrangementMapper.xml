@@ -28,25 +28,36 @@
         <set>
             <if test="contractId != null and contractId > 0">`contract_id` = #{contractId},</if>
             <if test="teacher_id != null and teacher_id > 0">`teacher_id` = #{teacherId},</if>
-            <if test="school_id != null and school_id > 0">`school_id` = #{schoolId},</if>
+            <if test="schoolId != null and schoolId > 0">`school_id` = #{schoolId},</if>
             <if test="absenceCost != null">`absence_flag` = #{absenceCost},</if>
-            <if test="class_id != null and class_id > 0">`class_id` = #{classId},</if>
+            <if test="classId != null and classId > 0">`class_id` = #{classId},</if>
             `id` = `id`
         </set>
         WHERE id = #{id}
     </update>
 
-    <select id="getByPage" parameterType="ContractInvoiceModel" resultMap="result_arrangement">
+    <select id="getByPage" parameterType="ContractArrangementModel" resultMap="result_arrangement">
         SELECT * FROM `t_school_arrangement`
         <where>
             1 = 1
             <if test="contractId != null and contractId > 0"> AND `contract_id` = #{contractId}</if>
             <if test="teacherId != null and teacherId > 0"> AND `teacher_id` = #{teacherId}</if>
-            <if test="school_id != null and school_id > 0"> AND `school_id` = #{schoolId}</if>
+            <if test="schoolId != null and schoolId > 0"> AND `school_id` = #{schoolId}</if>
             <if test="absenceCost != null"> AND `absence_flag` = #{absenceCost}</if>
             <if test="classId != null and classId > 0"> AND `class_id` = #{classId}</if>
         </where>
-        ORDER BY `creationTime` DESC
+    </select>
+
+    <select id="getByEntity" parameterType="ContractArrangementModel">
+        SELECT * FROM `t_school_arrangement`
+        <where>
+            1 = 1
+            <if test="contractId != null and contractId > 0"> AND `contract_id` = #{contractId}</if>
+            <if test="teacherId != null and teacherId > 0"> AND `teacher_id` = #{teacherId}</if>
+            <if test="schoolId != null and schoolId > 0"> AND `school_id` = #{schoolId}</if>
+            <if test="absenceCost != null"> AND `absence_flag` = #{absenceCost}</if>
+            <if test="classId != null and classId > 0"> AND `class_id` = #{classId}</if>
+        </where>
     </select>
 
     <select id="getByCriteria" parameterType="org.edu.timelycourse.mc.beans.criteria.ContractArrangementCriteria" resultMap="result_arrangement">

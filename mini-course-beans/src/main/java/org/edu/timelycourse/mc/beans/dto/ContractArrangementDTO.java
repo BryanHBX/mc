@@ -9,6 +9,7 @@ import org.edu.timelycourse.mc.beans.enums.EEnrollmentType;
 import org.edu.timelycourse.mc.beans.model.ContractArrangementModel;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
 import org.edu.timelycourse.mc.beans.paging.PagingBean;
+import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
 import org.springframework.beans.BeanUtils;
 
@@ -22,6 +23,9 @@ import java.util.List;
 @JsonIgnoreProperties(value = { "schoolId" })
 public class ContractArrangementDTO extends BaseDTO
 {
+    public static String TYPE_TEACHER = "teacher";
+    public static String TYPE_SUPERVISOR = "supervisor";
+
     private Integer id;
     private NamedOptionProperty teacher;
     private NamedOptionProperty clazz;
@@ -30,12 +34,14 @@ public class ContractArrangementDTO extends BaseDTO
     private Integer contractId;
 
     private Integer absenceCost;
+    private String operationType;
 
     @Override
     @JsonIgnore
     public boolean isValid()
     {
-        return teacher != null && teacher.getId() != null;
+        return teacher != null && EntityUtils.isValidEntityId(teacher.getId(), contractId) &&
+                (operationType.equalsIgnoreCase(TYPE_SUPERVISOR) || operationType.equalsIgnoreCase(TYPE_TEACHER));
     }
 
     public static List<ContractArrangementDTO> from (List<ContractArrangementModel> models)

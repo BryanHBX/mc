@@ -53,8 +53,9 @@ public class FinanceController extends AbstractController
     }
 
     @RequestMapping("/attendance")
-    public String showAttendanceList ()
+    public String showAttendanceList (Model model)
     {
+        model.addAttribute("module", getModuleName());
         return getModulePage("attendance/attendanceList");
     }
 

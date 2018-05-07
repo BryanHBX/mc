@@ -42,6 +42,7 @@
     <table class="table" width="100%" layoutH="110">
         <thead>
             <tr>
+                <th>排课状态</th>
                 <th>报名类型</th>
                 <th>签约日期</th>
                 <th>合同编号</th>
@@ -61,6 +62,7 @@
         <tbody>
             <div th:if="${pagingBean != null and pagingBean.items != null}">
                 <tr th:each="item: ${pagingBean.items}">
+                    <td align="center" th:text="${item.arrangeStatus ne null and item.arrangeStatus.name ne null ? item.arrangeStatus.name : '--'}"></td>
                     <td align="center" th:text="${item.enrollType ne null ? item.enrollType.name : '--'}"></td>
                     <td align="center" th:text="${item.contractDate ne null ? #dates.format(item.contractDate, 'yyyy-MM-dd') : '--'}"></td>
                     <td align="center">
@@ -88,7 +90,8 @@
                     </td>
                     <td align="center">
                         <a title="安排学管师'"
-                           target="dialog" mask="true" width="890" height="480" th:href="'academic/' + ${item.id} + '/arrangement?type=supervisor'" style="float: none; text-decoration: underline; color: #1465ff">
+                           target="dialog" mask="true" width="620" height="350" th:href="'academic/' + ${item.id} + '/arrangement?type=supervisor'"
+                           style="float: none; text-decoration: underline; color: #1465ff">
                             <span>安排</span>
                         </a>
                     </td>

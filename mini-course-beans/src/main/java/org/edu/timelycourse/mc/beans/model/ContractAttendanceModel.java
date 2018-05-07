@@ -17,6 +17,9 @@ public class ContractAttendanceModel extends BaseModel
      */
     private Integer studentId;
 
+    @JsonIgnore
+    private StudentModel student;
+
     /**
      * 学校ID
      */
@@ -28,10 +31,16 @@ public class ContractAttendanceModel extends BaseModel
      */
     private Integer teacherId;
 
+    @JsonIgnore
+    private UserModel teacher;
+
     /**
      * 合同ID
      */
     private Integer contractId;
+
+    @JsonIgnore
+    private ContractModel contract;
 
     /**
      * 考勤课时
@@ -42,6 +51,16 @@ public class ContractAttendanceModel extends BaseModel
      * 签到日期
      */
     private Date date;
+
+    /**
+     * 考勤状态
+     */
+    private Integer status;
+
+    /**
+     * 签名图片路径
+     */
+    private String signPath;
 
     @Override
     public boolean isValidInput ()

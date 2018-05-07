@@ -74,8 +74,28 @@
             </fieldset>
         </div>
 
-        <div>
+        <div th:if="${type eq 'supervisor'}">
+            <!-- 安排学管师 -->
             <form id="arrangeForm" method="POST">
+                <div>
+                    <fieldset>安排学管师</fieldset>
+                    <dl>
+                        <dt>学管师：</dt>
+                        <dd>
+                            <input id="sdt_id" name="teacher[id]" type="hidden" th:value="${entity.supervisor ne null ? entity.supervisor.id : ''}"/>
+                            <input id="sdt_userName" name="teacher[name]" type="text" class="textInput required"
+                                   th:value="${entity.supervisor ne null ? entity.supervisor.name : ''}"
+                                   postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sdt" clean="true"/>
+                        </dd>
+                    </dl>
+                </div>
+                <input type="hidden" name="operationType" value="supervisor" />
+            </form>
+        </div>
+
+        <div th:if="${type eq 'teacher'}">
+            <!-- 安排教师 -->
+            <form id="arrangeForm" method="POST" th:action="'academic/' + ${entity.id} + '/arrangement?type=teacher'">
                 <div>
                     <fieldset>
                         <legend>安排教师</legend>
@@ -133,13 +153,20 @@
                                             th:data="${arrange.clazz ne null and arrange.clazz.id ne null ? arrange.clazz.id : ''}"
                                             th:text="${arrange.clazz ne null and arrange.clazz.id ne null ? arrange.clazz.name : '--'}"></td>
                                         <td align="center" th:text="${arrange.absenceCost ne null ? '是' : '否'}"></td>
-                                        <td align="center"><a href="#" style="float: none; text-decoration: underline;color: #1465ff">移出</a></td>
+                                        <td align="center">
+                                            <a title="移出" target="ajaxToDo" callback="onArrangeDeleteSuccess" type="DELETE"
+                                               style="float: none; text-decoration: underline;color: #1465ff"
+                                               th:title="'确定要移出\'' + ${arrange.teacher.name} +
+                                                ${arrange.clazz ne null and arrange.clazz.id ne null ? arrange.clazz.name : ''} + '\' 安排么?'"
+                                               th:href="'contract/' + ${entity.id} + '/arrangement/' + ${arrange.id}" class="btnDel" >移出</a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </fieldset>
                 </div>
+                <input type="hidden" name="operationType" value="teacher" />
             </form>
         </div>
 
@@ -149,7 +176,7 @@
         <ul>
             <li>
                 <div class="buttonActive"><div class="buttonContent">
-                    <button type="button" id="btnDialogSaveArrangement">安排教师</button></div>
+                    <button type="button" id="btnDialogSaveArrangement" th:text="'安排' + ${type eq 'teacher' ? '教师' : '学管师'}">安排教师</button></div>
                 </div>
             </li>
             <li>
@@ -160,9 +187,29 @@
 
 </div>
 
-<script xmlns:th="http://www.thymeleaf.org" type="text/javascript">
-     /*<![CDATA[*/
+<script xmlns:th="http://www.thymeleaf.org" type="text/javascript" th:if="${type eq 'supervisor'}">
+    /*<![CDATA[*/
+    $(function() {
+        $("#btnDialogSaveArrangement").unbind("click").bind("click", function () {
+            if (!$("#arrangeForm").valid()) {
+                return false;
+            }
 
+            var jsonData = $("#arrangeForm").serializeJSON();
+            generic_ajax_op("contract/" + [[${entity.id}]] + "/arrangement", "POST", jsonData, null, (
+                function (result) {
+                    alertMsg.correct("学管师安排成功");
+                    $.pdialog.closeCurrent();
+                    navTab.reload(null, {});
+                }
+            ));
+        });
+    });
+    /*]]>*/
+</script>
+
+<script xmlns:th="http://www.thymeleaf.org" type="text/javascript" th:if="${type eq 'teacher'}">
+     /*<![CDATA[*/
      function refreshCombox () {
          var id = $("#sdt_id").val();
          generic_ajax_op("teacher/" + id + "/clazz", "get", null, null, (
@@ -174,6 +221,11 @@
                  }
              }
          ));
+     }
+
+     function onArrangeDeleteSuccess() {
+         alertMsg.correct("安排已成功被移出");
+         $.pdialog.reload($("#arrangeForm").attr("action"), {});
      }
 
     $(function() {
@@ -233,4 +285,6 @@
             ));
         });
     });
+
+    /*]]>*/
 </script>

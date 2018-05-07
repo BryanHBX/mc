@@ -1,7 +1,10 @@
 package org.edu.timelycourse.mc.biz.service;
 
 import org.edu.timelycourse.mc.beans.criteria.ContractArrangementCriteria;
+import org.edu.timelycourse.mc.beans.dto.ContractArrangementDTO;
 import org.edu.timelycourse.mc.beans.enums.EContractArrangementStatus;
+import org.edu.timelycourse.mc.beans.enums.EContractStatus;
+import org.edu.timelycourse.mc.beans.model.BaseModel;
 import org.edu.timelycourse.mc.beans.model.ContractArrangementModel;
 import org.edu.timelycourse.mc.beans.model.ContractModel;
 import org.edu.timelycourse.mc.biz.repository.ContractArrangementRepository;
@@ -45,6 +48,28 @@ public class ContractArrangementService extends BaseService<ContractArrangementM
         this.clazzService = clazzService;
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public Integer add (ContractArrangementDTO dto, Integer contractId)
+    {
+        dto.setContractId(contractId);
+        if (dto.isValid())
+        {
+            if (dto.getOperationType().equalsIgnoreCase(ContractArrangementDTO.TYPE_TEACHER))
+            {
+                add (ContractArrangementModel.from(dto));
+                return 1;
+            }
+            else
+            {
+                ContractModel contract = (ContractModel) Asserts.assertEntityNotNullById(contractRepository, contractId);
+                contract.setSupervisorId(dto.getTeacher().getId());
+                return contractRepository.update(contract);
+            }
+        }
+
+        throw new ServiceException("Invalid arrangement input to add: " + dto);
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ContractArrangementModel add(ContractArrangementModel model)
@@ -52,6 +77,7 @@ public class ContractArrangementService extends BaseService<ContractArrangementM
         model.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
         if (model.isValidInput())
         {
+            // check contract
             ContractModel contract = (ContractModel) Asserts.assertEntityNotNullById(
                     contractRepository, model.getContractId(), String.format(
                             "Contract with id (%d) does not exist", model.getContractId()));
@@ -70,9 +96,27 @@ public class ContractArrangementService extends BaseService<ContractArrangementM
                         model.getContractId(), contract.getId()));
             }
 
+            // check contract status
+            if (contract.getContractStatus().equals(EContractStatus.FINISHED.code()))
+            {
+                throw new ServiceException("Arrangement is not allowed for the contract which is finished");
+            }
+
             // check teacher
             Asserts.assertEntityNotNullById(userRepository, model.getTeacherId(), String.format(
                     "Teacher with id (%d) does not exist", model.getTeacherId()));
+
+            // check if arrangement exists
+            ContractArrangementModel criteria = new ContractArrangementModel();
+            criteria.setClassId(model.getClazz() != null ? model.getClazz().getId() : null);
+            criteria.setTeacherId(model.getTeacherId());
+            criteria.setContractId(model.getContractId());
+
+            // check arrangement
+            if (repository.getByEntity(criteria) != null)
+            {
+                throw new ServiceException("The arrangement already exists: " + criteria);
+            }
 
             // add clazz if given
             if (model.getClazz() != null)
@@ -80,16 +124,20 @@ public class ContractArrangementService extends BaseService<ContractArrangementM
                 clazzService.add(model.getClazz());
                 model.setClassId(model.getClazz().getId());
             }
+
             repository.insert(model);
 
             // update contract arrange status
-            contract.setArrangeStatus(EContractArrangementStatus.PLANNED.code());
-            contractRepository.update(contract);
+            if (!contract.getArrangeStatus().equals(EContractArrangementStatus.PLANNED.code()))
+            {
+                contract.setArrangeStatus(EContractArrangementStatus.PLANNED.code());
+                contractRepository.update(contract);
+            }
 
             return model;
         }
 
-        throw new ServiceException("Invalid arrangment input to add: " + model);
+        throw new ServiceException("Invalid arrangement input to add: " + model);
     }
 
     @Transactional(rollbackFor = Exception.class)

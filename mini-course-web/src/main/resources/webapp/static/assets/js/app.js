@@ -44,9 +44,9 @@ function generic_ajax_op(url,type,json_data,send_handler,success_handler,error_h
                 }
             } else {
                 if(error_handler != undefined && typeof(error_handler) == "function"){
-                    error_handler(e.error);
+                    error_handler(e);
                 } else {
-                    alertMsg.error(e.error);
+                    alertMsg.error(e.message);
                 }
             }
         },

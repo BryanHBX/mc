@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.edu.timelycourse.mc.biz.repository.ContractAttendanceRepository">
+
+    <cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
+
+    <resultMap type="org.edu.timelycourse.mc.beans.model.ContractAttendanceModel" id="result_attendance">
+        <id property="id" column="id"/>  
+        <result property="contractId" column="contract_id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="teacherId" column="teacher_id"/>
+        <result property="studentId" column="student_id" />
+        <result property="cost" column="cost"/>
+        <result property="classId" column="class_id"/>
+        <result property="date" column="c_date"/>
+        <result property="signPath" column="sign_img"/>
+        <result property="status" column="status" />
+
+        <association property="teacher" column="teacher_id"
+                     select="org.edu.timelycourse.mc.biz.repository.UserRepository.get" />
+        <association property="clazz" column="class_id"
+                     select="org.edu.timelycourse.mc.biz.repository.ContractClazzRepository.get" />
+        <association property="contract" column="contract_id"
+                     select="org.edu.timelycourse.mc.biz.repository.ContractRepository.get" />
+    </resultMap>
+    
+    <insert id="insert" parameterType="ContractAttendanceModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `t_school_attendance` (contract_id, school_id, student_id, teacher_id, cost, class_id, c_date, sign_img, status)
+          VALUES (#{contractId}, #{schoolId}, #{studentId}, #{teacherId}, #{cost}, #{classId}, #{date}, #{signPath}, #{status})
+    </insert>
+
+    <update id="update" parameterType="ContractAttendanceModel">
+        UPDATE `t_school_attendance`
+        <set>
+            <if test="contractId != null and contractId > 0">`contract_id` = #{contractId},</if>
+            <if test="studentId != null and studentId > 0">`student_id` = #{studentId},</if>
+            <if test="teacherId != null and teacherId > 0">`teacher_id` = #{teacherId},</if>
+            <if test="schoolId != null and schoolId > 0">`school_id` = #{schoolId},</if>
+            <if test="classId != null and classId > 0">`class_id` = #{classId},</if>
+            <if test="cost != null and cost > 0">`cost` = #{cost},</if>
+            <if test="date != null">`c_date` = #{date},</if>
+            <if test="signPath != null and signPath != ''">`sign_img` = #{signPath},</if>
+            <if test="status != null">`status` = #{status},</if>
+            `id` = `id`
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="getByPage" parameterType="ContractAttendanceModel" resultMap="result_attendance">
+        SELECT * FROM `t_school_attendance`
+        <where>
+            1 = 1
+            <if test="contractId != null and contractId > 0"> AND `contract_id` = #{contractId}</if>
+            <if test="studentId != null and studentId > 0"> AND `student_id` = #{studentId}</if>
+            <if test="teacherId != null and teacherId > 0"> AND `teacher_id` = #{teacherId}</if>
+            <if test="schoolId != null and schoolId > 0"> AND `school_id` = #{schoolId}</if>
+            <if test="classId != null and classId > 0"> AND `class_id` = #{classId}</if>
+            <if test="cost != null and cost > 0"> AND `cost` = #{cost}</if>
+            <if test="date != null"> AND `c_date` = #{date}</if>
+            <if test="signPath != null and signPath != ''"> AND `sign_img` = #{signPath}</if>
+            <if test="status != null"> AND `status` = #{status}</if>
+        </where>
+    </select>
+
+    <select id="getByEntity" parameterType="ContractAttendanceModel">
+        SELECT * FROM `t_school_attendance`
+        <where>
+            1 = 1
+            <if test="contractId != null and contractId > 0"> AND `contract_id` = #{contractId}</if>
+            <if test="studentId != null and studentId > 0"> AND `student_id` = #{studentId}</if>
+            <if test="teacherId != null and teacherId > 0"> AND `teacher_id` = #{teacherId}</if>
+            <if test="schoolId != null and schoolId > 0"> AND `school_id` = #{schoolId}</if>
+            <if test="classId != null and classId > 0"> AND `class_id` = #{classId}</if>
+            <if test="cost != null and cost > 0"> AND `cost` = #{cost}</if>
+            <if test="date != null"> AND `c_date` = #{date}</if>
+            <if test="signPath != null and signPath != ''"> AND `sign_img` = #{signPath}</if>
+            <if test="status != null"> AND `status` = #{status}</if>
+        </where>
+    </select>
+
+    <select id="getByCriteria" parameterType="org.edu.timelycourse.mc.beans.criteria.CourseAttendanceCriteria" resultMap="result_attendance">
+        SELECT * FROM `t_school_attendance`
+        <where>
+            1 = 1
+            <if test="startDate != null and startDate != ''">AND DATE_FORMAT(`c_date`, '%Y-%m-%d') &gt;= #{startDate}</if>
+            <if test="endDate != null and endDate != ''">AND DATE_FORMAT(`c_date`,'%Y-%m-%d') &lt;= #{endDate}</if>
+            <if test="teacherName != null and teacherName != ''"> AND `teacher_id` IN (SELECT `id` FROM `t_member` WHERE `u_name` LIKE CONCAT('%',#{consultantName},'%'))</if>
+            <if test="studentName != null and studentName != ''"> AND `student_id` IN (SELECT `id` FROM `t_school_student` WHERE `s_name` LIKE CONCAT('%',#{studentName},'%'))</if>
+            <if test="status != null"> AND `status` = #{status}</if>
+        </where>
+    </select>
+
+    <select id="get" parameterType="java.lang.Integer" resultMap="result_attendance">
+        SELECT * FROM `t_school_attendance` where `id` = #{id}
+    </select>
+
+    <update id="delete" parameterType="java.lang.Integer">
+        DELETE FROM `t_school_attendance` WHERE `id` = #{id}
+    </update>
+
+    <select id="getAll" resultMap="result_attendance">
+        SELECT * FROM `t_school_attendance`
+    </select>
+
+    <select id="getListByCriteria" parameterType="org.edu.timelycourse.mc.beans.criteria.CourseAttendanceCriteria"  resultMap="result_attendance">
+        SELECT * FROM `t_school_attendance`
+        <where>
+            1 = 1
+            <if test="startDate != null and startDate != ''">AND DATE_FORMAT(`c_date`, '%Y-%m-%d') &gt;= #{startDate}</if>
+            <if test="endDate != null and endDate != ''">AND DATE_FORMAT(`c_date`,'%Y-%m-%d') &lt;= #{endDate}</if>
+            <if test="teacherName != null and teacherName != ''"> AND `teacher_id` IN (SELECT `id` FROM `t_member` WHERE `u_name` LIKE CONCAT('%',#{consultantName},'%'))</if>
+            <if test="studentName != null and studentName != ''"> AND `student_id` IN (SELECT `id` FROM `t_school_student` WHERE `s_name` LIKE CONCAT('%',#{studentName},'%'))</if>
+            <if test="status != null"> AND `status` = #{status}</if>
+        </where>
+    </select>
+    
+</mapper>

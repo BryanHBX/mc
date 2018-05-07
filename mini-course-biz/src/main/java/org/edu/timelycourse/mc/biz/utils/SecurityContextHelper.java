@@ -87,4 +87,9 @@ public final class SecurityContextHelper
     {
         return getPrincipal().getSid();
     }
+
+    public static Integer getMyId ()
+    {
+        return getPrincipal().getUid();
+    }
 }

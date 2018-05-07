@@ -33,8 +33,8 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
     public ResponseData handleServiceException(HttpServletRequest req, Exception ex)
     {
         LOGGER.error("Internal server error when requesting API '{}' due to {}", req.getRequestURI(), ex);
-        return ResponseData.failure(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                messageSource.getMessage("http.error.server"));
+        return ResponseData.failure(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
+                //messageSource.getMessage("http.error.server"));
     }
 
     @ExceptionHandler(AccessDeniedException.class)

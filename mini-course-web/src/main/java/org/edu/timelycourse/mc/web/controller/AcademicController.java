@@ -1,5 +1,6 @@
 package org.edu.timelycourse.mc.web.controller;
 
+import org.edu.timelycourse.mc.beans.criteria.CourseAttendanceCriteria;
 import org.edu.timelycourse.mc.beans.criteria.ContractCriteria;
 import org.edu.timelycourse.mc.beans.enums.EBuiltInConfig;
 import org.slf4j.Logger;
@@ -36,13 +37,13 @@ public class AcademicController extends AbstractController
     public String showAttendanceList (Model model,
                                        @RequestParam(required = false) Integer pageNum,
                                        @RequestParam(required = false) Integer numPerPage,
-                                       @ModelAttribute("contractCriteria") ContractCriteria criteria,
+                                       @ModelAttribute("attendanceCriteria") CourseAttendanceCriteria criteria,
                                        HttpServletRequest request)
     {
         model.addAttribute("pagingBean", findContractsByPage(request, pageNum, numPerPage));
         model.addAttribute("criteria", criteria);
         model.addAttribute("module", getModuleName());
-        return getModulePage("course/courseAttendanceList");
+        return getModulePage("attendance/attendanceList");
     }
 
     @RequestMapping("/{contractId}/arrangement")
@@ -85,4 +86,7 @@ public class AcademicController extends AbstractController
 
     @ModelAttribute("contractCriteria")
     private ContractCriteria getContractCriteria () { return new ContractCriteria(); }
+
+    @ModelAttribute("attendanceCriteria")
+    private CourseAttendanceCriteria getAttendanceCriteria () { return new CourseAttendanceCriteria(); }
 }
