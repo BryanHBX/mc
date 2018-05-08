@@ -18,6 +18,7 @@ public class JwtUser implements UserDetails
 {
     private Integer sid;
     private Integer uid;
+    private Integer spf;
     private String password;
 
     private String idCard;
@@ -32,17 +33,18 @@ public class JwtUser implements UserDetails
 
     public JwtUser () {}
 
-    public JwtUser ( Integer userId, Integer schoolId, String username, String idCard, String phone,
+    public JwtUser ( Integer userId, Integer schoolId, Integer supervisorFlag, String username, String idCard, String phone,
                      Collection<? extends GrantedAuthority> authorities)
     {
-        this(userId, schoolId, username, null, idCard, phone, authorities);
+        this(userId, schoolId, supervisorFlag, username, null, idCard, phone, authorities);
     }
 
-    public JwtUser ( Integer userId, Integer schoolId, String username, String password, String idCard, String phone,
+    public JwtUser ( Integer userId, Integer schoolId, Integer supervisorFlag, String username, String password, String idCard, String phone,
                      Collection<? extends GrantedAuthority> authorities)
     {
         this.uid = userId;
         this.sid = schoolId;
+        this.spf = supervisorFlag;
         this.userName = username;
         this.password = password;
         this.idCard = idCard;

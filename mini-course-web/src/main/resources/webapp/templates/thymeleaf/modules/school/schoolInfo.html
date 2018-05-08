@@ -25,6 +25,10 @@
                 <dt>联系电话：</dt>
                 <dd><input class="textInput" name="schoolContact" th:value="${school != null ? school.schoolContact : ''}" type="text"></dd>
             </dl>
+            <dl>
+                <dt>支持学管师：</dt>
+                <dd><input type="checkbox" name="supervisorFlag" th:checked="${school != null and school.supervisorFlag ne null}" /></dd>
+            </dl>
         </div>
         <div class="formBar">
             <ul>

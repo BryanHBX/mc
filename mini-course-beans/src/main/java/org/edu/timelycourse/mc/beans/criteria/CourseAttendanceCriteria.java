@@ -12,4 +12,5 @@ public class CourseAttendanceCriteria extends BaseCriteria
     private String endDate;
     private String teacherName;
     private String studentName;
+    private Integer type;
 }

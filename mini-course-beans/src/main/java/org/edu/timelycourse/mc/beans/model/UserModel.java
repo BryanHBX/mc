@@ -55,6 +55,8 @@ public class UserModel extends BaseModel
      * 学校ID
      */
     private Integer schoolId;
+    @JsonIgnore
+    private SchoolModel school;
 
     /**
      * 用户类型, 机构 / 个人

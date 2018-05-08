@@ -22,6 +22,9 @@
         <result property="creationTime" column="u_creationTime"/>
         <result property="lastUpdateTime" column="u_lastUpdateTime" />
 
+        <association property="school" column="school_id"
+                     select="org.edu.timelycourse.mc.biz.repository.SchoolRepository.get" />
+
         <collection property="authorities" column="id" javaType="java.util.ArrayList"
                     ofType="org.edu.timelycourse.mc.beans.model.UserRoleModel"
                     select="org.edu.timelycourse.mc.biz.repository.UserRoleRepository.getByUserId"

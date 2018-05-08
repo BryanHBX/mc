@@ -58,6 +58,19 @@ public class ContractAttendanceModel extends BaseModel
     private Integer status;
 
     /**
+     * 考勤类型
+     */
+    private Integer type;
+
+    /**
+     * 补课登记
+     */
+    private Integer refId;
+
+    @JsonIgnore
+    private ContractAttendanceModel ref;
+
+    /**
      * 签名图片路径
      */
     private String signPath;
@@ -67,5 +80,12 @@ public class ContractAttendanceModel extends BaseModel
     {
         return EntityUtils.isValidEntityId(schoolId, studentId, teacherId, contractId)
                 && cost > 0 && date != null;
+    }
+
+    @JsonIgnore
+    public String getDescription()
+    {
+        StringBuilder builder = new StringBuilder();
+        return builder.toString();
     }
 }

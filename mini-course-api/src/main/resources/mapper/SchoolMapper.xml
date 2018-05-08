@@ -45,6 +45,7 @@
             <if test="city != null and city != ''"> `s_city` = #{city},</if>
             <if test="lat != null and lat > 0"> `s_lat` = #{lat},</if>
             <if test="lng != null and lng > 0"> `s_lng` = #{lng},</if>
+            <if test="supervisorFlag != null"> `s_supervisorflag` = #{supervisorFlag},</if>
             `id` = `id`
         </set>
         WHERE id = #{id}
@@ -60,6 +61,7 @@
             <if test="schoolStatus != null and schoolStatus > -1"> AND `s_status` = #{schoolStatus}</if>
             <if test="province != null and province != ''"> AND `s_province` = #{province}</if>
             <if test="city != null and city != ''"> AND `s_city` = #{city}</if>
+            <if test="supervisorFlag != null"> AND `s_supervisorflag` = #{supervisorFlag}</if>
         </where>
     </select>
     

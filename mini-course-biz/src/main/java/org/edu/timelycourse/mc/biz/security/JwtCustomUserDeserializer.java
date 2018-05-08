@@ -32,6 +32,7 @@ public class JwtCustomUserDeserializer extends JsonDeserializer
         JwtUser result = JwtUserFactory.create(
                 readJsonNode(jsonNode, "uid").asInt(),
                 readJsonNode(jsonNode, "sid").asInt(),
+                readJsonNode(jsonNode, "spf").asInt(),
                 readJsonNode(jsonNode, "username").asText(),
                 readJsonNode(jsonNode, "idCard").asText(),
                 readJsonNode(jsonNode, "phone").asText(),

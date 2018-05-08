@@ -24,6 +24,7 @@ public final class JwtUserFactory
         return new JwtUser (
                 user.getId(),
                 user.getSchoolId(),
+                user.getSchool() != null ? user.getSchool().getSupervisorFlag() : null,
                 user.getUserName(),
                 user.getPassword(),
                 user.getUserIdentity(),
@@ -34,12 +35,13 @@ public final class JwtUserFactory
 
     public static JwtUser create (Integer userId,
                                   Integer schoolId,
+                                  Integer supervisorFlag,
                                   String userName,
                                   String userIdCard,
                                   String mobile,
                                   Collection<? extends GrantedAuthority> authorities)
     {
-        return new JwtUser(userId, schoolId, userName, userIdCard, mobile, authorities);
+        return new JwtUser(userId, schoolId, supervisorFlag, userName, userIdCard, mobile, authorities);
     }
 
     private static List<GrantedAuthority> mapToGrantedAuthorities(List<UserRoleModel> authorities)

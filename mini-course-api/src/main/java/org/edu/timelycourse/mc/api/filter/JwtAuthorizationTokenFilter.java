@@ -45,7 +45,9 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter
                                      FilterChain chain) throws ServletException, IOException
     {
         if (LOGGER.isDebugEnabled())
+        {
             LOGGER.debug("processing authentication for '{}'", request.getRequestURL());
+        }
 
         final String requestHeader = request.getHeader(this.tokenHeader);
 
