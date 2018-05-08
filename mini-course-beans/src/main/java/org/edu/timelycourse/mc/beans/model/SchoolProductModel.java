@@ -9,6 +9,9 @@ import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 学校产品
+ */
 @Data
 public class SchoolProductModel extends BaseModel
 {

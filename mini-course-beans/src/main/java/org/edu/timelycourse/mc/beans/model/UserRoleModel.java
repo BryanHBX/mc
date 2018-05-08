@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.ToString;
 
 /**
+ * 平台用户角色
+ *
  * Created by Marco on 2018/3/31.
  */
 @Data

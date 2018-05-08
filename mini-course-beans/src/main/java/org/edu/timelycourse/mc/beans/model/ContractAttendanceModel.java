@@ -7,6 +7,8 @@ import org.edu.timelycourse.mc.common.utils.EntityUtils;
 import java.util.Date;
 
 /**
+ * 课程考勤
+ *
  * Created by x36zhao on 2018/4/20.
  */
 @Data

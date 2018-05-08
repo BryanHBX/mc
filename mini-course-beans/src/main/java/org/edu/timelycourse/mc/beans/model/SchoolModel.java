@@ -5,6 +5,9 @@ import org.edu.timelycourse.mc.common.utils.StringUtil;
 
 import java.util.Date;
 
+/**
+ * 学校信息
+ */
 @Data
 public class SchoolModel extends BaseModel
 {

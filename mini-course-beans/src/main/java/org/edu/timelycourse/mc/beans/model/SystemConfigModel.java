@@ -8,6 +8,8 @@ import org.edu.timelycourse.mc.common.utils.StringUtil;
 import java.util.List;
 
 /**
+ * 系统配置
+ *
  * Created by x36zhao on 2017/3/16.
  */
 @Data

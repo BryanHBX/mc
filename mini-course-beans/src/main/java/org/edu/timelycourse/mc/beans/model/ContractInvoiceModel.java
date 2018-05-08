@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 发票收据
+ */
 @Data
 public class ContractInvoiceModel extends BaseModel
 {

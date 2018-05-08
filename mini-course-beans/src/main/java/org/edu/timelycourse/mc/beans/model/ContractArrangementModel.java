@@ -8,6 +8,8 @@ import org.edu.timelycourse.mc.common.utils.StringUtil;
 import org.springframework.beans.BeanUtils;
 
 /**
+ * 教师安排
+ *
  * Created by x36zhao on 2018/4/20.
  */
 @Data

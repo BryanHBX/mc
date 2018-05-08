@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
+ * Base model for all entity to persist
+ *
  * Created by Marco on 2018/3/31.
  */
 @Getter
@@ -30,13 +32,5 @@ public abstract class BaseModel implements Serializable
 
     @JsonIgnore
     public abstract boolean isValidInput ();
-
-    protected void appendParam (StringBuilder builder, String paramName, Object paramValue)
-    {
-        if (paramValue != null)
-        {
-            builder.append(paramName + "=" + paramValue.toString() + "&");
-        }
-    }
 
 }

@@ -8,6 +8,8 @@ import org.edu.timelycourse.mc.common.utils.StringUtil;
 import java.util.Date;
 
 /**
+ * 班课
+ *
  * Created by x36zhao on 2018/4/20.
  */
 @Data

@@ -11,6 +11,9 @@ import org.springframework.beans.BeanUtils;
 
 import java.util.Date;
 
+/**
+ * 学生信息
+ */
 @Data
 public class StudentModel extends BaseModel
 {

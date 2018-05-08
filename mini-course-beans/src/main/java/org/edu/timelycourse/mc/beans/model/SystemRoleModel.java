@@ -6,6 +6,8 @@ import org.edu.timelycourse.mc.beans.enums.EVisible;
 import org.edu.timelycourse.mc.common.utils.StringUtil;
 
 /**
+ * 系统角色权限
+ *
  * Created by Marco on 2018/3/31.
  */
 @Data

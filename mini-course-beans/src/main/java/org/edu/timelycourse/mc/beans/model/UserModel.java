@@ -14,6 +14,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * 平台用户
+ *
  * Created by Marco on 2018/3/31.
  */
 @Data

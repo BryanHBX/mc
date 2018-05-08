@@ -15,6 +15,9 @@ import org.springframework.beans.BeanUtils;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 合同
+ */
 @Data
 public class ContractModel extends BaseModel
 {
