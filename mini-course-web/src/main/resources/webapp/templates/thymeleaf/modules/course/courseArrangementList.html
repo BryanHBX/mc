@@ -54,9 +54,9 @@
                 <th>剩余课时</th>
                 <th>课时记录</th>
                 <th>安排教师</th>
-                <th>安排学管师</th>
+                <th th:if="${#authentication.principal.spf ne null and #authentication.principal.spf ne 0}">安排学管师</th>
                 <th>咨询师</th>
-                <th>学管师</th>
+                <th th:if="${#authentication.principal.spf ne null and #authentication.principal.spf ne 0}">学管师</th>
             </tr>
         </thead>
         <tbody>
@@ -88,7 +88,7 @@
                                 th:text="${item.arrangeStatus ne null and item.arrangeStatus.id eq 1 ? '再排' : '安排'}">安排</span>
                         </a>
                     </td>
-                    <td align="center">
+                    <td align="center" th:if="${#authentication.principal.spf ne null and #authentication.principal.spf ne 0}">
                         <a title="安排学管师'"
                            target="dialog" mask="true" width="620" height="350" th:href="'academic/' + ${item.id} + '/arrangement?type=supervisor'"
                            style="float: none; text-decoration: underline; color: #1465ff">
@@ -96,7 +96,8 @@
                         </a>
                     </td>
                     <td align="center" th:text="${item.consultant ne null ? item.consultant.name : '--'}"></td>
-                    <td align="center" th:text="${item.supervisor ne null ? item.supervisor.name : '--'}"></td>
+                    <td align="center" th:text="${item.supervisor ne null ? item.supervisor.name : '--'}"
+                        th:if="${#authentication.principal.spf ne null and #authentication.principal.spf ne 0}"></td>
                 </tr>
             </div>
         </tbody>

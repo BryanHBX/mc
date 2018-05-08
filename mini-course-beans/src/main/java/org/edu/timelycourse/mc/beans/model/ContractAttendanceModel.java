@@ -67,8 +67,8 @@ public class ContractAttendanceModel extends BaseModel
      */
     private Integer refId;
 
-    @JsonIgnore
-    private ContractAttendanceModel ref;
+    //@JsonIgnore
+    //private ContractAttendanceModel ref;
 
     /**
      * 签名图片路径

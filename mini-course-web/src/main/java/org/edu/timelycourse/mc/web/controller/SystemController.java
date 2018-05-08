@@ -34,11 +34,11 @@ public class SystemController extends AbstractController
     {
         if (configId != null && configId > 0)
         {
-            model.addAttribute("config", findConfigById(request, configId));
+            model.addAttribute("config", restServiceCaller.findConfigById(request, configId));
             return getModulePage("system/pages/configListPage");
         }
 
-        model.addAttribute("configs", getAllSystemConfigs(request));
+        model.addAttribute("configs", restServiceCaller.getAllSystemConfigs(request));
 
         return getModulePage("system/config");
     }
@@ -51,13 +51,13 @@ public class SystemController extends AbstractController
     {
         if (configId != null && configId > 0)
         {
-            model.addAttribute("config", findConfigById(request, configId));
+            model.addAttribute("config", restServiceCaller.findConfigById(request, configId));
         }
 
         if (parentId != null && parentId > 0)
         {
             model.addAttribute("parentId", parentId);
-            model.addAttribute("parent", findConfigById(request, parentId));
+            model.addAttribute("parent", restServiceCaller.findConfigById(request, parentId));
         }
 
         return getModulePage("system/dialog/dialogConfigField");

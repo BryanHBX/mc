@@ -26,7 +26,7 @@ public class FinanceController extends AbstractController
                                     @ModelAttribute("contractCriteria") ContractCriteria criteria,
                                     HttpServletRequest request)
     {
-        model.addAttribute("pagingBean", findContractsByPage(request, pageNum, numPerPage));
+        model.addAttribute("pagingBean", restServiceCaller.findContractsByPage(request, pageNum, numPerPage));
         model.addAttribute("criteria", criteria);
         model.addAttribute("module", getModuleName());
         return getModulePage("contract/contractList");
@@ -46,7 +46,7 @@ public class FinanceController extends AbstractController
                                    @ModelAttribute("invoiceCriteria") InvoiceCriteria criteria,
                                    HttpServletRequest request)
     {
-        model.addAttribute("stat", findInvoicesByPage(request, pageNum, numPerPage));
+        model.addAttribute("stat", restServiceCaller.findInvoicesByPage(request, pageNum, numPerPage));
         model.addAttribute("criteria", criteria);
         model.addAttribute("module", getModuleName());
         return getModulePage("invoice/invoiceList");

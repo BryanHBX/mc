@@ -24,8 +24,9 @@
                      select="org.edu.timelycourse.mc.biz.repository.ContractClazzRepository.get" />
         <association property="contract" column="contract_id"
                      select="org.edu.timelycourse.mc.biz.repository.ContractRepository.get" />
-        <association property="ref" column="c_ref"
-                     select="org.edu.timelycourse.mc.biz.repository.ContractAttendanceRepository.get" />
+
+        <!--<association property="ref" column="c_ref"
+                     select="org.edu.timelycourse.mc.biz.repository.ContractAttendanceRepository.get" /> -->
     </resultMap>
     
     <insert id="insert" parameterType="ContractAttendanceModel" useGeneratedKeys="true" keyProperty="id">

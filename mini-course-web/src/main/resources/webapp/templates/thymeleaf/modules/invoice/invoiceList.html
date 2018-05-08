@@ -39,7 +39,7 @@
                                postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="silc" clean="true"
                                th:value="${criteria != null ? criteria.consultantName : ''}"/>
                     </td>
-                    <td>
+                    <td th:if="${#authentication.principal.spf ne null and #authentication.principal.spf ne 0}">
                         <label>学管师：</label>
                         <input id="silp_userName" name="supervisorName" type="text" class="textInput"
                                postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="silp" clean="true"
@@ -90,7 +90,7 @@
             <th>收据号</th>
             <th>支付方式</th>
             <th>咨询师</th>
-            <th>学管师</th>
+            <th th:if="${#authentication.principal.spf ne null and #authentication.principal.spf ne 0}">学管师</th>
         </tr>
         </thead>
         <tbody>
@@ -105,7 +105,8 @@
                 <td align="center" th:text="${item.invoiceNo ne null ? item.invoiceNo : '--'}"></td>
                 <td align="center" th:text="${item.payType ne null and item.payType.id ne null ? item.payType.name : '--'}"></td>
                 <td align="center" th:text="${item.contract ne null and item.contract.consultant ne null ? item.contract.consultant.name : '--'}"></td>
-                <td align="center" th:text="${item.contract ne null and item.contract.supervisor ne null ? item.contract.supervisor.name : '--'}"></td>
+                <td align="center" th:text="${item.contract ne null and item.contract.supervisor ne null ? item.contract.supervisor.name : '--'}"
+                    th:if="${#authentication.principal.spf ne null and #authentication.principal.spf ne 0}"></td>
             </tr>
         </div>
         </tbody>

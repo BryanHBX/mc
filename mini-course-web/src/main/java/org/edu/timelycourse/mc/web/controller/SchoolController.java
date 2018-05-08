@@ -22,7 +22,7 @@ public class SchoolController extends AbstractController
     @RequestMapping("/info")
     public String showSchoolInfo (Model model, HttpServletRequest request)
     {
-        model.addAttribute("school", findSchool(request));
+        model.addAttribute("school", restServiceCaller.findSchool(request));
         return getModulePage("schoolInfo");
     }
 
@@ -35,14 +35,14 @@ public class SchoolController extends AbstractController
         {
             if (EntityUtils.isValidEntityId(productId))
             {
-                model.addAttribute("product", findProductById(request, productId));
+                model.addAttribute("product", restServiceCaller.findProductById(request, productId));
             }
 
             return getModulePage("pages/productListPage");
         }
         else
         {
-            model.addAttribute("products", getAllProducts(request));
+            model.addAttribute("products", restServiceCaller.getAllProducts(request));
 
             /*
             SystemConfigModel courseType = findConfigByName(request, EBuiltInConfig.C_COURSE_TYPE.name());
@@ -70,17 +70,17 @@ public class SchoolController extends AbstractController
     {
         if (EntityUtils.isValidEntityId(id))
         {
-            model.addAttribute("product", findProductById(request, id));
+            model.addAttribute("product", restServiceCaller.findProductById(request, id));
         }
 
         if (EntityUtils.isValidEntityId(parentId))
         {
             model.addAttribute("parentId", parentId);
-            model.addAttribute("parent", findProductById(request, parentId));
+            model.addAttribute("parent", restServiceCaller.findProductById(request, parentId));
         }
         else
         {
-            model.addAttribute("types", findConfigByName(request, EBuiltInConfig.C_COURSE_TYPE.name()));
+            model.addAttribute("types", restServiceCaller.findConfigByName(request, EBuiltInConfig.C_COURSE_TYPE.name()));
         }
 
         return getModulePage("dialog/dialogSchoolProduct");
@@ -97,7 +97,7 @@ public class SchoolController extends AbstractController
         criteria.setSchoolId(SecurityContextHelper.getSchoolIdFromPrincipal());
         criteria.setUserName(userName);
 
-        model.addAttribute("pagingBean", getAllMembers(request, pageNum, numPerPage));
+        model.addAttribute("pagingBean", restServiceCaller.getAllMembers(request, pageNum, numPerPage));
         model.addAttribute("search", criteria);
         return getModulePage("schoolMember");
     }
@@ -109,13 +109,13 @@ public class SchoolController extends AbstractController
     {
         if (EntityUtils.isValidEntityId(memberId))
         {
-            model.addAttribute("member", findMemberById(request, memberId));
+            model.addAttribute("member", restServiceCaller.findMemberById(request, memberId));
         }
 
-        model.addAttribute("types", getAllProducts(request));
-        model.addAttribute("grades", findConfigByName(request, EBuiltInConfig.C_GRADE.name()));
-        model.addAttribute("subjects", findConfigByName(request, EBuiltInConfig.C_SUBJECT.name()));
-        model.addAttribute("roles", getAllSystemRoles(request));
+        model.addAttribute("types", restServiceCaller.getAllProducts(request));
+        model.addAttribute("grades", restServiceCaller.findConfigByName(request, EBuiltInConfig.C_GRADE.name()));
+        model.addAttribute("subjects", restServiceCaller.findConfigByName(request, EBuiltInConfig.C_SUBJECT.name()));
+        model.addAttribute("roles", restServiceCaller.getAllSystemRoles(request));
 
         return getModulePage("dialog/dialogSchoolMember");
     }

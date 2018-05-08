@@ -153,11 +153,15 @@ public class AuthorizationFilter extends OncePerRequestFilter
         // specif handler for token parameter presented in request URL
         if (request.getParameter(TOKEN_REQUEST_PARAMETER) != null)
         {
-            // use token stored in security context if not expired
-            JwtUser jwtUser = SecurityContextHelper.getPrincipal();
-            if (jwtUser != null && !jwtTokenUtil.isTokenExpired(jwtUser.getToken()))
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null)
             {
-                return jwtUser.getToken();
+                // use token stored in security context if not expired
+                JwtUser jwtUser = SecurityContextHelper.getPrincipal();
+                if (jwtUser != null && !jwtTokenUtil.isTokenExpired(jwtUser.getToken()))
+                {
+                    return jwtUser.getToken();
+                }
             }
 
             return request.getParameter(TOKEN_REQUEST_PARAMETER);

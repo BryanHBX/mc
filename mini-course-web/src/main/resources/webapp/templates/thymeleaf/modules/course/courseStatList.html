@@ -56,7 +56,7 @@
                 <th>安排教师</th>
                 <th>安排学管师</th>
                 <th>咨询师</th>
-                <th>学管师</th>
+                <th th:if="${#authentication.principal.spf ne null and #authentication.principal.spf ne 0}">学管师</th>
             </tr>
         </thead>
         <tbody>
@@ -92,7 +92,8 @@
                         </a>
                     </td>
                     <td align="center" th:text="${item.consultant ne null ? item.consultant.name : '--'}"></td>
-                    <td align="center" th:text="${item.supervisor ne null ? item.supervisor.name : '--'}"></td>
+                    <td align="center" th:text="${item.supervisor ne null ? item.supervisor.name : '--'}"
+                        th:if="${#authentication.principal.spf ne null and #authentication.principal.spf ne 0}"></td>
                 </tr>
             </div>
         </tbody>

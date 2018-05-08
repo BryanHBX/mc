@@ -25,7 +25,7 @@
                                postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sg"
                                th:value="${criteria != null ? criteria.consultantName : ''}"/>
                     </td>
-                    <td>
+                    <td th:if="${#authentication.principal.spf ne null and #authentication.principal.spf ne 0}">
                         <label>学管师：</label>
                         <input id="sp_userName" name="supervisorName" type="text" class="textInput"
                                postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sp"
@@ -91,7 +91,7 @@
                 <th width="40" th:if="${module eq 'finance'}">退费</th>
                 <th width="40" th:if="${module eq 'contract'}">补缴</th>
                 <th>咨询师</th>
-                <th>学管师</th>
+                <th th:if="${#authentication.principal.spf ne null and #authentication.principal.spf ne 0}">学管师</th>
             </tr>
         </thead>
         <tbody>
@@ -144,7 +144,7 @@
                         </a>
                     </td>
                     <td align="center" th:text="${item.consultant ne null ? item.consultant.name : '--'}"></td>
-                    <td align="center" th:text="${item.supervisor ne null ? item.supervisor.name : '--'}"></td>
+                    <td align="center" th:if="${#authentication.principal.spf ne null and #authentication.principal.spf ne 0}" th:text="${item.supervisor ne null ? item.supervisor.name : '--'}"></td>
                 </tr>
             </div>
         </tbody>

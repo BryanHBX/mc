@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-05-08 07:30:27
+Date: 2018-05-08 23:06:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -88,8 +88,8 @@ CREATE TABLE `t_school` (
 -- ----------------------------
 -- Records of t_school
 -- ----------------------------
-INSERT INTO `t_school` VALUES ('1', '测试', '四川省绵阳市涪城区建设街附14', '1231', '0', null, '2018-04-17 23:51:08', '四川省', '绵阳市', '31.459701', '104.765141', null, null);
-INSERT INTO `t_school` VALUES ('2', 'string', 'string', 'string', '0', '2018-04-08 22:46:02', null, null, null, null, null, null, null);
+INSERT INTO `t_school` VALUES ('1', '测试', '四川省绵阳市涪城区建设街附14', '1231', '0', null, '2018-05-08 22:53:58', '四川省', '绵阳市', '31.459701', '104.765141', null, '1');
+INSERT INTO `t_school` VALUES ('2', 'string', '河北省邯郸市邯山区', 'string', '0', '2018-04-08 22:46:02', '2018-05-08 22:59:05', '河北省', '邯郸市', '36.538489', '114.484294', null, '1');
 INSERT INTO `t_school` VALUES ('3', 'string', 'string12', 'string12', '0', '2018-04-08 22:46:17', '2018-04-08 22:50:19', null, null, null, null, null, null);
 
 -- ----------------------------
@@ -128,6 +128,8 @@ CREATE TABLE `t_school_attendance` (
   `c_date` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '授课日期',
   `sign_img` varchar(255) DEFAULT NULL COMMENT '签字图片',
   `status` tinyint(4) DEFAULT NULL,
+  `c_type` tinyint(4) DEFAULT NULL,
+  `c_ref` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

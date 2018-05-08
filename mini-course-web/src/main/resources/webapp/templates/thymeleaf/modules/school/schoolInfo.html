@@ -27,7 +27,7 @@
             </dl>
             <dl>
                 <dt>支持学管师：</dt>
-                <dd><input type="checkbox" name="supervisorFlag" th:checked="${school != null and school.supervisorFlag ne null}" /></dd>
+                <dd><input type="checkbox" name="supervisorFlag" th:checked="${school != null and school.supervisorFlag ne null}" style="width: auto; margin: 0;"/></dd>
             </dl>
         </div>
         <div class="formBar">
@@ -73,6 +73,9 @@
             var jsonData = $("#formSchool").serializeJSON();
             if (jsonData.id && jsonData.id > 0) {
                 var uri = base + "/" + jsonData.id;
+                if (jsonData.supervisorFlag != undefined) {
+                    jsonData.supervisorFlag = 1;
+                }
                 generic_ajax_op(uri, "PATCH", jsonData, null, (
                     function (result) {
                         alertMsg.correct("学校信息保存成功");

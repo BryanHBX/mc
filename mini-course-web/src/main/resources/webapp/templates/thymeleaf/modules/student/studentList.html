@@ -51,7 +51,7 @@
                            postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="st"
                            th:value="${criteria != null ? criteria.consultantName : ''}"/>
                 </li>
-                <li>
+                <li th:if="${#authentication.principal.spf ne null and #authentication.principal.spf ne 0}">
                     <label>学管师：</label>
                     <input id="sr_userName" name="supervisorName" type="text" class="textInput"
                            postField="userName" suggestUrl="member" suggestFields="userName,phone" lookupGroup="sr"
@@ -81,7 +81,7 @@
                 <th width="120">联系方式</th>
                 <th>其他备注信息</th>
                 <th>咨询师</th>
-                <th>学管师</th>
+                <th th:if="${#authentication.principal.spf ne null and #authentication.principal.spf ne 0}">学管师</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -98,7 +98,8 @@
                     <td align="center" th:text="${item.contactPhone}"></td>
                     <td align="left" th:text="${item.meto ne null and item.meto ne '' ? item.meto : '--'}"></td>
                     <td align="center" th:text="${item.consultant ne null ? item.consultant.name : '--'}"></td>
-                    <td align="center" th:text="${item.supervisor ne null ? item.supervisor.name : '--'}"></td>
+                    <td align="center" th:if="${#authentication.principal.spf ne null and #authentication.principal.spf ne 0}"
+                                       th:text="${item.supervisor ne null ? item.supervisor.name : '--'}"></td>
                     <td align="center">
                         <a href="javascript:void(0);" style="float: none; text-decoration: underline; color: #1465ff">变更微信号</a>
                     </td>

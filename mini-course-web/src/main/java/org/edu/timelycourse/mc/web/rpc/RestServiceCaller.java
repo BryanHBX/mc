@@ -9,6 +9,7 @@ import org.edu.timelycourse.mc.beans.dto.StudentDTO;
 import org.edu.timelycourse.mc.beans.entity.ResponseData;
 import org.edu.timelycourse.mc.beans.model.*;
 import org.edu.timelycourse.mc.beans.paging.PagingBean;
+import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.constants.Constants;
 import org.edu.timelycourse.mc.common.utils.ParameterizedTypeReferenceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ import java.util.List;
  * Created by x36zhao on 2018/5/8.
  */
 @Component
-public final class RemoteResourceRequester
+public final class RestServiceCaller
 {
     @Value("${api.host}")
     protected String API_HOST;
@@ -38,6 +39,15 @@ public final class RemoteResourceRequester
     @Autowired
     private RestTemplate restTemplate;
 
+    /**
+     * Send rest request to fetch response data
+     *
+     * @param request
+     * @param contextPath
+     * @param typeToken
+     * @param <T>
+     * @return
+     */
     private <T> ResponseData<T> remoteCall (HttpServletRequest request, String contextPath, TypeToken<T> typeToken)
     {
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -71,9 +81,7 @@ public final class RemoteResourceRequester
 
     public SchoolModel findSchool(HttpServletRequest request)
     {
-        // TODO: Debug usage only
-        Integer schoolId = 1;
-        return remoteCall(request,"school/" + schoolId, new TypeToken<SchoolModel>() {}).getData();
+        return remoteCall(request,"school/" + SecurityContextHelper.getSchoolIdFromPrincipal(), new TypeToken<SchoolModel>() {}).getData();
     }
 
     public SchoolProductModel findProductById (HttpServletRequest request, Integer productId)

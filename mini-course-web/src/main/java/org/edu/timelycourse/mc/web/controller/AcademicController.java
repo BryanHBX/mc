@@ -27,7 +27,7 @@ public class AcademicController extends AbstractController
                                     @ModelAttribute("contractCriteria") ContractCriteria criteria,
                                     HttpServletRequest request)
     {
-        model.addAttribute("pagingBean", findContractsByPage(request, pageNum, numPerPage));
+        model.addAttribute("pagingBean", restServiceCaller.findContractsByPage(request, pageNum, numPerPage));
         model.addAttribute("criteria", criteria);
         model.addAttribute("module", getModuleName());
         return getModulePage("course/courseArrangementList");
@@ -40,7 +40,7 @@ public class AcademicController extends AbstractController
                                        @ModelAttribute("attendanceCriteria") CourseAttendanceCriteria criteria,
                                        HttpServletRequest request)
     {
-        model.addAttribute("pagingBean", findContractsByPage(request, pageNum, numPerPage));
+        model.addAttribute("pagingBean", restServiceCaller.findContractsByPage(request, pageNum, numPerPage));
         model.addAttribute("criteria", criteria);
         model.addAttribute("module", getModuleName());
         return getModulePage("attendance/attendanceList");
@@ -52,11 +52,11 @@ public class AcademicController extends AbstractController
                                    @RequestParam(required = false, name = "type") String type,
                                    HttpServletRequest request)
     {
-        model.addAttribute("products", getAllProducts(request));
-        model.addAttribute("level", findConfigByName(request, EBuiltInConfig.C_STUDENT_LEVEL.name()));
-        model.addAttribute("entity", findContractById(request, contractId));
+        model.addAttribute("products", restServiceCaller.getAllProducts(request));
+        model.addAttribute("level", restServiceCaller.findConfigByName(request, EBuiltInConfig.C_STUDENT_LEVEL.name()));
+        model.addAttribute("entity", restServiceCaller.findContractById(request, contractId));
         model.addAttribute("type", type);
-        model.addAttribute("arranges", findArrangementByContract(request, contractId));
+        model.addAttribute("arranges", restServiceCaller.findArrangementByContract(request, contractId));
         return getModulePage("course/dialog/dialogCourseArrangement");
     }
 
@@ -67,7 +67,7 @@ public class AcademicController extends AbstractController
                             @ModelAttribute("contractCriteria") ContractCriteria criteria,
                             HttpServletRequest request)
     {
-        model.addAttribute("pagingBean", findContractsByPage(request, pageNum, numPerPage));
+        model.addAttribute("pagingBean", restServiceCaller.findContractsByPage(request, pageNum, numPerPage));
         model.addAttribute("criteria", criteria);
         model.addAttribute("module", getModuleName());
         return getModulePage("course/courseStatList");

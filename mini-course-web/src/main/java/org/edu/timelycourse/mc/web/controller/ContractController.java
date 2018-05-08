@@ -24,12 +24,12 @@ public class ContractController extends AbstractController
     public String showContractForm (Model model, HttpServletRequest request)
     {
         model.addAttribute("level",
-                findConfigByName(request, EBuiltInConfig.C_STUDENT_LEVEL.name()));
+                restServiceCaller.findConfigByName(request, EBuiltInConfig.C_STUDENT_LEVEL.name()));
 
-        model.addAttribute("products", getAllProducts(request));
+        model.addAttribute("products", restServiceCaller.getAllProducts(request));
 
         model.addAttribute("course",
-                findConfigByName(request, EBuiltInConfig.C_COURSE_TYPE.name()));
+                restServiceCaller.findConfigByName(request, EBuiltInConfig.C_COURSE_TYPE.name()));
 
         return getModulePage("contract/form/formContract");
     }
@@ -41,7 +41,7 @@ public class ContractController extends AbstractController
                                     @ModelAttribute("contractCriteria") ContractCriteria criteria,
                                     HttpServletRequest request)
     {
-        model.addAttribute("pagingBean", findContractsByPage(request, pageNum, numPerPage));
+        model.addAttribute("pagingBean", restServiceCaller.findContractsByPage(request, pageNum, numPerPage));
         model.addAttribute("criteria", criteria);
         model.addAttribute("module", getModuleName());
         return getModulePage("contract/contractList");
@@ -53,10 +53,10 @@ public class ContractController extends AbstractController
                                 @RequestParam(required = false, name = "op") String operation,
                                 HttpServletRequest request)
     {
-        model.addAttribute("level", findConfigByName(request, EBuiltInConfig.C_STUDENT_LEVEL.name()));
-        model.addAttribute("products", getAllProducts(request));
-        model.addAttribute("course", findConfigByName(request, EBuiltInConfig.C_COURSE_TYPE.name()));
-        model.addAttribute("entity", findContractById(request, contractId));
+        model.addAttribute("level", restServiceCaller.findConfigByName(request, EBuiltInConfig.C_STUDENT_LEVEL.name()));
+        model.addAttribute("products", restServiceCaller.getAllProducts(request));
+        model.addAttribute("course", restServiceCaller.findConfigByName(request, EBuiltInConfig.C_COURSE_TYPE.name()));
+        model.addAttribute("entity", restServiceCaller.findContractById(request, contractId));
         model.addAttribute("op", operation);
 
         return getModulePage("contract/dialog/dialogContract");
@@ -70,10 +70,10 @@ public class ContractController extends AbstractController
                                    HttpServletRequest request)
     {
         model.addAttribute("criteria", criteria);
-        model.addAttribute("pagingBean", findStudentsByPage(request, pageNum, numPerPage));
+        model.addAttribute("pagingBean", restServiceCaller.findStudentsByPage(request, pageNum, numPerPage));
 
         model.addAttribute("level",
-                findConfigByName(request, EBuiltInConfig.C_STUDENT_LEVEL.name()));
+                restServiceCaller.findConfigByName(request, EBuiltInConfig.C_STUDENT_LEVEL.name()));
 
         return getModulePage("student/studentList");
     }
