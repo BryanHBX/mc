@@ -21,6 +21,7 @@
         <jjwt.version>0.9.0</jjwt.version>
         <guava.version>24.1-jre</guava.version>
         <pagehelper.version>1.2.3</pagehelper.version>
+        <apache.poi.version>3.12</apache.poi.version>
     </properties>
 
     <modules>
@@ -29,6 +30,7 @@
         <module>mini-course-biz</module>
         <module>mini-course-common</module>
         <module>mini-course-beans</module>
+        <module>mini-course-export</module>
     </modules>
 
     <dependencyManagement>

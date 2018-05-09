@@ -26,7 +26,7 @@ public class ContractInvoiceDTO extends BaseDTO
     /**
      * 缴费金额
      */
-    private double price;
+    private Double price;
 
     /**
      * 支付类型
@@ -52,6 +52,19 @@ public class ContractInvoiceDTO extends BaseDTO
      * 归属者
      */
     private NamedOptionProperty owner;
+
+    public ContractInvoiceDTO () {}
+
+    public ContractInvoiceDTO (String invoiceNo, Double price)
+    {
+        this.invoiceNo = invoiceNo;
+        this.price = price;
+    }
+
+    public String getPayTypeName ()
+    {
+        return payType != null ? payType.getName() : null;
+    }
 
     public static PagingBean<ContractInvoiceDTO> from (PagingBean<ContractInvoiceModel> pagingBean)
     {
