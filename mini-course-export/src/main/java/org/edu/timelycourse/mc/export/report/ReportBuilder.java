@@ -13,6 +13,4 @@ import java.util.List;
 public interface ReportBuilder
 {
     byte[] build (String sheetName, Collection<? extends BaseDTO> collection)  throws Exception;
-
-    void buildColumns(ExcelBuilder builder);
 }

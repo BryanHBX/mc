@@ -61,10 +61,14 @@ public class ContractInvoiceDTO extends BaseDTO
         this.price = price;
     }
 
+    @JsonIgnore
     public String getPayTypeName ()
     {
         return payType != null ? payType.getName() : null;
     }
+
+    @JsonIgnore
+    public String getStatusName () { return status != null ? status.getName() : null; }
 
     public static PagingBean<ContractInvoiceDTO> from (PagingBean<ContractInvoiceModel> pagingBean)
     {

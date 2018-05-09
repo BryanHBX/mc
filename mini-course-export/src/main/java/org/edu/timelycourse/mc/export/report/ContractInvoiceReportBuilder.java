@@ -25,18 +25,6 @@ public class ContractInvoiceReportBuilder implements ReportBuilder
                 .addColumn("Amount").generatedBy(ContractInvoiceDTO::getPrice)
                 .addColumn("Type").generatedBy(ContractInvoiceDTO::getPayTypeName);
 
-        return builder.build((List<ContractInvoiceDTO>)collection);
-    }
-
-    @Override
-    public void buildColumns (ExcelBuilder builder1)
-    {
-        ExcelBuilder<ContractInvoiceDTO> builder = ExcelBuilder.prepareExcel(ContractInvoiceDTO.class).sheetName("");
-        builder.addColumn("").generatedBy(ContractInvoiceDTO::getInvoiceNo);
-
-        builder
-                .addColumn("InvoiceNo").generatedBy(ContractInvoiceDTO::getInvoiceNo)
-                .addColumn("Amount").generatedBy(ContractInvoiceDTO::getPrice)
-                .addColumn("Type").generatedBy(ContractInvoiceDTO::getPayTypeName);
+        return builder.build((List<ContractInvoiceDTO>) collection);
     }
 }
