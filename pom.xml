@@ -31,6 +31,7 @@
         <module>mini-course-common</module>
         <module>mini-course-beans</module>
         <module>mini-course-export</module>
+        <module>mini-course-scheduler</module>
     </modules>
 
     <dependencyManagement>
@@ -70,6 +71,12 @@
             <dependency>
                 <groupId>org.edu.energycourse</groupId>
                 <artifactId>mini-course-export</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.edu.energycourse</groupId>
+                <artifactId>mini-course-scheduler</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
