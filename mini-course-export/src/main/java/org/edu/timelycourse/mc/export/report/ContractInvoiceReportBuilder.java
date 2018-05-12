@@ -19,11 +19,18 @@ public class ContractInvoiceReportBuilder implements ReportBuilder
     {
         ExcelBuilder<ContractInvoiceDTO> builder = ExcelBuilder.prepareExcel(ContractInvoiceDTO.class).sheetName(sheetName);
 
-        // prepare columns
+        // build column in code level as one short term solution due to limited time,
+        // from long term solution, column must come from external asset resource, for instance, property file or YAML file.
         builder
-                .addColumn("InvoiceNo").generatedBy(ContractInvoiceDTO::getInvoiceNo)
-                .addColumn("Amount").generatedBy(ContractInvoiceDTO::getPrice)
-                .addColumn("Type").generatedBy(ContractInvoiceDTO::getPayTypeName);
+                .addColumn("报名类型").generatedBy(ContractInvoiceDTO::getStatusName)
+                .addColumn("缴费日期").generatedBy(ContractInvoiceDTO::getCreationTime)
+                .addColumn("姓名").generatedBy(ContractInvoiceDTO::getStudentName)
+                .addColumn("年级").generatedBy(ContractInvoiceDTO::getGradeName)
+                .addColumn("报名课程").generatedBy(ContractInvoiceDTO::getCourseName)
+                .addColumn("缴费金额").generatedBy(ContractInvoiceDTO::getPrice)
+                .addColumn("收据号").generatedBy(ContractInvoiceDTO::getInvoiceNo)
+                .addColumn("咨询师").generatedBy(ContractInvoiceDTO::getSupervisorName)
+                .addColumn("缴费类型").generatedBy(ContractInvoiceDTO::getPayTypeName);
 
         return builder.build((List<ContractInvoiceDTO>) collection);
     }

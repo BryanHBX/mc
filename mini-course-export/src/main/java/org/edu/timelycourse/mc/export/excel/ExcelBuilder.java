@@ -91,7 +91,9 @@ public final class ExcelBuilder<T>
             for (int columnIndex = 0; columnIndex < columnBuilders.size(); columnIndex++)
             {
                 ExcelColumnBuilder builder = columnBuilders.get(columnIndex);
-                String value = builder.getGenerator().apply(data).toString();
+
+                Object appliedData = builder.getGenerator().apply(data);
+                String value = appliedData != null ? appliedData.toString() : null;
                 row.createCell(columnIndex).setCellValue(Optional.ofNullable(value).orElse(""));
             }
         }

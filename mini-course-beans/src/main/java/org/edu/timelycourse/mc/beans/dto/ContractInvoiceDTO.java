@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by x36zhao on 2018/4/19.
@@ -54,21 +55,6 @@ public class ContractInvoiceDTO extends BaseDTO
     private NamedOptionProperty owner;
 
     public ContractInvoiceDTO () {}
-
-    public ContractInvoiceDTO (String invoiceNo, Double price)
-    {
-        this.invoiceNo = invoiceNo;
-        this.price = price;
-    }
-
-    @JsonIgnore
-    public String getPayTypeName ()
-    {
-        return payType != null ? payType.getName() : null;
-    }
-
-    @JsonIgnore
-    public String getStatusName () { return status != null ? status.getName() : null; }
 
     public static PagingBean<ContractInvoiceDTO> from (PagingBean<ContractInvoiceModel> pagingBean)
     {
@@ -119,5 +105,38 @@ public class ContractInvoiceDTO extends BaseDTO
     public boolean isValid ()
     {
         return false;
+    }
+
+    @JsonIgnore
+    public String getPayTypeName ()
+    {
+        return payType != null ? payType.getName() : null;
+    }
+
+    @JsonIgnore
+    public String getStatusName () { return status != null ? status.getName() : null; }
+
+    @JsonIgnore
+    public String getStudentName ()
+    {
+        return contract != null && contract.getStudent() != null ? contract.getStudent().getName() : null;
+    }
+
+    @JsonIgnore
+    public String getGradeName ()
+    {
+        return contract != null && contract.getGradeSub() != null ? contract.getGradeSub().getName() : null;
+    }
+
+    @JsonIgnore
+    public String getCourseName ()
+    {
+        return contract != null && contract.getCourse() != null ? contract.getCourse().getName() : null;
+    }
+
+    @JsonIgnore
+    public String getSupervisorName ()
+    {
+        return contract != null && contract.getSupervisor() != null ? contract.getSupervisor().getName() : null;
     }
 }

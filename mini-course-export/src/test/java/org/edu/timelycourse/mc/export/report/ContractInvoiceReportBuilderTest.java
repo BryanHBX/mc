@@ -33,6 +33,6 @@ public class ContractInvoiceReportBuilderTest
         ContractInvoiceReportBuilder reportBuilder = new ContractInvoiceReportBuilder();
         byte[] bytes = reportBuilder.build("report", invoices);
         Assert.assertNotNull(bytes);
-        Assert.assertNotNull(FileUtils.writeFile(null, fileName, bytes));
+        Assert.assertNotNull(reportBuilder.write(fileName, bytes));
     }
 }
