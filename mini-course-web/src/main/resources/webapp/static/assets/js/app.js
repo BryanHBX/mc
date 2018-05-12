@@ -9,12 +9,12 @@
  * @author Zhao.Xiang
  *
  **/
-function generic_ajax_op(url,type,json_data,send_handler,success_handler,error_handler,content_type,global,asyn) {
+function generic_ajax_op(url,type,json_data,send_handler,success_handler,normal_call,error_handler,content_type,global,asyn) {
     var _header = {"ajax": true};
     if (_url != "auth" && localStorage.getItem("token") != undefined) {
         _header["Authorization"] = "Bearer " + localStorage.getItem("token");
     }
-    var _url = openApiContextPath + "/" + url;
+    var _url = (normal_call == undefined ? openApiContextPath + "/" : "") + url;
     var _asyn = asyn && 1;
     var _global = global && true;
     var _data = json_data || {};

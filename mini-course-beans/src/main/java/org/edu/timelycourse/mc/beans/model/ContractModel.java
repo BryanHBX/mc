@@ -9,7 +9,7 @@ import org.edu.timelycourse.mc.beans.enums.EContractDebtStatus;
 import org.edu.timelycourse.mc.beans.enums.EContractStatus;
 import org.edu.timelycourse.mc.beans.enums.EEnrollmentType;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
-import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
+import org.edu.timelycourse.mc.common.utils.ValidatorUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.util.Date;
@@ -234,7 +234,7 @@ public class ContractModel extends BaseModel
                 EEnrollmentType.hasValue(enrollType) && EContractStatus.hasValue(contractStatus) &&
                 EContractArrangementStatus.hasValue(arrangeStatus) &&
                 Strings.isNotEmpty(contractNo) && EContractDebtStatus.hasValue(payStatus) &&
-                ValidatorUtil.isFloatNumber(contractPrice, totalPrice) &&
+                ValidatorUtils.isFloatNumber(contractPrice, totalPrice) &&
                 EntityUtils.isValidEntityId(consultantId, levelId, subLevelId, courseId, subCourseId, schoolId) &&
                 student.isValidInput() && contractDate != null;
 

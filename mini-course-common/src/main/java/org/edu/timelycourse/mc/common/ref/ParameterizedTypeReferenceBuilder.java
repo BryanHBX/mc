@@ -1,4 +1,4 @@
-package org.edu.timelycourse.mc.common.utils;
+package org.edu.timelycourse.mc.common.ref;
 
 import com.google.common.reflect.TypeToken;
 import org.springframework.core.ParameterizedTypeReference;

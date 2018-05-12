@@ -11,7 +11,7 @@ import org.edu.timelycourse.mc.beans.model.*;
 import org.edu.timelycourse.mc.beans.paging.PagingBean;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.constants.Constants;
-import org.edu.timelycourse.mc.common.utils.ParameterizedTypeReferenceBuilder;
+import org.edu.timelycourse.mc.common.ref.ParameterizedTypeReferenceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;

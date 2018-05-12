@@ -6,6 +6,7 @@ import org.edu.timelycourse.mc.beans.enums.EInvoiceStatus;
 import org.edu.timelycourse.mc.beans.enums.EPaymentType;
 import org.edu.timelycourse.mc.beans.model.ContractInvoiceModel;
 import org.edu.timelycourse.mc.beans.paging.PagingBean;
+import org.edu.timelycourse.mc.common.utils.DateUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
@@ -115,6 +116,9 @@ public class ContractInvoiceDTO extends BaseDTO
 
     @JsonIgnore
     public String getStatusName () { return status != null ? status.getName() : null; }
+
+    @JsonIgnore
+    public String getInvoiceDate () { return creationTime != null ? DateUtils.getFormatedDate(creationTime, "yyyy-MM-dd") : ""; }
 
     @JsonIgnore
     public String getStudentName ()

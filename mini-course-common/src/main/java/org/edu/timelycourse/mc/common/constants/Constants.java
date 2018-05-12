@@ -12,6 +12,32 @@ public final class Constants
     public static final Integer BUFF_SIZE                   = 1024;
 
     /**
+     * upload folder
+     */
+    public static final String FOLDER_UPLOADS = "uploads";
+
+    /**
+     * temp folder
+     */
+    public static final String FOLDER_TEMP = "temp";
+
+    /**
+     * unknown identity
+     */
+    public static final String UNKONW_ID = String.valueOf(-1);
+
+    /**
+     * prefix of file resource
+     */
+    public static final String RESOURCE_FILE_PREFIX = System.getProperty("os.name")
+            .toUpperCase().indexOf("WINDOWS") > -1 ? "file:/" : "file:";
+
+    /**
+     * asset resource path
+     */
+    public static final String ASSET_RESOURCE_PATH = "webapp/static/assets";
+
+    /**
      * The default page size
      */
     public static Integer DEFAULT_PAGE_SIZE = Integer.valueOf(20);

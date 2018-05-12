@@ -2,7 +2,7 @@ package org.edu.timelycourse.mc.common.utils;
 
 import java.util.regex.Pattern;
 
-public final class ValidatorUtil
+public final class ValidatorUtils
 {
     /**
      * 正则表达式：验证手机号
