@@ -3,7 +3,7 @@ package org.edu.timelycourse.mc.beans.model;
 import lombok.Data;
 import lombok.ToString;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
-import org.edu.timelycourse.mc.common.utils.StringUtil;
+import org.edu.timelycourse.mc.common.utils.StringUtils;
 
 import java.util.List;
 
@@ -58,7 +58,7 @@ public class SystemConfigModel extends BaseModel
     @Override
     public boolean isValidInput ()
     {
-        return StringUtil.isNotEmpty(configName, configDescription) &&
+        return StringUtils.isNotEmpty(configName, configDescription) &&
                 (parentId == null || EntityUtils.isValidEntityId(parentId));
     }
 }

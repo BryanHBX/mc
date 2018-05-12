@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class StringUtil
+public class StringUtils
 {
     public static String DEFAULT_ENCODING = "UTF-8";
 
@@ -196,7 +196,7 @@ public class StringUtil
     {
         try
         {
-            return StringUtil.isNotEmpty(text) ? URLDecoder.decode(text, DEFAULT_ENCODING) : null;
+            return StringUtils.isNotEmpty(text) ? URLDecoder.decode(text, DEFAULT_ENCODING) : null;
         }
         catch (UnsupportedEncodingException e)
         {

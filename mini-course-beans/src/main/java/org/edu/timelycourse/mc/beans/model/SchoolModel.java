@@ -1,7 +1,7 @@
 package org.edu.timelycourse.mc.beans.model;
 
 import lombok.Data;
-import org.edu.timelycourse.mc.common.utils.StringUtil;
+import org.edu.timelycourse.mc.common.utils.StringUtils;
 
 import java.util.Date;
 
@@ -84,6 +84,6 @@ public class SchoolModel extends BaseModel
     @Override
     public boolean isValidInput ()
     {
-        return StringUtil.isNotEmpty(schoolName);
+        return StringUtils.isNotEmpty(schoolName);
     }
 }

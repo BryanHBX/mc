@@ -3,14 +3,8 @@ package org.edu.timelycourse.mc.beans.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import org.edu.timelycourse.mc.beans.enums.EContractArrangementStatus;
-import org.edu.timelycourse.mc.beans.enums.EContractStatus;
-import org.edu.timelycourse.mc.beans.enums.EEnrollmentType;
 import org.edu.timelycourse.mc.beans.model.ContractArrangementModel;
-import org.edu.timelycourse.mc.beans.model.ContractModel;
-import org.edu.timelycourse.mc.beans.paging.PagingBean;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
-import org.edu.timelycourse.mc.common.utils.StringUtil;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;

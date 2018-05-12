@@ -62,6 +62,10 @@
         </dependency>
         <dependency>
             <groupId>org.edu.energycourse</groupId>
+            <artifactId>mini-course-export</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.edu.energycourse</groupId>
             <artifactId>mini-course-beans</artifactId>
         </dependency>
         <dependency>

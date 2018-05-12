@@ -116,7 +116,7 @@ public abstract class BaseService<T extends BaseModel>
         {
             PageHelper.startPage(
                     EntityUtils.isValidEntityId(pageNum) ? pageNum : 1,
-                    EntityUtils.isValidEntityId(pageSize) ? pageSize : Constants.DEFAULT_PAGE_SIZE);
+                    pageSize == null ? Integer.MAX_VALUE : (EntityUtils.isValidEntityId(pageSize) ? pageSize : Constants.DEFAULT_PAGE_SIZE));
 
             Page<T> result = this.repository.getByCriteria(criteria);
             return new PagingBean<T>(result);

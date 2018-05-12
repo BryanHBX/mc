@@ -13,7 +13,7 @@ import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
-import org.edu.timelycourse.mc.common.utils.StringUtil;
+import org.edu.timelycourse.mc.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -139,7 +139,7 @@ public class ContractService extends BaseService<ContractModel>
             {
                 for (ContractInvoiceModel invoice : model.getInvoices())
                 {
-                    if (invoice.getPrice() > 0 && StringUtil.isNotEmpty(invoice.getInvoiceNo()))
+                    if (invoice.getPrice() > 0 && StringUtils.isNotEmpty(invoice.getInvoiceNo()))
                     {
                         invoice.setSchoolId(model.getSchoolId());
                         invoice.setCreationTime(new Date());

@@ -2,11 +2,10 @@ package org.edu.timelycourse.mc.beans.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.edu.timelycourse.mc.beans.dto.ContractDTO;
 import org.edu.timelycourse.mc.beans.dto.StudentDTO;
 import org.edu.timelycourse.mc.beans.enums.EContactType;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
-import org.edu.timelycourse.mc.common.utils.StringUtil;
+import org.edu.timelycourse.mc.common.utils.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.util.Date;
@@ -119,7 +118,7 @@ public class StudentModel extends BaseModel
     public boolean isValidInput ()
     {
         return EContactType.hasValue(this.contactRelationType) &&
-                StringUtil.isNotEmpty(wxId, contactName, contactPhone, name) &&
+                StringUtils.isNotEmpty(wxId, contactName, contactPhone, name) &&
                 EntityUtils.isValidEntityId(schoolId, levelId, subLevelId, courseId, subCourseId);
     }
 

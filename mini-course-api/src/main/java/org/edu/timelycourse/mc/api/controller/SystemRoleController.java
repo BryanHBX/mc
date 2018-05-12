@@ -6,7 +6,7 @@ import org.edu.timelycourse.mc.beans.model.SystemRoleModel;
 import org.edu.timelycourse.mc.biz.service.SystemRoleService;
 import org.edu.timelycourse.mc.biz.utils.Asserts;
 import org.edu.timelycourse.mc.beans.entity.ResponseData;
-import org.edu.timelycourse.mc.common.utils.StringUtil;
+import org.edu.timelycourse.mc.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class SystemRoleController extends BaseController
             LOGGER.debug("Enter getRoles - [roleAlias: {}]", roleAlias);
         }
 
-        if (StringUtil.isNotEmpty(roleAlias))
+        if (StringUtils.isNotEmpty(roleAlias))
         {
             return ResponseData.success(roleService.findByAlias(roleAlias));
         }

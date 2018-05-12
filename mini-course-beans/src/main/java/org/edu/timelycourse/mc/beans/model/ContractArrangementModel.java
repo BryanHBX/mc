@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.edu.timelycourse.mc.beans.dto.ContractArrangementDTO;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
-import org.edu.timelycourse.mc.common.utils.StringUtil;
+import org.edu.timelycourse.mc.common.utils.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 /**
@@ -40,7 +40,7 @@ public class ContractArrangementModel extends BaseModel
     {
         ContractArrangementModel model = new ContractArrangementModel();
         BeanUtils.copyProperties(dto, model, "clazz");
-        if (dto.getClazz() != null && StringUtil.isNotEmpty(dto.getClazz().getName()))
+        if (dto.getClazz() != null && StringUtils.isNotEmpty(dto.getClazz().getName()))
         {
             ContractClazzModel clazzModel = new ContractClazzModel();
             clazzModel.setId(dto.getClazz().getId());

@@ -7,7 +7,7 @@ import lombok.ToString;
 import org.edu.timelycourse.mc.beans.enums.EUserRole;
 import org.edu.timelycourse.mc.beans.enums.EUserType;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
-import org.edu.timelycourse.mc.common.utils.StringUtil;
+import org.edu.timelycourse.mc.common.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -190,6 +190,6 @@ public class UserModel extends BaseModel
         return EUserRole.hasValue(this.status) &&
                 EUserType.hasValue(this.type) && EUserRole.hasValue(this.role) &&
                 EntityUtils.isValidEntityId(this.schoolId) &&
-                StringUtil.isNotEmpty(this.phone);
+                StringUtils.isNotEmpty(this.phone);
     }
 }

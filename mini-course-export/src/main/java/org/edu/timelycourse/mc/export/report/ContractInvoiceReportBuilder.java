@@ -4,6 +4,7 @@ import org.edu.timelycourse.mc.beans.dto.BaseDTO;
 import org.edu.timelycourse.mc.beans.dto.ContractInvoiceDTO;
 import org.edu.timelycourse.mc.export.excel.ExcelBuilder;
 import org.edu.timelycourse.mc.export.excel.ExcelBuilder.ExcelColumnBuilder;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * Created by x36zhao on 2018/5/9.
  */
+@Component
 public class ContractInvoiceReportBuilder implements ReportBuilder
 {
     @Override
@@ -23,7 +25,7 @@ public class ContractInvoiceReportBuilder implements ReportBuilder
         // from long term solution, column must come from external asset resource, for instance, property file or YAML file.
         builder
                 .addColumn("报名类型").generatedBy(ContractInvoiceDTO::getStatusName)
-                .addColumn("缴费日期").generatedBy(ContractInvoiceDTO::getCreationTime)
+                .addColumn("缴费日期").generatedBy(ContractInvoiceDTO::getInvoiceDate)
                 .addColumn("姓名").generatedBy(ContractInvoiceDTO::getStudentName)
                 .addColumn("年级").generatedBy(ContractInvoiceDTO::getGradeName)
                 .addColumn("报名课程").generatedBy(ContractInvoiceDTO::getCourseName)

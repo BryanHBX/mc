@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 /**
  * Created by x36zhao on 2018/4/19.
  */
-public final class ReflectUtil
+public final class ReflectUtils
 {
     public static Object getValue (Object bean, String fieldName)
     {

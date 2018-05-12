@@ -1,7 +1,7 @@
 package org.edu.timelycourse.mc.beans.dto;
 
 import lombok.Data;
-import org.edu.timelycourse.mc.common.utils.ReflectUtil;
+import org.edu.timelycourse.mc.common.utils.ReflectUtils;
 
 import java.io.Serializable;
 
@@ -25,7 +25,7 @@ public class NamedOptionProperty implements Serializable
     {
         if (id != null)
         {
-            Object value = ReflectUtil.getValue(object, fieldName);
+            Object value = ReflectUtils.getValue(object, fieldName);
             NamedOptionProperty option = new NamedOptionProperty();
             option.setId(id);
             option.setName(value != null ? value.toString() : null);

@@ -5,7 +5,7 @@ import lombok.Data;
 import org.edu.timelycourse.mc.beans.dto.ContractInvoiceDTO;
 import org.edu.timelycourse.mc.beans.enums.EPaymentType;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
-import org.edu.timelycourse.mc.common.utils.StringUtil;
+import org.edu.timelycourse.mc.common.utils.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
@@ -75,12 +75,12 @@ public class ContractInvoiceModel extends BaseModel
 
         if (valid)
         {
-            if (!StringUtil.isNotEmpty(invoiceNo) && price > 0)
+            if (!StringUtils.isNotEmpty(invoiceNo) && price > 0)
             {
                 return false;
             }
 
-            if (StringUtil.isNotEmpty(invoiceNo) && price <= 0)
+            if (StringUtils.isNotEmpty(invoiceNo) && price <= 0)
             {
                 return false;
             }

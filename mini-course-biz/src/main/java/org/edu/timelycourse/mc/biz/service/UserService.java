@@ -11,7 +11,7 @@ import org.edu.timelycourse.mc.biz.utils.PasswordUtil;
 import org.edu.timelycourse.mc.biz.utils.SecurityContextHelper;
 import org.edu.timelycourse.mc.common.exception.ServiceException;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
-import org.edu.timelycourse.mc.common.utils.StringUtil;
+import org.edu.timelycourse.mc.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,9 +91,9 @@ public class UserService extends BaseService<UserModel>
         {
             checkUserData(entity);
 
-            entity.setSubjectsId(StringUtil.join(entity.getSubjectIds()));
-            entity.setCoursesId(StringUtil.join(entity.getCourseIds()));
-            entity.setGradesId(StringUtil.join(entity.getGradeIds()));
+            entity.setSubjectsId(StringUtils.join(entity.getSubjectIds()));
+            entity.setCoursesId(StringUtils.join(entity.getCourseIds()));
+            entity.setGradesId(StringUtils.join(entity.getGradeIds()));
 
             initUserPassword(entity);
             entity.setCreationTime(new Date());
@@ -117,7 +117,7 @@ public class UserService extends BaseService<UserModel>
     public UserModel update(UserModel entity)
     {
         if (!entity.isValidInput() && !EntityUtils.isValidEntityId(entity.getId()) &&
-                !StringUtil.isNotEmpty(entity.getUserIdentity(), entity.getPhone(), entity.getWxId()))
+                !StringUtils.isNotEmpty(entity.getUserIdentity(), entity.getPhone(), entity.getWxId()))
         {
             throw new ServiceException(String.format("Invalid user entity %s", entity));
         }
@@ -152,9 +152,9 @@ public class UserService extends BaseService<UserModel>
         // update role
         updateUserRole(entity);
 
-        entity.setSubjectsId(StringUtil.join(entity.getSubjectIds()));
-        entity.setCoursesId(StringUtil.join(entity.getCourseIds()));
-        entity.setGradesId(StringUtil.join(entity.getGradeIds()));
+        entity.setSubjectsId(StringUtils.join(entity.getSubjectIds()));
+        entity.setCoursesId(StringUtils.join(entity.getCourseIds()));
+        entity.setGradesId(StringUtils.join(entity.getGradeIds()));
 
         entity.setLastUpdateTime(new Date());
         repository.update(entity);
@@ -230,7 +230,7 @@ public class UserService extends BaseService<UserModel>
     {
         if (EntityUtils.isValidEntityId(userId))
         {
-            if (StringUtil.isNotEmpty(password))
+            if (StringUtils.isNotEmpty(password))
             {
                 UserModel user = (UserModel) Asserts.assertEntityNotNullById(repository, userId);
                 user.setPassword(PasswordUtil.encode(password));
@@ -361,7 +361,7 @@ public class UserService extends BaseService<UserModel>
 
     public UserModel findByUserIdentity (String userIdentity)
     {
-        if (!StringUtil.isNotEmpty(userIdentity))
+        if (!StringUtils.isNotEmpty(userIdentity))
         {
             return userRepository.getByUserId(userIdentity);
         }
@@ -381,7 +381,7 @@ public class UserService extends BaseService<UserModel>
 
     public UserModel findByUserPhone (String userPhone)
     {
-        if (!StringUtil.isNotEmpty(userPhone))
+        if (!StringUtils.isNotEmpty(userPhone))
         {
             return userRepository.getByUserPhone(userPhone);
         }

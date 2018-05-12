@@ -3,8 +3,8 @@ package org.edu.timelycourse.mc.beans.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
-import org.edu.timelycourse.mc.common.utils.StringUtil;
-import org.edu.timelycourse.mc.common.utils.ValidatorUtil;
+import org.edu.timelycourse.mc.common.utils.StringUtils;
+import org.edu.timelycourse.mc.common.utils.ValidatorUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -71,9 +71,9 @@ public class SchoolProductModel extends BaseModel
     public boolean isValidInput ()
     {
         return EntityUtils.isValidEntityId(schoolId) &&
-                StringUtil.isNotEmpty(productName) &&
+                StringUtils.isNotEmpty(productName) &&
                 (parentId == null ?
-                        (EntityUtils.isValidEntityId(productType) && ValidatorUtil.isFloatNumber(productPeriod)) :
+                        (EntityUtils.isValidEntityId(productType) && ValidatorUtils.isFloatNumber(productPeriod)) :
                         EntityUtils.isValidEntityId(parentId));
     }
 }

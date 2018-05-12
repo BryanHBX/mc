@@ -3,7 +3,6 @@ package org.edu.timelycourse.mc.export.report;
 import org.edu.timelycourse.mc.beans.dto.ContractInvoiceDTO;
 import org.edu.timelycourse.mc.beans.dto.NamedOptionProperty;
 import org.edu.timelycourse.mc.common.utils.CommonUtils;
-import org.edu.timelycourse.mc.common.utils.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -33,6 +32,6 @@ public class ContractInvoiceReportBuilderTest
         ContractInvoiceReportBuilder reportBuilder = new ContractInvoiceReportBuilder();
         byte[] bytes = reportBuilder.build("report", invoices);
         Assert.assertNotNull(bytes);
-        Assert.assertNotNull(reportBuilder.write(fileName, bytes));
+        Assert.assertNotNull(reportBuilder.write(null, fileName, bytes));
     }
 }

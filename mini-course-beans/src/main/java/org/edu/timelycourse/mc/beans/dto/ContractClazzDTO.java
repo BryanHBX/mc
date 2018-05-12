@@ -5,7 +5,7 @@ import lombok.Data;
 import org.edu.timelycourse.mc.beans.model.ContractClazzModel;
 import org.edu.timelycourse.mc.beans.paging.PagingBean;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
-import org.edu.timelycourse.mc.common.utils.StringUtil;
+import org.edu.timelycourse.mc.common.utils.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class ContractClazzDTO extends BaseDTO
     @JsonIgnore
     public boolean isValid ()
     {
-        return EntityUtils.isValidEntityId(teacherId, schoolId) && StringUtil.isNotEmpty(name);
+        return EntityUtils.isValidEntityId(teacherId, schoolId) && StringUtils.isNotEmpty(name);
     }
 
     public static PagingBean<ContractClazzDTO> from (PagingBean<ContractClazzModel> pagingBean)

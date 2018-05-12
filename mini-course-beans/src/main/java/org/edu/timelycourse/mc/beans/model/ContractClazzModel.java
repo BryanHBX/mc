@@ -3,7 +3,7 @@ package org.edu.timelycourse.mc.beans.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.edu.timelycourse.mc.common.utils.EntityUtils;
-import org.edu.timelycourse.mc.common.utils.StringUtil;
+import org.edu.timelycourse.mc.common.utils.StringUtils;
 
 import java.util.Date;
 
@@ -29,6 +29,6 @@ public class ContractClazzModel extends BaseModel
     public boolean isValidInput ()
     {
         return EntityUtils.isValidEntityId(schoolId, teacherId) &&
-                StringUtil.isNotEmpty(name);
+                StringUtils.isNotEmpty(name);
     }
 }

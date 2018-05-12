@@ -2,7 +2,7 @@ package org.edu.timelycourse.mc.beans.criteria;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.edu.timelycourse.mc.common.utils.StringUtil;
+import org.edu.timelycourse.mc.common.utils.StringUtils;
 
 /**
  * Created by x36zhao on 2018/4/20.
@@ -23,16 +23,16 @@ public class InvoiceCriteria extends BaseCriteria
 
     public String getStudentName ()
     {
-        return StringUtil.decodeURLText(studentName);
+        return StringUtils.decodeURLText(studentName);
     }
 
     public String getConsultantName ()
     {
-        return StringUtil.decodeURLText(consultantName);
+        return StringUtils.decodeURLText(consultantName);
     }
 
     public String getSupervisorName ()
     {
-        return StringUtil.decodeURLText(supervisorName);
+        return StringUtils.decodeURLText(supervisorName);
     }
 }

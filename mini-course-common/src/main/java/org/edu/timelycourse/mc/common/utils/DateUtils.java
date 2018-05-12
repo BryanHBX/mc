@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by Marco on 2018/3/31.
  */
-public class DateUtil
+public class DateUtils
 {
     private static String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static SimpleDateFormat defaultDateFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT);

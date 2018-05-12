@@ -68,17 +68,13 @@
 
 <div class="pageContent" xmlns:th="http://www.thymeleaf.org">
     <div class="panelBar">
-        <div style="padding-left: 5px;line-height: 25px;">
-            <span>总收入：<span th:text="${stat ne null ? stat.totalIncome : '0.00'}"></span></span>
-            <span style="margin-left: 10px;">总退费：<span th:text="${stat ne null ? stat.totalRefund : '0.00'}"></span></span>
-        </div>
         <ul class="toolBar" style="float:right">
             <li>
-                <a class="icon" href="demo/common/dwz-team.xls" target="dwzExport" targettype="navTab" title="确定要导出这些收据记录吗?"><span>导出EXCEL</span></a>
+                <a class="icon" href="javascript:void(0);" id="invoiceExport"><span>导出EXCEL</span></a>
             </li>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH="110">
+    <table class="table" width="100%" layoutH="135">
         <thead>
         <tr>
             <th width="60">报名类型</th>
@@ -113,18 +109,9 @@
     </table>
 
     <div class="panelBar">
-        <div class="pages">
-            <span>显示</span>
-            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.name})">
-                <option value="1" th:selected="${stat ne null and stat.invoices ne null and stat.invoices.pageSize eq 1}">1</option>
-                <option value="20" th:selected="${pagingBean != null and pagingBean.pageSize eq 20}">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-                <option value="150">150</option>
-                <option value="200">200</option>
-                <option value="250">250</option>
-            </select>
-            <span th:text="'条，共' + ${stat ne null and stat.invoices ne null ? stat.invoices.totalItems : 0} + '条'"></span>
+        <div class="pages" style="line-height: 21px;">
+            <label>总收入：<label th:text="${stat ne null ? stat.totalIncome : '0.00'}"></label></label>
+            <label style="margin-left: 10px;">总退费：<label th:text="${stat ne null ? stat.totalRefund : '0.00'}"></label></label>
         </div>
         <div class="pagination" targetType="navTab"
              th:totalCount="${stat ne null and stat.invoices ne null  ? stat.invoices.totalItems : 0}"
@@ -134,3 +121,20 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(function(){
+        $("#invoiceExport").unbind("click").bind("click", function(){
+            alertMsg.confirm("确定要导出这些收据项数据么?", {
+                okCall: function() {
+                    generic_ajax_op("export/invoice", "POST", $("#invoiceSearchForm").serializeJSON(), null, (
+                        function (result) {
+                            alertMsg.correct("收据导出成功..");
+                            window.location.href = "assets/temp/" + result.data;
+                        }
+                    ), true);
+                }
+            });
+        });
+    });
+</script>

@@ -3,7 +3,7 @@ package org.edu.timelycourse.mc.beans.model;
 import lombok.Data;
 import lombok.ToString;
 import org.edu.timelycourse.mc.beans.enums.EVisible;
-import org.edu.timelycourse.mc.common.utils.StringUtil;
+import org.edu.timelycourse.mc.common.utils.StringUtils;
 
 /**
  * 系统角色权限
@@ -21,7 +21,7 @@ public class SystemRoleModel extends BaseModel
     @Override
     public boolean isValidInput ()
     {
-        return StringUtil.isNotEmpty(roleName, roleAlias) &&
+        return StringUtils.isNotEmpty(roleName, roleAlias) &&
                 EVisible.hasValue(roleVisible);
     }
 }

@@ -1,6 +1,6 @@
 package org.edu.timelycourse.mc.common.controller;
 
-import org.edu.timelycourse.mc.common.utils.StringUtil;
+import org.edu.timelycourse.mc.common.utils.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -50,7 +50,7 @@ public abstract class BaseController
                     {
                         for (String paramPrefix : paramPrefixs)
                         {
-                            if (paramName.startsWith(paramPrefix) && StringUtil.isNotEmpty(paramValue))
+                            if (paramName.startsWith(paramPrefix) && StringUtils.isNotEmpty(paramValue))
                             {
                                 if (!parameters.containsKey(paramPrefix))
                                 {

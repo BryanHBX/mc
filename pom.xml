@@ -66,6 +66,12 @@
                 <artifactId>mini-course-beans</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.edu.energycourse</groupId>
+                <artifactId>mini-course-export</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
